@@ -17,4 +17,13 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Contracts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Zeus.Api.Application\Zeus.Api.Application.csproj" />
+      <ProjectReference Include="..\Zeus.Api.Infrastructure\Zeus.Api.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
