@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Zeus.Api.Web.Controllers;
 
-[ApiController]
+[Controller]
 [Route("/")]
-public class HelloWorld : ControllerBase
+public class HelloWorld
 {
     [HttpGet]
     public string Get() => "Hello World!";
