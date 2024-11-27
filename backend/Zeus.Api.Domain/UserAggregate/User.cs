@@ -3,7 +3,7 @@ using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Domain.UserAggregate;
 
-public class User : AggregateRoot<UserId>
+public sealed class User : AggregateRoot<UserId>
 {
     private User(
         UserId id,

@@ -2,7 +2,7 @@ using Zeus.Api.Domain.Common.Models;
 
 namespace Zeus.Api.Domain.UserAggregate.ValueObjects;
 
-public class UserId(Guid value) : ValueObject
+public sealed class UserId(Guid value) : ValueObject
 {
     public Guid Value { get; } = value;
 
