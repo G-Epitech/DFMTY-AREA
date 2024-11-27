@@ -11,7 +11,7 @@ public sealed class UserId(Guid value) : ValueObject
         return new UserId(Guid.NewGuid());
     }
     
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
