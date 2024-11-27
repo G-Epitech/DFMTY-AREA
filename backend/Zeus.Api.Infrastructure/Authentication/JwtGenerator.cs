@@ -23,7 +23,7 @@ public class JwtGenerator : IJwtGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
-    private string GenerateToken(User user)
+    private string GenerateToken(User user, string type)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -35,6 +35,7 @@ public class JwtGenerator : IJwtGenerator
             new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredCustomClaimNames.TokenType, type)
         };
 
         var securityToken = new JwtSecurityToken(
@@ -49,11 +50,11 @@ public class JwtGenerator : IJwtGenerator
 
     public AccessToken GenerateAccessToken(User user)
     {
-        return new AccessToken(GenerateToken(user));
+        return new AccessToken(GenerateToken(user, AccessToken.Type));
     }
 
     public RefreshToken GenerateRefreshToken(User user)
     {
-        return new RefreshToken(GenerateToken(user));
+        return new RefreshToken(GenerateToken(user, RefreshToken.Type));
     }
 }
