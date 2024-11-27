@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Zeus.Api.Application;
+namespace Zeus.Daemon.Application;
 
 public static class DependencyInjection
 {

@@ -1,7 +1,7 @@
 ﻿using Zeus.Api.Domain.UserAggregate;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Api.Application.Common.Interfaces.Repositories;
+namespace Zeus.Api.Application.Interfaces.Repositories;
 
 public interface IUserReadRepository
 {
