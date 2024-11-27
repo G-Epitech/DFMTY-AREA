@@ -3,7 +3,7 @@ namespace Zeus.Api.Domain.Common.Models;
 public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>
     where TId : notnull
 {
-    public TId Id { get; protected set; } = id;
+    public TId Id { get; } = id;
 
     public bool Equals(Entity<TId>? other)
     {
