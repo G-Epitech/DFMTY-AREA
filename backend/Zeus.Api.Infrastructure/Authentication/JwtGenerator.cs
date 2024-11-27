@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Domain.Common.ValueObjects.Authentication;
 using Zeus.Api.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Authentication;
@@ -22,7 +23,7 @@ public class JwtGenerator : IJwtGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string Generate(User user)
+    private string GenerateToken(User user)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -44,5 +45,15 @@ public class JwtGenerator : IJwtGenerator
             signingCredentials: signingCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+
+    public AccessToken GenerateAccessToken(User user)
+    {
+        return new AccessToken(GenerateToken(user));
+    }
+
+    public RefreshToken GenerateRefreshToken(User user)
+    {
+        return new RefreshToken(GenerateToken(user));
     }
 }
