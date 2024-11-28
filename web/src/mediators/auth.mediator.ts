@@ -9,6 +9,18 @@ import {TokensModel} from '@models/tokens.model';
 export class AuthMediator {
   readonly #authRepository = inject(AuthRepository);
 
+  getTokens(): TokensModel {
+    return this.#authRepository.getTokens();
+  }
+
+  getAccessToken(): string | null {
+    return this.#authRepository.getAccessToken();
+  }
+
+  getRefreshToken(): string | null {
+    return this.#authRepository.getRefreshToken();
+  }
+
   register(email: string, password: string, firstName: string, lastName: string): Observable<TokensModel> {
     return this.#authRepository.register({
       email: email,
@@ -16,7 +28,10 @@ export class AuthMediator {
       firstName: firstName,
       lastName: lastName
     }).pipe(
-      tap(tokens => this.#authRepository.storeTokens(tokens))
+      tap({
+        next: tokens => this.#authRepository.storeTokens(tokens),
+        error: error => console.error('Failed to register user', error)
+      })
     );
   }
 }

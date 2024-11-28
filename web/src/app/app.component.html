@@ -2,5 +2,6 @@
 <button (click)="onRegister()">Register</button>
 @if (registrationResult$ | async) {
     <p>Register succesful</p>
+} @else {
+    <p>Register failed</p>
 }
-

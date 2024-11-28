@@ -21,7 +21,6 @@ export class AppComponent {
   registrationResult$: Observable<TokensModel> | undefined;
 
   onRegister(): void {
-    console.log("Registering user");
     this.registrationResult$ = this.#authMediator.register('email', 'password', 'firstName', 'lastName');
   }
 }
