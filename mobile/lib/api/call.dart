@@ -16,50 +16,68 @@ Future<CallResponse<R>?> call<T, R>({
 
   try {
     final uri = Uri.parse('${Config.apiUrl}$endpoint');
-    final headers = {
-      'Content-Type': 'application/json',
-      if (bearerToken != null) 'Authorization': 'Bearer $bearerToken',
-    };
+    final headers = _buildHeaders(bearerToken);
 
-    http.Response response;
-    switch (method.toUpperCase()) {
-      case 'POST':
-        response = await httpClient.post(
-          uri,
-          headers: headers,
-          body: body != null ? jsonEncode(body) : null,
-        );
-        break;
-      case 'PUT':
-        response = await httpClient.put(
-          uri,
-          headers: headers,
-          body: body != null ? jsonEncode(body) : null,
-        );
-        break;
-      case 'DELETE':
-        response = await httpClient.delete(
-          uri,
-          headers: headers,
-          body: body != null ? jsonEncode(body) : null,
-        );
-        break;
-      case 'GET':
-        response = await httpClient.get(uri, headers: headers);
-        break;
-      default:
-        throw Exception('Invalid method');
-    }
+    final response = await _makeRequest(
+      httpClient: httpClient,
+      method: method,
+      uri: uri,
+      headers: headers,
+      body: body,
+    );
 
-    final json = jsonDecode(response.body);
-
+    final data = _parseResponse<R>(response);
     return CallResponse<R>(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
-      data: json as R?,
+      data: data,
     );
   } catch (e) {
-    print('Error in Call Function: $e');
-    return null;
+    throw Exception('Error making request: $e');
+  } finally {
+    httpClient.close();
+  }
+}
+
+Map<String, String> _buildHeaders(String? bearerToken) {
+  return {
+    'Content-Type': 'application/json',
+    if (bearerToken != null) 'Authorization': 'Bearer $bearerToken',
+  };
+}
+
+Future<http.Response> _makeRequest<T>({
+  required http.Client httpClient,
+  required String method,
+  required Uri uri,
+  required Map<String, String> headers,
+  T? body,
+}) async {
+  final encodedBody = body != null ? jsonEncode(body) : null;
+
+  switch (method.toUpperCase()) {
+    case 'POST':
+      return httpClient.post(uri, headers: headers, body: encodedBody);
+    case 'PUT':
+      return httpClient.put(uri, headers: headers, body: encodedBody);
+    case 'DELETE':
+      return httpClient.delete(uri, headers: headers, body: encodedBody);
+    case 'GET':
+      return httpClient.get(uri, headers: headers);
+    default:
+      throw Exception('Invalid HTTP method: $method');
+  }
+}
+
+R? _parseResponse<R>(http.Response response) {
+  try {
+    final json = jsonDecode(response.body);
+    if (json is R) {
+      return json;
+    } else {
+      throw Exception('Invalid response type');
+    }
+  } catch (e) {
+    throw Exception('Error parsing response: $e');
   }
 }
