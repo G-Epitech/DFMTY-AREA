@@ -1,5 +1,5 @@
-using Zeus.Api.Domain.Common.Models;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.UserAggregate;
 

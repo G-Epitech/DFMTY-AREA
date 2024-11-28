@@ -1,4 +1,4 @@
-namespace Zeus.Api.Domain.Common.Models;
+namespace Zeus.Common.Domain.Models;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {

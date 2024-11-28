@@ -8,16 +8,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Zeus.Api.Domain\Zeus.Api.Domain.csproj" />
+      <ProjectReference Include="..\Zeus.Common.Application\Zeus.Common.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="ErrorOr" Version="2.0.1" />
+      <PackageReference Include="FluentValidation" Version="11.11.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+      <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-      <PackageReference Include="Mediator.Abstractions" Version="2.1.7" />
-      <PackageReference Include="Mediator.SourceGenerator" Version="2.1.7">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
     </ItemGroup>

@@ -1,4 +1,5 @@
-using Zeus.Api.Domain.Common.Models;
+
+using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Authentication.ValueObjects;
 

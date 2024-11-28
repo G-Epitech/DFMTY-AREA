@@ -23,6 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Infrastructure", "Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj", "{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Domain", "Zeus.Common.Domain\Zeus.Common.Domain.csproj", "{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Application", "Zeus.Common.Application\Zeus.Common.Application.csproj", "{195C4E51-228D-40ED-AF8F-C9722A251B98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +46,8 @@ Global
 		{59FB6AD0-6D97-4C62-8BD1-C75B5C2F0307} = {19DBA0AD-5D78-4300-BB8D-EFC0DFEF0CE8}
 		{97F913A2-5D60-4B86-BF62-3C5F3A21661F} = {19DBA0AD-5D78-4300-BB8D-EFC0DFEF0CE8}
 		{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1} = {19DBA0AD-5D78-4300-BB8D-EFC0DFEF0CE8}
+		{407E2CD0-F2B5-463F-B19A-B0E2CB874F96} = {4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}
+		{195C4E51-228D-40ED-AF8F-C9722A251B98} = {4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -74,5 +82,13 @@ Global
 		{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195C4E51-228D-40ED-AF8F-C9722A251B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195C4E51-228D-40ED-AF8F-C9722A251B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195C4E51-228D-40ED-AF8F-C9722A251B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195C4E51-228D-40ED-AF8F-C9722A251B98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
