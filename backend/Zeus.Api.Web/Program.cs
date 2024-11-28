@@ -1,4 +1,11 @@
+using Zeus.Api.Application;
+using Zeus.Api.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
