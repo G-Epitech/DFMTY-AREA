@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 using MediatR;
 
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Common.Application.Behaviors;
 
-namespace Zeus.Api.Application;
+namespace Zeus.Daemon.Application;
 
 public static class DependencyInjection
 {

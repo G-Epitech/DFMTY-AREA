@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Common.Interfaces.Services;
-using Zeus.Api.Domain.Common.ValueObjects.Authentication;
+using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Authentication;

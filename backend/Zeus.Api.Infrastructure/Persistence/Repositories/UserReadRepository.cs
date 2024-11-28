@@ -1,4 +1,4 @@
-﻿using Zeus.Api.Application.Common.Interfaces.Repositories;
+﻿using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.UserAggregate;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 

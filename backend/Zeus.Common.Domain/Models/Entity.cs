@@ -1,4 +1,4 @@
-namespace Zeus.Api.Domain.Common.Models;
+namespace Zeus.Common.Domain.Models;
 
 public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>
     where TId : notnull

@@ -1,6 +1,4 @@
-using Zeus.Api.Domain.Authentication.ValueObjects;
-
-namespace Zeus.Api.Domain.Common.ValueObjects.Authentication;
+namespace Zeus.Api.Domain.Authentication.ValueObjects;
 
 public sealed class RefreshToken : Token
 {

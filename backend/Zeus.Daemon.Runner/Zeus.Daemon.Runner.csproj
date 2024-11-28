@@ -17,4 +17,9 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj" />
+      <ProjectReference Include="..\Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj" />
+    </ItemGroup>
 </Project>
