@@ -7,7 +7,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Zeus.sln", "Zeus.sln.DotSettings.user", "./"]
+COPY ["Zeus.sln", "./"]
 COPY ["Zeus.Api.Application/Zeus.Api.Application.csproj", "Zeus.Api.Application/"]
 COPY ["Zeus.Api.Domain/Zeus.Api.Domain.csproj", "Zeus.Api.Domain/"]
 COPY ["Zeus.Api.Infrastructure/Zeus.Api.Infrastructure.csproj", "Zeus.Api.Infrastructure/"]
