@@ -9,10 +9,9 @@ Future<CallResponse<R>?> call<T, R>({
   required String endpoint,
   T? body,
   String? bearerToken,
+  http.Client? client,
 }) async {
-  if (Config.apiUrl.isEmpty) {
-    throw Exception('API_URL is not defined in config file');
-  }
+  final http.Client httpClient = client ?? http.Client();
 
   try {
     final uri = Uri.parse('${Config.apiUrl}$endpoint');
@@ -24,20 +23,31 @@ Future<CallResponse<R>?> call<T, R>({
     http.Response response;
     switch (method.toUpperCase()) {
       case 'POST':
-        response = await http.post(uri,
-            headers: headers, body: body != null ? jsonEncode(body) : null);
+        response = await httpClient.post(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
         break;
       case 'PUT':
-        response = await http.put(uri,
-            headers: headers, body: body != null ? jsonEncode(body) : null);
+        response = await httpClient.put(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
         break;
       case 'DELETE':
-        response = await http.delete(uri,
-            headers: headers, body: body != null ? jsonEncode(body) : null);
+        response = await httpClient.delete(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
         break;
       case 'GET':
+        response = await httpClient.get(uri, headers: headers);
+        break;
       default:
-        response = await http.get(uri, headers: headers);
+        throw Exception('Invalid method');
     }
 
     final json = jsonDecode(response.body);
@@ -48,7 +58,7 @@ Future<CallResponse<R>?> call<T, R>({
       data: json as R?,
     );
   } catch (e) {
-    print('Error: $e');
+    print('Error in Call Function: $e');
     return null;
   }
 }
