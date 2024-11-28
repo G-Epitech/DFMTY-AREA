@@ -1,0 +1,9 @@
+services:
+  zeus-api-web:
+    image: zeus-api-web-image
+    container_name: zeus-api-web-container
+    build:
+        context: backend/
+        dockerfile: Zeus.Api.Web/Dockerfile
+    ports:
+      - "5000:8080"
