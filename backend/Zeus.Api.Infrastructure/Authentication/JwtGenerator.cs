@@ -23,7 +23,7 @@ public class JwtGenerator : IJwtGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
-    private string GenerateToken(User user, string type)
+    private string GenerateToken(User user, string type, int expireMinutes)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -41,7 +41,7 @@ public class JwtGenerator : IJwtGenerator
         var securityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
-            expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+            expires: _dateTimeProvider.UtcNow.AddMinutes(expireMinutes),
             claims: claims,
             signingCredentials: signingCredentials);
 
@@ -50,11 +50,11 @@ public class JwtGenerator : IJwtGenerator
 
     public AccessToken GenerateAccessToken(User user)
     {
-        return new AccessToken(GenerateToken(user, AccessToken.Type));
+        return new AccessToken(GenerateToken(user, AccessToken.Type, _jwtSettings.AccessTokenExpiryMinutes));
     }
 
     public RefreshToken GenerateRefreshToken(User user)
     {
-        return new RefreshToken(GenerateToken(user, RefreshToken.Type));
+        return new RefreshToken(GenerateToken(user, RefreshToken.Type, _jwtSettings.RefreshTokenExpiryMinutes));
     }
 }

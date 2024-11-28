@@ -1,12 +1,12 @@
 using Zeus.Api.Domain.Common.Models;
 
-namespace Zeus.Api.Domain.Common.ValueObjects.Authentication;
+namespace Zeus.Api.Domain.Authentication.ValueObjects;
 
-public class Token : ValueObject
+public abstract class Token : ValueObject
 {
     public string Value { get; }
-    
-    public Token(string token)
+
+    protected Token(string token)
     {
         Value = token;
     }
