@@ -28,15 +28,15 @@ flutter:
   fonts:
     - family: Mada
       fonts:
-        - asset: fonts/Mada/Mada-Bold.ttf
+        - asset: assets/fonts/Mada/Mada-Bold.ttf
           weight: 700
-        - asset: fonts/Mada/Mada-ExtraBold.ttf
+        - asset: assets/fonts/Mada/Mada-ExtraBold.ttf
           weight: 800
 
     - family: Onest
       fonts:
-        - asset: fonts/Onest/Onest-Regular.ttf
-        - asset: fonts/Onest/Onest-Medium.ttf
+        - asset: assets/fonts/Onest/Onest-Regular.ttf
+        - asset: assets/fonts/Onest/Onest-Medium.ttf
           weight: 500
-        - asset: fonts/Onest/Onest-SemiBold.ttf
+        - asset: assets/fonts/Onest/Onest-SemiBold.ttf
           weight: 600
