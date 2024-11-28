@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
 import 'package:triggo/constants/config/api.dart';
 
@@ -53,7 +54,7 @@ Future<CallResponse<R>?> call<T, R>({
     final json = jsonDecode(response.body);
 
     return CallResponse<R>(
-      statusCode: response.statusCode,
+      statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
       data: json as R?,
     );

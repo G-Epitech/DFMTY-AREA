@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:triggo/api/call.dart';
+import 'package:triggo/api/codes.dart';
 
 import 'call.test.mocks.dart';
 import 'mock/init.mock.dart';
@@ -26,7 +27,7 @@ void apiTests() {
       );
 
       expect(response, isNotNull);
-      expect(response!.statusCode, equals(200));
+      expect(response!.statusCode, equals(Codes.ok));
       expect(response.data['token'], equals('dummy-token'));
     });
 
@@ -40,7 +41,7 @@ void apiTests() {
       );
 
       expect(response, isNotNull);
-      expect(response!.statusCode, equals(401));
+      expect(response!.statusCode, equals(Codes.unauthorized));
       expect(response.data['error'], equals('Invalid credentials'));
     });
   });

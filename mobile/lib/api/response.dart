@@ -1,5 +1,7 @@
+import 'package:triggo/api/codes.dart';
+
 class CallResponse<T> {
-  final int statusCode;
+  final Codes statusCode;
   final String message;
   final T? data;
 
