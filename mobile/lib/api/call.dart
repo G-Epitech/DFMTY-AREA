@@ -5,7 +5,7 @@ import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
 import 'package:triggo/env.dart';
 
-Future<CallResponse<R>?> call<T, R>({
+Future<Response<R>> call<T, R>({
   required String method,
   required String endpoint,
   T? body,
@@ -27,7 +27,7 @@ Future<CallResponse<R>?> call<T, R>({
     );
 
     final data = _parseResponse<R>(response);
-    return CallResponse<R>(
+    return Response<R>(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
       data: data,
