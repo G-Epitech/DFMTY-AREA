@@ -22,12 +22,28 @@ class BadRequestException extends ApiException {
       : super(message, "Bad Request Exception");
 }
 
-class InvalidInputException extends ApiException {
-  InvalidInputException([String? message])
-      : super(message, "Invalid input Exception Exception");
+class InternalServerErrorException extends ApiException {
+  InternalServerErrorException([String? message])
+      : super(message, "Internal Server Error Exception");
 }
 
 class UnauthorizedException extends ApiException {
   UnauthorizedException([String? message])
       : super(message, "Unauthorized Exception");
+}
+
+class NotFoundException extends ApiException {
+  NotFoundException([String? message]) : super(message, "Not Found Exception");
+}
+
+class ForbiddenException extends ApiException {
+  ForbiddenException([String? message]) : super(message, "Forbidden Exception");
+}
+
+class ConflictException extends ApiException {
+  ConflictException([String? message]) : super(message, "Conflict Exception");
+}
+
+class UnknownException extends ApiException {
+  UnknownException([String? message]) : super(message, "Unknown Exception");
 }

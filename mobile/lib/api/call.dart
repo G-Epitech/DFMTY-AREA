@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
+import 'package:triggo/api/utils/dto.abstract.dart';
 import 'package:triggo/env.dart';
 
-Future<Response<R>> call<T, R>({
+Future<Response<dynamic>> call<T extends ToJson>({
   required String method,
   required String endpoint,
   T? body,
@@ -26,14 +27,15 @@ Future<Response<R>> call<T, R>({
       body: body,
     );
 
-    final data = _parseResponse<R>(response);
-    return Response<R>(
+    final responseJson = _parseResponse(response);
+    return Response(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
-      data: data,
+      data: responseJson['data'],
+      errors: _parseErrors(responseJson),
     );
   } catch (e) {
-    throw Exception('Error making request: $e');
+    rethrow;
   } finally {
     httpClient.close();
   }
@@ -46,14 +48,14 @@ Map<String, String> _buildHeaders(String? bearerToken) {
   };
 }
 
-Future<http.Response> _makeRequest<T>({
+Future<http.Response> _makeRequest<T extends ToJson>({
   required http.Client httpClient,
   required String method,
   required Uri uri,
   required Map<String, String> headers,
   T? body,
 }) async {
-  final encodedBody = body != null ? jsonEncode(body) : null;
+  final encodedBody = body != null ? jsonEncode(body.toJson()) : null;
   final requestMethods = {
     'POST': httpClient.post,
     'PUT': httpClient.put,
@@ -65,15 +67,18 @@ Future<http.Response> _makeRequest<T>({
   return requestMethods[method]!(uri, headers: headers, body: encodedBody);
 }
 
-R? _parseResponse<R>(http.Response response) {
+dynamic _parseResponse(http.Response response) {
   try {
-    final json = jsonDecode(response.body);
-    if (json is R) {
-      return json;
-    } else {
-      throw Exception('Invalid response type');
-    }
+    return jsonDecode(response.body);
   } catch (e) {
     throw Exception('Error parsing response: $e');
   }
+}
+
+List<String>? _parseErrors(Map<String, dynamic> data) {
+  if (data.containsKey('errors')) {
+    return List<String>.from(data['errors']);
+  }
+
+  return null;
 }
