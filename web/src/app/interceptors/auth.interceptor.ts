@@ -8,15 +8,18 @@ import {
 import {catchError, Observable, throwError} from 'rxjs';
 import {inject} from '@angular/core';
 import {AuthMediator} from '@mediators/auth.mediator';
+import {Router} from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const authMediator = inject(AuthMediator);
+  const router = inject(Router);
 
   if (req.url.includes('auth')) {
     return next(req);
   }
   const accessToken = authMediator.getAccessToken();
   if (!accessToken) {
+    void router.navigate(['login']);
     return next(req);
   }
   const request = attachAuthHeaders(req, accessToken);

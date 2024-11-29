@@ -5,16 +5,16 @@ import {Observable} from 'rxjs';
 import {TokensModel} from '@models/tokens.model';
 
 @Component({
-  selector: 'tr-login',
+  selector: 'tr-register',
   imports: [
     AsyncPipe
   ],
-  templateUrl: './login.page.html',
+  templateUrl: './register.page.html',
   standalone: true,
-  styleUrl: './login.page.scss',
+  styleUrl: './register.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginPage {
+export class RegisterPage {
   readonly #authMediator = inject(AuthMediator);
   registrationResult$: Observable<TokensModel> | undefined;
 

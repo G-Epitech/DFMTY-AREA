@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {AuthRepository} from '@repositories/auth';
 import {Observable, tap} from 'rxjs';
 import {TokensModel} from '@models/tokens.model';

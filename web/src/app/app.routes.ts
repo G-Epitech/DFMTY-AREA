@@ -1,12 +1,17 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/home/home.page').then(m => m.HomePage)
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
   {
-    path: 'login',
-    loadComponent: () => import('./features/login/login.page').then(m => m.LoginPage)
+    path: 'home',
+    loadComponent: () => import('@features/home/home.page').then(m => m.HomePage)
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('@features/authentication/register/register.page').then(m => m.RegisterPage)
   }
 ];
