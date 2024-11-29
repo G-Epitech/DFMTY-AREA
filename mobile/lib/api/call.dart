@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/api/utils/dto.abstract.dart';
 import 'package:triggo/env.dart';
+import 'package:triggo/utils/json.dart';
 
-Future<Response<dynamic>> call<T extends ToJson>({
+Future<Response<dynamic>> call<T extends Json>({
   required String method,
   required String endpoint,
   T? body,
@@ -48,7 +48,7 @@ Map<String, String> _buildHeaders(String? bearerToken) {
   };
 }
 
-Future<http.Response> _makeRequest<T extends ToJson>({
+Future<http.Response> _makeRequest<T extends Json>({
   required http.Client httpClient,
   required String method,
   required Uri uri,

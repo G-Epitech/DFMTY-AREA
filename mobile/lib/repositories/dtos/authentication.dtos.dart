@@ -1,87 +1,97 @@
-import 'package:triggo/api/utils/dto.abstract.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:triggo/utils/json.dart';
 
-class InLoginDTO implements ToJson {
+part 'authentication.dtos.g.dart';
+
+@JsonSerializable()
+class InLoginDTO implements Json {
   final String email;
   final String password;
 
   InLoginDTO({required this.email, required this.password});
 
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'password': password,
-    };
-  }
+  factory InLoginDTO.fromJson(Map<String, dynamic> json) =>
+      _$InLoginDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$InLoginDTOToJson(this);
 }
 
-class OutLoginDTO implements FromJson {
+@JsonSerializable()
+class OutLoginDTO implements Json {
   final String token;
   final String refreshToken;
 
   OutLoginDTO({required this.token, required this.refreshToken});
 
-  factory OutLoginDTO.fromJson(Map<String, dynamic> json) {
-    return OutLoginDTO(
-      token: json['token'],
-      refreshToken: json['refreshToken'],
-    );
-  }
+  @override
+  factory OutLoginDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutLoginDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutLoginDTOToJson(this);
 }
 
-class InRefreshTokenDTO implements ToJson {
+@JsonSerializable()
+class InRefreshTokenDTO implements Json {
   final String refreshToken;
 
   InRefreshTokenDTO({required this.refreshToken});
 
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'refreshToken': refreshToken,
-    };
-  }
+  factory InRefreshTokenDTO.fromJson(Map<String, dynamic> json) =>
+      _$InRefreshTokenDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$InRefreshTokenDTOToJson(this);
 }
 
-class OutRefreshTokenDTO implements FromJson {
+@JsonSerializable()
+class OutRefreshTokenDTO implements Json {
   final String token;
 
   OutRefreshTokenDTO({required this.token});
 
-  factory OutRefreshTokenDTO.fromJson(Map<String, dynamic> json) {
-    return OutRefreshTokenDTO(
-      token: json['token'],
-    );
-  }
+  @override
+  factory OutRefreshTokenDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutRefreshTokenDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutRefreshTokenDTOToJson(this);
 }
 
-class InRegisterDTO implements ToJson {
+@JsonSerializable()
+class InRegisterDTO implements Json {
   final String email;
   final String password;
   final String name;
 
-  InRegisterDTO(
-      {required this.email, required this.password, required this.name});
+  InRegisterDTO({
+    required this.email,
+    required this.password,
+    required this.name,
+  });
 
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'password': password,
-      'name': name,
-    };
-  }
+  factory InRegisterDTO.fromJson(Map<String, dynamic> json) =>
+      _$InRegisterDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$InRegisterDTOToJson(this);
 }
 
-class OutRegisterDTO implements FromJson {
+@JsonSerializable()
+class OutRegisterDTO implements Json {
   final String token;
   final String refreshToken;
 
   OutRegisterDTO({required this.token, required this.refreshToken});
 
-  factory OutRegisterDTO.fromJson(Map<String, dynamic> json) {
-    return OutRegisterDTO(
-      token: json['token'],
-      refreshToken: json['refreshToken'],
-    );
-  }
+  @override
+  factory OutRegisterDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutRegisterDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutRegisterDTOToJson(this);
 }
