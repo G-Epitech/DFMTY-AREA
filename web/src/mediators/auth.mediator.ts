@@ -2,6 +2,7 @@ import {inject, Injectable, signal} from '@angular/core';
 import {AuthRepository} from '@repositories/auth';
 import {Observable, tap} from 'rxjs';
 import {TokensModel} from '@models/tokens.model';
+import {AuthUserModel} from '@models/auth-user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class AuthMediator {
         error: error => console.error('Failed to register user', error)
       })
     );
+  }
+
+  me(): Observable<AuthUserModel> {
+    return this.#authRepository.me();
   }
 }

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AuthRegisterRequestDTO, AuthRegisterResponseDTO} from './dto';
 import {map, Observable, of} from 'rxjs';
 import {TokensModel} from '@models/tokens.model';
+import {AuthUserModel} from '@models/auth-user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +44,14 @@ export class AuthRepository {
         response.refreshToken
       ))
     );
+  }
+
+  me(): Observable<AuthUserModel> {
+    return of(new AuthUserModel(
+      '1',
+      'email',
+      'first-name',
+      'last-name'
+    ));
   }
 }
