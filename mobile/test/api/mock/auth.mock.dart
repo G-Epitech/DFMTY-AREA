@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
-import 'package:triggo/constants/config/api.dart';
+import 'package:triggo/env.dart';
 
 import '../call.test.mocks.dart';
 
 void authMock(MockClient mock) {
   when(mock.post(
-    Uri.parse('${Config.apiUrl}/auth/login'),
+    Uri.parse('${Env.apiUrl}/auth/login'),
     headers: anyNamed('headers'),
     body: anyNamed('body'),
   )).thenAnswer((invocation) async {

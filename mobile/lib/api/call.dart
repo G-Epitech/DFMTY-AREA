@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/constants/config/api.dart';
+import 'package:triggo/env.dart';
 
 Future<CallResponse<R>?> call<T, R>({
   required String method,
@@ -15,7 +15,7 @@ Future<CallResponse<R>?> call<T, R>({
   final http.Client httpClient = client ?? http.Client();
 
   try {
-    final uri = Uri.parse('${Config.apiUrl}$endpoint');
+    final uri = Uri.parse('${Env.apiUrl}$endpoint');
     final headers = _buildHeaders(bearerToken);
 
     final response = await _makeRequest(
@@ -54,19 +54,15 @@ Future<http.Response> _makeRequest<T>({
   T? body,
 }) async {
   final encodedBody = body != null ? jsonEncode(body) : null;
+  final requestMethods = {
+    'POST': httpClient.post,
+    'PUT': httpClient.put,
+    'DELETE': httpClient.delete,
+    'GET': (Uri uri, {Map<String, String>? headers, String? body}) =>
+        httpClient.get(uri, headers: headers),
+  };
 
-  switch (method.toUpperCase()) {
-    case 'POST':
-      return httpClient.post(uri, headers: headers, body: encodedBody);
-    case 'PUT':
-      return httpClient.put(uri, headers: headers, body: encodedBody);
-    case 'DELETE':
-      return httpClient.delete(uri, headers: headers, body: encodedBody);
-    case 'GET':
-      return httpClient.get(uri, headers: headers);
-    default:
-      throw Exception('Invalid HTTP method: $method');
-  }
+  return requestMethods[method]!(uri, headers: headers, body: encodedBody);
 }
 
 R? _parseResponse<R>(http.Response response) {
