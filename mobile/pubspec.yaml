@@ -22,10 +22,18 @@ dev_dependencies:
   json_serializable: ^6.9.0
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^4.0.0
+  flutter_svg: ^1.0.3
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/application_logo.png"
 
 flutter:
+  assets:
+    - assets/icon/application_logo.svg
 
   uses-material-design: true
 
