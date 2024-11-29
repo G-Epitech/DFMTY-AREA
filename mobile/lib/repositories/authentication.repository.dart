@@ -19,22 +19,24 @@ class AuthenticationRepository {
     return Response<OutLoginDTO>(
       statusCode: response.statusCode,
       message: response.message,
+      headers: response.headers,
       data: response.data != null ? OutLoginDTO.fromJson(response.data) : null,
       errors: response.errors,
     );
   }
 
   Future<Response<OutRefreshTokenDTO>> refreshToken(String refreshToken) async {
-    final response = await call<InRefreshTokenDTO>(
-      method: 'POST',
+    final response = await call(
+      method: 'GET',
       endpoint: '/auth/refresh',
-      body: InRefreshTokenDTO(refreshToken: refreshToken),
+      headers: {'Authorization': 'Bearer $refreshToken'},
       client: client,
     );
 
     return Response<OutRefreshTokenDTO>(
       statusCode: response.statusCode,
       message: response.message,
+      headers: response.headers,
       data: response.data != null
           ? OutRefreshTokenDTO.fromJson(response.data)
           : null,
@@ -43,17 +45,23 @@ class AuthenticationRepository {
   }
 
   Future<Response<OutRegisterDTO>> register(
-      String email, String password, String name) async {
+      String email, String password, String firstName, String lastName) async {
     final response = await call<InRegisterDTO>(
       method: 'POST',
       endpoint: '/auth/register',
-      body: InRegisterDTO(email: email, password: password, name: name),
+      body: InRegisterDTO(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      ),
       client: client,
     );
 
     return Response<OutRegisterDTO>(
       statusCode: response.statusCode,
       message: response.message,
+      headers: response.headers,
       data:
           response.data != null ? OutRegisterDTO.fromJson(response.data) : null,
       errors: response.errors,

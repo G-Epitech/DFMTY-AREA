@@ -44,7 +44,7 @@ void _loginMock(MockClient mock) {
       return http.Response(
         jsonEncode({
           'data': {
-            'token': 'dummy-token',
+            'accessToken': 'dummy-access-token',
             'refreshToken': 'dummy-refresh-token'
           }
         }),
@@ -62,10 +62,9 @@ void _loginMock(MockClient mock) {
 }
 
 void _refreshTokenMock(MockClient mock) {
-  when(mock.post(
+  when(mock.get(
     Uri.parse('${Env.apiUrl}/auth/refresh'),
     headers: anyNamed('headers'),
-    body: anyNamed('body'),
   )).thenAnswer((invocation) async {
     if (invocation.namedArguments[const Symbol('headers')] == null) {
       return http.Response(
@@ -75,25 +74,17 @@ void _refreshTokenMock(MockClient mock) {
         400,
       );
     }
-    if (invocation.namedArguments[const Symbol('body')] == null) {
-      return http.Response(
-        jsonEncode({
-          'errors': ['No body']
-        }),
-        400,
-      );
-    }
 
-    final body = invocation.namedArguments[const Symbol('body')] as String;
+    final headers = invocation.namedArguments[const Symbol('headers')]
+        as Map<String, String>;
+    final lastToken = headers['Authorization']!.split(' ')[1];
 
-    final Map<String, dynamic> data = jsonDecode(body);
-
-    if (data['refreshToken'] == 'dummy-refresh-token') {
+    if (lastToken == 'dummy-refresh-token') {
       return http.Response(
         jsonEncode({
           'data': {
-            'token': 'dummy-token',
-            'refreshToken': 'dummy-refresh-token'
+            'accessToken': 'dummy-access-token',
+            'refreshToken': 'dummy-refresh-token',
           }
         }),
         200,
@@ -101,7 +92,7 @@ void _refreshTokenMock(MockClient mock) {
     } else {
       return http.Response(
         jsonEncode({
-          'errors': ['Invalid refresh token']
+          'errors': ['Invalid token']
         }),
         401,
       );
@@ -135,7 +126,7 @@ void _registerMock(MockClient mock) {
     return http.Response(
       jsonEncode({
         'data': {
-          'token': 'dummy-token',
+          'accessToken': 'dummy-access-token',
           'refreshToken': 'dummy-refresh-token',
         }
       }),

@@ -30,7 +30,7 @@ void apiTests() {
 
       expect(response, isNotNull);
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data['token'], equals('dummy-token'));
+      expect(response.data['accessToken'], equals('dummy-access-token'));
     });
 
     test('Failed login request with invalid credentials', () async {

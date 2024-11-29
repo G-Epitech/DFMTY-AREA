@@ -23,7 +23,7 @@ void authRepositoryTests() {
       final response = await repository.login(email, password);
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.token, 'dummy-token');
+      expect(response.data?.accessToken, 'dummy-access-token');
       expect(response.data?.refreshToken, 'dummy-refresh-token');
     });
 
@@ -43,19 +43,21 @@ void authRepositoryTests() {
       final response = await repository.refreshToken(refreshToken);
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.token, 'dummy-token');
+      expect(response.data?.accessToken, 'dummy-access-token');
     });
 
     test('register success', () async {
       const email = 'newuser@example.com';
       const password = 'password123';
-      const name = 'New User';
+      const firstName = 'New';
+      const lastName = 'User';
 
-      final response = await repository.register(email, password, name);
+      final response =
+          await repository.register(email, password, firstName, lastName);
 
       expect(response.statusCode, equals(Codes.created));
       expect(response.data, isNotNull);
-      expect(response.data?.token, isNotNull);
+      expect(response.data?.accessToken, isNotNull);
       expect(response.data?.refreshToken, isNotNull);
     });
   });

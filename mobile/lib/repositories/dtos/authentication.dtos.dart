@@ -20,10 +20,10 @@ class InLoginDTO implements Json {
 
 @JsonSerializable()
 class OutLoginDTO implements Json {
-  final String token;
+  final String accessToken;
   final String refreshToken;
 
-  OutLoginDTO({required this.token, required this.refreshToken});
+  OutLoginDTO({required this.accessToken, required this.refreshToken});
 
   @override
   factory OutLoginDTO.fromJson(Map<String, dynamic> json) =>
@@ -34,24 +34,11 @@ class OutLoginDTO implements Json {
 }
 
 @JsonSerializable()
-class InRefreshTokenDTO implements Json {
+class OutRefreshTokenDTO implements Json {
+  final String accessToken;
   final String refreshToken;
 
-  InRefreshTokenDTO({required this.refreshToken});
-
-  @override
-  factory InRefreshTokenDTO.fromJson(Map<String, dynamic> json) =>
-      _$InRefreshTokenDTOFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$InRefreshTokenDTOToJson(this);
-}
-
-@JsonSerializable()
-class OutRefreshTokenDTO implements Json {
-  final String token;
-
-  OutRefreshTokenDTO({required this.token});
+  OutRefreshTokenDTO({required this.accessToken, required this.refreshToken});
 
   @override
   factory OutRefreshTokenDTO.fromJson(Map<String, dynamic> json) =>
@@ -65,12 +52,14 @@ class OutRefreshTokenDTO implements Json {
 class InRegisterDTO implements Json {
   final String email;
   final String password;
-  final String name;
+  final String firstName;
+  final String lastName;
 
   InRegisterDTO({
     required this.email,
     required this.password,
-    required this.name,
+    required this.firstName,
+    required this.lastName,
   });
 
   @override
@@ -83,10 +72,10 @@ class InRegisterDTO implements Json {
 
 @JsonSerializable()
 class OutRegisterDTO implements Json {
-  final String token;
+  final String accessToken;
   final String refreshToken;
 
-  OutRegisterDTO({required this.token, required this.refreshToken});
+  OutRegisterDTO({required this.accessToken, required this.refreshToken});
 
   @override
   factory OutRegisterDTO.fromJson(Map<String, dynamic> json) =>

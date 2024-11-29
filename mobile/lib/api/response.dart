@@ -5,11 +5,13 @@ class Response<T> {
   final String message;
   final T? data;
   final List<String>? errors;
+  final Map<String, String>? headers;
 
   Response({
     required this.statusCode,
     required this.message,
     this.data,
     this.errors,
+    this.headers,
   });
 }
