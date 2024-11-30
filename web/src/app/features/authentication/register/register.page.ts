@@ -11,10 +11,11 @@ import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-register',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, TrButtonDirective],
   templateUrl: './register.page.html',
   standalone: true,
   styleUrl: './register.page.scss',
