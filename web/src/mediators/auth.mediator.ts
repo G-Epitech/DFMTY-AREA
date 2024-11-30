@@ -3,14 +3,14 @@ import { AuthRepository } from '@repositories/auth';
 import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AuthUserModel } from '@models/auth-user.model';
-import { Router } from '@angular/router';
+import { AppRouter } from '../app/app.router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthMediator {
   readonly #authRepository = inject(AuthRepository);
-  readonly #router = inject(Router);
+  readonly #appRouter = inject(AppRouter);
 
   getTokens(): TokensModel {
     return this.#authRepository.getTokens();
@@ -51,6 +51,6 @@ export class AuthMediator {
 
   logout(): void {
     this.#authRepository.removeTokens();
-    void this.#router.navigate(['/register']);
+    void this.#appRouter.redirectToLogin();
   }
 }

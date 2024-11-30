@@ -25,6 +25,7 @@
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/app/components/*"],
       "@features/*": ["src/app/features/*"],
+      "@app/*": ["src/app/*"]
     }
   },
   "angularCompilerOptions": {
