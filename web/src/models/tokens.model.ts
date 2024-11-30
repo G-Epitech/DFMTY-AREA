@@ -14,9 +14,4 @@ export class TokensModel {
   get refreshToken(): string | null {
     return this.#refreshToken;
   }
-
-  get isAccessTokenValid(): boolean {
-    // TODO: Add more logic to check if the access token is valid once the api is ready
-    return this.#accessToken !== null;
-  }
 }

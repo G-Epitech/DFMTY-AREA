@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthMediator } from '@mediators/auth.mediator';
-import { AuthStore } from '../../store';
+import { AuthStore } from '@app/store';
 
 @Component({
   selector: 'tr-home',
@@ -9,13 +9,14 @@ import { AuthStore } from '../../store';
   styleUrl: './home.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePage {
+export class HomePageComponent {
   readonly #authMediator = inject(AuthMediator);
+  readonly #authStore = inject(AuthStore);
 
-  readonly authStore = inject(AuthStore);
-  readonly user = this.authStore.getUser;
+  readonly user = this.#authStore.getUser;
 
   logout() {
     this.#authMediator.logout();
+    this.#authStore.reset();
   }
 }

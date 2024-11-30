@@ -1,9 +1,9 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthRepository } from '@repositories/auth';
 import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AuthUserModel } from '@models/auth-user.model';
-import { AppRouter } from '../app/app.router';
+import { AppRouter } from '@app/app.router';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +50,7 @@ export class AuthMediator {
   }
 
   logout(): void {
-    this.#authRepository.removeTokens();
+    this.#authRepository.clearTokens();
     void this.#appRouter.redirectToLogin();
   }
 }

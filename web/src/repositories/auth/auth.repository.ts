@@ -37,7 +37,7 @@ export class AuthRepository {
     return localStorage.getItem('refreshToken');
   }
 
-  removeTokens(): void {
+  clearTokens(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }

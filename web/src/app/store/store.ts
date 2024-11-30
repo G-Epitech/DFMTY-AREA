@@ -25,11 +25,17 @@ const initialState: AuthState = {
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed(store => ({
+  withComputed((store, authMediator = inject(AuthMediator)) => ({
     getUser: computed(() => {
       return store.user();
     }),
-    isAuthenticated: computed(() => store.user()),
+    isAuthenticated: computed(() => {
+      return (
+        store.user() !== null &&
+        store.user() !== undefined &&
+        authMediator.getAccessToken() !== null
+      );
+    }),
   })),
   withMethods((store, authMediator = inject(AuthMediator)) => ({
     me: rxMethod<void>(
@@ -39,8 +45,10 @@ export const AuthStore = signalStore(
           return authMediator.me().pipe(
             tapResponse({
               next: user => patchState(store, { user, isLoading: false }),
-              error: error =>
-                patchState(store, { user: null, isLoading: false }),
+              error: error => {
+                console.error('Failed to get user', error);
+                patchState(store, { user: null, isLoading: false });
+              },
             })
           );
         })
