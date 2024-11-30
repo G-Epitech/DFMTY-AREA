@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -25,7 +23,8 @@
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/app/components/*"],
       "@features/*": ["src/app/features/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@triggo-ui/*": ["./libs/triggo-ui/*"]
     }
   },
   "angularCompilerOptions": {
