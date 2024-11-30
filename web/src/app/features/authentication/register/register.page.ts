@@ -15,8 +15,9 @@ import { AppRouter } from '@app/app.router';
 })
 export class RegisterPage {
   readonly #authMediator = inject(AuthMediator);
-  registrationResult$: Observable<TokensModel> | undefined;
   readonly #appRouter = inject(AppRouter);
+
+  registrationResult$: Observable<TokensModel> | undefined;
 
   onRegister(): void {
     this.registrationResult$ = this.#authMediator.register(
