@@ -10,4 +10,20 @@ export class AuthUserModel {
     this.#firstName = firstName;
     this.#lastName = lastName;
   }
+
+  get id(): string {
+    return this.#id;
+  }
+
+  get email(): string {
+    return this.#email;
+  }
+
+  get firstName(): string {
+    return this.#firstName;
+  }
+
+  get lastName(): string {
+    return this.#lastName;
+  }
 }

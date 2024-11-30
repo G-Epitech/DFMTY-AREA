@@ -12,18 +12,16 @@ export class AppService {
   readonly #router = inject(Router);
 
   async appInit(): Promise<void> {
-    console.log('AppService.appInit()');
     const tokens = this.#authMediator.getTokens();
     if (!tokens.accessToken || !tokens.isAccessTokenValid) {
-      console.log('No access token');
       void this.#router.navigate(['/register']);
       return;
     }
     this.#authStore.me();
-    if (!this.#authStore.isAuthenticated()) {
-      void this.#router.navigate(['/register']);
-    } else {
+    if (this.#authStore.isAuthenticated()) {
       void this.#router.navigate(['/home']);
+    } else {
+      void this.#router.navigate(['/register']);
     }
   }
 }

@@ -3,14 +3,17 @@ import {
   HttpEvent,
   HttpHandlerFn,
   HttpInterceptorFn,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
-import {catchError, Observable, throwError} from 'rxjs';
-import {inject} from '@angular/core';
-import {AuthMediator} from '@mediators/auth.mediator';
-import {Router} from '@angular/router';
+import { catchError, Observable, throwError } from 'rxjs';
+import { inject } from '@angular/core';
+import { AuthMediator } from '@mediators/auth.mediator';
+import { Router } from '@angular/router';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
   const authMediator = inject(AuthMediator);
   const router = inject(Router);
 
@@ -19,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   }
   const accessToken = authMediator.getAccessToken();
   if (!accessToken) {
-    void router.navigate(['login']);
+    void router.navigate(['/login']);
     return next(req);
   }
   const request = attachAuthHeaders(req, accessToken);
@@ -34,11 +37,14 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   );
 };
 
-function attachAuthHeaders(req: HttpRequest<unknown>, accessToken: string): HttpRequest<unknown> {
+function attachAuthHeaders(
+  req: HttpRequest<unknown>,
+  accessToken: string
+): HttpRequest<unknown> {
   return req.clone({
     setHeaders: {
-      Authorization: `Bearer ${accessToken}`
-    }
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
 }
 
