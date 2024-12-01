@@ -10,5 +10,10 @@ public static partial class Errors
             code: "Auth.DuplicatedEmail",
             description: "Email already used."
         );
+
+        public static Error InvalidCredentials => Error.Unauthorized(
+            code: "Auth.InvalidCredentials",
+            description: "Invalid credentials."
+        );
     }
 }
