@@ -28,6 +28,7 @@ public class AuthenticationController : ApiController
     }
 
     [HttpPost("register", Name = "Register")]
+    [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status201Created)]
     public Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
@@ -44,6 +45,7 @@ public class AuthenticationController : ApiController
     }
 
     [HttpPost("login", Name = "Login")]
+    [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status200OK)]
     public Task<IActionResult> Login(LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);
