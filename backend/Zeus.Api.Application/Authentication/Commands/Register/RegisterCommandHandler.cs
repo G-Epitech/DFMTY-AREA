@@ -2,7 +2,6 @@ using ErrorOr;
 
 using MediatR;
 
-using Zeus.Api.Application.Authentication.Common;
 using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Authentication;
@@ -10,7 +9,7 @@ using Zeus.Api.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<RegisterCommandResult>>
 {
     private readonly IJwtGenerator _jwtGenerator;
     private readonly IUserReadRepository _userReadRepository;
@@ -24,12 +23,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         _userWriteRepository = userWriteRepository;
     }
 
-    public Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command,
+    public Task<ErrorOr<RegisterCommandResult>> Handle(RegisterCommand command,
         CancellationToken cancellationToken)
     {
         if (_userReadRepository.GetUserByEmail(command.Email) is not null)
         {
-            return Task.FromResult<ErrorOr<AuthenticationResult>>(Errors.Authentication.DuplicatedEmail);
+            return Task.FromResult<ErrorOr<RegisterCommandResult>>(Errors.Authentication.DuplicatedEmail);
         }
 
         var user = User.Create(command.FirstName, command.LastName, command.Email, command.Password);
@@ -38,6 +37,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
         
-        return Task.FromResult<ErrorOr<AuthenticationResult>>(new AuthenticationResult(accessToken, refreshToken));
+        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken, user.Id));
     }
 }

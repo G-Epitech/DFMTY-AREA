@@ -5,6 +5,7 @@ using MapsterMapper;
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
+
 using Zeus.Api.Application.Authentication.Commands.Register;
 using Zeus.Api.Application.Authentication.Queries.Login;
 using Zeus.Api.Web.Contracts.Authentication;
@@ -26,23 +27,28 @@ public class AuthenticationController : ApiController
         _mapper = mapper;
     }
 
-    [HttpPost("register")]
+    [HttpPost("register", Name = "Register")]
     public Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
         var authResult = _mediator.Send(command);
 
         return authResult.Match(
-            result => Created("/", _mapper.Map<AuthenticationResponse>(result)),
+            result =>
+            {
+                var locationUrl = Url.Action("", new { id = result.UserId.Value });
+
+                return Created(locationUrl + result.UserId.Value, _mapper.Map<AuthenticationResponse>(result));
+            },
             Problem);
     }
 
-    [HttpPost("login")]
+    [HttpPost("login", Name = "Login")]
     public Task<IActionResult> Login(LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);
         var authResult = _mediator.Send(command);
-        
+
         return authResult.Match(
             result => Ok(_mapper.Map<AuthenticationResponse>(result)),
             Problem);
