@@ -45,6 +45,20 @@ export class AuthMediator {
       );
   }
 
+  login(email: string, password: string): Observable<TokensModel> {
+    return this.#authRepository
+      .login({
+        email: email,
+        password: password,
+      })
+      .pipe(
+        tap({
+          next: tokens => this.#authRepository.storeTokens(tokens),
+          error: error => console.error('Failed to login user', error),
+        })
+      );
+  }
+
   me(): Observable<AuthUserModel> {
     return this.#authRepository.me();
   }

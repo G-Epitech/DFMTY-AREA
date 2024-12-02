@@ -1,2 +1,6 @@
 <p>login works!</p>
+<button trBtn (click)="onLogin()">Login</button>
 <a href="/register">Create Account</a>
+@if (loginResult$ | async) {
+<p>Succesfully Logged-In</p>
+}
