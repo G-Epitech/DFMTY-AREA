@@ -4,7 +4,7 @@ using Mapster;
 
 using MapsterMapper;
 
-namespace Zeus.Api.Web.Common.Mapping;
+namespace Zeus.Api.Web.Mapping;
 
 public static class DependencyInjection
 {
