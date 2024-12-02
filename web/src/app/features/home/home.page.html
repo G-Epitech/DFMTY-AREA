@@ -2,8 +2,14 @@
   <h2>User Last Name: {{ user()?.lastName }}</h2>
 </div>
 
-<h1>Hello World</h1>
-<h1 style="font-family: Mada, sans-serif">Hello World (Mada Sans Serif)</h1>
-<h1 style="font-family: Onest, sans-serif">Hello World (Onest Sans Serif)</h1>
+<div class="flex flex-col">
+  <h1 class="tr-title-1">Title 1</h1>
+  <h2 class="tr-title-2">Title 2</h2>
+  <p class="tr-subtitle">Subtitle</p>
+  <span class="tr-container-title">Container Title</span>
+  <span class="tr-large">Large</span>
+  <span class="tr-medium">Medium</span>
+  <span class="tr-small">Small</span>
+</div>
 
 <button trBtn (click)="logout()">Logout</button>
