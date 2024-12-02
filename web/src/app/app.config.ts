@@ -1,5 +1,5 @@
 import {
-  ApplicationConfig,
+  ApplicationConfig, enableProdMode,
   inject,
   provideAppInitializer,
   provideZoneChangeDetection,
@@ -10,6 +10,11 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
+import { environment } from '../environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +24,9 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       void inject(AppService).appInit();
     }),
+    {
+      provide: 'BASE_URL',
+      useValue: environment.apiUrl,
+    },
   ],
 };

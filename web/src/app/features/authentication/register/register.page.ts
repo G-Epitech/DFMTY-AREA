@@ -39,7 +39,7 @@ export class RegisterPageComponent {
 
   onRegister(): void {
     this.registrationResult$ = this.#authMediator
-      .register('email', 'password', 'firstName', 'lastName')
+      .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
       .pipe(
         tap({
           next: () => this.#store.me(),

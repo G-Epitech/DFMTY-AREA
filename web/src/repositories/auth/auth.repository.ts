@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Inject, Injectable } from '@angular/core';
 import { AuthRegisterRequestDTO, AuthRegisterResponseDTO } from './dto';
 import { map, Observable, of } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AuthUserModel } from '@models/auth-user.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthRepository {
-  readonly #authTokens: AuthRegisterResponseDTO = {
-    accessToken: 'access-token',
-    refreshToken: 'refresh-token',
-  };
+  readonly #httpClient = inject(HttpClient);
+
+  constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
   storeTokens(tokens: TokensModel): void {
     if (tokens.accessToken) {
@@ -43,10 +43,12 @@ export class AuthRepository {
   }
 
   register(dto: AuthRegisterRequestDTO): Observable<TokensModel> {
-    return of(this.#authTokens).pipe(
-      map(
-        response => new TokensModel(response.accessToken, response.refreshToken)
-      )
+    const uri = `${this.baseUrl}/auth/register`;
+    const response = this.#httpClient.post<AuthRegisterResponseDTO>(uri, dto);
+    return response.pipe(
+      map(res => {
+        return new TokensModel(res.accessToken, res.refreshToken);
+      })
     );
   }
 
