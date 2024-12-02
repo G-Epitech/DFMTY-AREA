@@ -5,8 +5,8 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-using Zeus.Api.Application.Common.Interfaces.Authentication;
-using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Authentication;
+using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.UserAggregate;
 

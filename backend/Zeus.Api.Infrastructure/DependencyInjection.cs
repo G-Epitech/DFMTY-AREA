@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.Api.Application.Common.Interfaces.Authentication;
-using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Infrastructure.Authentication;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;

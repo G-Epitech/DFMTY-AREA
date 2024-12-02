@@ -1,9 +1,9 @@
-﻿using Zeus.Api.Domain.Common.Integrations.Enums;
-using Zeus.Api.Domain.IntegrationAggregate.ValueObjects;
+﻿using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Domain.Models;
 
-namespace Zeus.Api.Domain.IntegrationAggregate;
+namespace Zeus.Api.Domain.Integrations.IntegrationAggregate;
 
 public abstract class Integration : AggregateRoot<IntegrationId>
 {

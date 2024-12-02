@@ -1,7 +1,7 @@
 using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.UserAggregate;
 
-namespace Zeus.Api.Application.Common.Interfaces.Authentication;
+namespace Zeus.Api.Application.Interfaces.Authentication;
 
 public interface IJwtGenerator
 {

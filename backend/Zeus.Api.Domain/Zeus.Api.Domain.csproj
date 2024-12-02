@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Integrations\" />
+      <Folder Include="Common\" />
     </ItemGroup>
 
 </Project>

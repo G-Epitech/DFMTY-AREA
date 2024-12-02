@@ -1,9 +1,9 @@
-﻿using Zeus.Api.Domain.Common.Integrations.Enums;
-using Zeus.Api.Domain.IntegrationAggregate.Enums;
-using Zeus.Api.Domain.IntegrationAggregate.ValueObjects;
+﻿using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
+using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Api.Domain.IntegrationAggregate;
+namespace Zeus.Api.Domain.Integrations.IntegrationAggregate;
 
 public sealed class GmailIntegration : Integration
 {

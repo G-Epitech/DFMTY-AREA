@@ -10,8 +10,6 @@ using Zeus.Api.Application.Authentication.Commands.Register;
 using Zeus.Api.Application.Authentication.Queries.Login;
 using Zeus.Api.Web.Contracts.Authentication;
 
-using RegisterRequest = Zeus.Api.Web.Contracts.Authentication.RegisterRequest;
-
 namespace Zeus.Api.Web.Controllers;
 
 [Controller]

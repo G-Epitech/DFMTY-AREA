@@ -1,4 +1,4 @@
-﻿namespace Zeus.Api.Domain.Common.Integrations.Enums;
+﻿namespace Zeus.Api.Domain.Integrations.Enums;
 
 public enum IntegrationType
 {

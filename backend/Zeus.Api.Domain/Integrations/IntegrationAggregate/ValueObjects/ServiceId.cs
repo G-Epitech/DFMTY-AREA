@@ -1,6 +1,6 @@
 ﻿using Zeus.Common.Domain.Models;
 
-namespace Zeus.Api.Domain.IntegrationAggregate.ValueObjects;
+namespace Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
 public sealed class IntegrationId : ValueObject
 {
