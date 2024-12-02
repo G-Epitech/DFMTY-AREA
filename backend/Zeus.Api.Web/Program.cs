@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
         .AddApplication()
         .AddInfrastructure()
         .AddMappings()
+        .AddConfiguration(builder.Configuration)
         .AddAuthentication(builder.Configuration);
 
     builder.Services.AddControllers();

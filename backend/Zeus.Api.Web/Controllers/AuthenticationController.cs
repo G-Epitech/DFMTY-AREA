@@ -1,5 +1,3 @@
-using ErrorOr;
-
 using MapsterMapper;
 
 using MediatR;
@@ -9,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Authentication.Commands.Register;
 using Zeus.Api.Application.Authentication.Queries.Login;
+using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Api.Web.Contracts.Authentication;
-
-using RegisterRequest = Zeus.Api.Web.Contracts.Authentication.RegisterRequest;
 
 namespace Zeus.Api.Web.Controllers;
 
-[Controller]
 [AllowAnonymous]
 [Route("auth")]
 public class AuthenticationController : ApiController
@@ -37,12 +33,8 @@ public class AuthenticationController : ApiController
         var authResult = await _sender.Send(command);
 
         return authResult.Match(
-            result =>
-            {
-                var locationUrl = Url.Action("", new { id = result.UserId.Value });
-
-                return Created(locationUrl + result.UserId.Value, _mapper.Map<AuthenticationResponse>(result));
-            },
+            result => CreatedAtRoute(nameof(UsersController.GetUser), new { userId = result.UserId.Value },
+                _mapper.Map<AuthenticationResponse>(result)),
             Problem);
     }
 
@@ -50,8 +42,8 @@ public class AuthenticationController : ApiController
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var command = _mapper.Map<LoginQuery>(request);
-        var authResult = await _sender.Send(command);
+        var query = _mapper.Map<LoginQuery>(request);
+        var authResult = await _sender.Send(query);
 
         return authResult.Match(
             result => Ok(_mapper.Map<AuthenticationResponse>(result)),

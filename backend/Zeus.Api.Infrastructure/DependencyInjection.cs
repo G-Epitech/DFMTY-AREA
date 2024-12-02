@@ -10,6 +10,7 @@ using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
+using Zeus.Api.Infrastructure.Settings;
 
 namespace Zeus.Api.Infrastructure;
 
@@ -24,6 +25,16 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddConfiguration(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<UserSettings>(configuration.GetSection(UserSettings.SectionName));
+        services.AddSingleton<IUserSettingsProvider, UserSettingsProvider>();
 
         return services;
     }

@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Zeus.Api.Application.Users.Query;
 using Zeus.Api.Infrastructure.Authentication.Context;
+using Zeus.Api.Infrastructure.Settings;
 
 namespace Zeus.Api.Infrastructure.Authentication.Jwt;
 
@@ -38,13 +39,13 @@ public class JwtAuthenticationValidation
             {
                 var sender = context.HttpContext.RequestServices.GetRequiredService<ISender>();
                 var userId = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+                
                 if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var parsedUserId))
                 {
                     context.Fail("Invalid user id");
                     return;
                 }
-
+                
                 var queryResponse = await sender.Send(new GetUserQuery(parsedUserId));
 
                 if (queryResponse.IsError)
