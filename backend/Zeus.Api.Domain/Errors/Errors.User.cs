@@ -1,6 +1,6 @@
 using ErrorOr;
 
-namespace Zeus.Api.Domain.UserAggregate;
+namespace Zeus.Api.Domain.Errors;
 
 public static partial class Errors
 {

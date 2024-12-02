@@ -17,7 +17,7 @@ namespace Zeus.Api.Infrastructure.Authentication.Jwt;
 
 public class JwtAuthenticationValidation
 {
-    public static TokenValidationParameters TokenValidationParameters(JwtSettings settings)
+    public static TokenValidationParameters GetTokenValidationParameters(JwtSettings settings)
     {
         return new TokenValidationParameters
         {
@@ -31,7 +31,7 @@ public class JwtAuthenticationValidation
         };
     }
 
-    public static JwtBearerEvents JwtBearerEvents()
+    public static JwtBearerEvents GetJwtBearerEvents()
     {
         return new JwtBearerEvents()
         {

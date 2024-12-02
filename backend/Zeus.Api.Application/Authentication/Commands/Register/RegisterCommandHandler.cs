@@ -4,9 +4,8 @@ using MediatR;
 
 using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Domain.Errors;
 using Zeus.Api.Domain.UserAggregate;
-
-using Errors = Zeus.Api.Domain.Authentication.Errors;
 
 namespace Zeus.Api.Application.Authentication.Commands.Register;
 
