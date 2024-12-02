@@ -1,1 +1,8 @@
 @use 'fonts';
+@use 'colors' as color;
+@use 'tailwind-config';
+
+body {
+  font-family: Onest, sans-serif;
+  color: color.apply_color('foreground', 1);
+}
