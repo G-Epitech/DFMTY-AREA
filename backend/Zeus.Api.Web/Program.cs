@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+
 using Zeus.Api.Application;
 using Zeus.Api.Infrastructure;
 using Zeus.Api.Web.Common.Mapping;
