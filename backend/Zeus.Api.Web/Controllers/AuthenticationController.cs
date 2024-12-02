@@ -4,6 +4,7 @@ using MapsterMapper;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Authentication.Commands.Register;
@@ -15,6 +16,7 @@ using RegisterRequest = Zeus.Api.Web.Contracts.Authentication.RegisterRequest;
 namespace Zeus.Api.Web.Controllers;
 
 [Controller]
+[AllowAnonymous]
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
@@ -29,10 +31,10 @@ public class AuthenticationController : ApiController
 
     [HttpPost("register", Name = "Register")]
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status201Created)]
-    public Task<IActionResult> Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
-        var authResult = _mediator.Send(command);
+        var authResult = await _mediator.Send(command);
 
         return authResult.Match(
             result =>
@@ -46,10 +48,10 @@ public class AuthenticationController : ApiController
 
     [HttpPost("login", Name = "Login")]
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status200OK)]
-    public Task<IActionResult> Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);
-        var authResult = _mediator.Send(command);
+        var authResult = await _mediator.Send(command);
 
         return authResult.Match(
             result => Ok(_mapper.Map<AuthenticationResponse>(result)),
