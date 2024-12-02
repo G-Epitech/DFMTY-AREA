@@ -23,20 +23,20 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
         _userWriteRepository = userWriteRepository;
     }
 
-    public Task<ErrorOr<RegisterCommandResult>> Handle(RegisterCommand command,
+    public async Task<ErrorOr<RegisterCommandResult>> Handle(RegisterCommand command,
         CancellationToken cancellationToken)
     {
-        if (_userReadRepository.GetUserByEmail(command.Email) is not null)
+        if (await _userReadRepository.GetUserByEmailAsync(command.Email) is not null)
         {
-            return Task.FromResult<ErrorOr<RegisterCommandResult>>(Errors.Authentication.DuplicatedEmail);
+            return Errors.Authentication.DuplicatedEmail;
         }
 
         var user = User.Create(command.FirstName, command.LastName, command.Email, command.Password);
-        _userWriteRepository.AddUser(user);
+        await _userWriteRepository.AddUserAsync(user);
 
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
         
-        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken, user.Id));
+        return new RegisterCommandResult(accessToken, refreshToken, user.Id);
     }
 }

@@ -5,19 +5,23 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class UserWriteRepository : IUserWriteRepository
 {
-    public void AddUser(User user)
+    public Task AddUserAsync(User user)
     {
-        InMemoryUserSet.Users.Add(user);
+        InMemoryStore.Users.Add(user);
+
+        return Task.CompletedTask;
     }
 
-    public void UpdateUser(User user)
+    public Task UpdateUserAsync(User user)
     {
-        InMemoryUserSet.Users.Remove(user);
-        InMemoryUserSet.Users.Add(user);
+        InMemoryStore.Users.Remove(user);
+        InMemoryStore.Users.Add(user);
+        return Task.CompletedTask;
     }
 
-    public void DeleteUser(User user)
+    public Task DeleteUserAsync(User user)
     {
-        InMemoryUserSet.Users.Remove(user);
+        InMemoryStore.Users.Remove(user);
+        return Task.CompletedTask;
     }
 }

@@ -6,13 +6,13 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class UserReadRepository: IUserReadRepository
 {
-    public User? GetUserById(UserId userId)
+    public Task<User?> GetUserByIdAsync(UserId userId)
     {
-        return InMemoryUserSet.Users.FirstOrDefault(user => user.Id == userId);
+        return Task.FromResult(InMemoryStore.Users.FirstOrDefault(user => user.Id == userId));
     }
 
-    public User? GetUserByEmail(string email)
+    public Task<User?> GetUserByEmailAsync(string email)
     {
-        return InMemoryUserSet.Users.FirstOrDefault(user => user.Email == email);
+        return Task.FromResult(InMemoryStore.Users.FirstOrDefault(user => user.Email == email));
     }
 }

@@ -20,6 +20,8 @@ public static class DependencyInjection
 
         services.AddScoped<IUserReadRepository, UserReadRepository>();
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+        services.AddScoped<IIntegrationReadRepository, IntegrationReadRepository>();
+        services.AddScoped<IIntegrationWriteRepository, IntegrationWriteRepository>();
         
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

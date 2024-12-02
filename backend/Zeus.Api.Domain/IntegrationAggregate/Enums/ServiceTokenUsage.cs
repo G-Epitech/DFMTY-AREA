@@ -1,4 +1,4 @@
-﻿namespace Zeus.Api.Domain.ServiceAggregate.Enums;
+﻿namespace Zeus.Api.Domain.IntegrationAggregate.Enums;
 
 public enum ServiceTokenUsage
 {

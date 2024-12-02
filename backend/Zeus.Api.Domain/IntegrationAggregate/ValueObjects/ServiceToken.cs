@@ -1,9 +1,9 @@
-﻿using Zeus.Api.Domain.ServiceAggregate.Enums;
+﻿using Zeus.Api.Domain.IntegrationAggregate.Enums;
 using Zeus.Common.Domain.Models;
 
-namespace Zeus.Api.Domain.ServiceAggregate.ValueObjects;
+namespace Zeus.Api.Domain.IntegrationAggregate.ValueObjects;
 
-public sealed class ServiceToken : ValueObject
+public sealed class IntegrationToken : ValueObject
 {
     public string Value { get; }
 
@@ -11,7 +11,7 @@ public sealed class ServiceToken : ValueObject
 
     public ServiceTokenUsage Usage { get; }
 
-    public ServiceToken(string value, string type, ServiceTokenUsage usage)
+    public IntegrationToken(string value, string type, ServiceTokenUsage usage)
     {
         Value = value;
         Type = type;

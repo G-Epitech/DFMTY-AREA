@@ -19,21 +19,21 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryR
         _jwtGenerator = jwtGenerator;
     }
 
-    public Task<ErrorOr<LoginQueryResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<LoginQueryResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
-        if (_userReadRepository.GetUserByEmail(query.Email) is not { } user)
+        if (await _userReadRepository.GetUserByEmailAsync(query.Email) is not { } user)
         {
-            return Task.FromResult<ErrorOr<LoginQueryResult>>(Errors.Authentication.InvalidCredentials);
+            return Errors.Authentication.InvalidCredentials;
         }
 
         if (user.Password != query.Password)
         {
-            return Task.FromResult<ErrorOr<LoginQueryResult>>(Errors.Authentication.InvalidCredentials);
+            return Errors.Authentication.InvalidCredentials;
         }
 
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
 
-        return Task.FromResult<ErrorOr<LoginQueryResult>>(new LoginQueryResult(accessToken, refreshToken));
+        return new LoginQueryResult(accessToken, refreshToken);
     }
 }
