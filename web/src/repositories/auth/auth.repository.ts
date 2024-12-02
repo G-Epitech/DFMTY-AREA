@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
-import {AuthRegisterRequestDTO, AuthRegisterResponseDTO} from './dto';
-import {map, Observable, of} from 'rxjs';
-import {TokensModel} from '@models/tokens.model';
+import { Injectable } from '@angular/core';
+import { AuthRegisterRequestDTO, AuthRegisterResponseDTO } from './dto';
+import { map, Observable, of } from 'rxjs';
+import { TokensModel } from '@models/tokens.model';
+import { AuthUserModel } from '@models/auth-user.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthRepository {
   readonly #authTokens: AuthRegisterResponseDTO = {
     accessToken: 'access-token',
-    refreshToken: 'refresh-token'
-  }
+    refreshToken: 'refresh-token',
+  };
 
   storeTokens(tokens: TokensModel): void {
     if (tokens.accessToken) {
@@ -36,12 +37,20 @@ export class AuthRepository {
     return localStorage.getItem('refreshToken');
   }
 
+  clearTokens(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+
   register(dto: AuthRegisterRequestDTO): Observable<TokensModel> {
     return of(this.#authTokens).pipe(
-      map(response => new TokensModel(
-        response.accessToken,
-        response.refreshToken
-      ))
+      map(
+        response => new TokensModel(response.accessToken, response.refreshToken)
+      )
     );
+  }
+
+  me(): Observable<AuthUserModel> {
+    return of(new AuthUserModel('1', 'email', 'first-name', 'last-name'));
   }
 }

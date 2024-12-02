@@ -18,7 +18,7 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'attribute',
-          prefix: 'app',
+          prefix: 'tr',
           style: 'camelCase',
         },
       ],
@@ -26,13 +26,13 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'element',
-          prefix: 'app',
+          prefix: 'tr',
           style: 'kebab-case',
         },
       ],
       '@angular-eslint/prefer-on-push-component-change-detection': 'error',
-      '@angular-eslint/prefer-standalone':  'error',
-      "no-console": ["error", { "allow": ["error"] }],
+      '@angular-eslint/prefer-standalone': 'error',
+      'no-console': ['error', { allow: ['error'] }],
     },
   },
   {
