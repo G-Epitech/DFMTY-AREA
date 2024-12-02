@@ -23,7 +23,7 @@ public sealed class User : AggregateRoot<UserId>
     public string Email { get; }
     public string Password { get; }
 
-    public static User Create(UserId id,
+    public static User Create(
         string firstName,
         string lastName,
         string email,
