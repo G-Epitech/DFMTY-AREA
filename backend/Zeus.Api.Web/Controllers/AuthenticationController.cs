@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Authentication.Commands.Register;
 using Zeus.Api.Application.Authentication.Queries.Login;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Api.Web.Contracts.Authentication;
 
 namespace Zeus.Api.Web.Controllers;
@@ -33,7 +32,7 @@ public class AuthenticationController : ApiController
         var authResult = await _sender.Send(command);
 
         return authResult.Match(
-            result => CreatedAtRoute(nameof(UsersController.GetUser), new { userId = result.UserId.Value },
+            result => CreatedAtRoute(nameof(UsersController.GetUser), new { userId = result.UserId },
                 _mapper.Map<AuthenticationResponse>(result)),
             Problem);
     }

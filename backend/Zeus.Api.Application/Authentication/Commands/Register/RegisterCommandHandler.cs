@@ -37,7 +37,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
 
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
-        
-        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken, user.Id));
+
+        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken,
+            user.Id.Value));
     }
 }

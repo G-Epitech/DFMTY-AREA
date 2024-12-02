@@ -6,4 +6,4 @@ namespace Zeus.Api.Application.Authentication.Commands.Register;
 public record RegisterCommandResult(
     AccessToken AccessToken,
     RefreshToken RefreshToken,
-    UserId UserId);
+    Guid UserId);
