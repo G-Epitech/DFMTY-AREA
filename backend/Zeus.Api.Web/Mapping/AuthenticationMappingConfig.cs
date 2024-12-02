@@ -4,7 +4,7 @@ using Zeus.Api.Application.Authentication.Commands.Register;
 using Zeus.Api.Application.Authentication.Queries.Login;
 using Zeus.Api.Web.Contracts.Authentication;
 
-namespace Zeus.Api.Web.Common.Mapping;
+namespace Zeus.Api.Web.Mapping;
 
 public class AuthenticationMappingConfig : IRegister
 {

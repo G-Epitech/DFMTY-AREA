@@ -1,7 +1,8 @@
 using Scalar.AspNetCore;
+
 using Zeus.Api.Application;
 using Zeus.Api.Infrastructure;
-using Zeus.Api.Web.Common.Mapping;
+using Zeus.Api.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -19,6 +20,13 @@ var app = builder.Build();
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+    
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    
+    app.UseExceptionHandler("/error");
 
     app.UseHttpsRedirection();
     

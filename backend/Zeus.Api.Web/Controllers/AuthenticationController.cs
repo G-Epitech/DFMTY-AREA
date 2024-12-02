@@ -20,12 +20,12 @@ namespace Zeus.Api.Web.Controllers;
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly ISender _mediator;
+    private readonly ISender _sender;
     private readonly IMapper _mapper;
 
-    public AuthenticationController(ISender mediator, IMapper mapper)
+    public AuthenticationController(ISender sender, IMapper mapper)
     {
-        _mediator = mediator;
+        _sender = sender;
         _mapper = mapper;
     }
 
@@ -34,7 +34,7 @@ public class AuthenticationController : ApiController
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
-        var authResult = await _mediator.Send(command);
+        var authResult = await _sender.Send(command);
 
         return authResult.Match(
             result =>
@@ -51,7 +51,7 @@ public class AuthenticationController : ApiController
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);
-        var authResult = await _mediator.Send(command);
+        var authResult = await _sender.Send(command);
 
         return authResult.Match(
             result => Ok(_mapper.Map<AuthenticationResponse>(result)),
