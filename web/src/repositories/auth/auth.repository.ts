@@ -7,7 +7,7 @@ import {
 } from './dto';
 import { map, Observable, of } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
-import { AuthUserModel } from '@models/auth-user.model';
+import { UserModel } from '@models/user.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -38,7 +38,7 @@ export class AuthRepository {
     );
   }
 
-  me(): Observable<AuthUserModel> {
-    return of(new AuthUserModel('1', 'email', 'first-name', 'last-name'));
+  me(): Observable<UserModel> {
+    return of(new UserModel('1', 'email', 'first-name', 'last-name', 'avatar'));
   }
 }

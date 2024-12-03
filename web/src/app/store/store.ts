@@ -1,4 +1,4 @@
-import { AuthUserModel } from '@models/auth-user.model';
+import { UserModel } from '@models/user.model';
 import {
   patchState,
   signalStore,
@@ -14,7 +14,7 @@ import { tapResponse } from '@ngrx/operators';
 import { TokenMediator } from '@mediators/token.mediator';
 
 export interface AuthState {
-  user: AuthUserModel | undefined | null;
+  user: UserModel | undefined | null;
   isLoading: boolean;
 }
 

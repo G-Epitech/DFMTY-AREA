@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthRepository, TokenRepository } from '@repositories/auth';
 import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
-import { AuthUserModel } from '@models/auth-user.model';
+import { UserModel } from '@models/user.model';
 import { AppRouter } from '@app/app.router';
 
 @Injectable({
@@ -48,7 +48,7 @@ export class AuthMediator {
       );
   }
 
-  me(): Observable<AuthUserModel> {
+  me(): Observable<UserModel> {
     return this.#authRepository.me();
   }
 
