@@ -1,0 +1,9 @@
+@use 'fonts';
+@use 'colors' as color;
+@use 'typography';
+
+body {
+  font-family: Onest, sans-serif;
+  font-size: 16px;
+  color: color.apply_color('foreground');
+}
