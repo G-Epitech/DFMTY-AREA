@@ -11,6 +11,7 @@ import { AuthMediator } from '@mediators/auth.mediator';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { TokenMediator } from '@mediators/token.mediator';
 
 export interface AuthState {
   user: AuthUserModel | undefined | null;
@@ -25,7 +26,7 @@ const initialState: AuthState = {
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed((store, authMediator = inject(AuthMediator)) => ({
+  withComputed((store, tokenMediator = inject(TokenMediator)) => ({
     getUser: computed(() => {
       return store.user();
     }),
@@ -33,7 +34,7 @@ export const AuthStore = signalStore(
       return (
         store.user() !== null &&
         store.user() !== undefined &&
-        authMediator.getAccessToken() !== null
+        tokenMediator.getAccessToken() !== null
       );
     }),
   })),

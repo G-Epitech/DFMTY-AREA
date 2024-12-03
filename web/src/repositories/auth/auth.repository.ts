@@ -18,35 +18,6 @@ export class AuthRepository {
 
   constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
-  storeTokens(tokens: TokensModel): void {
-    if (tokens.accessToken) {
-      localStorage.setItem('accessToken', tokens.accessToken);
-    }
-    if (tokens.refreshToken) {
-      localStorage.setItem('refreshToken', tokens.refreshToken);
-    }
-  }
-
-  getTokens(): TokensModel {
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
-
-    return new TokensModel(accessToken, refreshToken);
-  }
-
-  getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
-  }
-
-  getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
-  }
-
-  clearTokens(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  }
-
   register(dto: AuthRegisterRequestDTO): Observable<TokensModel> {
     const url = `${this.baseUrl}/auth/register`;
     const response = this.#httpClient.post<AuthRegisterResponseDTO>(url, dto);

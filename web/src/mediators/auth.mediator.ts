@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthRepository } from '@repositories/auth';
+import { AuthRepository, TokenRepository } from '@repositories/auth';
 import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AuthUserModel } from '@models/auth-user.model';
@@ -11,18 +11,7 @@ import { AppRouter } from '@app/app.router';
 export class AuthMediator {
   readonly #authRepository = inject(AuthRepository);
   readonly #appRouter = inject(AppRouter);
-
-  getTokens(): TokensModel {
-    return this.#authRepository.getTokens();
-  }
-
-  getAccessToken(): string | null {
-    return this.#authRepository.getAccessToken();
-  }
-
-  getRefreshToken(): string | null {
-    return this.#authRepository.getRefreshToken();
-  }
+  readonly #tokenRepository = inject(TokenRepository);
 
   register(
     email: string,
@@ -39,7 +28,7 @@ export class AuthMediator {
       })
       .pipe(
         tap({
-          next: tokens => this.#authRepository.storeTokens(tokens),
+          next: tokens => this.#tokenRepository.storeTokens(tokens),
           error: error => console.error('Failed to register user', error),
         })
       );
@@ -53,7 +42,7 @@ export class AuthMediator {
       })
       .pipe(
         tap({
-          next: tokens => this.#authRepository.storeTokens(tokens),
+          next: tokens => this.#tokenRepository.storeTokens(tokens),
           error: error => console.error('Failed to login user', error),
         })
       );
@@ -64,7 +53,7 @@ export class AuthMediator {
   }
 
   logout(): void {
-    this.#authRepository.clearTokens();
+    this.#tokenRepository.clearTokens();
     void this.#appRouter.redirectToLogin();
   }
 }
