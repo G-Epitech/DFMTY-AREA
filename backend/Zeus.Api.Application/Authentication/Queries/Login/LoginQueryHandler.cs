@@ -4,7 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.Authentication;
+using Zeus.Api.Domain.Errors;
 
 namespace Zeus.Api.Application.Authentication.Queries.Login;
 

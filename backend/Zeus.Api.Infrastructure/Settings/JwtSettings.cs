@@ -1,8 +1,8 @@
-namespace Zeus.Api.Infrastructure.Authentication;
+namespace Zeus.Api.Infrastructure.Settings;
 
 public class JwtSettings
 {
-    public const string SectionName = "JwtSettings";
+    public const string SectionName = nameof(JwtSettings);
     
     public string Secret { get; init; } = null!;
     public int AccessTokenExpiryMinutes { get; init; }

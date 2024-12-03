@@ -1,9 +1,8 @@
-using ErrorOr;
-
 using MapsterMapper;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Authentication.Commands.Register;
@@ -12,7 +11,7 @@ using Zeus.Api.Web.Contracts.Authentication;
 
 namespace Zeus.Api.Web.Controllers;
 
-[Controller]
+[AllowAnonymous]
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
@@ -27,27 +26,23 @@ public class AuthenticationController : ApiController
 
     [HttpPost("register", Name = "Register")]
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status201Created)]
-    public Task<IActionResult> Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
-        var authResult = _sender.Send(command);
+        var authResult = await _sender.Send(command);
 
         return authResult.Match(
-            result =>
-            {
-                var locationUrl = Url.Action("", new { id = result.UserId.Value });
-
-                return Created(locationUrl + result.UserId.Value, _mapper.Map<AuthenticationResponse>(result));
-            },
+            result => CreatedAtRoute(nameof(UsersController.GetUser), new { userId = result.UserId },
+                _mapper.Map<AuthenticationResponse>(result)),
             Problem);
     }
 
     [HttpPost("login", Name = "Login")]
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status200OK)]
-    public Task<IActionResult> Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var command = _mapper.Map<LoginQuery>(request);
-        var authResult = _sender.Send(command);
+        var query = _mapper.Map<LoginQuery>(request);
+        var authResult = await _sender.Send(query);
 
         return authResult.Match(
             result => Ok(_mapper.Map<AuthenticationResponse>(result)),

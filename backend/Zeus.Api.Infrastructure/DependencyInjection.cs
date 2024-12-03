@@ -1,30 +1,62 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
-using Zeus.Api.Infrastructure.Authentication;
+using Zeus.Api.Infrastructure.Authentication.Context;
+using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
+using Zeus.Api.Infrastructure.Settings;
 
 namespace Zeus.Api.Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        ConfigurationManager builderConfiguration)
+        this IServiceCollection services)
     {
-        services.Configure<JwtSettings>(builderConfiguration.GetSection(JwtSettings.SectionName));
-
         services.AddScoped<IUserReadRepository, UserReadRepository>();
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
         services.AddScoped<IIntegrationReadRepository, IntegrationReadRepository>();
         services.AddScoped<IIntegrationWriteRepository, IntegrationWriteRepository>();
-        
+        services.AddScoped<IAuthUserContext, AuthUserContext>();
+
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddConfiguration(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<UserSettings>(configuration.GetSection(UserSettings.SectionName));
+        services.AddSingleton<IUserSettingsProvider, UserSettingsProvider>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var jwtSettings = new JwtSettings();
+        configuration.Bind(JwtSettings.SectionName, jwtSettings);
+
+        services.AddSingleton(Options.Create(jwtSettings));
+        services.AddSingleton<IJwtGenerator, JwtGenerator>();
+
+        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
+                options.Events = JwtAuthenticationValidation.GetJwtBearerEvents();
+            });
 
         return services;
     }
