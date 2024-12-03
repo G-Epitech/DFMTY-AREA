@@ -2,8 +2,8 @@ using ErrorOr;
 
 using MediatR;
 
-using Zeus.Api.Application.Common.Interfaces.Services;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Domain.Errors;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
@@ -20,20 +20,20 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<GetUser
         _userSettingsProvider = userSettingsProvider;
     }
     
-    public Task<ErrorOr<GetUserQueryResult>> Handle(GetUserQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetUserQueryResult>> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        var user = _userReadRepository.GetUserById(new UserId(query.UserId));
+        var user = await _userReadRepository.GetUserByIdAsync(new UserId(query.UserId));
 
         if (user is null)
         {
-            return Task.FromResult<ErrorOr<GetUserQueryResult>>(Errors.User.NotFound);
+            return Errors.User.NotFound;
         }
 
-        return Task.FromResult<ErrorOr<GetUserQueryResult>>(new GetUserQueryResult(
+        return new GetUserQueryResult(
             user.Id.Value,
             user.Email,
             user.FirstName,
             user.LastName,
-            _userSettingsProvider.DefaultPicture));
+            _userSettingsProvider.DefaultPicture);
     }
 }

@@ -1,11 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 
-using Zeus.Api.Application.Common.Interfaces.Authentication;
-using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
@@ -21,6 +21,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserReadRepository, UserReadRepository>();
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+        services.AddScoped<IIntegrationReadRepository, IntegrationReadRepository>();
+        services.AddScoped<IIntegrationWriteRepository, IntegrationWriteRepository>();
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
