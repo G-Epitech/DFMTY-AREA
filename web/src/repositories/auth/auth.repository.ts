@@ -5,9 +5,8 @@ import {
   AuthRegisterRequestDTO,
   AuthRegisterResponseDTO,
 } from './dto';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
-import { UserModel } from '@models/user.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -36,9 +35,5 @@ export class AuthRepository {
         return new TokensModel(res.accessToken, res.refreshToken);
       })
     );
-  }
-
-  me(): Observable<UserModel> {
-    return of(new UserModel('1', 'email', 'first-name', 'last-name', 'avatar'));
   }
 }

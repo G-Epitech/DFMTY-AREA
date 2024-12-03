@@ -7,7 +7,6 @@ import {
   withState,
 } from '@ngrx/signals';
 import { computed, inject } from '@angular/core';
-import { AuthMediator } from '@mediators/auth.mediator';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';

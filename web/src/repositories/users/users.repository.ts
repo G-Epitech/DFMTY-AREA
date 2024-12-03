@@ -28,4 +28,21 @@ export class UsersRepository {
       )
     );
   }
+
+  getUser() {
+    const url = `${this.baseUrl}/user`;
+    const response = this.#httpClient.get<UsersGetResponseDTO>(url);
+    return response.pipe(
+      map(
+        res =>
+          new UserModel(
+            res.id,
+            res.email,
+            res.firstName,
+            res.lastName,
+            res.picture
+          )
+      )
+    );
+  }
 }

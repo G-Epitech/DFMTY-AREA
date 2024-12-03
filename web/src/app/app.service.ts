@@ -11,7 +11,6 @@ export class AppService {
 
   async appInit(): Promise<void> {
     if (this.#tokenMediator.accessTokenIsValid()) {
-      console.log('Access token is valid, fetching user');
       this.#authStore.me();
     }
   }

@@ -1,5 +1,6 @@
 import {
-  ApplicationConfig, enableProdMode,
+  ApplicationConfig,
+  enableProdMode,
   inject,
   provideAppInitializer,
   provideZoneChangeDetection,

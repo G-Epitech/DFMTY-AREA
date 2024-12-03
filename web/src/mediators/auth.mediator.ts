@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { AuthRepository, TokenRepository } from '@repositories/auth';
 import { Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
-import { UserModel } from '@models/user.model';
 import { AppRouter } from '@app/app.router';
 
 @Injectable({
@@ -46,10 +45,6 @@ export class AuthMediator {
           error: error => console.error('Failed to login user', error),
         })
       );
-  }
-
-  me(): Observable<UserModel> {
-    return this.#authRepository.me();
   }
 
   logout(): void {

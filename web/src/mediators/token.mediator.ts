@@ -21,6 +21,6 @@ export class TokenMediator {
 
   accessTokenIsValid(): boolean {
     const tokens = this.getTokens();
-    return tokens.isAccessTokenValid();
+    return tokens.accessToken !== null && tokens.accessToken !== undefined;
   }
 }
