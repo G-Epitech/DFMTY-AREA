@@ -1,4 +1,4 @@
-namespace Zeus.Api.Infrastructure.Authentication;
+namespace Zeus.Api.Infrastructure.Authentication.Jwt;
 
 public struct JwtRegisteredCustomClaimNames
 {

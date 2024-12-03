@@ -4,7 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.Authentication;
+using Zeus.Api.Domain.Errors;
 using Zeus.Api.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.Register;
@@ -36,7 +36,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
 
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
-        
-        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken, user.Id));
+
+        return Task.FromResult<ErrorOr<RegisterCommandResult>>(new RegisterCommandResult(accessToken, refreshToken,
+            user.Id.Value));
     }
 }

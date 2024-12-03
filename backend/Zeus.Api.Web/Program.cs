@@ -8,8 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddApplication()
-        .AddInfrastructure(builder.Configuration)
-        .AddMappings();
+        .AddInfrastructure()
+        .AddMappings()
+        .AddConfiguration(builder.Configuration)
+        .AddAuthentication(builder.Configuration);
 
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
@@ -28,7 +30,10 @@ var app = builder.Build();
     app.UseExceptionHandler("/error");
 
     app.UseHttpsRedirection();
+    
+    app.UseAuthentication();
     app.UseAuthorization();
+    
     app.MapControllers();
 
     app.Run();

@@ -9,8 +9,9 @@ using Zeus.Api.Application.Common.Interfaces.Authentication;
 using Zeus.Api.Application.Common.Interfaces.Services;
 using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.UserAggregate;
+using Zeus.Api.Infrastructure.Settings;
 
-namespace Zeus.Api.Infrastructure.Authentication;
+namespace Zeus.Api.Infrastructure.Authentication.Jwt;
 
 public class JwtGenerator : IJwtGenerator
 {
