@@ -17,42 +17,14 @@
     "module": "ES2022",
     "baseUrl": "./",
     "paths": {
-      "@repositories/*": [
-        "src/repositories/*"
-      ],
-      "@models/*": [
-        "src/models/*"
-      ],
-      "@mediators/*": [
-        "src/mediators/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@components/*": [
-        "src/app/components/*"
-      ],
-      "@features/*": [
-        "src/app/features/*"
-      ],
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@triggo-ui/*": [
-        "./libs/triggo-ui/*"
-      ],
-      "@spartan-ng/ui-input-helm": [
-        ".\\libs/triggo-ui/ui-input-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-formfield-helm": [
-        ".\\libs/triggo-ui/ui-formfield-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-button-helm": [
-        ".\\libs/ui-button-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-label-helm": [
-        ".\\libs/triggo-ui/ui-label-helm/src/index.ts"
-      ]
+      "@repositories/*": ["src/repositories/*"],
+      "@models/*": ["src/models/*"],
+      "@mediators/*": ["src/mediators/*"],
+      "@utils/*": ["src/utils/*"],
+      "@components/*": ["src/app/components/*"],
+      "@features/*": ["src/app/features/*"],
+      "@app/*": ["src/app/*"],
+      "@triggo-ui/*": ["./libs/triggo-ui/*"]
     }
   },
   "angularCompilerOptions": {
