@@ -19,7 +19,6 @@ import { LabelDirective } from '@triggo-ui/label';
     LabelDirective,
   ],
   templateUrl: './login.page.html',
-  styleUrl: './login.page.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
