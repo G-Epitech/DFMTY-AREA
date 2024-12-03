@@ -1,0 +1,57 @@
+@mixin typography(
+  $family: Onest,
+  $weight: 400,
+  $size: 1rem,
+  $letter-spacing: normal,
+  $line-height: normal
+) {
+  font-family:
+    #{$family},
+    sans-serif;
+  font-weight: $weight;
+  font-size: $size;
+  letter-spacing: $letter-spacing;
+  line-height: $line-height;
+}
+
+.tr-title-1 {
+  @include typography(
+    $family: Mada,
+    $weight: 800,
+    $size: 4rem,
+    $letter-spacing: -0.02rem
+  );
+}
+
+.tr-title-2 {
+  @include typography(
+    $family: Mada,
+    $weight: bold,
+    $size: 3rem,
+    $letter-spacing: -0.015rem
+  );
+}
+
+.tr-container-title {
+  @include typography($weight: 500, $size: 1.5rem, $letter-spacing: -0.03rem);
+}
+
+.tr-subtitle {
+  @include typography($weight: 400, $size: 2.25rem);
+}
+
+.tr-large {
+  @include typography($weight: 600, $size: 1.5rem, $letter-spacing: -0.03rem);
+}
+
+.tr-medium {
+  @include typography($weight: 400, $size: 1rem, $letter-spacing: -0.02rem);
+}
+
+.tr-small {
+  @include typography(
+    $weight: 400,
+    $size: 0.625rem,
+    $letter-spacing: -0.013rem
+  );
+}
