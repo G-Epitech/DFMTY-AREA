@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'tr-logo',
@@ -8,4 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LogoComponent {}
+export class LogoComponent {
+  width = input(215);
+  height = input(72);
+}
