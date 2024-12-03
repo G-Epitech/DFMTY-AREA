@@ -2,9 +2,10 @@
 
 namespace Zeus.Api.Web.Controllers;
 
-public class ErrorController: ApiController
+public class ErrorController : ApiController
 {
     [Route("error")]
+    [HttpGet]
     public IActionResult Error()
     {
         return Problem();

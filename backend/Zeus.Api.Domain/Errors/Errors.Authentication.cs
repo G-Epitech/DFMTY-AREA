@@ -1,6 +1,6 @@
 using ErrorOr;
 
-namespace Zeus.Api.Domain.Authentication;
+namespace Zeus.Api.Domain.Errors;
 
 public static partial class Errors
 {
