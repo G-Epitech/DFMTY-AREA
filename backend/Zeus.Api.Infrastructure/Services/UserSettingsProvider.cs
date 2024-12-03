@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 
-using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Infrastructure.Settings;
 
 namespace Zeus.Api.Infrastructure.Services;

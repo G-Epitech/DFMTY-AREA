@@ -1,4 +1,4 @@
-namespace Zeus.Api.Application.Common.Interfaces.Services;
+namespace Zeus.Api.Application.Interfaces.Services;
 
 public interface IDateTimeProvider
 {

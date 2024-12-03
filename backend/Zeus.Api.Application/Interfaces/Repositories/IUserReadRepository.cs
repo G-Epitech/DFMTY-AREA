@@ -5,6 +5,6 @@ namespace Zeus.Api.Application.Interfaces.Repositories;
 
 public interface IUserReadRepository
 {
-    public User? GetUserById(UserId userId);
-    public User? GetUserByEmail(string email);
+    public Task<User?> GetUserByIdAsync(UserId userId);
+    public Task<User?> GetUserByEmailAsync(string email);
 }

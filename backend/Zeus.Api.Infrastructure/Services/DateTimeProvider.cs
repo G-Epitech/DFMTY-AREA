@@ -1,4 +1,4 @@
-using Zeus.Api.Application.Common.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Services;
 
 namespace Zeus.Api.Infrastructure.Services;
 

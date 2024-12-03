@@ -7,17 +7,18 @@ import {
 } from '@angular/core';
 import { AuthStore } from '@app/store';
 import { AppRouter } from '@app/app.router';
+import { TrInputDirective } from '@triggo-ui/input';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { AuthMediator } from '@mediators/auth.mediator';
-import { Observable, tap } from 'rxjs';
-import { TokensModel } from '@models/tokens.model';
-import { AsyncPipe } from '@angular/common';
+import { LabelDirective } from '@triggo-ui/label';
 
 @Component({
   selector: 'tr-login',
-  imports: [TrButtonDirective, AsyncPipe],
+  imports: [
+    TrInputDirective,
+    TrButtonDirective,
+    LabelDirective,
+  ],
   templateUrl: './login.page.html',
-  styleUrl: './login.page.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

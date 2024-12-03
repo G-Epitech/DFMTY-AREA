@@ -1,6 +1,43 @@
-<p>login works!</p>
-<button trBtn (click)="onLogin()">Login</button>
-<a href="/register">Create Account</a>
-@if (loginResult$ | async) {
-<p>Succesfully Logged-In</p>
-}
+<div class="flex min-h-screen items-center justify-center bg-secondary">
+  <div class="w-full max-w-md bg-white p-8 rounded-[10px] shadow-md">
+    <h2 class="tr-title-3 text-center mb-6">Welcome back!</h2>
+    <form class="space-y-6">
+      <div>
+        <label for="email" trLabel>Email</label>
+        <input
+          id="email"
+          type="email"
+          trInput
+          class="w-full"
+          placeholder="example@email.com"
+        />
+      </div>
+
+      <div>
+        <label for="password" trLabel>Password</label>
+        <input
+          id="password"
+          type="password"
+          trInput
+          class="w-full"
+          placeholder="••••••••"
+        />
+      </div>
+
+      <button
+        type="submit"
+        trBtn
+        class="w-full"
+      >
+        Login
+      </button>
+    </form>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        Don't have an account?
+        <a href="/register" class="text-primary hover:underline">Register</a>
+      </p>
+    </div>
+  </div>
+</div>

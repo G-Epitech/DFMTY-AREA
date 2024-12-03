@@ -32,6 +32,15 @@
   );
 }
 
+.tr-title-3 {
+  @include typography(
+    $family: Mada,
+    $weight: 800,
+    $size: 2.25rem,
+    $letter-spacing: -0.03rem
+  );
+}
+
 .tr-container-title {
   @include typography($weight: 500, $size: 1.5rem, $letter-spacing: -0.03rem);
 }
