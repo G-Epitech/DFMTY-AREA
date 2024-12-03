@@ -39,7 +39,7 @@ export class LoginPageComponent {
 
   onLogin() {
     this.loginResult$ = this.#authMediator
-      .login('exampl@gmail.com', '12345678')
+      .login('example@gmail.com', '12345678')
       .pipe(
         tap({
           next: () => this.#store.me(),

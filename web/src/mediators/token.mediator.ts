@@ -18,4 +18,9 @@ export class TokenMediator {
   getRefreshToken() {
     return this.#tokenRepository.getRefreshToken();
   }
+
+  accessTokenIsValid(): boolean {
+    const tokens = this.getTokens();
+    return tokens.isAccessTokenValid();
+  }
 }

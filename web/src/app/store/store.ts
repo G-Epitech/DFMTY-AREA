@@ -12,6 +12,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { TokenMediator } from '@mediators/token.mediator';
+import { UsersMediator } from '@mediators/users.mediator';
 
 export interface AuthState {
   user: UserModel | undefined | null;
@@ -34,16 +35,16 @@ export const AuthStore = signalStore(
       return (
         store.user() !== null &&
         store.user() !== undefined &&
-        tokenMediator.getAccessToken() !== null
+        tokenMediator.accessTokenIsValid()
       );
     }),
   })),
-  withMethods((store, authMediator = inject(AuthMediator)) => ({
+  withMethods((store, usersMediator = inject(UsersMediator)) => ({
     me: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
         concatMap(() => {
-          return authMediator.me().pipe(
+          return usersMediator.me().pipe(
             tapResponse({
               next: user => patchState(store, { user, isLoading: false }),
               error: error => {
