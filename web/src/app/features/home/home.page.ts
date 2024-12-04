@@ -7,15 +7,13 @@ import { TrButtonDirective } from '@triggo-ui/button';
   selector: 'tr-home',
   templateUrl: './home.page.html',
   standalone: true,
-  styleUrl: './home.page.scss',
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TrButtonDirective],
 })
 export class HomePageComponent {
   readonly #authMediator = inject(AuthMediator);
   readonly #authStore = inject(AuthStore);
-
-  readonly user = this.#authStore.getUser;
 
   logout() {
     this.#authMediator.logout();
