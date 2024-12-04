@@ -11,6 +11,12 @@ public sealed class GmailIntegration : Integration
         : base(id, IntegrationType.Gmail, ownerId, clientId)
     {
     }
+    
+#pragma warning disable CS8618
+    private GmailIntegration()
+    {
+    }
+#pragma warning restore CS8618
 
     public override bool IsValid
     {

@@ -11,6 +11,12 @@ public sealed class DiscordIntegration : Integration
         : base(id, IntegrationType.Discord, ownerId, clientId)
     {
     }
+    
+#pragma warning disable CS8618
+    private DiscordIntegration()
+    {
+    }
+#pragma warning restore CS8618
 
     public override bool IsValid
     {

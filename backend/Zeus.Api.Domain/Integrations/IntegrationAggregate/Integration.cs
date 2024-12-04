@@ -5,7 +5,7 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationAggregate;
 
-public abstract class Integration : AggregateRoot<IntegrationId>
+public abstract class Integration : AggregateRoot<IntegrationId, Guid>
 {
     /// <summary>
     /// List of tokens associated with the integration.
@@ -68,4 +68,10 @@ public abstract class Integration : AggregateRoot<IntegrationId>
         OwnerId = ownerId;
         ClientId = clientId;
     }
+    
+#pragma warning disable CS8618
+    protected Integration()
+    {
+    }
+#pragma warning restore CS8618
 }

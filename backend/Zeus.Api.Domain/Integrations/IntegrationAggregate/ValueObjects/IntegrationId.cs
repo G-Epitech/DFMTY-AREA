@@ -2,10 +2,10 @@
 
 namespace Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
-public sealed class IntegrationId : ValueObject
+public sealed class IntegrationId : AggregateRootId<Guid>
 {
-    public Guid Value { get; }
-    
+    public override Guid Value { get; protected set; }
+
     public IntegrationId(Guid value)
     {
         Value = value;
