@@ -6,7 +6,7 @@ import { TrButtonDirective } from '@triggo-ui/button';
   selector: 'tr-side-menu-button',
   imports: [NgIcon, TrButtonDirective],
   templateUrl: './side-menu-button.component.html',
-  styleUrl: './side-menu-button.component.scss',
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
