@@ -43,6 +43,7 @@ class AuthenticationMediator with ChangeNotifier {
     } catch (e) {
       print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
+      rethrow;
     }
   }
 

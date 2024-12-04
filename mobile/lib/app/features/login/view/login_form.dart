@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/login/bloc/login_bloc.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 
@@ -19,6 +20,10 @@ class LoginForm extends StatelessWidget {
             ..showSnackBar(
               const SnackBar(content: Text('Authentication Failure')),
             );
+        }
+        if (state.status.isSuccess) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, RoutesNames.home, (route) => false);
         }
       },
       child: Align(

@@ -25,12 +25,20 @@ class TriggoInput extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       onChanged: onChanged,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 16.0,
+        fontFamily: Theme.of(context).textTheme.labelMedium!.fontFamily,
+        fontWeight: FontWeight.normal,
         color: Colors.black,
       ),
       decoration: InputDecoration(
         hintText: placeholder,
+        hintStyle: TextStyle(
+          fontSize: 16.0,
+          fontFamily: Theme.of(context).textTheme.labelMedium!.fontFamily,
+          fontWeight: FontWeight.normal,
+          color: Colors.grey,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide(color: Colors.grey.shade100),
