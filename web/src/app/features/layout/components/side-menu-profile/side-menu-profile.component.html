@@ -1,12 +1,17 @@
 <button
   trBtn
-  class="w-[100%] justify-start flex items-center flex-row gap-2 hover:bg-accent hover:text-primary px-2.5 h-11"
+  class="w-[100%] justify-start flex items-center flex-row gap-2 hover:bg-accent px-2.5 h-11"
   variant="secondary">
-  <img
-    [ngSrc]="user()?.picture || ''"
-    alt="avatar"
-    height="25"
-    width="25"
-    class="rounded-full" />
-  <span class="tr-container-title">{{ user()?.lastName | titlecase }}</span>
+  @if (user()) {
+    <img
+      [ngSrc]="user()?.picture || ''"
+      alt="avatar"
+      height="25"
+      width="25"
+      class="rounded-full" />
+    <span class="tr-container-title">{{ user()?.firstName | titlecase }}</span>
+  } @else {
+    <tr-skeleton class="w-25 h-25 rounded-full" />
+    <tr-skeleton class="w-50 h-25" />
+  }
 </button>

@@ -18,7 +18,7 @@
   @include typography(
     $family: Mada,
     $weight: 800,
-    $size: 3.5rem,
+    $size: 2.7rem,
     $letter-spacing: -0.02rem
   );
 }
@@ -27,7 +27,7 @@
   @include typography(
     $family: Mada,
     $weight: bold,
-    $size: 2.5rem,
+    $size: 2rem,
     $letter-spacing: -0.015rem
   );
 }
@@ -36,7 +36,7 @@
   @include typography(
     $family: Mada,
     $weight: 800,
-    $size: 1.75rem,
+    $size: 1.5rem,
     $letter-spacing: -0.03rem
   );
 }
