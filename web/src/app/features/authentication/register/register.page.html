@@ -1,7 +1,7 @@
 <div class="flex min-h-screen items-center justify-center bg-secondary">
   <div class="w-full max-w-md bg-white p-8 rounded-[10px] shadow-md">
     <h2 class="tr-title-3 text-center mb-6">Create Your Account</h2>
-    <form class="space-y-6" (ngSubmit)="onRegister()">
+    <form class="space-y-6" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
       <div>
         <label for="firstName" trLabel>First Name</label>
         <input
@@ -9,7 +9,8 @@
           type="text"
           trInput
           class="w-full"
-          placeholder="John" />
+          placeholder="John"
+          [formControl]="registerForm.controls.firstName" />
       </div>
 
       <div>
@@ -19,7 +20,8 @@
           type="text"
           trInput
           class="w-full"
-          placeholder="Doe" />
+          placeholder="Doe"
+          [formControl]="registerForm.controls.lastName" />
       </div>
 
       <div>
@@ -29,7 +31,8 @@
           type="email"
           trInput
           class="w-full"
-          placeholder="example@email.com" />
+          placeholder="example@email.com"
+          [formControl]="registerForm.controls.email" />
       </div>
 
       <div>
@@ -39,7 +42,8 @@
           type="password"
           trInput
           class="w-full"
-          placeholder="••••••••" />
+          placeholder="••••••••"
+          [formControl]="registerForm.controls.password" />
       </div>
 
       <div>
@@ -49,7 +53,8 @@
           type="password"
           trInput
           class="w-full"
-          placeholder="••••••••" />
+          placeholder="••••••••"
+          [formControl]="registerForm.controls.confirmPassword" />
       </div>
 
       <button type="submit" trBtn class="w-full">Register</button>

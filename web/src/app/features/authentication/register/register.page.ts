@@ -11,7 +11,14 @@ import { Subject, tap } from 'rxjs';
 import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { FormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { LabelDirective } from '@triggo-ui/label';
 import { TrInputDirective } from '@triggo-ui/input';
 import { RouterLink } from '@angular/router';
@@ -24,6 +31,7 @@ import { RouterLink } from '@angular/router';
     LabelDirective,
     TrInputDirective,
     RouterLink,
+    ReactiveFormsModule,
   ],
   templateUrl: './register.page.html',
   standalone: true,
@@ -38,6 +46,31 @@ export class RegisterPageComponent implements OnDestroy {
 
   redirectToHome: EffectRef;
 
+  registerForm = new FormGroup(
+    {
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl(''),
+    },
+    { validators: this.passwordMatchValidator }
+  );
+
+  passwordMatchValidator(form: AbstractControl) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+
+    return password &&
+      confirmPassword &&
+      password.value === confirmPassword.value
+      ? null
+      : { passwordMismatch: true };
+  }
+
   constructor() {
     this.redirectToHome = effect(() => {
       if (this.#store.isAuthenticated()) {
@@ -46,7 +79,8 @@ export class RegisterPageComponent implements OnDestroy {
     });
   }
 
-  onRegister(): void {
+  onSubmit(): void {
+    console.log(this.registerForm.value);
     this.#authMediator
       .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
       .pipe(
@@ -54,8 +88,7 @@ export class RegisterPageComponent implements OnDestroy {
           next: () => this.#store.me(),
           error: error => console.error('Failed to register user', error),
         })
-      )
-      .subscribe();
+      );
   }
 
   ngOnDestroy() {
