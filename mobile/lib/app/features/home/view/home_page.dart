@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/bloc/authentication_bloc.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,8 +30,10 @@ class _LogoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       child: const Text('Logout'),
-      onPressed: () {
+      onPressed: () async {
         context.read<AuthenticationBloc>().add(AuthenticationLogoutPressed());
+        await Navigator.pushNamedAndRemoveUntil(
+            context, RoutesNames.login, (route) => false);
       },
     );
   }
