@@ -18,7 +18,7 @@
   @include typography(
     $family: Mada,
     $weight: 800,
-    $size: 4rem,
+    $size: 3.5rem,
     $letter-spacing: -0.02rem
   );
 }
@@ -27,7 +27,7 @@
   @include typography(
     $family: Mada,
     $weight: bold,
-    $size: 3rem,
+    $size: 2.5rem,
     $letter-spacing: -0.015rem
   );
 }
@@ -36,31 +36,31 @@
   @include typography(
     $family: Mada,
     $weight: 800,
-    $size: 2.25rem,
+    $size: 1.75rem,
     $letter-spacing: -0.03rem
   );
 }
 
 .tr-container-title {
-  @include typography($weight: 500, $size: 1.5rem, $letter-spacing: -0.03rem);
+  @include typography($weight: 500, $size: 1rem, $letter-spacing: -0.03rem);
 }
 
 .tr-subtitle {
-  @include typography($weight: 400, $size: 2.25rem);
+  @include typography($weight: 400, $size: 1.75rem);
 }
 
 .tr-large {
-  @include typography($weight: 600, $size: 1.5rem, $letter-spacing: -0.03rem);
+  @include typography($weight: 600, $size: 1rem, $letter-spacing: -0.03rem);
 }
 
 .tr-medium {
-  @include typography($weight: 400, $size: 1rem, $letter-spacing: -0.02rem);
+  @include typography($weight: 400, $size: 0.5rem, $letter-spacing: -0.02rem);
 }
 
 .tr-small {
   @include typography(
     $weight: 400,
-    $size: 0.625rem,
+    $size: 0.125rem,
     $letter-spacing: -0.013rem
   );
 }
