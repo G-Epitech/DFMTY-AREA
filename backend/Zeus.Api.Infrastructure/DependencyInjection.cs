@@ -6,11 +6,14 @@ using Microsoft.Extensions.Options;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
+using Zeus.Api.Infrastructure.Services.Integrations;
 using Zeus.Api.Infrastructure.Settings;
+using Zeus.Api.Infrastructure.Settings.Integrations;
 
 namespace Zeus.Api.Infrastructure;
 
@@ -37,6 +40,9 @@ public static class DependencyInjection
     {
         services.Configure<UserSettings>(configuration.GetSection(UserSettings.SectionName));
         services.AddSingleton<IUserSettingsProvider, UserSettingsProvider>();
+
+        services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
+        services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
 
         return services;
     }
