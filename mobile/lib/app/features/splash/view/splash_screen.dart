@@ -19,7 +19,10 @@ class SplashScreen extends StatelessWidget {
       stream: authenticationMediator.status,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+            backgroundColor: Colors.white,
+          );
         }
 
         final status = snapshot.data;
@@ -37,6 +40,7 @@ class SplashScreen extends StatelessWidget {
 
         return const Scaffold(
           body: Center(child: CircularProgressIndicator()),
+          backgroundColor: Colors.white,
         );
       },
     );

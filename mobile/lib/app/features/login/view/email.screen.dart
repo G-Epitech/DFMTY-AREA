@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/login/bloc/login_bloc.dart';
+import 'package:triggo/app/features/login/routes/custom.router.dart';
+import 'package:triggo/app/features/login/view/password.screen.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 
@@ -31,7 +33,7 @@ class _EmailLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Your Email',
+      'Email',
       style: Theme.of(context).textTheme.titleMedium,
     );
   }
@@ -59,14 +61,22 @@ class _NextButton extends StatelessWidget {
     final emailError = context.select(
       (LoginBloc bloc) => bloc.state.email.displayError,
     );
+    final email = context.select(
+      (LoginBloc bloc) => bloc.state.email.value,
+    );
 
-    return TriggoButton(
-      text: 'Next',
-      onPressed: () {
-        if (emailError == null) {
-          Navigator.of(context).pushNamed('/password');
-        }
-      },
+    return SizedBox(
+      width: double.infinity,
+      child: TriggoButton(
+        text: 'Next',
+        onPressed: emailError == null && email.isNotEmpty
+            ? () {
+                Navigator.of(context).push(
+                  CustomLoginRouter(child: const PasswordInputScreen()),
+                );
+              }
+            : null,
+      ),
     );
   }
 }

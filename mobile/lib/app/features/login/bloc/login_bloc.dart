@@ -15,6 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
+    on<LoginReset>(_onReset);
   }
 
   final AuthenticationMediator _authenticationMediator;
@@ -62,5 +63,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
+  }
+
+  Future<void> _onReset(
+    LoginReset event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: FormzSubmissionStatus.initial,
+      ),
+    );
   }
 }
