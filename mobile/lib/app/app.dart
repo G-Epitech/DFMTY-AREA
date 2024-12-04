@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:triggo/app/bloc/authentication_bloc.dart';
 import 'package:triggo/app/features/home/view/home_page.dart';
 import 'package:triggo/app/features/login/login.dart';
@@ -33,17 +34,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   late final AuthenticationRepository _authenticationRepository;
   late final CredentialsRepository _credentialsRepository;
   late final UserRepository _userRepository;
   late final AuthenticationMediator _authenticationMediator;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   void initState() {
@@ -66,10 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
+    return MultiProvider(
+      providers: [
+        RepositoryProvider.value(value: _authenticationRepository),
+        RepositoryProvider.value(value: _credentialsRepository),
+        RepositoryProvider.value(value: _userRepository),
+        ChangeNotifierProvider.value(value: _authenticationMediator),
+      ],
       child: BlocProvider(
-        lazy: false,
         create: (_) => AuthenticationBloc(
           authenticationMediator: _authenticationMediator,
           userRepository: _userRepository,
@@ -101,11 +99,13 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
+                print('Authenticated');
                 _navigator.pushAndRemoveUntil<void>(
                   HomePage.route(),
                   (route) => false,
                 );
               case AuthenticationStatus.unauthenticated:
+                print('Unauthenticated');
                 _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(),
                   (route) => false,

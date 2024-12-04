@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/login/bloc/login_bloc.dart';
+import 'package:triggo/app/widgets/button.triggo.dart';
+import 'package:triggo/app/widgets/input.triggo.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -40,8 +42,7 @@ class LoginForm extends StatelessWidget {
 class _AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset('assets/icon/application_logo.svg',
-        width: 120, height: 120);
+    return SvgPicture.asset('assets/icons/logo.svg', width: 120, height: 120);
   }
 }
 
@@ -52,15 +53,11 @@ class _EmailInput extends StatelessWidget {
       (LoginBloc bloc) => bloc.state.email.displayError,
     );
 
-    return TextField(
-      key: const Key('loginForm_emailInput_textField'),
+    return TriggoInput(
+      placeholder: 'Email',
       onChanged: (email) {
         context.read<LoginBloc>().add(LoginEmailChanged(email));
       },
-      decoration: InputDecoration(
-        labelText: 'email',
-        errorText: displayError != null ? 'invalid email' : null,
-      ),
     );
   }
 }
@@ -72,16 +69,12 @@ class _PasswordInput extends StatelessWidget {
       (LoginBloc bloc) => bloc.state.password.displayError,
     );
 
-    return TextField(
-      key: const Key('loginForm_passwordInput_textField'),
+    return TriggoInput(
+      placeholder: 'Password',
+      obscureText: true,
       onChanged: (password) {
         context.read<LoginBloc>().add(LoginPasswordChanged(password));
       },
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'password',
-        errorText: displayError != null ? 'invalid password' : null,
-      ),
     );
   }
 }
@@ -97,12 +90,12 @@ class _LoginButton extends StatelessWidget {
 
     final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
 
-    return ElevatedButton(
-      key: const Key('loginForm_continue_raisedButton'),
-      onPressed: isValid
-          ? () => context.read<LoginBloc>().add(const LoginSubmitted())
-          : null,
-      child: const Text('Login'),
-    );
+    return TriggoButton(
+        text: 'Login',
+        onPressed: isValid
+            ? () {
+                context.read<LoginBloc>().add(const LoginSubmitted());
+              }
+            : null);
   }
 }

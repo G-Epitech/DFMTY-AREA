@@ -2,22 +2,22 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/login/models/models.dart';
-import 'package:triggo/repositories/authentication.repository.dart';
+import 'package:triggo/mediator/authentication.mediator.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
+    required AuthenticationMediator authenticationMediator,
+  })  : _authenticationMediator = authenticationMediator,
         super(const LoginState()) {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
   }
 
-  final AuthenticationRepository _authenticationRepository;
+  final AuthenticationMediator _authenticationMediator;
 
   void _onEmailChanged(
     LoginEmailChanged event,
@@ -52,7 +52,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (state.isValid) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
-        await _authenticationRepository.login(
+        await _authenticationMediator.login(
           state.email.value,
           state.password.value,
         );

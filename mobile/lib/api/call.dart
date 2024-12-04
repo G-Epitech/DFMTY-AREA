@@ -32,7 +32,7 @@ Future<Response<dynamic>> call<T extends Json>({
     return Response(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
-      data: responseJson['data'],
+      data: responseJson,
       errors: _parseErrors(responseJson),
       headers: response.headers,
     );
