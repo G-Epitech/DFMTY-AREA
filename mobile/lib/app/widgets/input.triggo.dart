@@ -5,6 +5,7 @@ class TriggoInput extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final Function(String)? onChanged;
+  final EdgeInsetsGeometry padding;
 
   const TriggoInput({
     super.key,
@@ -12,6 +13,7 @@ class TriggoInput extends StatelessWidget {
     this.controller,
     this.keyboardType = TextInputType.text,
     this.onChanged,
+    this.padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
   });
 
   @override
@@ -20,6 +22,10 @@ class TriggoInput extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       onChanged: onChanged,
+      style: const TextStyle(
+        fontSize: 16.0,
+        color: Colors.black,
+      ),
       decoration: InputDecoration(
         hintText: placeholder,
         border: OutlineInputBorder(
@@ -30,8 +36,7 @@ class TriggoInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide(color: Colors.grey.shade400),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        contentPadding: padding,
       ),
     );
   }

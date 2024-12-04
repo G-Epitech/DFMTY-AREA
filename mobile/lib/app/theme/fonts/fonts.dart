@@ -52,4 +52,5 @@ final TextStyle containerTitle = baseTextStyle.copyWith(
   fontFamily: 'Inter',
   fontSize: 15,
   fontWeight: FontWeight.w500, // Medium
+  letterSpacing: -0.2,
 );
