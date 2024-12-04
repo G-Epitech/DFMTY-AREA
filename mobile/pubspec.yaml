@@ -32,11 +32,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/application_logo.png"
+  image_path: "assets/icons/logo.png"
 
 flutter:
   assets:
-    - assets/icon/application_logo.svg
+    - assets/icons/logo.svg
+    - assets/icons/bubbles.svg
 
   uses-material-design: true
 
