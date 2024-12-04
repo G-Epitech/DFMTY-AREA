@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/navigation/bloc/navigation_bloc.dart';
-import 'package:triggo/app/features/navigation/bloc/navigation_event.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -36,11 +33,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Text('$_counter', style: Theme.of(context).textTheme.titleLarge),
             ElevatedButton(
               onPressed: () {
-                context
-                    .read<NavigationBloc>()
-                    .add(const NavigateToPage(PageIndex.home));
+                Navigator.pushNamed(context, '/page1');
               },
-              child: const Text('Go to Home Page'),
+              child: const Text('Go to Page 1'),
             )
           ],
         ),
