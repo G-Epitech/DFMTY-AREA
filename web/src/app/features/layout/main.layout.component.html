@@ -3,12 +3,18 @@
     <img
       ngSrc="icons/triggo_box_logo.svg"
       alt="Triggo Box Logo"
-      width="200"
-      height="160"
+      width="210"
+      height="170"
       priority />
-    <tr-side-menu-button label="Home" icon="heroHome" />
-    <tr-side-menu-button label="Integrations" icon="heroLink" />
-    <tr-side-menu-button label="Automations" icon="heroBolt" />
+    <tr-side-menu-button label="Home" icon="heroHome" path="home" />
+    <tr-side-menu-button
+      label="Integrations"
+      icon="heroLink"
+      path="integrations" />
+    <tr-side-menu-button
+      label="Automations"
+      icon="heroBolt"
+      path="automations" />
     <div class="flex-grow bg-secondary rounded-md"></div>
     <tr-side-menu-profile />
   </div>

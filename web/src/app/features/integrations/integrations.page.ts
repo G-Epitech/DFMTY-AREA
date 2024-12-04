@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'tr-integrations',
   imports: [],
   templateUrl: './integrations.page.html',
-  styles: ``,
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
