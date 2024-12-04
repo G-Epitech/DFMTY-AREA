@@ -19,6 +19,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.register):
       return MaterialPageRoute(builder: (_) => const RegisterScreen());
     default:
-      return MaterialPageRoute(builder: (_) => const Placeholder());
+      return MaterialPageRoute(
+          builder: (_) => const MyHomePage(title: 'Home Page'));
   }
 }
