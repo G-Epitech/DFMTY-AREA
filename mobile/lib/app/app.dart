@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/theme/theme.dart';
-import 'package:triggo/app/widgets/button.triggo.dart';
-import 'package:triggo/app/widgets/input.triggo.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -52,12 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            TriggoInput(
-              placeholder: 'Enter your name',
-              keyboardType: TextInputType.text,
-              onChanged: (val) {},
-            ),
-            TriggoButton(text: 'Some action', onPressed: () {}),
           ],
         ),
       ),
