@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:triggo/app/bloc/authentication_bloc.dart';
+import 'package:triggo/app/features/home/view/home_page.dart';
+import 'package:triggo/app/features/login/login.dart';
+import 'package:triggo/app/features/splash/splash.dart';
 import 'package:triggo/app/theme/theme.dart';
+import 'package:triggo/mediator/authentication.mediator.dart';
+import 'package:triggo/repositories/authentication.repository.dart';
+import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/user.repository.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,6 +34,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late final AuthenticationRepository _authenticationRepository;
+  late final CredentialsRepository _credentialsRepository;
+  late final UserRepository _userRepository;
+  late final AuthenticationMediator _authenticationMediator;
 
   void _incrementCounter() {
     setState(() {
@@ -33,31 +46,82 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _authenticationRepository = AuthenticationRepository();
+    _credentialsRepository = CredentialsRepository();
+    _userRepository = UserRepository();
+
+    _authenticationMediator = AuthenticationMediator(
+      _authenticationRepository,
+      _credentialsRepository,
+    );
+  }
+
+  @override
+  void dispose() {
+    _authenticationMediator.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: Text(widget.title),
+    return RepositoryProvider.value(
+      value: _authenticationRepository,
+      child: BlocProvider(
+        lazy: false,
+        create: (_) => AuthenticationBloc(
+          authenticationMediator: _authenticationMediator,
+          userRepository: _userRepository,
+        )..add(AuthenticationSubscriptionRequested()),
+        child: const AppView(),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    );
+  }
+}
+
+class AppView extends StatefulWidget {
+  const AppView({super.key});
+
+  @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  NavigatorState get _navigator => _navigatorKey.currentState!;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      builder: (context, child) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            switch (state.status) {
+              case AuthenticationStatus.authenticated:
+                _navigator.pushAndRemoveUntil<void>(
+                  HomePage.route(),
+                  (route) => false,
+                );
+              case AuthenticationStatus.unauthenticated:
+                _navigator.pushAndRemoveUntil<void>(
+                  LoginPage.route(),
+                  (route) => false,
+                );
+              case AuthenticationStatus.unknown:
+                print('Unknown');
+                break;
+              case AuthenticationStatus.authenticating:
+                print('Authenticating');
+                break;
+            }
+          },
+          child: child,
+        );
+      },
+      onGenerateRoute: (_) => SplashPage.route(),
     );
   }
 }
