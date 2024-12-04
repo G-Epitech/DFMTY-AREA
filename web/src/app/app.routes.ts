@@ -18,6 +18,22 @@ export const routes: Routes = [
           import('@features/home/home.page').then(m => m.HomePageComponent),
         pathMatch: 'full',
       },
+      {
+        path: 'automations',
+        loadComponent: () =>
+          import('@features/automations/automations.page').then(
+            m => m.AutomationsPageComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
+        path: 'integrations',
+        loadComponent: () =>
+          import('@features/integrations/integrations.page').then(
+            m => m.IntegrationsPageComponent
+          ),
+        pathMatch: 'full',
+      },
     ],
     canActivate: [authGuard],
   },

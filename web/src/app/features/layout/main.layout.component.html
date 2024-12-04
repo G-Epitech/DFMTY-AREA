@@ -1,5 +1,5 @@
-<div class="flex flex-row p-3">
-  <div class="flex flex-col space-y-2.5">
+<div class="flex flex-row p-3 h-[100vh]">
+  <div class="flex flex-col space-y-2.5 max-h-screen overflow-y-auto">
     <img
       ngSrc="icons/triggo_box_logo.svg"
       alt="Triggo Box Logo"
@@ -9,6 +9,7 @@
     <tr-side-menu-button label="Home" icon="heroHome" />
     <tr-side-menu-button label="Integrations" icon="heroLink" />
     <tr-side-menu-button label="Automations" icon="heroBolt" />
+    <div class="flex-grow bg-secondary rounded-md"></div>
     <tr-side-menu-profile />
   </div>
   <div class="mx-3">
