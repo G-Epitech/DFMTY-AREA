@@ -33,11 +33,11 @@ class TriggoInput extends StatelessWidget {
         hintText: placeholder,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Colors.grey.shade400),
+          borderSide: BorderSide(color: Colors.grey.shade100),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Colors.grey.shade400),
+          borderSide: BorderSide(color: Colors.grey.shade900),
         ),
         contentPadding: padding,
       ),
