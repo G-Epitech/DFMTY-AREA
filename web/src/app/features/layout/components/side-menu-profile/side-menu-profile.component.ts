@@ -2,10 +2,18 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AuthStore } from '@app/store';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
+import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tr-side-menu-profile',
-  imports: [TrButtonDirective, NgOptimizedImage, TitleCasePipe],
+  imports: [
+    TrButtonDirective,
+    NgOptimizedImage,
+    TitleCasePipe,
+    TrSkeletonComponent,
+    RouterLink,
+  ],
   templateUrl: './side-menu-profile.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
