@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
         } else if (status == AuthenticationStatus.unauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushNamedAndRemoveUntil(
-                context, RoutesNames.login, (route) => false);
+                context, RoutesNames.welcome, (route) => false);
           });
         }
 
