@@ -9,3 +9,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
 })
 export class HomePageComponent {}
+
+  logout() {
+    this.#authMediator.logout();
+    this.#authStore.reset();
+  }
+}
