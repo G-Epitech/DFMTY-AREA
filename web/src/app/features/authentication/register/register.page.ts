@@ -4,29 +4,38 @@ import {
   effect,
   EffectRef,
   inject,
+  OnDestroy,
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { AuthMediator } from '@mediators/auth.mediator';
-import { Observable, tap } from 'rxjs';
-import { TokensModel } from '@models/tokens.model';
+import { Subject, tap } from 'rxjs';
 import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
 import { TrButtonDirective } from '@triggo-ui/button';
+import { FormsModule } from '@angular/forms';
+import { LabelDirective } from '@triggo-ui/label';
+import { TrInputDirective } from '@triggo-ui/input';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tr-register',
-  imports: [AsyncPipe, TrButtonDirective],
+  imports: [
+    TrButtonDirective,
+    FormsModule,
+    LabelDirective,
+    TrInputDirective,
+    RouterLink,
+  ],
   templateUrl: './register.page.html',
   standalone: true,
-  styleUrl: './register.page.scss',
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterPageComponent {
+export class RegisterPageComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   readonly #store = inject(AuthStore);
   readonly #appRouter = inject(AppRouter);
+  private destroy$ = new Subject<void>();
 
-  registrationResult$: Observable<TokensModel> | undefined;
   redirectToHome: EffectRef;
 
   constructor() {
@@ -38,13 +47,19 @@ export class RegisterPageComponent {
   }
 
   onRegister(): void {
-    this.registrationResult$ = this.#authMediator
+    this.#authMediator
       .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
       .pipe(
         tap({
           next: () => this.#store.me(),
           error: error => console.error('Failed to register user', error),
         })
-      );
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

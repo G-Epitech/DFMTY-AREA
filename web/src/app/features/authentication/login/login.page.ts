@@ -14,10 +14,17 @@ import { LabelDirective } from '@triggo-ui/label';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { Subject, tap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tr-login',
-  imports: [TrInputDirective, TrButtonDirective, LabelDirective, FormsModule],
+  imports: [
+    TrInputDirective,
+    TrButtonDirective,
+    LabelDirective,
+    FormsModule,
+    RouterLink,
+  ],
   templateUrl: './login.page.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

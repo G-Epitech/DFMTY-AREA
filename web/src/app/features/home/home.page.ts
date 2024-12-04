@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-home',
@@ -7,6 +6,6 @@ import { TrButtonDirective } from '@triggo-ui/button';
   standalone: true,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TrButtonDirective],
+  imports: [],
 })
 export class HomePageComponent {}
