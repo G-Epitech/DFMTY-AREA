@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
-import 'package:triggo/models/user.model.dart';
+import 'package:triggo/api/response.dart';
 import 'package:triggo/repositories/dtos/user.dtos.dart';
 
 class UserRepository {
@@ -8,23 +8,20 @@ class UserRepository {
 
   UserRepository({this.client});
 
-  Future<User?> getUser() async {
+  Future<Response<OutGetUserDTO>> getUser() async {
     final response = await call(
       method: 'GET',
       endpoint: '/user',
       client: client,
     );
 
-    if (response.data != null) {
-      final outGetUserDTO = OutGetUserDTO.fromJson(response.data);
-      final user = User(
-        email: outGetUserDTO.email,
-        firstName: outGetUserDTO.firstName,
-        lastName: outGetUserDTO.lastName,
-        picture: outGetUserDTO.picture,
-      );
-      return user;
-    }
-    return null;
+    return Response<OutGetUserDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      headers: response.headers,
+      data:
+          response.data != null ? OutGetUserDTO.fromJson(response.data) : null,
+      errors: response.errors,
+    );
   }
 }
