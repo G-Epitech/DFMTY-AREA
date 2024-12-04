@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'tr-root',
   templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.scss',
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet],
 })
