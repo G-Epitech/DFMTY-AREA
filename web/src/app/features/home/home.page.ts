@@ -6,12 +6,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
 })
 export class HomePageComponent {}
-
-  logout() {
-    this.#authMediator.logout();
-    this.#authStore.reset();
-  }
-}
