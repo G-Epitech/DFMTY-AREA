@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:triggo/api/codes.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/models/user.model.dart';
 import 'package:triggo/repositories/user.repository.dart';
@@ -60,8 +61,17 @@ class AuthenticationBloc
 
   Future<User?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser();
-      return user;
+      final res = await _userRepository.getUser();
+
+      if (res.statusCode == Codes.ok && res.data != null) {
+        return User(
+          firstName: res.data!.firstName,
+          lastName: res.data!.lastName,
+          email: res.data!.email,
+          picture: res.data!.picture,
+        );
+      }
+      return null;
     } catch (_) {
       return null;
     }

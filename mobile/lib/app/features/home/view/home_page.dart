@@ -45,10 +45,10 @@ class _UserId extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userFirstName = context.select(
-      (AuthenticationBloc bloc) => bloc.state.user.firstName,
+      (AuthenticationBloc bloc) => bloc.state.user?.firstName,
     );
     final userLastName = context.select(
-      (AuthenticationBloc bloc) => bloc.state.user.lastName,
+      (AuthenticationBloc bloc) => bloc.state.user?.lastName,
     );
 
     return Text('User: $userFirstName $userLastName');
