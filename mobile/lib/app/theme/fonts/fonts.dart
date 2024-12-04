@@ -4,7 +4,7 @@ import 'package:triggo/app/theme/colors/colors.dart';
 TextStyle baseTextStyle = const TextStyle(
   fontFamily: 'Onest',
   color: textColor,
-  letterSpacing: -2.0,
+  letterSpacing: -0.2,
 );
 
 final TextStyle titleLarge = baseTextStyle.copyWith(

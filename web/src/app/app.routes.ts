@@ -34,6 +34,14 @@ export const routes: Routes = [
           ),
         pathMatch: 'full',
       },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('@features/settings/settings.page').then(
+            m => m.SettingsPageComponent
+          ),
+        pathMatch: 'full',
+      },
     ],
     canActivate: [authGuard],
   },

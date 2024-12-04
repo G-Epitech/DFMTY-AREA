@@ -44,3 +44,5 @@ app.*.map.json
 
 # Environment configuration
 .env
+
+devtools_options.yaml

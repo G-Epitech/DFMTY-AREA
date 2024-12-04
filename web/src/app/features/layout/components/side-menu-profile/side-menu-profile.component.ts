@@ -3,6 +3,7 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { AuthStore } from '@app/store';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tr-side-menu-profile',
@@ -11,6 +12,7 @@ import { TrSkeletonComponent } from '@triggo-ui/skeleton';
     NgOptimizedImage,
     TitleCasePipe,
     TrSkeletonComponent,
+    RouterLink,
   ],
   templateUrl: './side-menu-profile.component.html',
   styles: [],

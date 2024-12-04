@@ -16,6 +16,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_secure_storage: ^9.2.2
+  equatable: ^2.0.7
 
 dev_dependencies:
   mockito: 5.4.4
@@ -30,11 +31,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/application_logo.png"
+  image_path: "assets/icons/logo.png"
 
 flutter:
   assets:
-    - assets/icon/application_logo.svg
+    - assets/icons/logo.svg
+    - assets/icons/bubbles.svg
 
   uses-material-design: true
 

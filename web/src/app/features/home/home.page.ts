@@ -1,6 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AuthMediator } from '@mediators/auth.mediator';
-import { AuthStore } from '@app/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
@@ -11,12 +9,4 @@ import { TrButtonDirective } from '@triggo-ui/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TrButtonDirective],
 })
-export class HomePageComponent {
-  readonly #authMediator = inject(AuthMediator);
-  readonly #authStore = inject(AuthStore);
-
-  logout() {
-    this.#authMediator.logout();
-    this.#authStore.reset();
-  }
-}
+export class HomePageComponent {}

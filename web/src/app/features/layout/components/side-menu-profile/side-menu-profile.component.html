@@ -1,7 +1,8 @@
 <button
   trBtn
   class="w-[100%] justify-start flex items-center flex-row gap-2 hover:bg-accent px-2.5 h-11"
-  variant="secondary">
+  variant="secondary"
+  routerLink="/settings">
   @if (user()) {
     <img
       [ngSrc]="user()?.picture || ''"
