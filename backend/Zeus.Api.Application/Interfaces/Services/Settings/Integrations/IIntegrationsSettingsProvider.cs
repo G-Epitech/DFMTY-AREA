@@ -1,4 +1,4 @@
-namespace Zeus.Api.Application.Interfaces.Services.Integrations;
+namespace Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 
 public interface IIntegrationsSettingsProvider
 {

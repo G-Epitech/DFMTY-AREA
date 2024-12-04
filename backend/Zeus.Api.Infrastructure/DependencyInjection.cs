@@ -6,12 +6,14 @@ using Microsoft.Extensions.Options;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
-using Zeus.Api.Application.Interfaces.Services.Integrations;
+using Zeus.Api.Application.Interfaces.Services.Settings;
+using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
-using Zeus.Api.Infrastructure.Services.Integrations;
+using Zeus.Api.Infrastructure.Services.Settings;
+using Zeus.Api.Infrastructure.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
 

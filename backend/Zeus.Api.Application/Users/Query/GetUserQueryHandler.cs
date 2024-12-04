@@ -4,6 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Domain.Errors;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
