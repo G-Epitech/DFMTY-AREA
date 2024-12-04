@@ -23,7 +23,7 @@ class AuthenticationMediator with ChangeNotifier {
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));
-    yield AuthenticationStatus.unknown;
+    yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }
 
@@ -85,6 +85,16 @@ class AuthenticationMediator with ChangeNotifier {
         _controller.add(AuthenticationStatus.unauthenticated);
         throw Exception(res.message);
       }
+    } catch (e) {
+      print("Error: $e");
+      // Display error message with a snackbar or dialog (something like that)
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await _credentialsRepository.deleteTokens();
+      _controller.add(AuthenticationStatus.unauthenticated);
     } catch (e) {
       print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
