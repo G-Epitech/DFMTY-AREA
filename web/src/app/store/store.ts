@@ -1,4 +1,4 @@
-import { AuthUserModel } from '@models/auth-user.model';
+import { UserModel } from '@models/user.model';
 import {
   patchState,
   signalStore,
@@ -7,13 +7,14 @@ import {
   withState,
 } from '@ngrx/signals';
 import { computed, inject } from '@angular/core';
-import { AuthMediator } from '@mediators/auth.mediator';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { TokenMediator } from '@mediators/token.mediator';
+import { UsersMediator } from '@mediators/users.mediator';
 
 export interface AuthState {
-  user: AuthUserModel | undefined | null;
+  user: UserModel | undefined | null;
   isLoading: boolean;
 }
 
@@ -25,7 +26,7 @@ const initialState: AuthState = {
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed((store, authMediator = inject(AuthMediator)) => ({
+  withComputed((store, tokenMediator = inject(TokenMediator)) => ({
     getUser: computed(() => {
       return store.user();
     }),
@@ -33,16 +34,16 @@ export const AuthStore = signalStore(
       return (
         store.user() !== null &&
         store.user() !== undefined &&
-        authMediator.getAccessToken() !== null
+        tokenMediator.accessTokenIsValid()
       );
     }),
   })),
-  withMethods((store, authMediator = inject(AuthMediator)) => ({
+  withMethods((store, usersMediator = inject(UsersMediator)) => ({
     me: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
         concatMap(() => {
-          return authMediator.me().pipe(
+          return usersMediator.me().pipe(
             tapResponse({
               next: user => patchState(store, { user, isLoading: false }),
               error: error => {

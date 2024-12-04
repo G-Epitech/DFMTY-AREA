@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = () => {
   const store = inject(AuthStore);
   const appRouter = inject(AppRouter);
 
-  if (!store.isAuthenticated()) {
+  if (!store.isAuthenticated() && !store.isLoading()) {
     appRouter.redirectToLogin();
     return false;
   }
