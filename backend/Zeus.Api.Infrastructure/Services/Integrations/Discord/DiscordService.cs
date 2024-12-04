@@ -20,12 +20,12 @@ public class DiscordService : IDiscordService
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public DiscordService(HttpClient httpClient, IIntegrationsSettingsProvider integrationsSettingsProvider)
+    public DiscordService(IIntegrationsSettingsProvider integrationsSettingsProvider)
     {
         _integrationsSettingsProvider = integrationsSettingsProvider;
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
 
-        _httpClient = httpClient;
+        _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(_integrationsSettingsProvider.Discord.ApiEndpoint);
         _httpClient.DefaultRequestHeaders.Accept.Clear();
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

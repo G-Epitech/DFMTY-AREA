@@ -1,6 +1,8 @@
 ﻿using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
+using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -30,5 +32,10 @@ public sealed class IntegrationReadRepository : IIntegrationReadRepository
             .Paginate(query);
         
         return Task.FromResult(page);
+    }
+    
+    public Task<IntegrationLinkRequest?> GetIntegrationLinkRequestByIdAsync(IntegrationLinkRequestId id)
+    {
+        return Task.FromResult(InMemoryStore.IntegrationLinkRequests.FirstOrDefault(request => request.Id == id));
     }
 }
