@@ -17,7 +17,12 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
     /// </summary>
     public IntegrationType Type { get; private set; }
 
-    protected IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
+    public static IntegrationLinkRequest Create(UserId ownerId, IntegrationType integrationType)
+    {
+        return new IntegrationLinkRequest(IntegrationLinkRequestId.CreateUnique(), ownerId, integrationType);
+    }
+
+    private IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
         IntegrationType integrationType) : base(id)
     {
         OwnerId = ownerId;
