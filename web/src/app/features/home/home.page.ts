@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'tr-home',
@@ -10,7 +9,7 @@ import { NgOptimizedImage } from '@angular/common';
   standalone: true,
   styleUrl: './home.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TrButtonDirective, NgOptimizedImage],
+  imports: [TrButtonDirective],
 })
 export class HomePageComponent {
   readonly #authMediator = inject(AuthMediator);

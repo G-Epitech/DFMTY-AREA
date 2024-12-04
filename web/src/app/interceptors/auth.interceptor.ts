@@ -7,20 +7,20 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { inject } from '@angular/core';
-import { AuthMediator } from '@mediators/auth.mediator';
 import { Router } from '@angular/router';
+import { TokenMediator } from '@mediators/token.mediator';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
-  const authMediator = inject(AuthMediator);
+  const tokenMediator = inject(TokenMediator);
   const router = inject(Router);
 
   if (req.url.includes('auth')) {
     return next(req);
   }
-  const accessToken = authMediator.getAccessToken();
+  const accessToken = tokenMediator.getAccessToken();
   if (!accessToken) {
     void router.navigate(['/login']);
     return next(req);
