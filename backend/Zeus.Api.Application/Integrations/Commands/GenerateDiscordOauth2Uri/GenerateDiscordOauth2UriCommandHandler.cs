@@ -35,15 +35,12 @@ public class GenerateDiscordOauth2UriCommandHandler : IRequestHandler<GenerateDi
 
         var settings = _integrationsSettingsProvider.Discord;
 
-        var state = Convert.ToBase64String(
-            Encoding.UTF8.GetBytes(linkRequestResult.Value.IntegrationLinkRequestId.ToString()));
-
         var queryString = HttpUtility.ParseQueryString(String.Empty);
         queryString.Add("client_id", settings.ClientId);
         queryString.Add("redirect_uri", settings.RedirectUrl);
         queryString.Add("response_type", "code");
         queryString.Add("scope", string.Join(" ", settings.Scope));
-        queryString.Add("state", state);
+        queryString.Add("state", linkRequestResult.Value.IntegrationLinkRequestId.ToString());
 
         var uri = new UriBuilder(settings.OAuth2Endpoint) { Query = queryString.ToString() }.Uri;
 
