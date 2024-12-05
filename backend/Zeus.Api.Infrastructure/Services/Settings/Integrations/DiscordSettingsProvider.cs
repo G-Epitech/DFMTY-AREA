@@ -6,6 +6,7 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 public class DiscordSettingsProvider : IDiscordSettingsProvider
 {
     public string ApiEndpoint { get; }
+    public string OAuth2Endpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
@@ -14,6 +15,7 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
     public DiscordSettingsProvider(DiscordSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
+        OAuth2Endpoint = settings.OAuth2Endpoint;
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
