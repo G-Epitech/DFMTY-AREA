@@ -2,23 +2,38 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/integration.repository.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';
+import 'credentials.test.mocks.dart';
 
 void integrationRepositoryTests() {
   late MockClient mock;
   late IntegrationRepository repository;
+  late CredentialsRepository credentialsRepository;
+  late MockFlutterSecureStorage mockSecureStorage;
 
   setUp(() {
     mock = MockClient();
     initMock(mock);
-    repository = IntegrationRepository(client: mock);
+
+    mockSecureStorage = MockFlutterSecureStorage();
+    credentialsRepository =
+        CredentialsRepository(secureStorage: mockSecureStorage);
+    repository = IntegrationRepository(
+        client: mock, credentialsRepository: credentialsRepository);
+
+    when(mockSecureStorage.read(key: 'accessToken'))
+        .thenAnswer((_) async => 'dummy');
 
     when(mock.get(
       Uri.parse('/user/integrations'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer dummy'
+      },
     )).thenAnswer((_) async => http.Response(
           '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
           200,
@@ -27,7 +42,10 @@ void integrationRepositoryTests() {
 
     when(mock.get(
       Uri.parse('/user/integrations/?page=1'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer dummy'
+      },
     )).thenAnswer((_) async => http.Response(
           '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
           200,
@@ -36,7 +54,10 @@ void integrationRepositoryTests() {
 
     when(mock.get(
       Uri.parse('/user/integrations/?page=1&size=10'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer dummy'
+      },
     )).thenAnswer((_) async => http.Response(
           '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
           200,
