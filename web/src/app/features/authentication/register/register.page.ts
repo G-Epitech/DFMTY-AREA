@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { AuthMediator } from '@mediators/auth.mediator';
-import { Subject, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -46,6 +46,22 @@ export class RegisterPageComponent implements OnDestroy {
 
   redirectToHome: EffectRef;
 
+  confirmPasswordValidator = (
+    control: AbstractControl
+  ): Record<string, boolean> | null => {
+    const password = this.registerForm?.get('password');
+    const confirmPassword = control;
+
+    if (
+      password &&
+      confirmPassword &&
+      password.value !== confirmPassword.value
+    ) {
+      return { passwordMismatch: true };
+    }
+    return null;
+  };
+
   registerForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
@@ -54,19 +70,8 @@ export class RegisterPageComponent implements OnDestroy {
       Validators.required,
       Validators.minLength(8),
     ]),
-    confirmPassword: new FormControl('', [this.passwordMatchValidator]),
+    confirmPassword: new FormControl('', [this.confirmPasswordValidator]),
   });
-
-  passwordMatchValidator(form: AbstractControl) {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-
-    return password &&
-      confirmPassword &&
-      password.value === confirmPassword.value
-      ? null
-      : { passwordMismatch: true };
-  }
 
   getEmailErrorMessage() {
     const emailControl = this.registerForm.controls.email;
@@ -99,14 +104,28 @@ export class RegisterPageComponent implements OnDestroy {
   }
 
   onSubmit(): void {
+    if (this.registerForm.invalid) {
+      return;
+    }
+    const { email, password, firstName, lastName } = this.registerForm.value;
+    if (!email || !password || !firstName || !lastName) {
+      return;
+    }
     this.#authMediator
-      .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
+      .register(
+        email.trim(),
+        password.trim(),
+        firstName.trim(),
+        lastName.trim()
+      )
       .pipe(
+        takeUntil(this.destroy$),
         tap({
           next: () => this.#store.me(),
           error: error => console.error('Failed to register user', error),
         })
-      );
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {
