@@ -3,13 +3,13 @@ import 'package:triggo/app/theme/fonts/fonts.dart';
 
 class TriggoButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final EdgeInsets padding;
 
   const TriggoButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
   });
 
