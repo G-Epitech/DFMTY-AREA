@@ -16,19 +16,11 @@ Map<String, dynamic> _$InGetIntegrationDTOToJson(
 OutGetIntegrationDTO _$OutGetIntegrationDTOFromJson(
         Map<String, dynamic> json) =>
     OutGetIntegrationDTO(
-      pageNumber: (json['pageNumber'] as num).toInt(),
-      pageSize: (json['pageSize'] as num).toInt(),
-      totalPages: (json['totalPages'] as num).toInt(),
-      totalRecords: (json['totalRecords'] as num).toInt(),
-      data: json['data'] as List<dynamic>,
+      page: pageFromJson(json['page'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OutGetIntegrationDTOToJson(
         OutGetIntegrationDTO instance) =>
     <String, dynamic>{
-      'pageNumber': instance.pageNumber,
-      'pageSize': instance.pageSize,
-      'totalPages': instance.totalPages,
-      'totalRecords': instance.totalRecords,
-      'data': instance.data,
+      'page': pageToJson(instance.page),
     };

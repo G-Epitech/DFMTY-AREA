@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:triggo/repositories/models/repository.models.dart';
+import 'package:triggo/repositories/utils/page_serializer.utils.dart';
 import 'package:triggo/utils/json.dart';
 
 part 'integration.dtos.g.dart';
@@ -17,18 +19,11 @@ class InGetIntegrationDTO implements Json {
 
 @JsonSerializable()
 class OutGetIntegrationDTO implements Json {
-  final int pageNumber;
-  final int pageSize;
-  final int totalPages;
-  final int totalRecords;
-  final List<dynamic> data;
+  @JsonKey(fromJson: pageFromJson, toJson: pageToJson)
+  final Page<Integration> page;
 
   OutGetIntegrationDTO({
-    required this.pageNumber,
-    required this.pageSize,
-    required this.totalPages,
-    required this.totalRecords,
-    required this.data,
+    required this.page,
   });
 
   factory OutGetIntegrationDTO.fromJson(Map<String, dynamic> json) {
