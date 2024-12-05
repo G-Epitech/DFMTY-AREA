@@ -1,14 +1,23 @@
+import 'package:triggo/utils/json.dart';
+
+import 'integrations/discord.integrations.dart';
+
 class IntegrationType {
-  final String discord = 'Discord';
-  final String gmail = 'Gmail';
+  static const String discord = 'Discord';
+  static const String gmail = 'Gmail';
 }
 
-class Integration {
-  final String id;
-  final String ownerId;
-  final IntegrationType type;
-  final bool isValid;
-  final Map<String, dynamic> properties;
+abstract class IntegrationProperties implements Json {
+  @override
+  Map<String, dynamic> toJson();
+}
+
+class Integration implements Json {
+  late final String id;
+  late final String ownerId;
+  late final String type;
+  late final bool isValid;
+  late final IntegrationProperties properties;
 
   Integration({
     required this.id,
@@ -18,13 +27,33 @@ class Integration {
     required this.properties,
   });
 
-  static fromJson(Map<String, dynamic> map) {
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'ownerId': ownerId,
+      'type': type,
+      'isValid': isValid,
+      'properties': properties.toJson(),
+    };
+  }
+
+  factory Integration.fromJson(Map<String, dynamic> json) {
+    IntegrationProperties properties;
+    switch (json['type']) {
+      case IntegrationType.discord:
+        properties = DiscordProperties.fromJson(json['properties']);
+        break;
+      default:
+        throw Exception('Unknown integration type');
+    }
+
     return Integration(
-      id: map['id'],
-      ownerId: map['ownerId'],
-      type: map['type'],
-      isValid: map['isValid'],
-      properties: map['properties'],
+      id: json['id'] as String,
+      ownerId: json['ownerId'] as String,
+      type: json['type'] as String,
+      isValid: json['isValid'] as bool,
+      properties: properties,
     );
   }
 }
