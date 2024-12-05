@@ -28,7 +28,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _authenticationRepository = AuthenticationRepository();
     _credentialsRepository = CredentialsRepository();
-    _userRepository = UserRepository();
+    _userRepository =
+        UserRepository(credentialsRepository: _credentialsRepository);
 
     _authenticationMediator = AuthenticationMediator(
       _authenticationRepository,

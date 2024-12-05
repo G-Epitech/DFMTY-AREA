@@ -8,7 +8,7 @@ class UserRepository {
   final http.Client? client;
   final CredentialsRepository? credentialsRepository;
 
-  UserRepository({required this.client, required this.credentialsRepository});
+  UserRepository({this.client, required this.credentialsRepository});
 
   Future<Response<OutGetUserDTO>> getUser() async {
     final response = await call(
