@@ -36,7 +36,7 @@ class DiscordProperties implements IntegrationProperties {
       username: json['username'] as String,
       displayName: json['displayName'] as String,
       avatarUri: json['avatarUri'] as String,
-      flags: (json['flags'] as List<dynamic>).map((e) => e as String).toList(),
+      flags: List<String>.from(json['flags'] as List),
     );
   }
 }

@@ -1,11 +1,9 @@
-import 'package:triggo/repositories/models/repository.models.dart';
-
-class Page {
+class Page<T> {
   final int pageNumber;
   final int pageSize;
   final int totalPages;
   final int totalRecords;
-  final List<Integration> data;
+  final List<T> data;
 
   Page({
     required this.pageNumber,

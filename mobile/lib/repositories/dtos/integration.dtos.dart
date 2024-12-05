@@ -17,27 +17,21 @@ class InGetIntegrationDTO implements Json {
   Map<String, dynamic> toJson() => _$InGetIntegrationDTOToJson(this);
 }
 
+Page<Integration> pageIntegrationFromJson(Map<String, dynamic> json) {
+  return pageFromJson<Integration>(json, Integration.fromJson);
+}
+
 @JsonSerializable()
 class OutGetIntegrationDTO implements Json {
-  @JsonKey(fromJson: pageFromJson, toJson: pageToJson)
-  final Page page;
+  @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
+  final Page<Integration> page;
 
   OutGetIntegrationDTO({
     required this.page,
   });
 
-  factory OutGetIntegrationDTO.fromJson(Map<String, dynamic> json) {
-    return OutGetIntegrationDTO(
-        page: Page(
-      pageNumber: json['pageNumber'],
-      pageSize: json['pageSize'],
-      totalPages: json['totalPages'],
-      totalRecords: json['totalRecords'],
-      data: (json['data'] as List<dynamic>)
-          .map((e) => Integration.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    ));
-  }
+  factory OutGetIntegrationDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetIntegrationDTOFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OutGetIntegrationDTOToJson(this);

@@ -16,7 +16,7 @@ Map<String, dynamic> _$InGetIntegrationDTOToJson(
 OutGetIntegrationDTO _$OutGetIntegrationDTOFromJson(
         Map<String, dynamic> json) =>
     OutGetIntegrationDTO(
-      page: pageFromJson(json['page'] as Map<String, dynamic>),
+      page: pageIntegrationFromJson(json['page'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OutGetIntegrationDTOToJson(
