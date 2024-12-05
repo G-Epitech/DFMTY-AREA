@@ -96,14 +96,11 @@ export class TrInputDirective implements BrnFormFieldControl, DoCheck {
       this.parentForm
     );
 
-    effect(
-      () => {
-        if (this.ngControl) {
-          this.error = this.errorStateTracker.errorState();
-        }
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      if (this.ngControl) {
+        this.error = this.errorStateTracker.errorState();
+      }
+    });
   }
 
   ngDoCheck() {
