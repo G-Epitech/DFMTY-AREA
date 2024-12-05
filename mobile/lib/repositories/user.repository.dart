@@ -6,17 +6,17 @@ import 'package:triggo/repositories/dtos/user.dtos.dart';
 
 class UserRepository {
   final http.Client? client;
-  final CredentialsRepository? credentialsRepository;
+  final CredentialsRepository credentialsRepository;
 
   UserRepository({this.client, required this.credentialsRepository});
 
   Future<Response<OutGetUserDTO>> getUser() async {
+    final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
       endpoint: '/user',
       headers: {
-        'Authorization':
-            'Bearer ${await credentialsRepository!.getAccessToken()}',
+        'Authorization': 'Bearer $accessToken',
       },
       client: client,
     );
