@@ -8,8 +8,7 @@ class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository? credentialsRepository;
 
-  IntegrationRepository(
-      {required this.client, required this.credentialsRepository});
+  IntegrationRepository({this.client, required this.credentialsRepository});
 
   Future<Response<OutGetIntegrationDTO>> getIntegrations() async {
     final response = await call(
