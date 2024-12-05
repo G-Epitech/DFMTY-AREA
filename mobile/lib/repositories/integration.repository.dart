@@ -6,18 +6,16 @@ import 'package:triggo/repositories/dtos/integration.dtos.dart';
 
 class IntegrationRepository {
   final http.Client? client;
-  final CredentialsRepository? credentialsRepository;
+  final CredentialsRepository credentialsRepository;
 
   IntegrationRepository({this.client, required this.credentialsRepository});
 
   Future<Response<OutGetIntegrationDTO>> getIntegrations() async {
+    final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
       endpoint: '/user/integrations',
-      headers: {
-        'Authorization':
-            'Bearer ${await credentialsRepository!.getAccessToken()}'
-      },
+      headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
 
@@ -33,13 +31,11 @@ class IntegrationRepository {
   }
 
   Future<Response<OutGetIntegrationDTO>> getIntegrationByPage(int page) async {
+    final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
       endpoint: '/user/integrations/?page=$page',
-      headers: {
-        'Authorization':
-            'Bearer ${await credentialsRepository!.getAccessToken()}'
-      },
+      headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
 
@@ -55,13 +51,11 @@ class IntegrationRepository {
 
   Future<Response<OutGetIntegrationDTO>> getIntegrationByPageAndSize(
       int page, int size) async {
+    final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
       endpoint: '/user/integrations/?page=$page&size=$size',
-      headers: {
-        'Authorization':
-            'Bearer ${await credentialsRepository!.getAccessToken()}'
-      },
+      headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
 
