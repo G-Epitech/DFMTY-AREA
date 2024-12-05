@@ -46,19 +46,16 @@ export class RegisterPageComponent implements OnDestroy {
 
   redirectToHome: EffectRef;
 
-  registerForm = new FormGroup(
-    {
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
-      confirmPassword: new FormControl(''),
-    },
-    { validators: this.passwordMatchValidator }
-  );
+  registerForm = new FormGroup({
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    confirmPassword: new FormControl('', [this.passwordMatchValidator]),
+  });
 
   passwordMatchValidator(form: AbstractControl) {
     const password = form.get('password');
@@ -71,6 +68,28 @@ export class RegisterPageComponent implements OnDestroy {
       : { passwordMismatch: true };
   }
 
+  getEmailErrorMessage() {
+    const emailControl = this.registerForm.controls.email;
+    if (emailControl.errors?.['required']) {
+      return 'Email is required';
+    }
+    if (emailControl.errors?.['email']) {
+      return 'Invalid email';
+    }
+    return 'Email is invalid';
+  }
+
+  getPasswordErrorMessage() {
+    const passwordControl = this.registerForm.controls.password;
+    if (passwordControl.errors?.['required']) {
+      return 'Password is required';
+    }
+    if (passwordControl.errors?.['minlength']) {
+      return 'Password must be at least 8 characters';
+    }
+    return 'Password is invalid';
+  }
+
   constructor() {
     this.redirectToHome = effect(() => {
       if (this.#store.isAuthenticated()) {
@@ -80,7 +99,6 @@ export class RegisterPageComponent implements OnDestroy {
   }
 
   onSubmit(): void {
-    console.log(this.registerForm.value);
     this.#authMediator
       .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
       .pipe(
