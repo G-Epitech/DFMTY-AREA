@@ -1,10 +1,16 @@
 class Integration {
   final String name;
-  String description = '';
-  String imageUrl = '';
-  String iconUrl = '';
-  int actionNumber = 0;
-  int reactionNumber = 0;
+  final String description;
+  final String imageUrl;
+  final String iconUrl;
+  final int actionNumber;
+  final int reactionNumber;
 
-  Integration({required this.name});
+  Integration(
+      {required this.name,
+      required this.description,
+      required this.imageUrl,
+      required this.iconUrl,
+      required this.actionNumber,
+      required this.reactionNumber});
 }
