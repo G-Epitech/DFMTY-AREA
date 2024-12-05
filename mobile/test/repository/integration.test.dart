@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/integration.repository.dart';
+import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';
@@ -35,7 +36,10 @@ void integrationRepositoryTests() {
         'Authorization': 'Bearer dummy'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
+          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
+          '"data": [{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
+          '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": []}}]'
+          '}',
           200,
           headers: {'Content-Type': 'application/json'},
         ));
@@ -47,7 +51,9 @@ void integrationRepositoryTests() {
         'Authorization': 'Bearer dummy'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
+          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
+          '"data": []'
+          '}',
           200,
           headers: {'Content-Type': 'application/json'},
         ));
@@ -59,7 +65,10 @@ void integrationRepositoryTests() {
         'Authorization': 'Bearer dummy'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1, "data": []}',
+          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
+          '"data": [{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
+          '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": []}}]'
+          '}',
           200,
           headers: {'Content-Type': 'application/json'},
         ));
@@ -70,33 +79,58 @@ void integrationRepositoryTests() {
       final response = await repository.getIntegrations();
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.pageNumber, 1);
-      expect(response.data?.pageSize, 10);
-      expect(response.data?.totalPages, 1);
-      expect(response.data?.totalRecords, 1);
-      expect(response.data?.data, isEmpty);
+      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageSize, 10);
+      expect(response.data?.page.totalPages, 1);
+      expect(response.data?.page.totalRecords, 1);
+      expect(response.data?.page.data[0].toJson(), {
+        'id': '0',
+        'ownerId': '0',
+        'type': 'Discord',
+        'isValid': true,
+        'properties': DiscordProperties(
+          id: '0',
+          email: 'example@example.com',
+          username: 'example',
+          displayName: 'example',
+          avatarUri: 'example',
+          flags: [],
+        ).toJson()
+      });
     });
-
     test('getIntegrationByPage success', () async {
       final response = await repository.getIntegrationByPage(1);
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.pageNumber, 1);
-      expect(response.data?.pageSize, 10);
-      expect(response.data?.totalPages, 1);
-      expect(response.data?.totalRecords, 1);
-      expect(response.data?.data, isEmpty);
+      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageSize, 10);
+      expect(response.data?.page.totalPages, 1);
+      expect(response.data?.page.totalRecords, 1);
+      expect(response.data?.page.data, []);
     });
 
     test('getIntegrationByPageAndSize success', () async {
       final response = await repository.getIntegrationByPageAndSize(1, 10);
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.pageNumber, 1);
-      expect(response.data?.pageSize, 10);
-      expect(response.data?.totalPages, 1);
-      expect(response.data?.totalRecords, 1);
-      expect(response.data?.data, isEmpty);
+      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageSize, 10);
+      expect(response.data?.page.totalPages, 1);
+      expect(response.data?.page.totalRecords, 1);
+      expect(response.data?.page.data[0].toJson(), {
+        'id': '0',
+        'ownerId': '0',
+        'type': 'Discord',
+        'isValid': true,
+        'properties': DiscordProperties(
+          id: '0',
+          email: 'example@example.com',
+          username: 'example',
+          displayName: 'example',
+          avatarUri: 'example',
+          flags: [],
+        ).toJson()
+      });
     });
   });
 }
