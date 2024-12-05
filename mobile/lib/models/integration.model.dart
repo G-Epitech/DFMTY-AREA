@@ -1,4 +1,4 @@
-class Service {
+class Integration {
   final String name;
   String description = '';
   String imageUrl = '';
@@ -6,5 +6,5 @@ class Service {
   int actionNumber = 0;
   int reactionNumber = 0;
 
-  Service({required this.name});
+  Integration({required this.name});
 }
