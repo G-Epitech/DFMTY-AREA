@@ -17,6 +17,16 @@ public static partial class Errors
                 code: "Integrations.Discord.InvalidBody",
                 description: "Invalid body."
             );
+            
+            public static Error InvalidLinkRequest => Error.Validation(
+                code: "Integrations.Discord.InvalidLinkRequest",
+                description: "Invalid link request."
+            );
+            
+            public static Error InvalidDiscordUserCredentials => Error.Unauthorized(
+                code: "Integrations.Discord.InvalidDiscordUserCredentials",
+                description: "Invalid discord user credentials."
+            );
         }
     }
 }

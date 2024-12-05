@@ -5,13 +5,13 @@ namespace Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 
 public class DiscordUserTokens : ValueObject
 {
-    AccessToken AccessToken { get; }
-    RefreshToken RefreshToken { get; }
-    string TokenType { get; }
-    uint ExpiresIn { get; }
+    public AccessToken AccessToken { get; }
+    public RefreshToken RefreshToken { get; }
+    public string TokenType { get; }
+    public uint ExpiresIn { get; }
 
     public DiscordUserTokens(AccessToken accessToken, RefreshToken refreshToken, string tokenType,
-        uint responseContentExpiresIn, uint expiresIn)
+        uint expiresIn)
     {
         AccessToken = accessToken;
         RefreshToken = refreshToken;
