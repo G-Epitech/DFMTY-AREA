@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/env.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/integration.repository.dart';
 import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
@@ -21,16 +22,14 @@ void integrationRepositoryTests() {
     initMock(mock);
 
     mockSecureStorage = MockFlutterSecureStorage();
-    credentialsRepository =
-        CredentialsRepository(secureStorage: mockSecureStorage);
-    repository = IntegrationRepository(
-        client: mock, credentialsRepository: credentialsRepository);
-
     when(mockSecureStorage.read(key: 'accessToken'))
         .thenAnswer((_) async => 'dummy');
 
+    credentialsRepository =
+        CredentialsRepository(secureStorage: mockSecureStorage);
+
     when(mock.get(
-      Uri.parse('/user/integrations'),
+      Uri.parse('${Env.apiUrl}/user/integrations'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer dummy'
@@ -45,7 +44,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('/user/integrations/?page=1'),
+      Uri.parse('${Env.apiUrl}/user/integrations/?page=1'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer dummy'
@@ -59,7 +58,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('/user/integrations/?page=1&size=10'),
+      Uri.parse('${Env.apiUrl}/user/integrations/?page=1&size=10'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer dummy'
@@ -74,7 +73,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('https://example.com/user/integrations/0'),
+      Uri.parse('${Env.apiUrl}/user/integrations/0'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer dummy'
@@ -85,6 +84,9 @@ void integrationRepositoryTests() {
           200,
           headers: {'Content-Type': 'application/json'},
         ));
+
+    repository = IntegrationRepository(
+        client: mock, credentialsRepository: credentialsRepository);
   });
 
   group('IntegrationRepository', () {
