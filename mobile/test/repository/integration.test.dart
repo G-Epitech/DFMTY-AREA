@@ -72,6 +72,19 @@ void integrationRepositoryTests() {
           200,
           headers: {'Content-Type': 'application/json'},
         ));
+
+    when(mock.get(
+      Uri.parse('https://example.com/user/integrations/0'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer dummy'
+      },
+    )).thenAnswer((_) async => http.Response(
+          '{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
+          '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": ["Test"]}}',
+          200,
+          headers: {'Content-Type': 'application/json'},
+        ));
   });
 
   group('IntegrationRepository', () {
@@ -130,6 +143,26 @@ void integrationRepositoryTests() {
           avatarUri: 'example',
           flags: [],
         ).toJson()
+      });
+    });
+
+    test('getIntegrationById success', () async {
+      final response = await repository.getIntegrationById('0');
+
+      expect(response.statusCode, equals(Codes.ok));
+      expect(response.data?.toJson(), {
+        'id': '0',
+        'ownerId': '0',
+        'type': 'Discord',
+        'isValid': true,
+        'properties': {
+          'id': '0',
+          'email': 'example@example.com',
+          'username': 'example',
+          'displayName': 'example',
+          'avatarUri': 'example',
+          'flags': ['Test']
+        }
       });
     });
   });
