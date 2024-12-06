@@ -1,4 +1,6 @@
-﻿using Zeus.Api.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.UserAggregate;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
@@ -6,13 +8,22 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class UserReadRepository: IUserReadRepository
 {
-    public Task<User?> GetUserByIdAsync(UserId userId)
+    private readonly ZeusDbContext _dbContext;
+
+    public UserReadRepository(ZeusDbContext dbContext)
     {
-        return Task.FromResult(InMemoryStore.Users.FirstOrDefault(user => user.Id == userId));
+        _dbContext = dbContext;
     }
 
-    public Task<User?> GetUserByEmailAsync(string email)
+    private IQueryable<User> Users => _dbContext.Users.AsNoTracking();
+
+    public async Task<User?> GetUserByIdAsync(UserId userId)
     {
-        return Task.FromResult(InMemoryStore.Users.FirstOrDefault(user => user.Email == email));
+        return await Users.FirstOrDefaultAsync(user => user.Id == userId);
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await Users.FirstOrDefaultAsync(user => user.Email == email);
     }
 }

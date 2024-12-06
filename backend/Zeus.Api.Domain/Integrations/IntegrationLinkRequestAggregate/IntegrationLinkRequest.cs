@@ -5,7 +5,7 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 
-public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
+public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId, Guid>
 {
     /// <summary>
     /// The user that owns the integration link request.

@@ -6,7 +6,6 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public static class InMemoryStore
 {
-    public static List<User> Users { get; } = [];
     public static List<Integration> Integrations { get; } = [];
     public static List<IntegrationLinkRequest> IntegrationLinkRequests { get; } = [];
 }

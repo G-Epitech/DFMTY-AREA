@@ -28,7 +28,7 @@ public sealed class DiscordIntegration : Integration
         }
     }
 
-    public static DiscordIntegration Create(UserId ownerId, string clientId)
+        public static DiscordIntegration Create(UserId ownerId, string clientId)
     {
         return new DiscordIntegration(IntegrationId.CreateUnique(), ownerId, clientId);
     }

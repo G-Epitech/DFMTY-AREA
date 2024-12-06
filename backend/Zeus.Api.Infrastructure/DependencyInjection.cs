@@ -1,4 +1,7 @@
+using System.Data;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -11,6 +14,7 @@ using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
+using Zeus.Api.Infrastructure.Persistence;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
@@ -24,7 +28,8 @@ namespace Zeus.Api.Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services)
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddScoped<IUserReadRepository, UserReadRepository>();
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
@@ -38,11 +43,14 @@ public static class DependencyInjection
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+        services.AddDbContext(configuration);
+        services.AddConfiguration(configuration);
+        services.AddAuthentication(configuration);
+
         return services;
     }
 
-    public static IServiceCollection AddConfiguration(
-        this IServiceCollection services,
+    private static void AddConfiguration(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.Configure<UserSettings>(configuration.GetSection(UserSettings.SectionName));
@@ -50,12 +58,9 @@ public static class DependencyInjection
 
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
-
-        return services;
     }
 
-    public static IServiceCollection AddAuthentication(
-        this IServiceCollection services,
+    private static void AddAuthentication(this IServiceCollection services,
         IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings();
@@ -70,7 +75,21 @@ public static class DependencyInjection
                 options.TokenValidationParameters = JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
                 options.Events = JwtAuthenticationValidation.GetJwtBearerEvents();
             });
+    }
 
-        return services;
+    private static void AddDbContext(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString(ConnectionStrings.DefaultDatabase);
+
+        if (connectionString is null)
+        {
+            throw new NoNullAllowedException(nameof(connectionString));
+        }
+
+        services.AddDbContext<ZeusDbContext>(options =>
+        {
+            options.UseNpgsql(connectionString);
+        });
     }
 }
