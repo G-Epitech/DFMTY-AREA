@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Options;
 
-using Zeus.Api.Application.Interfaces.Services;
+using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Infrastructure.Settings;
 
-namespace Zeus.Api.Infrastructure.Services;
+namespace Zeus.Api.Infrastructure.Services.Settings;
 
 public class UserSettingsProvider : IUserSettingsProvider
 {

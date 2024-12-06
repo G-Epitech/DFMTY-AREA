@@ -1,4 +1,4 @@
-namespace Zeus.Api.Application.Interfaces.Services;
+namespace Zeus.Api.Application.Interfaces.Services.Settings;
 
 public interface IUserSettingsProvider
 {
