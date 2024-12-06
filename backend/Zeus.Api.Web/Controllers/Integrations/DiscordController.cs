@@ -47,14 +47,15 @@ public class DiscordController : ApiController
 
     [AllowAnonymous]
     [HttpPost(Name = "CreateDiscordIntegration")]
-    [ProducesResponseType<CreateDiscordIntegrationResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<CreateDiscordIntegrationResponse>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateDiscordIntegration(CreateDiscordIntegrationRequest request)
     {
         var createIntegrationResult =
             await _sender.Send(new CreateDiscordIntegrationCommand(request.Code, request.State));
 
         return createIntegrationResult.Match(
-            _ => Ok(new CreateDiscordIntegrationResponse()),
+            result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),
+                new { id = result.IntegrationId }, new CreateDiscordIntegrationResponse()),
             Problem);
     }
 }

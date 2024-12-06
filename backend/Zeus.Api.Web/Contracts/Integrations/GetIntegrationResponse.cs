@@ -7,4 +7,4 @@ public record GetIntegrationResponse(
     Guid OwnerId,
     string Type,
     bool IsValid,
-    GetIntegrationPropertiesResponse Properties);
+    object Properties);
