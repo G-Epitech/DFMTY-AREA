@@ -1,4 +1,4 @@
-using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Domain.Models;

@@ -20,4 +20,10 @@ public sealed class UserId : AggregateRootId<Guid>
     {
         yield return Value;
     }
+    
+#pragma warning disable CS8618
+    private UserId()
+    {
+    }
+#pragma warning restore CS8618
 }

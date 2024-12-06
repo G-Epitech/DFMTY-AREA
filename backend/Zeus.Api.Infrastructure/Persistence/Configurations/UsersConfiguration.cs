@@ -6,7 +6,7 @@ using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
-public class UsersConfigurations: IEntityTypeConfiguration<User>
+public class UsersConfiguration: IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {

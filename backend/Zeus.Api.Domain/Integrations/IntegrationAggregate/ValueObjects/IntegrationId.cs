@@ -20,4 +20,10 @@ public sealed class IntegrationId : AggregateRootId<Guid>
     {
         yield return Value;
     }
+    
+#pragma warning disable CS8618
+    private IntegrationId()
+    {
+    }
+#pragma warning restore CS8618
 }

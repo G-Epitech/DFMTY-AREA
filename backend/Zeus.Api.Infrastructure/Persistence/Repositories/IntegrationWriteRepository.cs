@@ -6,28 +6,31 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class IntegrationWriteRepository: IIntegrationWriteRepository
 {
-    public Task AddIntegrationAsync(Integration integration)
-    {
-        InMemoryStore.Integrations.Add(integration);
+    private readonly ZeusDbContext _dbContext;
 
-        return Task.CompletedTask;
+    public IntegrationWriteRepository(ZeusDbContext dbContext)
+    {
+        _dbContext = dbContext;
     }
 
-    public Task UpdateIntegrationAsync(Integration integration)
+    public async Task AddIntegrationAsync(Integration integration)
     {
-        InMemoryStore.Integrations.Remove(integration);
-        InMemoryStore.Integrations.Add(integration);
-
-        return Task.CompletedTask;
+        _dbContext.Integrations.Add(integration);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task DeleteIntegrationAsync(Integration integration)
+    public async Task UpdateIntegrationAsync(Integration integration)
     {
-        InMemoryStore.Integrations.Remove(integration);
-
-        return Task.CompletedTask;
+        _dbContext.Integrations.Update(integration);
+        await _dbContext.SaveChangesAsync();
     }
-    
+
+    public async Task DeleteIntegrationAsync(Integration integration)
+    {
+        _dbContext.Integrations.Remove(integration);
+        await _dbContext.SaveChangesAsync();
+    }
+
     public Task AddIntegrationLinkRequestAsync(IntegrationLinkRequest request)
     {
         InMemoryStore.IntegrationLinkRequests.Add(request);

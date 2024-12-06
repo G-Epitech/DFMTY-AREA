@@ -12,6 +12,7 @@ using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
+using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence;
@@ -89,7 +90,10 @@ public static class DependencyInjection
 
         services.AddDbContext<ZeusDbContext>(options =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(connectionString, o =>
+            {
+                o.MapEnum<IntegrationType>(nameof(IntegrationType));
+            });
         });
     }
 }
