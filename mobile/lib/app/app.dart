@@ -8,6 +8,7 @@ import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/repositories/authentication.repository.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/integration.repository.dart';
 import 'package:triggo/repositories/user.repository.dart';
 
 class MyApp extends StatefulWidget {
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   late final CredentialsRepository _credentialsRepository;
   late final UserRepository _userRepository;
   late final AuthenticationMediator _authenticationMediator;
+  late final IntegrationRepository _integrationRepository;
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _MyAppState extends State<MyApp> {
     _credentialsRepository = CredentialsRepository();
     _userRepository =
         UserRepository(credentialsRepository: _credentialsRepository);
+    _integrationRepository =
+        IntegrationRepository(credentialsRepository: _credentialsRepository);
 
     _authenticationMediator = AuthenticationMediator(
       _authenticationRepository,
