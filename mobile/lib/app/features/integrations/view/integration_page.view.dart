@@ -52,9 +52,16 @@ class _IntegrationPageState extends State<IntegrationPage> {
                     ),
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: IntegrationConnectionButton(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 4.0),
+                                child: IntegrationConnectionButton(),
+                              ),
+                            ),
+                          ],
                         ),
                         Expanded(
                             child: IntegrationList(integrations: integrations)),
