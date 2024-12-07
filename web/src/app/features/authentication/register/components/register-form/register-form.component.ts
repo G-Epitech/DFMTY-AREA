@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import { isControlInvalid } from '@utils/forms';
 import {
@@ -17,9 +18,10 @@ import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrFormPasswordComponent } from '@triggo-ui/form';
 import { TrInputDirective } from '@triggo-ui/input';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { delay, Subject, takeUntil, tap } from 'rxjs';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
 
 @Component({
   selector: 'tr-register-form',
@@ -30,6 +32,7 @@ import { AuthStore } from '@app/store';
     TrFormPasswordComponent,
     TrInputDirective,
     ReactiveFormsModule,
+    TrSpinnerComponent,
   ],
   templateUrl: './register-form.component.html',
   styles: [],
@@ -40,6 +43,8 @@ export class RegisterFormComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   private destroy$ = new Subject<void>();
   readonly #store = inject(AuthStore);
+
+  registerLoading = signal<boolean>(false);
 
   confirmPasswordValidator = (
     control: AbstractControl
@@ -96,6 +101,7 @@ export class RegisterFormComponent implements OnDestroy {
   }
 
   onSubmit(): void {
+    this.registerLoading.set(true);
     if (this.registerForm.invalid) {
       return;
     }
@@ -115,9 +121,12 @@ export class RegisterFormComponent implements OnDestroy {
         tap({
           next: () => this.#store.me(),
           error: error => console.error('Failed to register user', error),
-        })
+        }),
+        delay(10000)
       )
-      .subscribe();
+      .subscribe(() => {
+        this.registerLoading.set(false);
+      });
   }
 
   protected readonly isControlInvalid = isControlInvalid;
