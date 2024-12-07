@@ -39,7 +39,7 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
         var linkRequestStringId = Encoding.UTF8.GetString(Convert.FromBase64String(command.State));
         var linkRequestId = new IntegrationLinkRequestId(Guid.Parse(linkRequestStringId));
 
-        var linkRequest = await _integrationLinkRequestReadRepository.GetRequestByIdAsync(linkRequestId);
+        var linkRequest = await _integrationLinkRequestReadRepository.GetRequestByIdAsync(linkRequestId, cancellationToken);
         if (linkRequest is null || linkRequest.Type != IntegrationType.Discord)
         {
             return Errors.Integrations.Discord.InvalidLinkRequest;
@@ -58,9 +58,9 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
         }
 
         var integration = DiscordIntegration.Create(linkRequest.OwnerId, discordUser.Value.Id.ValueString);
-        await _integrationWriteRepository.AddIntegrationAsync(integration);
+        await _integrationWriteRepository.AddIntegrationAsync(integration, cancellationToken);
 
-        await _integrationLinkRequestWriteRepository.DeleteRequestAsync(linkRequest);
+        await _integrationLinkRequestWriteRepository.DeleteRequestAsync(linkRequest, cancellationToken);
 
         return new CreateDiscordIntegrationCommandResult(integration.Id.Value);
     }

@@ -1,5 +1,3 @@
-using System.Data;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +36,7 @@ public static class DependencyInjection
         services.AddScoped<IIntegrationWriteRepository, IntegrationWriteRepository>();
         services.AddScoped<IIntegrationLinkRequestReadRepository, IntegrationLinkRequestReadRepository>();
         services.AddScoped<IIntegrationLinkRequestWriteRepository, IntegrationLinkRequestWriteRepository>();
-        
+
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 
         services.AddScoped<IDiscordService, DiscordService>();
@@ -87,7 +85,7 @@ public static class DependencyInjection
 
         if (connectionString is null)
         {
-            throw new NoNullAllowedException(nameof(connectionString));
+            throw new ArgumentNullException(nameof(connectionString));
         }
 
         services.AddDbContext<ZeusDbContext>(options =>

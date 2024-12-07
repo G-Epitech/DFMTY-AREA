@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 

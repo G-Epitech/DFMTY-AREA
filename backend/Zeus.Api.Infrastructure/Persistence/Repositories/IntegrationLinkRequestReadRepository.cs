@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
-using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
@@ -24,8 +20,8 @@ public sealed class IntegrationLinkRequestReadRepository : IIntegrationLinkReque
         _dbContext = dbContext;
     }
 
-    public async Task<IntegrationLinkRequest?> GetRequestByIdAsync(IntegrationLinkRequestId id)
+    public async Task<IntegrationLinkRequest?> GetRequestByIdAsync(IntegrationLinkRequestId id, CancellationToken cancellationToken = default)
     {
-        return await IntegrationLinkRequests.FirstOrDefaultAsync(request => request.Id == id);
+        return await IntegrationLinkRequests.FirstOrDefaultAsync(request => request.Id == id, cancellationToken: cancellationToken);
     }
 }

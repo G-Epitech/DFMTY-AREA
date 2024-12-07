@@ -11,12 +11,12 @@ namespace Zeus.Api.Application.Integrations.Commands.CreateIntegrationLinkReques
 public class CreateIntegrationLinkRequestCommandHandler :
     IRequestHandler<CreateIntegrationLinkRequestCommand, ErrorOr<CreateIntegrationLinkRequestCommandResult>>
 {
-    private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestWriteRepository;
+    private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestLinkRequestWriteRepository;
 
     public CreateIntegrationLinkRequestCommandHandler(
-        IIntegrationLinkRequestWriteRepository integrationWriteRepository)
+        IIntegrationLinkRequestWriteRepository integrationLinkRequestWriteRepository)
     {
-        _integrationLinkRequestWriteRepository = integrationWriteRepository;
+        _integrationLinkRequestLinkRequestWriteRepository = integrationLinkRequestWriteRepository;
     }
 
     public async Task<ErrorOr<CreateIntegrationLinkRequestCommandResult>> Handle(
@@ -26,7 +26,7 @@ public class CreateIntegrationLinkRequestCommandHandler :
         var integrationLinkRequest =
             IntegrationLinkRequest.Create(new UserId(command.UserId), command.Type.ToIntegrationType());
 
-        await _integrationLinkRequestWriteRepository.AddRequestAsync(integrationLinkRequest);
+        await _integrationLinkRequestLinkRequestWriteRepository.AddRequestAsync(integrationLinkRequest, cancellationToken);
 
         return new CreateIntegrationLinkRequestCommandResult(integrationLinkRequest.Id.Value);
     }

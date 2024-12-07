@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 using Zeus.Api.Domain.UserAggregate;

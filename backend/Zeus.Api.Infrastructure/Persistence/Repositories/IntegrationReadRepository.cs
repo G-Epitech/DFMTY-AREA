@@ -3,8 +3,6 @@
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -23,21 +21,21 @@ public sealed class IntegrationReadRepository : IIntegrationReadRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Integration?> GetIntegrationByIdAsync(IntegrationId id)
+    public async Task<Integration?> GetIntegrationByIdAsync(IntegrationId id, CancellationToken cancellationToken = default)
     {
-        return await Integrations.FirstOrDefaultAsync(integration => integration.Id == id);
+        return await Integrations.FirstOrDefaultAsync(integration => integration.Id == id, cancellationToken: cancellationToken);
     }
 
-    public async Task<Page<Integration>> GetIntegrationsAsync(PageQuery query)
+    public async Task<Page<Integration>> GetIntegrationsAsync(PageQuery query, CancellationToken cancellationToken = default)
     {
-        return await Integrations.PaginateAsync(query);
+        return await Integrations.PaginateAsync(query, cancellationToken: cancellationToken);
     }
 
-    public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query)
+    public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query, CancellationToken cancellationToken = default)
     {
         var page = Integrations
             .Where(integration => integration.OwnerId == userId)
-            .PaginateAsync(query);
+            .PaginateAsync(query, cancellationToken: cancellationToken);
 
         return page;
     }

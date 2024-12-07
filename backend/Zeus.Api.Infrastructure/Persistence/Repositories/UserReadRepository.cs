@@ -17,13 +17,13 @@ public sealed class UserReadRepository: IUserReadRepository
 
     private IQueryable<User> Users => _dbContext.Users.AsNoTracking();
 
-    public async Task<User?> GetUserByIdAsync(UserId userId)
+    public async Task<User?> GetUserByIdAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        return await Users.FirstOrDefaultAsync(user => user.Id == userId);
+        return await Users.FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email)
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await Users.FirstOrDefaultAsync(user => user.Email == email);
+        return await Users.FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
     }
 }
