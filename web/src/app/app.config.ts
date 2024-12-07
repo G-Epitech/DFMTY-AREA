@@ -14,6 +14,8 @@ import { AppService } from './app.service';
 import { environment } from '../environments/environment';
 import { provideIcons } from '@ng-icons/core';
 import { heroHome, heroLink, heroBolt } from '@ng-icons/heroicons/outline';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 if (environment.production) {
   enableProdMode();
@@ -32,5 +34,11 @@ export const appConfig: ApplicationConfig = {
       useValue: environment.apiUrl,
     },
     provideIcons({ heroHome, heroLink, heroBolt }),
+    provideAnimations(),
+    provideToastr({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
   ],
 };

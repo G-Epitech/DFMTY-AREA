@@ -18,10 +18,11 @@ import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrFormPasswordComponent } from '@triggo-ui/form';
 import { TrInputDirective } from '@triggo-ui/input';
-import { delay, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tr-register-form',
@@ -43,6 +44,7 @@ export class RegisterFormComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   private destroy$ = new Subject<void>();
   readonly #store = inject(AuthStore);
+  readonly #toastr = inject(ToastrService);
 
   registerLoading = signal<boolean>(false);
 
@@ -101,7 +103,6 @@ export class RegisterFormComponent implements OnDestroy {
   }
 
   onSubmit(): void {
-    this.registerLoading.set(true);
     if (this.registerForm.invalid) {
       return;
     }
@@ -109,6 +110,7 @@ export class RegisterFormComponent implements OnDestroy {
     if (!email || !password || !firstName || !lastName) {
       return;
     }
+    this.registerLoading.set(true);
     this.#authMediator
       .register(
         email.trim(),
@@ -120,12 +122,16 @@ export class RegisterFormComponent implements OnDestroy {
         takeUntil(this.destroy$),
         tap({
           next: () => this.#store.me(),
-          error: error => console.error('Failed to register user', error),
-        }),
-        delay(10000)
+          error: error => {
+            console.error(error);
+            this.registerLoading.set(false);
+            this.#toastr.error(error.error.title || 'Failed to register');
+          },
+        })
       )
       .subscribe(() => {
         this.registerLoading.set(false);
+        this.#toastr.success('Registration successful');
       });
   }
 
