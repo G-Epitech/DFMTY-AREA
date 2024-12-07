@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/env.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/user.repository.dart';
 
@@ -20,15 +21,14 @@ void userRepositoryTests() {
     initMock(mock);
 
     mockSecureStorage = MockFlutterSecureStorage();
-    credentialsRepository =
-        CredentialsRepository(secureStorage: mockSecureStorage);
-    repository = UserRepository(credentialsRepository: credentialsRepository);
-
     when(mockSecureStorage.read(key: 'accessToken'))
         .thenAnswer((_) async => 'dummy');
 
+    credentialsRepository =
+        CredentialsRepository(secureStorage: mockSecureStorage);
+
     when(mock.get(
-      Uri.parse('/user'),
+      Uri.parse('${Env.apiUrl}/user'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer dummy'
@@ -40,6 +40,9 @@ void userRepositoryTests() {
           200,
           headers: {'Content-Type': 'application/json'},
         ));
+
+    repository = UserRepository(
+        client: mock, credentialsRepository: credentialsRepository);
   });
 
   group('UserRepository', () {
