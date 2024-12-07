@@ -35,7 +35,7 @@ void integrationRepositoryTests() {
         'Authorization': 'Bearer dummy'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
+          '{"pageNumber": 2, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
           '"data": [{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
           '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": []}}]'
           '}',
@@ -94,7 +94,7 @@ void integrationRepositoryTests() {
       final response = await repository.getIntegrations();
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageNumber, 2);
       expect(response.data?.page.pageSize, 10);
       expect(response.data?.page.totalPages, 1);
       expect(response.data?.page.totalRecords, 1);
