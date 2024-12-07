@@ -68,4 +68,24 @@ class IntegrationRepository {
       errors: response.errors,
     );
   }
+
+  Future<Response<OutGetIntegrationDTO>> getIntegrationById(
+      String integrationId) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call(
+      method: 'GET',
+      endpoint: '/user/integrations/$integrationId',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutGetIntegrationDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      data: response.data != null
+          ? OutGetIntegrationDTO.fromJson(response.data!)
+          : null,
+      errors: response.errors,
+    );
+  }
 }
