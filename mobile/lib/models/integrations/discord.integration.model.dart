@@ -4,6 +4,7 @@ import 'package:triggo/repositories/models/integrations/discord.integrations.dar
 
 class DiscordIntegration extends Integration {
   final String username;
+  final String email;
   final String displayName;
   final String avatarUri;
   final List<String> flags;
@@ -11,6 +12,7 @@ class DiscordIntegration extends Integration {
   DiscordIntegration({
     required super.name,
     required this.username,
+    required this.email,
     required this.displayName,
     required this.avatarUri,
     required this.flags,
@@ -21,6 +23,7 @@ class DiscordIntegration extends Integration {
     return DiscordIntegration(
       name: 'Discord',
       username: properties.username,
+      email: properties.email,
       displayName: properties.displayName,
       avatarUri: properties.avatarUri,
       flags: properties.flags,

@@ -61,7 +61,7 @@ class DiscordCustomWidget extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    integration.username,
+                    '${integration.username} - ${integration.email}',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ],
