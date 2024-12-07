@@ -36,6 +36,7 @@ class DiscordCustomWidget extends StatelessWidget {
               right: 0,
               child: CircleAvatar(
                 radius: 10,
+                backgroundColor: Color(0xFF5865F2),
                 child: Icon(
                   Icons.discord,
                   size: 15,
