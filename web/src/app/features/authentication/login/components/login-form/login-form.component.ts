@@ -15,11 +15,12 @@ import {
 import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputDirective } from '@triggo-ui/input';
-import { delay, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
 import { TrFormPasswordComponent } from '@triggo-ui/form';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tr-login-form',
@@ -40,6 +41,8 @@ import { TrSpinnerComponent } from '@triggo-ui/spinner';
 export class LoginFormComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   readonly #store = inject(AuthStore);
+  readonly #toastr = inject(ToastrService);
+
   private destroy$ = new Subject<void>();
 
   loginLoading = signal<boolean>(false);
@@ -64,13 +67,14 @@ export class LoginFormComponent implements OnDestroy {
         takeUntil(this.destroy$),
         tap({
           next: () => this.#store.me(),
-          error: error => {
-            console.error('Failed to login user', error);
+          error: () => {
             this.loginLoading.set(false);
+            this.#toastr.error('Invalid email or password');
           },
-        }),
+        })
       )
       .subscribe(() => {
+        this.#toastr.success('Logged in successfully');
         this.loginLoading.set(false);
       });
   }

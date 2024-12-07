@@ -123,7 +123,6 @@ export class RegisterFormComponent implements OnDestroy {
         tap({
           next: () => this.#store.me(),
           error: error => {
-            console.error(error);
             this.registerLoading.set(false);
             this.#toastr.error(error.error.title || 'Failed to register');
           },
