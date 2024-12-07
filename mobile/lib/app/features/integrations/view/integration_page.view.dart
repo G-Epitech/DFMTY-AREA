@@ -11,8 +11,6 @@ import 'package:triggo/models/integrations/discord.integration.model.dart';
 class IntegrationPage extends StatefulWidget {
   const IntegrationPage({super.key});
 
-  final String title = 'Integration Screen';
-
   @override
   State<IntegrationPage> createState() => _IntegrationPageState();
 }
@@ -35,44 +33,65 @@ class _IntegrationPageState extends State<IntegrationPage> {
               children: [
                 TriggoBanner(),
                 const SizedBox(height: 16.0),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Integrations',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
+                _PageTitle(),
                 const SizedBox(height: 4.0),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      color: Colors.grey[200],
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 4.0),
-                                child: IntegrationConnectionButton(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                            child: IntegrationList(integrations: integrations)),
-                      ],
-                    ),
-                  ),
-                ),
+                _IntegrationContainer(integrations: integrations),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _IntegrationContainer extends StatelessWidget {
+  const _IntegrationContainer({
+    required this.integrations,
+  });
+
+  final Future<List<Integration>> integrations;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.grey[200],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
+                    child: IntegrationConnectionButton(),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(child: IntegrationList(integrations: integrations)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PageTitle extends StatelessWidget {
+  const _PageTitle();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        'Integrations',
+        style: Theme.of(context).textTheme.titleLarge,
       ),
     );
   }
