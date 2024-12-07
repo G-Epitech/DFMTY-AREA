@@ -123,7 +123,7 @@ class IntegrationListView extends StatelessWidget {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return CircularProgressIndicator();
     } else if (snapshot.hasError) {
-      return _ErrorView(error: snapshot.error);
+      return _ErrorView(error: snapshot.error!);
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       return const _NoDataView();
     } else {
@@ -133,7 +133,7 @@ class IntegrationListView extends StatelessWidget {
 }
 
 class _ErrorView extends StatelessWidget {
-  final Object? error;
+  final Object error;
 
   const _ErrorView({required this.error});
 
