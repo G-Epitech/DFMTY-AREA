@@ -4,4 +4,5 @@ class RoutesNames {
   static const String splashScreen = "splash_screen";
   static const String welcome = "welcome_screen";
   static const String register = "register_screen";
+  static const String integrations = "integrations_screen";
 }

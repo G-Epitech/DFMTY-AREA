@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/home/home.dart';
+import 'package:triggo/app/features/integrations/view/integration_page.view.dart';
 import 'package:triggo/app/features/login/view/login_screen.dart';
 import 'package:triggo/app/features/register/view/register_screen.dart';
 import 'package:triggo/app/features/splash/view/splash_screen.dart';
@@ -18,8 +19,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const WelcomeScreen());
     case (RoutesNames.register):
       return MaterialPageRoute(builder: (_) => const RegisterScreen());
+    case (RoutesNames.integrations):
+      return MaterialPageRoute(builder: (_) => const IntegrationPage());
     default:
-      return MaterialPageRoute(
-          builder: (_) => const MyHomePage(title: 'Home Page'));
+      return MaterialPageRoute(builder: (_) => const Placeholder());
   }
 }

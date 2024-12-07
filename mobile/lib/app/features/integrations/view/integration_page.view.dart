@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class IntegrationPage extends StatefulWidget {
-  const IntegrationPage({super.key, required this.title});
+  const IntegrationPage({super.key});
 
-  final String title;
+  final String title = 'Integration Screen';
 
   @override
   State<IntegrationPage> createState() => _IntegrationPageState();

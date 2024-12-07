@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,9 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Text('$_counter', style: Theme.of(context).textTheme.titleLarge),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/login');
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RoutesNames.integrations, (route) => false);
               },
-              child: const Text('Go to Page 1'),
+              child: const Text('Go to Integration page'),
             )
           ],
         ),
