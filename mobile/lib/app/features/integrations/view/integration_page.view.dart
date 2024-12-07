@@ -69,12 +69,12 @@ class _IntegrationContainer extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 8.0, horizontal: 4.0),
-                    child: IntegrationConnectionButton(),
+                    child: _IntegrationConnectionButton(),
                   ),
                 ),
               ],
             ),
-            Expanded(child: IntegrationList(integrations: integrations)),
+            Expanded(child: _IntegrationList(integrations: integrations)),
           ],
         ),
       ),
@@ -97,8 +97,8 @@ class _PageTitle extends StatelessWidget {
   }
 }
 
-class IntegrationList extends StatelessWidget {
-  const IntegrationList({super.key, required this.integrations});
+class _IntegrationList extends StatelessWidget {
+  const _IntegrationList({required this.integrations});
 
   final Future<List<Integration>> integrations;
 
@@ -123,19 +123,19 @@ class IntegrationListView extends StatelessWidget {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return CircularProgressIndicator();
     } else if (snapshot.hasError) {
-      return ErrorView(error: snapshot.error);
+      return _ErrorView(error: snapshot.error);
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      return const NoDataView();
+      return const _NoDataView();
     } else {
-      return IntegrationListViewContent(integrations: snapshot.data!);
+      return _IntegrationListViewContent(integrations: snapshot.data!);
     }
   }
 }
 
-class ErrorView extends StatelessWidget {
+class _ErrorView extends StatelessWidget {
   final Object? error;
 
-  const ErrorView({required this.error, super.key});
+  const _ErrorView({required this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +143,8 @@ class ErrorView extends StatelessWidget {
   }
 }
 
-class NoDataView extends StatelessWidget {
-  const NoDataView({super.key});
+class _NoDataView extends StatelessWidget {
+  const _NoDataView();
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +155,10 @@ class NoDataView extends StatelessWidget {
   }
 }
 
-class IntegrationListViewContent extends StatelessWidget {
+class _IntegrationListViewContent extends StatelessWidget {
   final List<Integration> integrations;
 
-  const IntegrationListViewContent({required this.integrations, super.key});
+  const _IntegrationListViewContent({required this.integrations});
 
   @override
   Widget build(BuildContext context) {
@@ -167,17 +167,15 @@ class IntegrationListViewContent extends StatelessWidget {
         itemCount: 10,
         itemBuilder: (context, index) {
           final integration = integrations[0];
-          return IntegrationListItem(integration: integration);
+          return _IntegrationListItem(integration: integration);
         },
       ),
     );
   }
 }
 
-class IntegrationConnectionButton extends StatelessWidget {
-  const IntegrationConnectionButton({
-    super.key,
-  });
+class _IntegrationConnectionButton extends StatelessWidget {
+  const _IntegrationConnectionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -191,10 +189,10 @@ class IntegrationConnectionButton extends StatelessWidget {
   }
 }
 
-class IntegrationListItem extends StatelessWidget {
+class _IntegrationListItem extends StatelessWidget {
   final Integration integration;
 
-  const IntegrationListItem({required this.integration, super.key});
+  const _IntegrationListItem({required this.integration});
 
   @override
   Widget build(BuildContext context) {
@@ -203,15 +201,15 @@ class IntegrationListItem extends StatelessWidget {
         return DiscordIntegrationListItemWidget(
             integration: integration as DiscordIntegration);
       default:
-        return DefaultIntegrationListItem(integration: integration);
+        return _DefaultIntegrationListItem(integration: integration);
     }
   }
 }
 
-class DefaultIntegrationListItem extends StatelessWidget {
+class _DefaultIntegrationListItem extends StatelessWidget {
   final Integration integration;
 
-  const DefaultIntegrationListItem({required this.integration, super.key});
+  const _DefaultIntegrationListItem({required this.integration});
 
   @override
   Widget build(BuildContext context) {
