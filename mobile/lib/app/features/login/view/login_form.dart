@@ -6,23 +6,25 @@ import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 
-class PasswordInputScreen extends StatelessWidget {
-  const PasswordInputScreen({super.key});
+class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocListener<LoginBloc, LoginState>(
-          listener: _listener,
+    return BlocListener<LoginBloc, LoginState>(
+      listener: _listener,
+      child: Align(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _PasswordLabel(),
-              const SizedBox(height: 20),
+              _Label(),
+              const SizedBox(height: 12),
+              _EmailInput(),
+              const SizedBox(height: 12),
               _PasswordInput(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               _LoginButton(),
             ],
           ),
@@ -32,12 +34,28 @@ class PasswordInputScreen extends StatelessWidget {
   }
 }
 
-class _PasswordLabel extends StatelessWidget {
+class _Label extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Password',
-      style: Theme.of(context).textTheme.titleMedium,
+      'Welcome Back',
+      style: Theme.of(context).textTheme.titleLarge,
+    );
+  }
+}
+
+class _EmailInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final displayError = context.select(
+      (LoginBloc bloc) => bloc.state.email.displayError,
+    );
+
+    return TriggoInput(
+      placeholder: 'Email',
+      onChanged: (email) {
+        context.read<LoginBloc>().add(LoginEmailChanged(email));
+      },
     );
   }
 }
