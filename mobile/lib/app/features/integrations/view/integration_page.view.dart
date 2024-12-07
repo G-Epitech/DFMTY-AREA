@@ -156,7 +156,7 @@ class IntegrationConnectionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TriggoButton(
-      text: 'Connect new integration',
+      text: 'New integration',
       onPressed: () {
         Navigator.pushNamedAndRemoveUntil(
             context, RoutesNames.connectIntegration, (route) => false);
