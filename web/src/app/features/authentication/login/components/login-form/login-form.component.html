@@ -20,5 +20,11 @@
       [formControl]="loginForm.controls.password"
       errorMessage="" />
   </div>
-  <button type="submit" trBtn class="w-full">Login</button>
+  <button type="submit" trBtn class="w-full" [disabled]="loginLoading()">
+    @if (loginLoading()) {
+      <tr-spinner />
+    } @else {
+      Login
+    }
+  </button>
 </form>

@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import {
   FormControl,
@@ -14,10 +15,11 @@ import {
 import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputDirective } from '@triggo-ui/input';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { delay, Subject, takeUntil, tap } from 'rxjs';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
 import { TrFormPasswordComponent } from '@triggo-ui/form';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
 
 @Component({
   selector: 'tr-login-form',
@@ -28,6 +30,7 @@ import { TrFormPasswordComponent } from '@triggo-ui/form';
     TrButtonDirective,
     TrInputDirective,
     TrFormPasswordComponent,
+    TrSpinnerComponent,
   ],
   templateUrl: './login-form.component.html',
   styles: [],
@@ -38,6 +41,8 @@ export class LoginFormComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   readonly #store = inject(AuthStore);
   private destroy$ = new Subject<void>();
+
+  loginLoading = signal<boolean>(false);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
@@ -52,16 +57,22 @@ export class LoginFormComponent implements OnDestroy {
     if (!email || !password) {
       return;
     }
+    this.loginLoading.set(true);
     this.#authMediator
       .login(email, password)
       .pipe(
         takeUntil(this.destroy$),
         tap({
           next: () => this.#store.me(),
-          error: error => console.error('Failed to login user', error),
-        })
+          error: error => {
+            console.error('Failed to login user', error);
+            this.loginLoading.set(false);
+          },
+        }),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.loginLoading.set(false);
+      });
   }
 
   ngOnDestroy() {
