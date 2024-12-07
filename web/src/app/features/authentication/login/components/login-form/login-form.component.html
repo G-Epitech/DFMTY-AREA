@@ -1,0 +1,24 @@
+<form class="space-y-6" (ngSubmit)="onLogin()" [formGroup]="loginForm">
+  <div>
+    <label for="email" trLabel
+      >Email
+      <input
+        id="email"
+        type="email"
+        trInput
+        class="w-full"
+        required
+        placeholder="example@email.com"
+        [formControl]="loginForm.controls.email" />
+    </label>
+  </div>
+
+  <div>
+    <tr-form-password
+      label="Password"
+      id="password"
+      [formControl]="loginForm.controls.password"
+      errorMessage="" />
+  </div>
+  <button type="submit" trBtn class="w-full">Login</button>
+</form>
