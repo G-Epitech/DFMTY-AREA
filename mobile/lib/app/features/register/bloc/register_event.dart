@@ -7,8 +7,26 @@ sealed class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class LoginEmailChanged extends RegisterEvent {
-  const LoginEmailChanged(this.email);
+final class RegisterFirstNameChanged extends RegisterEvent {
+  const RegisterFirstNameChanged(this.firstName);
+
+  final String firstName;
+
+  @override
+  List<Object> get props => [firstName];
+}
+
+final class RegisterLastNameChanged extends RegisterEvent {
+  const RegisterLastNameChanged(this.lastName);
+
+  final String lastName;
+
+  @override
+  List<Object> get props => [lastName];
+}
+
+final class RegisterEmailChanged extends RegisterEvent {
+  const RegisterEmailChanged(this.email);
 
   final String email;
 
@@ -16,8 +34,8 @@ final class LoginEmailChanged extends RegisterEvent {
   List<Object> get props => [email];
 }
 
-final class LoginPasswordChanged extends RegisterEvent {
-  const LoginPasswordChanged(this.password);
+final class RegisterPasswordChanged extends RegisterEvent {
+  const RegisterPasswordChanged(this.password);
 
   final String password;
 
@@ -25,10 +43,10 @@ final class LoginPasswordChanged extends RegisterEvent {
   List<Object> get props => [password];
 }
 
-final class LoginSubmitted extends RegisterEvent {
-  const LoginSubmitted();
+final class RegisterSubmitted extends RegisterEvent {
+  const RegisterSubmitted();
 }
 
-final class LoginReset extends RegisterEvent {
-  const LoginReset();
+final class RegisterReset extends RegisterEvent {
+  const RegisterReset();
 }
