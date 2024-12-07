@@ -41,9 +41,4 @@ public sealed class IntegrationReadRepository : IIntegrationReadRepository
 
         return page;
     }
-
-    public Task<IntegrationLinkRequest?> GetIntegrationLinkRequestByIdAsync(IntegrationLinkRequestId id)
-    {
-        return Task.FromResult(InMemoryStore.IntegrationLinkRequests.FirstOrDefault(request => request.Id == id));
-    }
 }

@@ -7,9 +7,7 @@ using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 
-public interface IIntegrationReadRepository
+public interface IIntegrationLinkRequestReadRepository
 {
-    public Task<Integration?> GetIntegrationByIdAsync(IntegrationId id);
-    public Task<Page<Integration>> GetIntegrationsAsync(PageQuery query);
-    public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query);
+    public Task<IntegrationLinkRequest?> GetRequestByIdAsync(IntegrationLinkRequestId id);
 }

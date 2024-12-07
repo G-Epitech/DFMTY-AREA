@@ -8,8 +8,4 @@ public interface IIntegrationWriteRepository
     public Task AddIntegrationAsync(Integration integration);
     public Task UpdateIntegrationAsync(Integration integration);
     public Task DeleteIntegrationAsync(Integration integration);
-
-    public Task AddIntegrationLinkRequestAsync(IntegrationLinkRequest request);
-    public Task UpdateIntegrationLinkRequestAsync(IntegrationLinkRequest request);
-    public Task DeleteIntegrationLinkRequestAsync(IntegrationLinkRequest request);
 }

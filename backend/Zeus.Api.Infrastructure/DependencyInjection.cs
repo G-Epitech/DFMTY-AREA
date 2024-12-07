@@ -36,6 +36,8 @@ public static class DependencyInjection
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
         services.AddScoped<IIntegrationReadRepository, IntegrationReadRepository>();
         services.AddScoped<IIntegrationWriteRepository, IntegrationWriteRepository>();
+        services.AddScoped<IIntegrationLinkRequestReadRepository, IntegrationLinkRequestReadRepository>();
+        services.AddScoped<IIntegrationLinkRequestWriteRepository, IntegrationLinkRequestWriteRepository>();
         
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 

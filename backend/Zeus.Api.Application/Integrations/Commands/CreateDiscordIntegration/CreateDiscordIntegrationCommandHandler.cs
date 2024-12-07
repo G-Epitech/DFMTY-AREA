@@ -16,15 +16,20 @@ namespace Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
 public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDiscordIntegrationCommand,
     ErrorOr<CreateDiscordIntegrationCommandResult>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
+    private readonly IIntegrationLinkRequestReadRepository _integrationLinkRequestReadRepository;
+    private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestWriteRepository;
     private readonly IIntegrationWriteRepository _integrationWriteRepository;
     private readonly IDiscordService _discordService;
 
-    public CreateDiscordIntegrationCommandHandler(IIntegrationReadRepository integrationReadRepository,
-        IIntegrationWriteRepository integrationWriteRepository, IDiscordService discordService)
+    public CreateDiscordIntegrationCommandHandler(
+        IIntegrationLinkRequestReadRepository integrationLinkRequestReadRepository,
+        IIntegrationLinkRequestWriteRepository integrationLinkRequestWriteRepository,
+        IIntegrationWriteRepository integrationWriteRepository, 
+        IDiscordService discordService)
     {
-        _integrationReadRepository = integrationReadRepository;
         _integrationWriteRepository = integrationWriteRepository;
+        _integrationLinkRequestReadRepository = integrationLinkRequestReadRepository;
+        _integrationLinkRequestWriteRepository = integrationLinkRequestWriteRepository;
         _discordService = discordService;
     }
 
@@ -34,7 +39,7 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
         var linkRequestStringId = Encoding.UTF8.GetString(Convert.FromBase64String(command.State));
         var linkRequestId = new IntegrationLinkRequestId(Guid.Parse(linkRequestStringId));
 
-        var linkRequest = await _integrationReadRepository.GetIntegrationLinkRequestByIdAsync(linkRequestId);
+        var linkRequest = await _integrationLinkRequestReadRepository.GetRequestByIdAsync(linkRequestId);
         if (linkRequest is null || linkRequest.Type != IntegrationType.Discord)
         {
             return Errors.Integrations.Discord.InvalidLinkRequest;
@@ -55,7 +60,7 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
         var integration = DiscordIntegration.Create(linkRequest.OwnerId, discordUser.Value.Id.ValueString);
         await _integrationWriteRepository.AddIntegrationAsync(integration);
 
-        await _integrationWriteRepository.DeleteIntegrationLinkRequestAsync(linkRequest);
+        await _integrationLinkRequestWriteRepository.DeleteRequestAsync(linkRequest);
 
         return new CreateDiscordIntegrationCommandResult(integration.Id.Value);
     }

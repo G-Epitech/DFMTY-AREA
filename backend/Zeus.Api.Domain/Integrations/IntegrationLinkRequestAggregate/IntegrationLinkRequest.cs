@@ -23,9 +23,16 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId, Gu
     }
 
     private IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
-        IntegrationType integrationType) : base(id)
+        IntegrationType integrationType)
+        : base(id)
     {
         OwnerId = ownerId;
         Type = integrationType;
     }
+
+#pragma warning disable CS8618
+    private IntegrationLinkRequest()
+    {
+    }
+#pragma warning restore CS8618
 }

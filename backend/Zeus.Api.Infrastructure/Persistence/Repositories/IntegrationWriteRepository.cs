@@ -30,26 +30,4 @@ public sealed class IntegrationWriteRepository: IIntegrationWriteRepository
         _dbContext.Integrations.Remove(integration);
         await _dbContext.SaveChangesAsync();
     }
-
-    public Task AddIntegrationLinkRequestAsync(IntegrationLinkRequest request)
-    {
-        InMemoryStore.IntegrationLinkRequests.Add(request);
-
-        return Task.CompletedTask;
-    }
-    
-    public Task UpdateIntegrationLinkRequestAsync(IntegrationLinkRequest request)
-    {
-        InMemoryStore.IntegrationLinkRequests.Remove(request);
-        InMemoryStore.IntegrationLinkRequests.Add(request);
-
-        return Task.CompletedTask;
-    }
-    
-    public Task DeleteIntegrationLinkRequestAsync(IntegrationLinkRequest request)
-    {
-        InMemoryStore.IntegrationLinkRequests.Remove(request);
-
-        return Task.CompletedTask;
-    }
 }
