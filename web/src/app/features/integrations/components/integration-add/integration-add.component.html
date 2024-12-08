@@ -1,0 +1,24 @@
+<tr-dialog>
+  <button id="edit-profile" brnDialogTrigger trBtn>Add Integration</button>
+  <tr-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
+    <tr-dialog-header>
+      <h3 trDialogTitle>Add Integration</h3>
+      <p trDialogDescription>
+        Make changes to your profile here. Click save when you're done.
+      </p>
+    </tr-dialog-header>
+    <div class="py-4 grid gap-4">
+      <div class="items-center grid grid-cols-4 gap-4">
+        <label trLabel for="name" class="text-right">Name</label>
+        <input trInput id="name" value="Pedro Duarte" class="col-span-3" />
+      </div>
+      <div class="items-center grid grid-cols-4 gap-4">
+        <label trLabel for="username" class="text-right">Username</label>
+        <input trInput id="username" value="@peduarte" class="col-span-3" />
+      </div>
+    </div>
+    <tr-dialog-footer>
+      <button trBtn type="submit">Save changes</button>
+    </tr-dialog-footer>
+  </tr-dialog-content>
+</tr-dialog>

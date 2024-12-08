@@ -34,6 +34,9 @@ dependencies:
   '@ng-icons/heroicons':
     specifier: ^29.10.0
     version: 29.10.0
+  '@ng-icons/lucide':
+    specifier: ^26.3.0
+    version: 26.3.0
   '@ngrx/operators':
     specifier: ^18.1.1
     version: 18.1.1(rxjs@7.8.0)
@@ -43,6 +46,9 @@ dependencies:
   '@spartan-ng/ui-core':
     specifier: 0.0.1-alpha.356
     version: 0.0.1-alpha.356(@angular/core@19.0.0)(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7)(tailwindcss@3.4.15)
+  '@spartan-ng/ui-dialog-brain':
+    specifier: 0.0.1-alpha.356
+    version: 0.0.1-alpha.356(@angular/cdk@19.0.1)(@angular/core@19.0.0)(@spartan-ng/ui-core@0.0.1-alpha.356)
   '@spartan-ng/ui-formfield-brain':
     specifier: 0.0.1-alpha.356
     version: 0.0.1-alpha.356(@angular/core@19.0.0)(@spartan-ng/ui-core@0.0.1-alpha.356)(class-variance-authority@0.6.0)(clsx@2.1.1)
@@ -3250,6 +3256,12 @@ packages:
       tslib: 2.8.1
     dev: false
 
+  /@ng-icons/lucide@26.3.0:
+    resolution: {integrity: sha512-y9jxV28hWLYf74cC4EBOh8qMTBh+oczo47/nGU8iC/dZc9CXSUckbe8AMosqTDBY1gaBAZ/jLnwpg6EscHLapg==}
+    dependencies:
+      tslib: 2.8.1
+    dev: false
+
   /@ngrx/operators@18.1.1(rxjs@7.8.0):
     resolution: {integrity: sha512-RB156PouKI/E79jxvJLaDFYMHz9JVFR8f4ogfAeT7sh2dDGoK4A+B0n1Cl0iYW9fpcJCdfB/mu7TkH6auFv1aQ==}
     peerDependencies:
@@ -4570,6 +4582,19 @@ packages:
       tailwind-merge: 2.5.5
       tailwindcss: 3.4.15
       tailwindcss-animate: 1.0.7(tailwindcss@3.4.15)
+      tslib: 2.8.1
+    dev: false
+
+  /@spartan-ng/ui-dialog-brain@0.0.1-alpha.356(@angular/cdk@19.0.1)(@angular/core@19.0.0)(@spartan-ng/ui-core@0.0.1-alpha.356):
+    resolution: {integrity: sha512-p6IEwU7I7TjWe9ZzPZ3LqZrBHoNhrkIKhs4ZOQGst8YO0dtERw5qO4RupwjvBY1S2zCRTxSOHnjMBfh5fdiOgg==}
+    peerDependencies:
+      '@angular/cdk': ^18.0.0
+      '@angular/core': ^18.0.0
+      '@spartan-ng/ui-core': 0.0.1-alpha.356
+    dependencies:
+      '@angular/cdk': 19.0.1(@angular/common@19.0.0)(@angular/core@19.0.0)(rxjs@7.8.0)
+      '@angular/core': 19.0.0(rxjs@7.8.0)(zone.js@0.15.0)
+      '@spartan-ng/ui-core': 0.0.1-alpha.356(@angular/core@19.0.0)(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7)(tailwindcss@3.4.15)
       tslib: 2.8.1
     dev: false
 

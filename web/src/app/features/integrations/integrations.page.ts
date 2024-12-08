@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TrButtonDirective } from '@triggo-ui/button';
 import {
   IntegrationModel,
   IntegrationTypeEnum,
@@ -8,10 +7,11 @@ import {
 import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LinkedIntegrationCardComponent } from '@features/integrations/components/linked-integration/linked-integration-card.component';
+import { IntegrationAddComponent } from '@features/integrations/components/integration-add/integration-add.component';
 
 @Component({
   selector: 'tr-integrations',
-  imports: [TrButtonDirective, AsyncPipe, LinkedIntegrationCardComponent],
+  imports: [AsyncPipe, LinkedIntegrationCardComponent, IntegrationAddComponent],
   templateUrl: './integrations.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +36,8 @@ export class IntegrationsPageComponent {
       email: 'user2@example.com',
       username: 'user2',
       displayName: 'User Two',
-      avatarUri: 'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
+      avatarUri:
+        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
       flags: ['flag3'],
     };
 
