@@ -1,8 +1,8 @@
-﻿using Zeus.Api.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -10,32 +10,33 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class IntegrationReadRepository : IIntegrationReadRepository
 {
-    public Task<Integration?> GetIntegrationByIdAsync(IntegrationId id)
+    private readonly ZeusDbContext _dbContext;
+
+    private IAsyncQueryable<Integration> Integrations => _dbContext.Integrations.AsNoTracking()
+        .AsAsyncEnumerable()
+        .AsAsyncQueryable();
+
+    public IntegrationReadRepository(ZeusDbContext dbContext)
     {
-        return Task.FromResult(InMemoryStore.Integrations.FirstOrDefault(integration => integration.Id == id));
+        _dbContext = dbContext;
     }
 
-    public Task<Page<Integration>> GetIntegrationsAsync(PageQuery query)
+    public async Task<Integration?> GetIntegrationByIdAsync(IntegrationId id, CancellationToken cancellationToken = default)
     {
-        var page = InMemoryStore.Integrations
-            .AsQueryable()
-            .Paginate(query);
-
-        return Task.FromResult(page);
+        return await Integrations.FirstOrDefaultAsync(integration => integration.Id == id, cancellationToken: cancellationToken);
     }
 
-    public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query)
+    public async Task<Page<Integration>> GetIntegrationsAsync(PageQuery query, CancellationToken cancellationToken = default)
     {
-        var page = InMemoryStore.Integrations
-            .AsQueryable()
+        return await Integrations.PaginateAsync(query, cancellationToken: cancellationToken);
+    }
+
+    public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query, CancellationToken cancellationToken = default)
+    {
+        var page = Integrations
             .Where(integration => integration.OwnerId == userId)
-            .Paginate(query);
-        
-        return Task.FromResult(page);
-    }
-    
-    public Task<IntegrationLinkRequest?> GetIntegrationLinkRequestByIdAsync(IntegrationLinkRequestId id)
-    {
-        return Task.FromResult(InMemoryStore.IntegrationLinkRequests.FirstOrDefault(request => request.Id == id));
+            .PaginateAsync(query, cancellationToken: cancellationToken);
+
+        return page;
     }
 }

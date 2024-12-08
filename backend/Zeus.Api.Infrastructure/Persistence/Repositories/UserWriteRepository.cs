@@ -5,23 +5,28 @@ namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
 public sealed class UserWriteRepository : IUserWriteRepository
 {
-    public Task AddUserAsync(User user)
-    {
-        InMemoryStore.Users.Add(user);
+    private readonly ZeusDbContext _dbContext;
 
-        return Task.CompletedTask;
+    public UserWriteRepository(ZeusDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    public async Task AddUserAsync(User user, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Users.Add(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task UpdateUserAsync(User user)
+    public async Task UpdateUserAsync(User user, CancellationToken cancellationToken = default)
     {
-        InMemoryStore.Users.Remove(user);
-        InMemoryStore.Users.Add(user);
-        return Task.CompletedTask;
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task DeleteUserAsync(User user)
+    public async Task DeleteUserAsync(User user, CancellationToken cancellationToken = default)
     {
-        InMemoryStore.Users.Remove(user);
-        return Task.CompletedTask;
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

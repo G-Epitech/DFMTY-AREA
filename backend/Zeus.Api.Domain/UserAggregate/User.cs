@@ -3,14 +3,15 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.UserAggregate;
 
-public sealed class User : AggregateRoot<UserId>
+public sealed class User : AggregateRoot<UserId, Guid>
 {
     private User(
         UserId id,
         string firstName,
         string lastName,
         string email,
-        string password) : base(id)
+        string password)
+        : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -37,4 +38,10 @@ public sealed class User : AggregateRoot<UserId>
             password
         );
     }
+
+#pragma warning disable CS8618
+    private User()
+    {
+    }
+#pragma warning restore CS8618
 }

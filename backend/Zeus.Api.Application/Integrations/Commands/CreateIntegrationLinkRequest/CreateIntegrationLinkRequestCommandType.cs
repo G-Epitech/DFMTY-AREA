@@ -1,4 +1,4 @@
-using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.Common.Enums;
 
 namespace Zeus.Api.Application.Integrations.Commands.CreateIntegrationLinkRequest;
 

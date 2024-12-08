@@ -24,4 +24,10 @@ public sealed class IntegrationToken : ValueObject
         yield return Type;
         yield return Usage;
     }
+    
+#pragma warning disable CS8618
+    private IntegrationToken()
+    {
+    }
+#pragma warning restore CS8618
 }

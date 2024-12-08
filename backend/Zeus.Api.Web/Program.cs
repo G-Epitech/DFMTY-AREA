@@ -9,10 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddApplication()
-        .AddInfrastructure()
-        .AddMappings()
-        .AddConfiguration(builder.Configuration)
-        .AddAuthentication(builder.Configuration);
+        .AddInfrastructure(builder.Configuration)
+        .AddMappings();
 
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();

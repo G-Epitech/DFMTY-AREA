@@ -3,7 +3,7 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.Discord;
 
-public class DiscordUser : AggregateRoot<DiscordUserId>
+public class DiscordUser : Entity<DiscordUserId>
 {
     public string Username { get; private set; }
     public string Email { get; private set; }
