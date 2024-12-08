@@ -4,5 +4,11 @@
     <button trBtn>Add Integration</button>
   </div>
 
-  <div class="flex-grow bg-secondary rounded-md overflow-auto"></div>
+  <div class="flex-grow bg-secondary rounded-md overflow-auto">
+    <div class="p-4 space-y-4 flex-col flex">
+      @for (integration of integrations | async; track integration.id) {
+      <tr-linked-integration-card [integration]="integration" />
+      }
+    </div>
+  </div>
 </div>

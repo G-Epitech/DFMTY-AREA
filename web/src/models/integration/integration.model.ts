@@ -6,7 +6,8 @@ export class IntegrationModel {
   readonly ownerId: string;
   readonly isValid: boolean;
   readonly type: IntegrationTypeEnum;
-  readonly props: IntegrationDiscordProps | string;
+  readonly #discordProps: IntegrationDiscordProps | undefined;
+  readonly #gmailProps: string | undefined;
 
   constructor(
     id: string,
@@ -19,6 +20,21 @@ export class IntegrationModel {
     this.ownerId = ownerId;
     this.isValid = isValid;
     this.type = type;
-    this.props = props;
+    switch (type) {
+      case IntegrationTypeEnum.DISCORD:
+        this.#discordProps = props as IntegrationDiscordProps;
+        break;
+      case IntegrationTypeEnum.GMAIL:
+        this.#gmailProps = props as string;
+        break;
+    }
+  }
+
+  get discordProps(): IntegrationDiscordProps {
+    return this.#discordProps!;
+  }
+
+  get gmailProps(): string {
+    return this.#gmailProps!;
   }
 }
