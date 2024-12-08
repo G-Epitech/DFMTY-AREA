@@ -39,6 +39,9 @@ flutter:
   assets:
     - assets/icons/logo.svg
     - assets/icons/bubbles.svg
+    - assets/icons/home.svg
+    - assets/icons/link.svg
+    - assets/icons/bolt.svg
 
   uses-material-design: true
 
