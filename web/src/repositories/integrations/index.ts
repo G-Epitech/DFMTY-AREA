@@ -1,2 +1,1 @@
-export * from './dto';
-export * from './users.repository';
+export * from './discord.repository';

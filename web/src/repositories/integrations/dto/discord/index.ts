@@ -1,1 +1,1 @@
-export * from './users-get.dto';
+export * from './discord-uri.dto';

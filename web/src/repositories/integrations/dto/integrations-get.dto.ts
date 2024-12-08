@@ -1,6 +1,6 @@
 export interface UsersGetResponseDTO {
   id: string;
-  firstName: string;
+  ownerId: string;
   lastName: string;
   email: string;
   picture: string;
