@@ -1,11 +1,19 @@
 <div class="flex flex-row items-center">
-  <img
-    [ngSrc]="props().avatarUri"
-    alt="Discord Avatar"
-    [width]="55"
-    [height]="55"
-    class="rounded-full" />
-  <div class="flex flex-col ml-2">
+  <div class="relative">
+    <img
+      [ngSrc]="props().avatarUri"
+      alt="Discord Avatar"
+      [width]="53"
+      [height]="53"
+      class="rounded-full" />
+    <img
+      ngSrc="icons/discord_logo.svg"
+      alt="Discord Logo"
+      class="absolute -bottom-2 left-8 rounded-full"
+      [width]="20"
+      [height]="20" />
+  </div>
+  <div class="flex flex-col ml-3">
     <span class="tr-large">{{ props().username }}</span>
     <span class="text-gray-500 text-sm">{{ props().email }}</span>
     <div class="space-x-1">
