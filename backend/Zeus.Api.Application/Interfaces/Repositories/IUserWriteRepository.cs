@@ -4,7 +4,7 @@ namespace Zeus.Api.Application.Interfaces.Repositories;
 
 public interface IUserWriteRepository
 {
-    public Task AddUserAsync(User user);
-    public Task UpdateUserAsync(User user);
-    public Task DeleteUserAsync(User user);
+    public Task AddUserAsync(User user, CancellationToken cancellationToken = default);
+    public Task UpdateUserAsync(User user, CancellationToken cancellationToken = default);
+    public Task DeleteUserAsync(User user, CancellationToken cancellationToken = default);
 }

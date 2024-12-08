@@ -1,4 +1,4 @@
-﻿using Zeus.Api.Domain.Integrations.Enums;
+﻿using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
@@ -11,6 +11,12 @@ public sealed class GmailIntegration : Integration
         : base(id, IntegrationType.Gmail, ownerId, clientId)
     {
     }
+    
+#pragma warning disable CS8618
+    private GmailIntegration()
+    {
+    }
+#pragma warning restore CS8618
 
     public override bool IsValid
     {
