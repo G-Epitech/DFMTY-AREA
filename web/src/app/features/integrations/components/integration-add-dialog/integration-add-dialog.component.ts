@@ -6,7 +6,7 @@ import { TrInputDirective } from '@triggo-ui/input';
 import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
-  selector: 'tr-integration-add',
+  selector: 'tr-integration-add-dialog',
   imports: [
     TrDialogImports,
     BrnDialogImports,
@@ -14,9 +14,9 @@ import { TrButtonDirective } from '@triggo-ui/button';
     TrInputDirective,
     TrButtonDirective,
   ],
-  templateUrl: './integration-add.component.html',
+  templateUrl: './integration-add-dialog.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class IntegrationAddComponent {}
+export class IntegrationAddDialogComponent {}

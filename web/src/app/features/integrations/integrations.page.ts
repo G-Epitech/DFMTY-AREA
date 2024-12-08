@@ -6,12 +6,12 @@ import {
 } from '@models/integration';
 import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { LinkedIntegrationCardComponent } from '@features/integrations/components/linked-integration/linked-integration-card.component';
-import { IntegrationAddComponent } from '@features/integrations/components/integration-add/integration-add.component';
+import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
+import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
 
 @Component({
   selector: 'tr-integrations',
-  imports: [AsyncPipe, LinkedIntegrationCardComponent, IntegrationAddComponent],
+  imports: [AsyncPipe, IntegrationLinkedCardComponent, IntegrationAddDialogComponent],
   templateUrl: './integrations.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

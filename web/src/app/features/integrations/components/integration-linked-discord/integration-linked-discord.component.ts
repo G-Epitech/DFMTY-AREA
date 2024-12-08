@@ -5,13 +5,13 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { TrBadgeDirective } from '@triggo-ui/badge';
 
 @Component({
-  selector: 'tr-discord-linked-integration',
+  selector: 'tr-integration-linked-discord',
   imports: [NgOptimizedImage, TrButtonDirective, TrBadgeDirective],
-  templateUrl: './discord-linked-integration.component.html',
+  templateUrl: './integration-linked-discord.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class DiscordLinkedIntegrationComponent {
+export class IntegrationLinkedDiscordComponent {
   props = input.required<IntegrationDiscordProps>();
 }

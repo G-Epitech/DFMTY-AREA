@@ -1,13 +1,13 @@
 <div class="flex flex-col min-h-full space-y-3">
   <div class="flex flex-row justify-between items-center w-full">
     <h1 class="tr-title-1">Integrations</h1>
-    <tr-integration-add />
+    <tr-integration-add-dialog />
   </div>
 
   <div class="flex-grow bg-secondary rounded-md overflow-auto">
     <div class="p-4 space-y-4 flex-col flex">
       @for (integration of integrations | async; track integration.id) {
-      <tr-linked-integration-card [integration]="integration" />
+      <tr-integration-linked-card [integration]="integration" />
       }
     </div>
   </div>
