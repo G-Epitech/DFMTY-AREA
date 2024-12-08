@@ -6,6 +6,7 @@ import {
   IntegrationAvailableCardComponent,
   IntegrationAvailableCardProps,
 } from '@features/integrations/components/integration-available-card/integration-available-card.component';
+import { TrInputDirective } from '@triggo-ui/input';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -14,6 +15,7 @@ import {
     BrnDialogImports,
     TrButtonDirective,
     IntegrationAvailableCardComponent,
+    TrInputDirective,
   ],
   templateUrl: './integration-add-dialog.component.html',
   styles: [],

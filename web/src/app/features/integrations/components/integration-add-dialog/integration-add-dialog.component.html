@@ -1,17 +1,36 @@
 <tr-dialog>
   <button brnDialogTrigger trBtn>Add Integration</button>
-  <tr-dialog-content class="sm:max-w-[725px]" *brnDialogContent="let ctx">
+  <tr-dialog-content
+    class="min-w-[800px] min-h-[600px]"
+    *brnDialogContent="let ctx">
     <tr-dialog-header>
       <h3 trDialogTitle>Add Integration</h3>
       <p trDialogDescription>
         Select the integration you want to add to your account.
       </p>
     </tr-dialog-header>
-    @for (
-      availableIntegration of availableIntegrations;
-      track availableIntegration.name
-    ) {
-      <tr-integration-available-card [props]="availableIntegration" />
-    }
+    <input
+      trInput
+      placeholder="Search an integration"
+      class="w-[32%]" />
+    <div class="grid grid-cols-3 gap-4">
+      @for (
+        availableIntegration of availableIntegrations;
+        track availableIntegration.name
+      ) {
+        <tr-integration-available-card
+          [props]="availableIntegration"
+          class="w-full" />
+        <tr-integration-available-card
+          [props]="availableIntegration"
+          class="w-full" />
+        <tr-integration-available-card
+          [props]="availableIntegration"
+          class="w-full" />
+        <tr-integration-available-card
+          [props]="availableIntegration"
+          class="w-full" />
+      }
+    </div>
   </tr-dialog-content>
 </tr-dialog>

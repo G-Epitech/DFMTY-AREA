@@ -3,7 +3,7 @@ import { hlm } from '@spartan-ng/ui-core';
 import type { ClassValue } from 'clsx';
 
 @Directive({
-  selector: '[trDialogClose],[brnDialogClose][tr]',
+  selector: '[trDialogClose],[brnDialogClose][hlm]',
   standalone: true,
   host: {
     '[class]': '_computedClass()',
