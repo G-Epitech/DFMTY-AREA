@@ -1,3 +1,8 @@
 <div class="flex flex-col">
   <h1 class="tr-title-1">Discord OAuth2</h1>
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="error">Error occurred.</div>
+  <div *ngIf="!loading && !error">
+    <button (click)="autoKill()">Close Window</button>
+  </div>
 </div>

@@ -1,8 +1,6 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UsersGetResponseDTO } from '@repositories/users/dto';
 import { map } from 'rxjs';
-import { UserModel } from '@models/user.model';
 import { DiscordUriResponseDTO } from '@repositories/integrations/dto/discord';
 import { DiscordRequestDTO } from '@repositories/integrations/dto/discord/discord.dto';
 
