@@ -17,14 +17,33 @@
     "module": "ES2022",
     "baseUrl": "./",
     "paths": {
-      "@repositories/*": ["src/repositories/*"],
-      "@models/*": ["src/models/*"],
-      "@mediators/*": ["src/mediators/*"],
-      "@utils/*": ["src/utils/*"],
-      "@components/*": ["src/app/components/*"],
-      "@features/*": ["src/app/features/*"],
-      "@app/*": ["src/app/*"],
-      "@triggo-ui/*": ["./libs/triggo-ui/*"]
+      "@repositories/*": [
+        "src/repositories/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@mediators/*": [
+        "src/mediators/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@features/*": [
+        "src/app/features/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@triggo-ui/*": [
+        "./libs/triggo-ui/*"
+      ],
+      "@spartan-ng/ui-badge-helm": [
+        ".\\libs/triggo-ui/ui-badge-helm/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

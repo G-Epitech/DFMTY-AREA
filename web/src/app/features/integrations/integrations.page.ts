@@ -55,13 +55,6 @@ export class IntegrationsPageComponent {
         IntegrationTypeEnum.DISCORD,
         discordProps2
       ),
-      new IntegrationModel(
-        '3',
-        'owner3',
-        true,
-        IntegrationTypeEnum.GMAIL,
-        'Props for Gmail'
-      ),
     ]);
   }
 }

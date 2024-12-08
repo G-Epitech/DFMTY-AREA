@@ -1,13 +1,18 @@
-<div class="flex flex-row">
+<div class="flex flex-row items-center">
   <img
     [ngSrc]="props().avatarUri"
     alt="Discord Avatar"
-    [width]="50"
-    [height]="50"
+    [width]="55"
+    [height]="55"
     class="rounded-full" />
-  <div class="flex flex-col">
+  <div class="flex flex-col ml-2">
     <span class="tr-large">{{ props().username }}</span>
     <span class="text-gray-500 text-sm">{{ props().email }}</span>
+    <div class="space-x-1">
+      @for (flag of props().flags; track flag) {
+        <a trBadge>{{ flag }}</a>
+      }
+    </div>
   </div>
-  <button trBtn variant="secondary">Manage guild</button>
+  <button trBtn variant="secondary" class="ml-auto">Manage guild</button>
 </div>
