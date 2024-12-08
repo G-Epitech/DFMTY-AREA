@@ -4,37 +4,23 @@ import {
   effect,
   EffectRef,
   inject,
-  OnDestroy,
 } from '@angular/core';
 import { AuthStore } from '@app/store';
 import { AppRouter } from '@app/app.router';
-import { TrInputDirective } from '@triggo-ui/input';
-import { TrButtonDirective } from '@triggo-ui/button';
-import { LabelDirective } from '@triggo-ui/label';
-import { AuthMediator } from '@mediators/auth.mediator';
-import { Subject, tap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { LoginFormComponent } from '@features/authentication/login/components/login-form/login-form.component';
 
 @Component({
   selector: 'tr-login',
-  imports: [
-    TrInputDirective,
-    TrButtonDirective,
-    LabelDirective,
-    FormsModule,
-    RouterLink,
-  ],
+  imports: [FormsModule, RouterLink, LoginFormComponent],
   templateUrl: './login.page.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent implements OnDestroy {
+export class LoginPageComponent {
   readonly #store = inject(AuthStore);
   readonly #appRouter = inject(AppRouter);
-  readonly #authMediator = inject(AuthMediator);
-
-  private destroy$ = new Subject<void>();
 
   redirectToHome: EffectRef;
 
@@ -44,22 +30,5 @@ export class LoginPageComponent implements OnDestroy {
         this.#appRouter.redirectToHome();
       }
     });
-  }
-
-  onLogin() {
-    this.#authMediator
-      .login('example@gmail.com', '12345678')
-      .pipe(
-        tap({
-          next: () => this.#store.me(),
-          error: error => console.error('Failed to login user', error),
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
