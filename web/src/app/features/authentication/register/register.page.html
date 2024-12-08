@@ -1,5 +1,65 @@
-<h1>Triggo</h1>
-<button trBtn (click)="onRegister()">Register</button>
-@if (registrationResult$ | async) {
-<p>Register succesful</p>
-}
+<div class="flex min-h-screen items-center justify-center bg-secondary">
+  <div class="w-full max-w-md bg-white p-8 rounded-[10px] shadow-md">
+    <h2 class="tr-title-3 text-center mb-6">Create Your Account</h2>
+    <form class="space-y-6" (ngSubmit)="onRegister()">
+      <div>
+        <label for="firstName" trLabel>First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          trInput
+          class="w-full"
+          placeholder="John" />
+      </div>
+
+      <div>
+        <label for="lastName" trLabel>Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          trInput
+          class="w-full"
+          placeholder="Doe" />
+      </div>
+
+      <div>
+        <label for="email" trLabel>Email</label>
+        <input
+          id="email"
+          type="email"
+          trInput
+          class="w-full"
+          placeholder="example@email.com" />
+      </div>
+
+      <div>
+        <label for="password" trLabel>Password</label>
+        <input
+          id="password"
+          type="password"
+          trInput
+          class="w-full"
+          placeholder="••••••••" />
+      </div>
+
+      <div>
+        <label for="confirmPassword" trLabel>Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          trInput
+          class="w-full"
+          placeholder="••••••••" />
+      </div>
+
+      <button type="submit" trBtn class="w-full">Register</button>
+    </form>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        Already have an account?
+        <a routerLink="/login" class="text-primary hover:underline">Login</a>
+      </p>
+    </div>
+  </div>
+</div>
