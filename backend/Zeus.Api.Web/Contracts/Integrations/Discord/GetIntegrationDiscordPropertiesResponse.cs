@@ -1,6 +1,6 @@
 namespace Zeus.Api.Web.Contracts.Integrations.Discord;
 
-public record GetDiscordIntegrationPropertiesResponse(
+public record GetIntegrationDiscordPropertiesResponse(
     string Id,
     string Email,
     string Username,

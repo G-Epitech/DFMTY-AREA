@@ -4,14 +4,11 @@ using MapsterMapper;
 
 using MediatR;
 
-using Zeus.Api.Application.Integrations.Query.GetIntegration.Results;
+using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
-using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.Errors.Integrations;
-using Zeus.Api.Domain.Integrations.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
@@ -20,31 +17,13 @@ namespace Zeus.Api.Application.Integrations.Query.GetIntegration;
 public class GetIntegrationQueryHandler : IRequestHandler<GetIntegrationQuery, ErrorOr<GetIntegrationQueryResult>>
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
-    private readonly IDiscordService _discordService;
-    private readonly IMapper _mapper;
+    private readonly IIntegrationService _integrationService;
 
     public GetIntegrationQueryHandler(IIntegrationReadRepository integrationReadRepository,
-        IDiscordService discordService, IMapper mapper)
+        IDiscordService discordService, IMapper mapper, IIntegrationService integrationService)
     {
         _integrationReadRepository = integrationReadRepository;
-        _discordService = discordService;
-        _mapper = mapper;
-    }
-
-    private async Task<ErrorOr<GetIntegrationPropertiesQueryResult>> GetDiscordIntegrationProperties(
-        Integration integration)
-    {
-        var discordIntegration = (DiscordIntegration)integration;
-
-        var accessToken = discordIntegration.Tokens.First(x => x.Usage == ServiceTokenUsage.Access);
-        var discordUser = await _discordService.GetUserAsync(new AccessToken(accessToken.Value));
-
-        if (discordUser.IsError)
-        {
-            return discordUser.Errors;
-        }
-
-        return _mapper.Map<GetDiscordIntegrationPropertiesQueryResult>(discordUser.Value);
+        _integrationService = integrationService;
     }
 
     public async Task<ErrorOr<GetIntegrationQueryResult>> Handle(GetIntegrationQuery query,
@@ -60,17 +39,13 @@ public class GetIntegrationQueryHandler : IRequestHandler<GetIntegrationQuery, E
             return Errors.Integrations.NotFound;
         }
 
-        var propertiesResult = integration.Type switch
-        {
-            IntegrationType.Discord => await GetDiscordIntegrationProperties(integration),
-            _ => Errors.Integrations.PropertiesHandlerNotFound
-        };
-        
+        var propertiesResult = await _integrationService.GetProperties(integration);
+
         if (propertiesResult.IsError)
         {
             return propertiesResult.Errors;
         }
-        
+
         return new GetIntegrationQueryResult(
             integration.Id.Value,
             integration.OwnerId.Value,

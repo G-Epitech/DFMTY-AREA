@@ -2,7 +2,7 @@ using ErrorOr;
 
 using MediatR;
 
-using Zeus.Api.Application.Integrations.Query.GetIntegration.Results;
+using Zeus.Api.Application.Integrations.Query.Results;
 
 namespace Zeus.Api.Application.Integrations.Query.GetIntegration;
 

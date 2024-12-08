@@ -5,10 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Integrations.Query.GetIntegration;
-using Zeus.Api.Application.Integrations.Query.GetIntegration.Results;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Web.Contracts.Integrations;
-using Zeus.Api.Web.Contracts.Integrations.Discord;
+using Zeus.Api.Web.Mapping;
 
 namespace Zeus.Api.Web.Controllers.Integrations;
 
@@ -42,20 +41,15 @@ public class IntegrationsController : ApiController
             return Problem(getIntegrationResult.Errors);
         }
 
-        var propertiesResponse = getIntegrationResult.Value.Properties switch
-        {
-            GetDiscordIntegrationPropertiesQueryResult discord =>
-                _mapper.Map<GetDiscordIntegrationPropertiesResponse>(discord),
-            _ => throw new ArgumentOutOfRangeException(nameof(getIntegrationResult.Value.Properties))
-        };
+        var propertiesResponse = _mapper.MapIntegrationPropertiesResponse(getIntegrationResult.Value);
 
-        var response = new GetIntegrationResponse(
+        var httpResponse = new GetIntegrationResponse(
             getIntegrationResult.Value.Id,
             getIntegrationResult.Value.OwnerId,
             getIntegrationResult.Value.Type,
             getIntegrationResult.Value.IsValid,
             propertiesResponse);
 
-        return Ok(response);
+        return Ok(httpResponse);
     }
 }
