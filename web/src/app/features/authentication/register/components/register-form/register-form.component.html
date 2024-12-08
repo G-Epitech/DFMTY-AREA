@@ -69,5 +69,11 @@
       errorMessage="Passwords need to match" />
   </div>
 
-  <button type="submit" trBtn class="w-full">Register</button>
+  <button type="submit" trBtn class="w-full" [disabled]="registerLoading()">
+    @if (registerLoading()) {
+      <tr-spinner />
+    } @else {
+      Register
+    }
+  </button>
 </form>

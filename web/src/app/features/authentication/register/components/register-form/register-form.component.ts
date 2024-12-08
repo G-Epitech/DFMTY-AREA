@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import { isControlInvalid } from '@utils/forms';
 import {
@@ -20,6 +21,8 @@ import { TrInputDirective } from '@triggo-ui/input';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tr-register-form',
@@ -30,6 +33,7 @@ import { AuthStore } from '@app/store';
     TrFormPasswordComponent,
     TrInputDirective,
     ReactiveFormsModule,
+    TrSpinnerComponent,
   ],
   templateUrl: './register-form.component.html',
   styles: [],
@@ -40,6 +44,9 @@ export class RegisterFormComponent implements OnDestroy {
   readonly #authMediator = inject(AuthMediator);
   private destroy$ = new Subject<void>();
   readonly #store = inject(AuthStore);
+  readonly #toastr = inject(ToastrService);
+
+  registerLoading = signal<boolean>(false);
 
   confirmPasswordValidator = (
     control: AbstractControl
@@ -103,6 +110,7 @@ export class RegisterFormComponent implements OnDestroy {
     if (!email || !password || !firstName || !lastName) {
       return;
     }
+    this.registerLoading.set(true);
     this.#authMediator
       .register(
         email.trim(),
@@ -114,10 +122,17 @@ export class RegisterFormComponent implements OnDestroy {
         takeUntil(this.destroy$),
         tap({
           next: () => this.#store.me(),
-          error: error => console.error('Failed to register user', error),
+          error: error => {
+            console.error(error);
+            this.registerLoading.set(false);
+            this.#toastr.error(error.error.title || 'Failed to register');
+          },
         })
       )
-      .subscribe();
+      .subscribe(() => {
+        this.registerLoading.set(false);
+        this.#toastr.success('Registration successful');
+      });
   }
 
   protected readonly isControlInvalid = isControlInvalid;
