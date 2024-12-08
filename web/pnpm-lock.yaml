@@ -34,9 +34,6 @@ dependencies:
   '@ng-icons/heroicons':
     specifier: ^29.10.0
     version: 29.10.0
-  '@ng-icons/lucide':
-    specifier: ^26.3.0
-    version: 26.3.0
   '@ngrx/operators':
     specifier: ^18.1.1
     version: 18.1.1(rxjs@7.8.0)
@@ -3252,12 +3249,6 @@ packages:
 
   /@ng-icons/heroicons@29.10.0:
     resolution: {integrity: sha512-xUUXUYFL42eO0J14JOWoom/hxvBZr6E5H34icVNIThX022SjIArFYUQ21U5pf9KMoUDp9wxQJCKAGK1ZJbtmTA==}
-    dependencies:
-      tslib: 2.8.1
-    dev: false
-
-  /@ng-icons/lucide@26.3.0:
-    resolution: {integrity: sha512-y9jxV28hWLYf74cC4EBOh8qMTBh+oczo47/nGU8iC/dZc9CXSUckbe8AMosqTDBY1gaBAZ/jLnwpg6EscHLapg==}
     dependencies:
       tslib: 2.8.1
     dev: false

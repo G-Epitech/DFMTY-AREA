@@ -7,7 +7,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { lucideX } from '@ng-icons/lucide';
+import { heroXMark } from '@ng-icons/heroicons/outline';
 import { hlm } from '@spartan-ng/ui-core';
 import {
   BrnDialogCloseDirective,
@@ -21,22 +21,21 @@ import type { ClassValue } from 'clsx';
   selector: 'tr-dialog-content',
   standalone: true,
   imports: [NgComponentOutlet, BrnDialogCloseDirective, TrIconComponent],
-  providers: [provideIcons({ lucideX })],
+  providers: [provideIcons({ heroXMark })],
   host: {
     '[class]': '_computedClass()',
     '[attr.data-state]': 'state()',
   },
   template: `
+    <button brnDialogClose>
+      <span class="sr-only">Close</span>
+      <tr-icon class="flex h-4 w-4" size="none" name="heroXMark" />
+    </button>
     @if (component) {
       <ng-container [ngComponentOutlet]="component" />
     } @else {
       <ng-content />
     }
-
-    <button brnDialogClose hlm>
-      <span class="sr-only">Close</span>
-      <tr-icon class="flex h-4 w-4" size="none" name="lucideX" />
-    </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
