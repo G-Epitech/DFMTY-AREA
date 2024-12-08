@@ -28,7 +28,6 @@ export class AuthMediator {
       .pipe(
         tap({
           next: tokens => this.#tokenRepository.storeTokens(tokens),
-          error: error => console.error('Failed to register user', error),
         })
       );
   }
@@ -42,7 +41,6 @@ export class AuthMediator {
       .pipe(
         tap({
           next: tokens => this.#tokenRepository.storeTokens(tokens),
-          error: error => console.error('Failed to login user', error),
         })
       );
   }
