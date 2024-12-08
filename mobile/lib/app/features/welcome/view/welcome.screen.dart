@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/login/routes/custom.router.dart';
 import 'package:triggo/app/features/login/view/login_screen.dart';
+import 'package:triggo/app/features/register/view/register_screen.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -56,7 +57,11 @@ class WelcomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: TriggoButton(
                   text: "Register",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      CustomLoginRouter(child: const RegisterScreen()),
+                    );
+                  },
                 )),
           ],
         ),
