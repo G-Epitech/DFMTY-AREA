@@ -5,6 +5,7 @@ export interface IntegrationAvailableCardProps {
   logoAssetName: string;
   name: string;
   description: string;
+  features: string[];
 }
 
 @Component({

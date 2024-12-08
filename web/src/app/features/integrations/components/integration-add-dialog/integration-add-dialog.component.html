@@ -3,34 +3,81 @@
   <tr-dialog-content
     class="min-w-[800px] min-h-[600px]"
     *brnDialogContent="let ctx">
-    <tr-dialog-header>
-      <h3 trDialogTitle>Add Integration</h3>
-      <p trDialogDescription>
-        Select the integration you want to add to your account.
-      </p>
-    </tr-dialog-header>
-    <input
-      trInput
-      placeholder="Search an integration"
-      class="w-[32%]" />
-    <div class="grid grid-cols-3 gap-4">
-      @for (
-        availableIntegration of availableIntegrations;
-        track availableIntegration.name
-      ) {
-        <tr-integration-available-card
-          [props]="availableIntegration"
-          class="w-full" />
-        <tr-integration-available-card
-          [props]="availableIntegration"
-          class="w-full" />
-        <tr-integration-available-card
-          [props]="availableIntegration"
-          class="w-full" />
-        <tr-integration-available-card
-          [props]="availableIntegration"
-          class="w-full" />
-      }
-    </div>
+    @if (selectedIntegration() === null) {
+      <tr-dialog-header>
+        <h3 trDialogTitle>Add Integration</h3>
+        <p trDialogDescription>
+          Select the integration you want to add to your account.
+        </p>
+      </tr-dialog-header>
+      <input trInput placeholder="Search an integration" class="w-[32%]" />
+      <div class="grid grid-cols-3 gap-4">
+        @for (
+          availableIntegration of availableIntegrations;
+          track availableIntegration.name
+        ) {
+          <tr-integration-available-card
+            [props]="availableIntegration"
+            class="w-full"
+            (click)="selectIntegration(availableIntegration)" />
+        }
+      </div>
+    } @else {
+      <div class="p-6">
+        <div
+          class="flex flex-row justify-between items-center border-b pb-4 mb-6">
+          <div class="flex items-center space-x-4">
+            <img
+              [ngSrc]="
+                selectedIntegration()?.logoAssetName || 'icons/discord_logo.svg'
+              "
+              alt="Integration Logo"
+              class="w-12 h-12 object-contain"
+              [width]="50"
+              [height]="50" />
+            <h1 class="tr-title-3">
+              {{ selectedIntegration()?.name }} Integration
+            </h1>
+          </div>
+          <button
+            trBtn
+            variant="secondary"
+            (click)="backToAvailableIntegrations()"
+            size="lg"
+            class="hover:bg-gray-100 transition-colors">
+            Back
+          </button>
+        </div>
+
+        <div class="space-y-6">
+          <section>
+            <h2 class="tr-large mb-3">Description</h2>
+            <p class="text-muted leading-relaxed">
+              {{ selectedIntegration()?.description }}
+            </p>
+          </section>
+
+          <section>
+            <h2 class="tr-large mb-3">Features</h2>
+            <ul class="space-y-2 text-muted">
+              @for (feature of selectedIntegration()?.features; track feature) {
+                <li class="flex items-center">
+                  <ng-icon
+                    name="heroCheck"
+                    strokeWidth="0.2rem"
+                    class="text-primary mr-1"
+                    size="1.25rem" />
+                  <span>{{ feature }}</span>
+                </li>
+              }
+            </ul>
+          </section>
+        </div>
+
+        <div class="mt-6 pt-4">
+          <button trBtn class="w-full">Link Integration</button>
+        </div>
+      </div>
+    }
   </tr-dialog-content>
 </tr-dialog>
