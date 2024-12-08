@@ -4,6 +4,7 @@ import 'package:triggo/app/features/integrations/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/banner.triggo.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
+import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
@@ -23,7 +24,7 @@ class _IntegrationPageState extends State<IntegrationPage> {
     final Future<List<Integration>> integrations =
         integrationMediator.getIntegrations();
 
-    return Scaffold(
+    return BaseScaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SafeArea(
