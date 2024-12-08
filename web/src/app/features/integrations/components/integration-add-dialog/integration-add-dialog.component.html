@@ -7,15 +7,11 @@
         Select the integration you want to add to your account.
       </p>
     </tr-dialog-header>
-    <div class="py-4 grid gap-4">
-      <div class="items-center grid grid-cols-4 gap-4">
-        <label trLabel for="name" class="text-right">Name</label>
-        <input trInput id="name" value="Pedro Duarte" class="col-span-3" />
-      </div>
-      <div class="items-center grid grid-cols-4 gap-4">
-        <label trLabel for="username" class="text-right">Username</label>
-        <input trInput id="username" value="@peduarte" class="col-span-3" />
-      </div>
-    </div>
+    @for (
+      availableIntegration of availableIntegrations;
+      track availableIntegration.name
+    ) {
+      <tr-integration-available-card [props]="availableIntegration" />
+    }
   </tr-dialog-content>
 </tr-dialog>
