@@ -11,7 +11,7 @@ const ColorScheme triggoColorScheme = ColorScheme(
   onSecondary: Color(0xFFFFFFFF),
   onPrimaryContainer: Color(0xFFFFFFFF),
   onSecondaryContainer: Color(0xFFFFFFFF),
-  onSurface: Color(0xFFFFFFFF), // Isn't set for now
+  onSurface: Color(0xFF000000),
   onError: Color(0xFFDA4141),
   brightness: Brightness.light,
 );
