@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-  final String title;
+  final String title = 'Home Screen';
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -33,9 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Text('$_counter', style: Theme.of(context).textTheme.titleLarge),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/page1');
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RoutesNames.integrations, (route) => false);
               },
-              child: const Text('Go to Page 1'),
+              child: const Text('Go to Integration page'),
             )
           ],
         ),
