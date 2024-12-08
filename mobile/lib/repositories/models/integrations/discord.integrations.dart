@@ -1,6 +1,6 @@
 import 'package:triggo/repositories/models/integration.repository.model.dart';
 
-class DiscordProperties implements IntegrationProperties {
+class DiscordProperties implements IntegrationPropertiesDTO {
   final String id;
   final String email;
   final String username;

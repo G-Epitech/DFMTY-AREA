@@ -17,14 +17,14 @@ class InGetIntegrationDTO implements Json {
   Map<String, dynamic> toJson() => _$InGetIntegrationDTOToJson(this);
 }
 
-Page<Integration> pageIntegrationFromJson(Map<String, dynamic> json) {
-  return pageFromJson<Integration>(json, Integration.fromJson);
+Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
+  return pageFromJson<IntegrationDTO>(json, IntegrationDTO.fromJson);
 }
 
 @JsonSerializable()
 class OutGetIntegrationDTO implements Json {
   @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
-  final Page<Integration> page;
+  final Page<IntegrationDTO> page;
 
   OutGetIntegrationDTO({
     required this.page,
