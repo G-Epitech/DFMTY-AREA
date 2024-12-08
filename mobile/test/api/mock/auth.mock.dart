@@ -43,10 +43,8 @@ void _loginMock(MockClient mock) {
         data['password'] == 'password123') {
       return http.Response(
         jsonEncode({
-          'data': {
-            'accessToken': 'dummy-access-token',
-            'refreshToken': 'dummy-refresh-token'
-          }
+          'accessToken': 'dummy-access-token',
+          'refreshToken': 'dummy-refresh-token'
         }),
         200,
       );
@@ -82,10 +80,8 @@ void _refreshTokenMock(MockClient mock) {
     if (lastToken == 'dummy-refresh-token') {
       return http.Response(
         jsonEncode({
-          'data': {
-            'accessToken': 'dummy-access-token',
-            'refreshToken': 'dummy-refresh-token',
-          }
+          'accessToken': 'dummy-access-token',
+          'refreshToken': 'dummy-refresh-token',
         }),
         200,
       );
@@ -125,10 +121,8 @@ void _registerMock(MockClient mock) {
 
     return http.Response(
       jsonEncode({
-        'data': {
-          'accessToken': 'dummy-access-token',
-          'refreshToken': 'dummy-refresh-token',
-        }
+        'accessToken': 'dummy-access-token',
+        'refreshToken': 'dummy-refresh-token',
       }),
       201,
     );

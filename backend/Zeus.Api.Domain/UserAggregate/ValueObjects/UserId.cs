@@ -2,10 +2,15 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.UserAggregate.ValueObjects;
 
-public sealed class UserId(Guid value) : ValueObject
+public sealed class UserId : AggregateRootId<Guid>
 {
-    public Guid Value { get; } = value;
+    public override Guid Value { get; protected set; }
 
+    public UserId(Guid value)
+    {
+        Value = value;
+    }
+    
     public static UserId CreateUnique()
     {
         return new UserId(Guid.NewGuid());
@@ -15,4 +20,10 @@ public sealed class UserId(Guid value) : ValueObject
     {
         yield return Value;
     }
+    
+#pragma warning disable CS8618
+    private UserId()
+    {
+    }
+#pragma warning restore CS8618
 }
