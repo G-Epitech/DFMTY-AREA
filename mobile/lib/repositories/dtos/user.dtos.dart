@@ -17,15 +17,17 @@ class InGetUserDTO implements Json {
 
 @JsonSerializable()
 class OutGetUserDTO implements Json {
-  final String email;
+  final String id;
   final String firstName;
   final String lastName;
+  final String email;
   final String picture;
 
   OutGetUserDTO({
-    required this.email,
+    required this.id,
     required this.firstName,
     required this.lastName,
+    required this.email,
     required this.picture,
   });
 
