@@ -7,7 +7,7 @@ using MediatR;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Domain.Errors.Integrations;
-using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
@@ -18,15 +18,20 @@ namespace Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
 public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDiscordIntegrationCommand,
     ErrorOr<CreateDiscordIntegrationCommandResult>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
+    private readonly IIntegrationLinkRequestReadRepository _integrationLinkRequestReadRepository;
+    private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestWriteRepository;
     private readonly IIntegrationWriteRepository _integrationWriteRepository;
     private readonly IDiscordService _discordService;
 
-    public CreateDiscordIntegrationCommandHandler(IIntegrationReadRepository integrationReadRepository,
-        IIntegrationWriteRepository integrationWriteRepository, IDiscordService discordService)
+    public CreateDiscordIntegrationCommandHandler(
+        IIntegrationLinkRequestReadRepository integrationLinkRequestReadRepository,
+        IIntegrationLinkRequestWriteRepository integrationLinkRequestWriteRepository,
+        IIntegrationWriteRepository integrationWriteRepository, 
+        IDiscordService discordService)
     {
-        _integrationReadRepository = integrationReadRepository;
         _integrationWriteRepository = integrationWriteRepository;
+        _integrationLinkRequestReadRepository = integrationLinkRequestReadRepository;
+        _integrationLinkRequestWriteRepository = integrationLinkRequestWriteRepository;
         _discordService = discordService;
     }
 
@@ -35,7 +40,7 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
     {
         var linkRequestId = new IntegrationLinkRequestId(Guid.Parse(command.State));
 
-        var linkRequest = await _integrationReadRepository.GetIntegrationLinkRequestByIdAsync(linkRequestId);
+        var linkRequest = await _integrationLinkRequestReadRepository.GetRequestByIdAsync(linkRequestId, cancellationToken);
         if (linkRequest is null || linkRequest.Type != IntegrationType.Discord)
         {
             return Errors.Integrations.Discord.InvalidLinkRequest;
@@ -59,9 +64,9 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
         integration.AddToken(new IntegrationToken(discordTokens.Value.RefreshToken.Value,
             discordTokens.Value.TokenType, ServiceTokenUsage.Refresh));
 
-        await _integrationWriteRepository.AddIntegrationAsync(integration);
+        await _integrationWriteRepository.AddIntegrationAsync(integration, cancellationToken);
 
-        await _integrationWriteRepository.DeleteIntegrationLinkRequestAsync(linkRequest);
+        await _integrationLinkRequestWriteRepository.DeleteRequestAsync(linkRequest, cancellationToken);
 
         return new CreateDiscordIntegrationCommandResult(integration.Id.Value);
     }

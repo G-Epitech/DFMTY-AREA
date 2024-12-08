@@ -3,9 +3,7 @@
   "version": 1,
   "cli": {
     "packageManager": "pnpm",
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ],
+    "schematicCollections": ["@angular-eslint/schematics"],
     "analytics": false
   },
   "newProjectRoot": "projects",
@@ -16,7 +14,8 @@
         "@schematics/angular:component": {
           "style": "scss",
           "standalone": true,
-          "changeDetection": "OnPush"
+          "changeDetection": "OnPush",
+          "inlineStyle": true
         }
       },
       "root": "",
@@ -38,7 +37,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/styles.scss", "node_modules/ngx-toastr/toastr.css"],
             "scripts": []
           },
           "configurations": {

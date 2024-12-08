@@ -1,5 +1,12 @@
-<h1>Triggo</h1>
-<button trBtn (click)="onRegister()">Register</button>
-@if (registrationResult$ | async) {
-<p>Register succesful</p>
-}
+<div class="flex min-h-screen items-center justify-center bg-secondary">
+  <div class="w-full max-w-md bg-white p-8 rounded-[10px] shadow-md">
+    <h2 class="tr-title-3 text-center mb-6">Create Your Account</h2>
+    <tr-register-form />
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        Already have an account?
+        <a routerLink="/login" class="text-primary hover:underline">Login</a>
+      </p>
+    </div>
+  </div>
+</div>

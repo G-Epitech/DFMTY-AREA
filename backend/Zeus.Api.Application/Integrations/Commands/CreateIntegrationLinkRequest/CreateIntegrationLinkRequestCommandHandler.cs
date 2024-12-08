@@ -8,14 +8,15 @@ using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Integrations.Commands.CreateIntegrationLinkRequest;
 
-public class CreateIntegrationLinkRequestCommandHandler : IRequestHandler<CreateIntegrationLinkRequestCommand,
-    ErrorOr<CreateIntegrationLinkRequestCommandResult>>
+public class CreateIntegrationLinkRequestCommandHandler :
+    IRequestHandler<CreateIntegrationLinkRequestCommand, ErrorOr<CreateIntegrationLinkRequestCommandResult>>
 {
-    private readonly IIntegrationWriteRepository _integrationWriteRepository;
+    private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestLinkRequestWriteRepository;
 
-    public CreateIntegrationLinkRequestCommandHandler(IIntegrationWriteRepository integrationWriteRepository)
+    public CreateIntegrationLinkRequestCommandHandler(
+        IIntegrationLinkRequestWriteRepository integrationLinkRequestWriteRepository)
     {
-        _integrationWriteRepository = integrationWriteRepository;
+        _integrationLinkRequestLinkRequestWriteRepository = integrationLinkRequestWriteRepository;
     }
 
     public async Task<ErrorOr<CreateIntegrationLinkRequestCommandResult>> Handle(
@@ -25,7 +26,7 @@ public class CreateIntegrationLinkRequestCommandHandler : IRequestHandler<Create
         var integrationLinkRequest =
             IntegrationLinkRequest.Create(new UserId(command.UserId), command.Type.ToIntegrationType());
 
-        await _integrationWriteRepository.AddIntegrationLinkRequestAsync(integrationLinkRequest);
+        await _integrationLinkRequestLinkRequestWriteRepository.AddRequestAsync(integrationLinkRequest, cancellationToken);
 
         return new CreateIntegrationLinkRequestCommandResult(integrationLinkRequest.Id.Value);
     }

@@ -41,15 +41,12 @@ export const AuthStore = signalStore(
   withMethods((store, usersMediator = inject(UsersMediator)) => ({
     me: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { user: undefined, isLoading: true })),
         concatMap(() => {
           return usersMediator.me().pipe(
             tapResponse({
               next: user => patchState(store, { user, isLoading: false }),
-              error: error => {
-                console.error('Failed to get user', error);
-                patchState(store, { user: null, isLoading: false });
-              },
+              error: () => patchState(store, { user: null, isLoading: false }),
             })
           );
         })

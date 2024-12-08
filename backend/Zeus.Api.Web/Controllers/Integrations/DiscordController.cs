@@ -1,12 +1,9 @@
-using MapsterMapper;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
-using Zeus.Api.Application.Integrations.Commands.CreateIntegrationLinkRequest;
 using Zeus.Api.Application.Integrations.Commands.GenerateDiscordOauth2Uri;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Web.Contracts.Integrations.Discord;
@@ -17,13 +14,11 @@ namespace Zeus.Api.Web.Controllers.Integrations;
 public class DiscordController : ApiController
 {
     private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
 
-    public DiscordController(ISender sender, IMapper mapper, IAuthUserContext authUserContext)
+    public DiscordController(ISender sender, IAuthUserContext authUserContext)
     {
         _sender = sender;
-        _mapper = mapper;
         _authUserContext = authUserContext;
     }
 

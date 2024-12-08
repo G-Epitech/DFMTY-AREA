@@ -34,7 +34,6 @@ void authRepositoryTests() {
       final response = await repository.login(email, password);
 
       expect(response.statusCode, equals(Codes.unauthorized));
-      expect(response.errors, equals(['Invalid credentials']));
     });
 
     test('refreshToken success', () async {

@@ -5,28 +5,23 @@ import {
   EffectRef,
   inject,
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { AuthMediator } from '@mediators/auth.mediator';
-import { Observable, tap } from 'rxjs';
-import { TokensModel } from '@models/tokens.model';
 import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
-import { TrButtonDirective } from '@triggo-ui/button';
+import { RouterLink } from '@angular/router';
+import { RegisterFormComponent } from '@features/authentication/register/components/register-form/register-form.component';
 
 @Component({
   selector: 'tr-register',
-  imports: [AsyncPipe, TrButtonDirective],
+  imports: [RouterLink, RegisterFormComponent],
   templateUrl: './register.page.html',
   standalone: true,
-  styleUrl: './register.page.scss',
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPageComponent {
-  readonly #authMediator = inject(AuthMediator);
   readonly #store = inject(AuthStore);
   readonly #appRouter = inject(AppRouter);
 
-  registrationResult$: Observable<TokensModel> | undefined;
   redirectToHome: EffectRef;
 
   constructor() {
@@ -35,16 +30,5 @@ export class RegisterPageComponent {
         this.#appRouter.redirectToHome();
       }
     });
-  }
-
-  onRegister(): void {
-    this.registrationResult$ = this.#authMediator
-      .register('example@gmail.com', '12345678', 'dragos', 'suceveanu')
-      .pipe(
-        tap({
-          next: () => this.#store.me(),
-          error: error => console.error('Failed to register user', error),
-        })
-      );
   }
 }

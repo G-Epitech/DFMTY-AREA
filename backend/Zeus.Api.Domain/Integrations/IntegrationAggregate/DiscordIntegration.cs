@@ -1,4 +1,4 @@
-﻿using Zeus.Api.Domain.Integrations.Enums;
+﻿using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
@@ -11,6 +11,12 @@ public sealed class DiscordIntegration : Integration
         : base(id, IntegrationType.Discord, ownerId, clientId)
     {
     }
+    
+#pragma warning disable CS8618
+    private DiscordIntegration()
+    {
+    }
+#pragma warning restore CS8618
 
     public override bool IsValid
     {
@@ -22,7 +28,7 @@ public sealed class DiscordIntegration : Integration
         }
     }
 
-    public static DiscordIntegration Create(UserId ownerId, string clientId)
+        public static DiscordIntegration Create(UserId ownerId, string clientId)
     {
         return new DiscordIntegration(IntegrationId.CreateUnique(), ownerId, clientId);
     }

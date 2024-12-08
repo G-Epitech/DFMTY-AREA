@@ -6,8 +6,10 @@ import 'package:triggo/app/routes/generate.routes.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/repositories/authentication.repository.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/integration.repository.dart';
 import 'package:triggo/repositories/user.repository.dart';
 
 class MyApp extends StatefulWidget {
@@ -21,7 +23,9 @@ class _MyAppState extends State<MyApp> {
   late final AuthenticationRepository _authenticationRepository;
   late final CredentialsRepository _credentialsRepository;
   late final UserRepository _userRepository;
+  late final IntegrationRepository _integrationRepository;
   late final AuthenticationMediator _authenticationMediator;
+  late final IntegrationMediator _integrationMediator;
 
   @override
   void initState() {
@@ -30,11 +34,14 @@ class _MyAppState extends State<MyApp> {
     _credentialsRepository = CredentialsRepository();
     _userRepository =
         UserRepository(credentialsRepository: _credentialsRepository);
+    _integrationRepository =
+        IntegrationRepository(credentialsRepository: _credentialsRepository);
 
     _authenticationMediator = AuthenticationMediator(
       _authenticationRepository,
       _credentialsRepository,
     );
+    _integrationMediator = IntegrationMediator(_integrationRepository);
   }
 
   @override
@@ -44,7 +51,9 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider.value(value: _authenticationRepository),
         RepositoryProvider.value(value: _credentialsRepository),
         RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _integrationRepository),
         ChangeNotifierProvider.value(value: _authenticationMediator),
+        ChangeNotifierProvider.value(value: _integrationMediator),
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(

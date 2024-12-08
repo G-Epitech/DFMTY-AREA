@@ -1,7 +1,40 @@
 services:
+  zeus-db:
+    image: postgres:16-alpine
+    container_name: zeus-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "35432:5432"
+    volumes:
+      - zeus-db-data:/var/lib/postgresql/data
+       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - zeus-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  zeus-api-migrations:
+    container_name: zeus-api-migrations
+    restart: "no"
+    build:
+        context: backend/
+        dockerfile: Zeus.Api.Migrations/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - zeus-network
+    depends_on:
+      zeus-db:
+        condition: service_healthy
+
   zeus-api-web:
-    image: zeus-api-web-image
-    container_name: zeus-api-web-container
+    container_name: zeus-api-web
+    restart: always
     build:
         context: backend/
         dockerfile: Zeus.Api.Web/Dockerfile
@@ -9,3 +42,17 @@ services:
       - .env
     ports:
       - "5090:8080"
+    networks:
+      - zeus-network
+    depends_on:
+      zeus-api-migrations:
+          condition: service_completed_successfully
+
+volumes:
+  zeus-db-data:
+    name: zeus-db-data
+
+networks:
+  zeus-network:
+    name: zeus-network
+    driver: bridge
