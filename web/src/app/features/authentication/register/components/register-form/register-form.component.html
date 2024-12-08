@@ -1,0 +1,73 @@
+<form class="space-y-6" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div>
+    <label for="firstName" trLabel
+      >First Name
+      <input
+        id="firstName"
+        type="text"
+        trInput
+        class="w-full"
+        placeholder="John"
+        [formControl]="registerForm.controls.firstName" />
+      @if (isControlInvalid(registerForm.controls.firstName)) {
+        <div class="h-1">
+          <small class="text-destructive">First name is required</small>
+        </div>
+      }
+    </label>
+  </div>
+
+  <div>
+    <label for="lastName" trLabel
+      >Last Name
+      <input
+        id="lastName"
+        type="text"
+        trInput
+        class="w-full"
+        placeholder="Doe"
+        [formControl]="registerForm.controls.lastName" />
+      @if (isControlInvalid(registerForm.controls.lastName)) {
+        <div class="h-1">
+          <small class="text-destructive">Last name is required</small>
+        </div>
+      }
+    </label>
+  </div>
+
+  <div>
+    <label for="email" trLabel
+      >Email
+      <input
+        id="email"
+        type="email"
+        trInput
+        class="w-full"
+        placeholder="example@email.com"
+        [formControl]="registerForm.controls.email" />
+      @if (isControlInvalid(registerForm.controls.email)) {
+        <div class="h-1">
+          <small class="text-destructive">{{ getEmailErrorMessage() }}</small>
+        </div>
+      }
+    </label>
+  </div>
+
+  <div>
+    <tr-form-password
+      label="Password"
+      id="password"
+      [formControl]="registerForm.controls.password"
+      [errorMessage]="getPasswordErrorMessage()" />
+  </div>
+
+  <div>
+    <tr-form-password
+      label="Confirm Password"
+      id="confirmPassword"
+      [formControl]="registerForm.controls.confirmPassword"
+      errorMessage="Passwords need to match" />
+  </div>
+
+  <button type="submit" trBtn class="w-full">Register</button>
+</form>
