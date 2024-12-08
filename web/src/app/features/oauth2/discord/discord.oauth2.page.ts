@@ -1,9 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DiscordRepository } from '@repositories/integrations';
-import { NgIf } from '@angular/common';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
+import { NgOptimizedImage } from '@angular/common';
+import { NgIcon } from '@ng-icons/core';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-oauth2-discord',
@@ -11,29 +20,30 @@ import { NgIf } from '@angular/common';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    NgIf,
-  ],
+  imports: [TrSpinnerComponent, NgOptimizedImage, NgIcon, TrButtonDirective],
 })
 export class DiscordOAuth2PageComponent implements OnInit {
   readonly #discordRepository = inject(DiscordRepository);
+
+  loading = signal<boolean>(false);
+  error = signal<boolean>(false);
 
   accessToken: string | null = null;
   code: string | null = null;
   state: string | null = null;
   uri: string | null = null;
-  loading: boolean = false;
-  error: boolean = false;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.route.queryParams
-      .pipe(filter(params => params['accessToken'] || params['code'] || params['state']))
+      .pipe(
+        filter(
+          params => params['accessToken'] || params['code'] || params['state']
+        )
+      )
       .subscribe(params => {
-        console.log("Query params received:", params);
-
         this.accessToken = params['accessToken'];
         this.code = params['code'];
         this.state = params['state'];
@@ -43,43 +53,43 @@ export class DiscordOAuth2PageComponent implements OnInit {
         }
 
         if (this.code && this.state) {
-          this.#discordRepository.link({ code: this.code, state: this.state })
+          this.#discordRepository
+            .link({ code: this.code, state: this.state })
             .pipe(
-              catchError(err => {
-                this.error = true;
-                this.loading = false;
+              catchError(() => {
+                this.error.set(true);
+                this.loading.set(false);
                 return of(null);
               })
             )
             .subscribe(() => {
-              this.loading = false;
+              this.loading.set(false);
             });
         } else {
-          this.#discordRepository.getUri()
+          this.#discordRepository
+            .getUri()
             .pipe(
               catchError(err => {
-                this.error = true;
-                this.loading = false;
+                this.error.set(true);
+                this.loading.set(false);
                 return of(null);
               })
             )
             .subscribe(uri => {
               if (!uri) {
-                this.error = true;
-                this.loading = false;
+                this.error.set(true);
+                this.loading.set(false);
                 return;
               }
               this.uri = uri;
-              this.loading = false;
+              this.loading.set(false);
               window.location.href = uri;
             });
         }
       });
-
-    console.log("DiscordOAuth2PageComponent initialized");
   }
 
-  autoKill(): void {
+  closeWindow(): void {
     window.close();
   }
 }
