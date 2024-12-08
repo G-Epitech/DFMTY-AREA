@@ -12,6 +12,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
 import { environment } from '../environments/environment';
+import { provideIcons } from '@ng-icons/core';
+import { heroHome, heroLink, heroBolt } from '@ng-icons/heroicons/outline';
 
 if (environment.production) {
   enableProdMode();
@@ -29,5 +31,6 @@ export const appConfig: ApplicationConfig = {
       provide: 'BASE_URL',
       useValue: environment.apiUrl,
     },
+    provideIcons({ heroHome, heroLink, heroBolt }),
   ],
 };

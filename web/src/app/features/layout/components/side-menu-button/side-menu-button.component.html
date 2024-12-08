@@ -1,0 +1,13 @@
+<button
+  [routerLink]="['/' + path()]"
+  routerLinkActive="active"
+  trBtn
+  class="w-[100%] justify-start flex items-center flex-row gap-1.5 hover:bg-accent px-3 h-11 [&.active]:bg-accent [&.active]:text-primary"
+  variant="secondary">
+  <ng-icon
+    [name]="icon()"
+    size="1.25rem"
+    strokeWidth="0.11rem"
+    class="mb-0.5"></ng-icon>
+  <span class="tr-container-title">{{ label() }}</span>
+</button>

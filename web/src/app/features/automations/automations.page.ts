@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'tr-home',
-  templateUrl: './home.page.html',
-  standalone: true,
+  selector: 'tr-automations',
+  imports: [],
+  templateUrl: './automations.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class HomePageComponent {}
+export class AutomationsPageComponent {}
