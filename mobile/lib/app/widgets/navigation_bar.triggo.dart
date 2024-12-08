@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/card/bloc/card_bloc.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -15,15 +16,16 @@ class TriggoNavigationBar extends StatelessWidget {
         children: [
           _TriggoNavigationBarItem(
             routeName: RoutesNames.home,
-            icon: Icons.home,
+            iconAsset: 'assets/icons/home.svg',
           ).build(context),
           _TriggoNavigationBarItem(
             routeName: RoutesNames.integrations,
-            icon: Icons.link,
+            iconAsset: 'assets/icons/link.svg',
           ).build(context),
           _TriggoNavigationBarItem(
-                  routeName: RoutesNames.automations, icon: Icons.bolt_outlined)
-              .build(context),
+            routeName: RoutesNames.automations,
+            iconAsset: 'assets/icons/bolt.svg',
+          ).build(context),
         ],
       ),
     );
@@ -31,10 +33,11 @@ class TriggoNavigationBar extends StatelessWidget {
 }
 
 class _TriggoNavigationBarItem {
-  final IconData? icon;
+  final String iconAsset;
   final String routeName;
 
-  const _TriggoNavigationBarItem({required this.icon, required this.routeName});
+  const _TriggoNavigationBarItem(
+      {required this.iconAsset, required this.routeName});
 
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -60,12 +63,13 @@ class _TriggoNavigationBarItem {
                     child: SizedBox(
                       height: 80,
                       child: Center(
-                        child: Icon(
-                          icon,
-                          size: 40,
+                        child: SvgPicture.asset(
+                          iconAsset,
                           color: isPressed
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).textTheme.titleMedium?.color,
+                          width: 32,
+                          height: 32,
                         ),
                       ),
                     ),
