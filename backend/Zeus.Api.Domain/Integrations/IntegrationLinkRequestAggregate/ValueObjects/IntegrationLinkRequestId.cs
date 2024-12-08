@@ -2,10 +2,10 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 
-public sealed class IntegrationLinkRequestId : ValueObject
+public sealed class IntegrationLinkRequestId : AggregateRootId<Guid>
 {
-    public Guid Value { get; }
-    
+    public override Guid Value { get; protected set; }
+
     public IntegrationLinkRequestId(Guid value)
     {
         Value = value;
@@ -15,7 +15,7 @@ public sealed class IntegrationLinkRequestId : ValueObject
     {
         return new IntegrationLinkRequestId(Guid.NewGuid());
     }
-    
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

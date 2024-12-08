@@ -14,16 +14,18 @@ Map<String, dynamic> _$InGetUserDTOToJson(InGetUserDTO instance) =>
 
 OutGetUserDTO _$OutGetUserDTOFromJson(Map<String, dynamic> json) =>
     OutGetUserDTO(
-      email: json['email'] as String,
+      id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
+      email: json['email'] as String,
       picture: json['picture'] as String,
     );
 
 Map<String, dynamic> _$OutGetUserDTOToJson(OutGetUserDTO instance) =>
     <String, dynamic>{
-      'email': instance.email,
+      'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'email': instance.email,
       'picture': instance.picture,
     };

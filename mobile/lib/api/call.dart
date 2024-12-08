@@ -29,11 +29,12 @@ Future<Response<dynamic>> call<T extends Json>({
     );
 
     final responseJson = _parseResponse(response);
+    final errors = _parseErrors(responseJson);
     return Response(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
-      data: responseJson,
-      errors: _parseErrors(responseJson),
+      data: errors == null ? responseJson : null,
+      errors: errors,
       headers: response.headers,
     );
   } catch (e) {

@@ -44,6 +44,7 @@ class AuthenticationMediator with ChangeNotifier {
       print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
+      rethrow;
     }
   }
 
@@ -66,6 +67,7 @@ class AuthenticationMediator with ChangeNotifier {
       print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
+      rethrow;
     }
   }
 

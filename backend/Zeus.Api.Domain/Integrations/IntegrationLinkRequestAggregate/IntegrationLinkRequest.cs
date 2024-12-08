@@ -1,11 +1,11 @@
-using Zeus.Api.Domain.Integrations.Enums;
+using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 
-public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
+public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId, Guid>
 {
     /// <summary>
     /// The user that owns the integration link request.
@@ -23,9 +23,16 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
     }
 
     private IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
-        IntegrationType integrationType) : base(id)
+        IntegrationType integrationType)
+        : base(id)
     {
         OwnerId = ownerId;
         Type = integrationType;
     }
+
+#pragma warning disable CS8618
+    private IntegrationLinkRequest()
+    {
+    }
+#pragma warning restore CS8618
 }
