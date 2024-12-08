@@ -15,9 +15,7 @@ class UserRepository {
     final response = await call(
       method: 'GET',
       endpoint: '/user',
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
+      headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
 
