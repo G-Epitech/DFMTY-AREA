@@ -3,20 +3,19 @@
     trBtn
     variant="outline"
     size="sm"
-    class="mr-1 w-10 h-10 flex items-center justify-center"
+    class="mr-2.5 justify-center disabled:bg-secondary disabled:border-none"
     (click)="previousPage()"
     [disabled]="selectedPage() === 1">
-    <ng-icon name="heroChevronLeft" strokeWidth="0.2rem" size="1rem" />
+    <ng-icon name="heroArrowLeft" strokeWidth="0.15rem" size="1rem" />
   </button>
-  <div class="flex">
+  <div class="flex border rounded-md pagination-container">
     @if (pages.length <= 4) {
       @for (page of pages; track page; let first = $first; let last = $last) {
         <button
           trBtn
           [variant]="selectedPage() === page ? 'default' : 'outline'"
-          size="sm"
           (click)="selectPage(page)"
-          class="w-10 h-10 flex items-center justify-center rounded-none
+          class="rounded-none
                  {{ first ? 'rounded-l-md' : '' }}
                  {{ last ? 'rounded-r-md' : '' }}">
           {{ page }}
@@ -26,9 +25,8 @@
       <button
         trBtn
         [variant]="selectedPage() === 1 ? 'default' : 'outline'"
-        size="sm"
         (click)="selectPage(1)"
-        class="w-10 h-10 flex items-center justify-center rounded-none rounded-l-md">
+        class="rounded-none rounded-l-md">
         1
       </button>
 
@@ -37,34 +35,24 @@
           <button
             trBtn
             [variant]="selectedPage() === page ? 'default' : 'outline'"
-            size="sm"
             (click)="selectPage(page)"
-            class="w-10 h-10 flex items-center rounded-none justify-center">
+            class="rounded-none">
             {{ page }}
           </button>
         }
-        <button
-          trBtn
-          variant="outline"
-          size="sm"
-          class="w-10 h-10 flex items-center rounded-none justify-center">
+        <button trBtn variant="outline" size="sm" class="rounded-none">
           ...
         </button>
 
         <button
           trBtn
           [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
-          size="sm"
           (click)="selectPage(pages.length)"
-          class="w-10 h-10 flex items-center justify-center  rounded-none rounded-r-md">
+          class="rounded-none rounded-r-md">
           {{ pages.length }}
         </button>
       } @else if (selectedPage() >= pages.length - 2) {
-        <button
-          trBtn
-          variant="outline"
-          size="sm"
-          class="w-10 h-10 flex items-center rounded-none justify-center">
+        <button trBtn variant="outline" size="sm" class="rounded-none">
           ...
         </button>
 
@@ -77,41 +65,27 @@
             [variant]="selectedPage() === page ? 'default' : 'outline'"
             size="sm"
             (click)="selectPage(page)"
-            class="w-10 h-10 flex items-center justify-center rounded-none
+            class="rounded-none
                    {{ page === pages.length ? 'rounded-r-md' : '' }}">
             {{ page }}
           </button>
         }
       } @else {
-        <button
-          trBtn
-          variant="outline"
-          size="sm"
-          class="w-10 h-10 flex items-center rounded-none justify-center">
-          ...
-        </button>
+        <button trBtn variant="outline" class="rounded-none">...</button>
 
-        <button
-          trBtn
-          size="sm"
-          class="w-10 h-10 flex items-center rounded-none justify-center">
+        <button trBtn size="sm" class="rounded-none">
           {{ selectedPage() }}
         </button>
 
-        <button
-          trBtn
-          variant="outline"
-          size="sm"
-          class="w-10 h-10 flex items-center rounded-none justify-center">
+        <button trBtn variant="outline" size="sm" class="rounded-none">
           ...
         </button>
 
         <button
           trBtn
           [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
-          size="sm"
           (click)="selectPage(pages.length)"
-          class="w-10 h-10 flex items-center justify-center rounded-none rounded-r-md">
+          class="rounded-none rounded-r-md">
           {{ pages.length }}
         </button>
       }
@@ -121,9 +95,9 @@
     trBtn
     variant="outline"
     size="sm"
-    class="ml-1 w-10 h-10 flex items-center justify-center"
+    class="ml-2.5 disabled:bg-secondary disabled:border-none"
     (click)="nextPage()"
     [disabled]="selectedPage() === totalPages()">
-    <ng-icon name="heroChevronRight" strokeWidth="0.2rem" size="1rem" />
+    <ng-icon name="heroArrowRight" strokeWidth="0.15rem" size="1rem" />
   </button>
 </div>

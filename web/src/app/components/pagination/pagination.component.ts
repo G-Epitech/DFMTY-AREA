@@ -12,7 +12,7 @@ import { NgIcon } from '@ng-icons/core';
   selector: 'tr-pagination',
   imports: [TrButtonDirective, NgIcon],
   templateUrl: './pagination.component.html',
-  styles: [],
+  styleUrls: ['./pagination.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
