@@ -7,28 +7,28 @@ import 'package:triggo/app/features/login/view/login_screen.dart';
 import 'package:triggo/app/features/register/view/register_screen.dart';
 import 'package:triggo/app/features/splash/view/splash_screen.dart';
 import 'package:triggo/app/features/welcome/view/welcome.screen.dart';
+import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case (RoutesNames.home):
-      return MaterialPageRoute(builder: (_) => const HomeScreen());
+      return CustomPageRouteBuilder(const HomeScreen());
     case (RoutesNames.login):
-      return MaterialPageRoute(builder: (_) => const LoginScreen());
+      return CustomPageRouteBuilder(const LoginScreen());
     case (RoutesNames.splashScreen):
-      return MaterialPageRoute(builder: (_) => const SplashScreen());
+      return CustomPageRouteBuilder(const SplashScreen());
     case (RoutesNames.welcome):
-      return MaterialPageRoute(builder: (_) => const WelcomeScreen());
+      return CustomPageRouteBuilder(const WelcomeScreen());
     case (RoutesNames.register):
-      return MaterialPageRoute(builder: (_) => const RegisterScreen());
+      return CustomPageRouteBuilder(const RegisterScreen());
     case (RoutesNames.integrations):
-      return MaterialPageRoute(builder: (_) => const IntegrationPage());
+      return CustomPageRouteBuilder(const IntegrationPage());
     case (RoutesNames.automations):
-      return MaterialPageRoute(builder: (_) => const AutomationPage());
+      return CustomPageRouteBuilder(const AutomationPage());
     case (RoutesNames.connectIntegration):
-      return MaterialPageRoute(
-          builder: (_) => const ConnectIntegrationScreen());
+      return CustomPageRouteBuilder(const ConnectIntegrationScreen());
     default:
-      return MaterialPageRoute(builder: (_) => const Placeholder());
+      return CustomPageRouteBuilder(const Placeholder());
   }
 }
