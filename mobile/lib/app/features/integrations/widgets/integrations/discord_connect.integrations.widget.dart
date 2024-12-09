@@ -19,17 +19,20 @@ class _DiscordCustomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Stack(
-          children: [
-            CircleAvatar(
-              radius: 10,
-              backgroundColor: Color(0xFF5865F2),
-              child: Icon(
-                Icons.discord,
-                size: 15,
-              ),
+        Container(
+          width: 40,
+          height: 40, // Hauteur du carré
+          decoration: BoxDecoration(
+            color: Color(0xFF5865F2),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Center(
+            child: Icon(
+              Icons.discord,
+              size: 30,
+              color: Colors.white,
             ),
-          ],
+          ),
         ),
         SizedBox(width: 10),
         Expanded(
@@ -40,7 +43,7 @@ class _DiscordCustomWidget extends StatelessWidget {
                 children: [
                   Text(
                     "Discord",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ],
               ),

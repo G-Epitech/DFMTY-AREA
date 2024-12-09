@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/integrations/widgets/integrations/discord_connect.integrations.widget.dart';
-import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/banner.triggo.dart';
-import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 
@@ -79,7 +77,7 @@ class _PageTitle extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        'Integrations',
+        'Connect',
         style: Theme.of(context).textTheme.titleLarge,
       ),
     );
@@ -159,21 +157,6 @@ class _IntegrationListViewContent extends StatelessWidget {
           return _IntegrationListItem(integration: integration);
         },
       ),
-    );
-  }
-}
-
-class _IntegrationConnectionButton extends StatelessWidget {
-  const _IntegrationConnectionButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoButton(
-      text: 'New integration',
-      onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(
-            context, RoutesNames.connectIntegration, (route) => false);
-      },
     );
   }
 }
