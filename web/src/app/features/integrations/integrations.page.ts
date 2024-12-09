@@ -64,6 +64,27 @@ export class IntegrationsPageComponent {
         IntegrationTypeEnum.DISCORD,
         discordProps2
       ),
+      new IntegrationModel(
+        '2',
+        'owner2',
+        false,
+        IntegrationTypeEnum.DISCORD,
+        discordProps2
+      ),
+      new IntegrationModel(
+        '2',
+        'owner2',
+        false,
+        IntegrationTypeEnum.DISCORD,
+        discordProps2
+      ),
+      new IntegrationModel(
+        '2',
+        'owner2',
+        false,
+        IntegrationTypeEnum.DISCORD,
+        discordProps2
+      ),
     ]);
   }
 }
