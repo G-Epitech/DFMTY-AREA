@@ -10,6 +10,9 @@
     "lint": "ng lint",
     "format": "prettier --write src/"
   },
+  "engines": {
+    "pnpm": "^9.14.2"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.0",
