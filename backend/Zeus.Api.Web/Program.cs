@@ -7,6 +7,8 @@ using Zeus.Api.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Configuration.AddJsonFile("services-settings.json", optional: false, reloadOnChange: true);
+
     builder.Services
         .AddApplication()
         .AddInfrastructure(builder.Configuration)
@@ -21,20 +23,20 @@ var app = builder.Build();
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    
+
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
     }
-    
+
     app.UseExceptionHandler("/error");
 
     app.UseHttpsRedirection();
-    
+
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseCors(app.Environment);
-    
+
     app.MapControllers();
 
     app.Run();

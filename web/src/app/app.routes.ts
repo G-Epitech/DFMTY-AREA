@@ -61,4 +61,12 @@ export const routes: Routes = [
       ),
     pathMatch: 'full',
   },
+  {
+    path: 'oauth2/discord',
+    loadComponent: () =>
+      import('@features/oauth2/discord/discord.oauth2.page').then(
+        m => m.DiscordOAuth2PageComponent
+      ),
+    pathMatch: 'full',
+  },
 ];
