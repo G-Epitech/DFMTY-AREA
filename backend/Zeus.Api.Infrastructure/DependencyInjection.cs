@@ -59,6 +59,9 @@ public static class DependencyInjection
 
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
+
+        services.Configure<ServicesSettings>(configuration.GetSection(ServicesSettings.SectionName));
+        services.AddSingleton<IServicesSettingsProvider, ServicesSettingsProvider>();
     }
 
     private static void AddAuthentication(this IServiceCollection services,
@@ -73,7 +76,8 @@ public static class DependencyInjection
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
+                options.TokenValidationParameters =
+                    JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
                 options.Events = JwtAuthenticationValidation.GetJwtBearerEvents();
             });
     }
