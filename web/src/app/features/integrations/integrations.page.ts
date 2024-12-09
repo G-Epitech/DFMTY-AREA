@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   IntegrationModel,
   IntegrationTypeEnum,
@@ -10,6 +16,9 @@ import { IntegrationLinkedCardComponent } from '@features/integrations/component
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
 import { PaginationComponent } from '@app/components';
 import { TrInputDirective } from '@triggo-ui/input';
+import { PageModel, PageOptions } from '@models/page';
+import { UsersMediator } from '@mediators/users.mediator';
+import { AuthStore } from '@app/store';
 
 @Component({
   selector: 'tr-integrations',
@@ -26,44 +35,19 @@ import { TrInputDirective } from '@triggo-ui/input';
   standalone: true,
 })
 export class IntegrationsPageComponent {
-  readonly integrations: Observable<IntegrationModel[]>;
+  readonly #usersMediator = inject(UsersMediator);
+  readonly #store = inject(AuthStore);
 
-  constructor() {
-    const discordProps1: IntegrationDiscordProps = {
-      id: '12345',
-      email: 'user1@example.com',
-      username: 'user1',
-      displayName: 'User One',
-      avatarUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      flags: ['flag1', 'flag2'],
-    };
+  pageOptions = signal<PageOptions>({
+    page: 1,
+    size: 5,
+  });
 
-    const discordProps2: IntegrationDiscordProps = {
-      id: '67890',
-      email: 'user2@example.com',
-      username: 'user2',
-      displayName: 'User Two',
-      avatarUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      flags: ['flag3'],
-    };
-
-    this.integrations = of([
-      new IntegrationModel(
-        '1',
-        'owner1',
-        true,
-        IntegrationTypeEnum.DISCORD,
-        discordProps1
-      ),
-      new IntegrationModel(
-        '2',
-        'owner2',
-        false,
-        IntegrationTypeEnum.DISCORD,
-        discordProps2
-      ),
-    ]);
-  }
+  readonly integrations: Observable<PageModel<IntegrationModel>> | null =
+    this.#store.user()
+      ? this.#usersMediator.getIntegrations(
+          this.#store.user()!.id,
+          this.pageOptions()
+        )
+      : null;
 }
