@@ -1,8 +1,11 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UsersGetResponseDTO } from '@repositories/users/dto';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { UserModel } from '@models/user.model';
+import { UserIntegrationsGetResponseDTO } from '@repositories/users/dto/user-integrations-get.dto';
+import { PageOptions } from '@models/page';
+import { pageOptionsToParams } from '@utils/params';
 
 @Injectable({
   providedIn: 'root',
@@ -44,5 +47,14 @@ export class UsersRepository {
           )
       )
     );
+  }
+
+  getIntegrations(
+    userId: string,
+    pageOptions: PageOptions
+  ): Observable<UserIntegrationsGetResponseDTO> {
+    const searchParams = pageOptionsToParams(pageOptions);
+    const url = `${this.baseUrl}/users/${userId}/integrations?${searchParams}`;
+    return this.#httpClient.get<UserIntegrationsGetResponseDTO>(url);
   }
 }
