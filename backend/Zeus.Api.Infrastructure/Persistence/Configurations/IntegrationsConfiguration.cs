@@ -4,12 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Api.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
 public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
 {
+    private const int ClientIdMaxLength = 255;
+    private const int TokenValueMaxLength = 255;
+    private const int TokenTypeMaxLength = 100;
+
     public void Configure(EntityTypeBuilder<Integration> builder)
     {
         ConfigureIntegrationsTable(builder);
@@ -23,18 +27,19 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
             .HasValue<DiscordIntegration>(IntegrationType.Discord)
             .HasValue<GmailIntegration>(IntegrationType.Gmail);
         builder.HasKey(i => i.Id);
-        builder.HasIndex(i => i.OwnerId);
         builder.Property(i => i.Id)
             .ValueGeneratedNever()
             .HasConversion(id => id.Value, v => new IntegrationId(v));
-        builder.Property(i => i.OwnerId)
-            .HasConversion(id => id.Value, v => new UserId(v));
         builder.Property(i => i.ClientId)
-            .HasMaxLength(255);
+            .HasMaxLength(ClientIdMaxLength);
         builder.Property(i => i.Type);
-        builder.Ignore(i => i.Tokens);
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(i => i.OwnerId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
-    
+
     private static void ConfigureIntegrationTokensTable(EntityTypeBuilder<Integration> builder)
     {
         builder.OwnsMany(i => i.Tokens, tb =>
@@ -44,10 +49,10 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
             tb.HasKey("Value", "Type", "Usage");
             tb.Property(t => t.Value)
                 .HasColumnName("TokenValue")
-                .HasMaxLength(255);
+                .HasMaxLength(TokenValueMaxLength);
             tb.Property(t => t.Type)
                 .HasColumnName("TokenType")
-                .HasMaxLength(255);
+                .HasMaxLength(TokenTypeMaxLength);
             tb.Property(t => t.Usage)
                 .HasColumnName("TokenUsage");
         });

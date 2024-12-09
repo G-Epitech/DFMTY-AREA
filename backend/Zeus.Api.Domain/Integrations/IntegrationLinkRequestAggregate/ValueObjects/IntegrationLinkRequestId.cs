@@ -2,9 +2,9 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 
-public sealed class IntegrationLinkRequestId : AggregateRootId<Guid>
+public sealed class IntegrationLinkRequestId : ValueObject
 {
-    public override Guid Value { get; protected set; }
+    public Guid Value { get; }
 
     public IntegrationLinkRequestId(Guid value)
     {
