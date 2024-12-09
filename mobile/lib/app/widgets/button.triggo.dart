@@ -29,7 +29,7 @@ class TriggoButton extends StatelessWidget {
         style: TextStyle(
           color: Theme.of(context).colorScheme.onPrimary,
           fontFamily: containerTitle.fontFamily,
-          fontSize: containerTitle.fontSize,
+          fontSize: subTitle.fontSize,
           fontWeight: containerTitle.fontWeight,
           letterSpacing: containerTitle.letterSpacing,
         ),

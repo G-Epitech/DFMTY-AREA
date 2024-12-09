@@ -7,19 +7,19 @@ class IntegrationType {
   static const String gmail = 'Gmail';
 }
 
-abstract class IntegrationProperties implements Json {
+abstract class IntegrationPropertiesDTO implements Json {
   @override
   Map<String, dynamic> toJson();
 }
 
-class Integration implements Json {
+class IntegrationDTO implements Json {
   late final String id;
   late final String ownerId;
   late final String type;
   late final bool isValid;
-  late final IntegrationProperties properties;
+  late final IntegrationPropertiesDTO properties;
 
-  Integration({
+  IntegrationDTO({
     required this.id,
     required this.ownerId,
     required this.type,
@@ -38,8 +38,8 @@ class Integration implements Json {
     };
   }
 
-  factory Integration.fromJson(Map<String, dynamic> json) {
-    IntegrationProperties properties;
+  factory IntegrationDTO.fromJson(Map<String, dynamic> json) {
+    IntegrationPropertiesDTO properties;
     switch (json['type']) {
       case IntegrationType.discord:
         properties = DiscordProperties.fromJson(json['properties']);
@@ -48,7 +48,7 @@ class Integration implements Json {
         throw Exception('Unknown integration type');
     }
 
-    return Integration(
+    return IntegrationDTO(
       id: json['id'] as String,
       ownerId: json['ownerId'] as String,
       type: json['type'] as String,

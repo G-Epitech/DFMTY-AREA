@@ -17,3 +17,4 @@ const ColorScheme triggoColorScheme = ColorScheme(
 );
 
 const Color textColor = Color(0xFF3E244A);
+const Color lightContainer = Color(0xFFF4EBFD);
