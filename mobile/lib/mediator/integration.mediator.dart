@@ -11,7 +11,7 @@ class IntegrationMediator with ChangeNotifier {
   Future<List<Integration>> getIntegrations() async {
     List<Integration> integrations = [];
     try {
-      final res = await _integrationRepository.getIntegrations();
+      final res = await _integrationRepository.getUserIntegrations();
       if (res.statusCode == Codes.ok && res.data != null) {
         for (var integration in res.data!.page.data) {
           integrations.add(Integration.fromDTO(integration));

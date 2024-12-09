@@ -91,7 +91,7 @@ void integrationRepositoryTests() {
 
   group('IntegrationRepository', () {
     test('getIntegration success', () async {
-      final response = await repository.getIntegrations();
+      final response = await repository.getUserIntegrations();
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.page.pageNumber, 2);
@@ -114,7 +114,7 @@ void integrationRepositoryTests() {
       });
     });
     test('getIntegrationByPage success', () async {
-      final response = await repository.getIntegrationByPage(1);
+      final response = await repository.getUserIntegrationByPage(1);
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.page.pageNumber, 1);
@@ -125,7 +125,7 @@ void integrationRepositoryTests() {
     });
 
     test('getIntegrationByPageAndSize success', () async {
-      final response = await repository.getIntegrationByPageAndSize(1, 10);
+      final response = await repository.getUserIntegrationByPageAndSize(1, 10);
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.page.pageNumber, 1);
@@ -149,7 +149,7 @@ void integrationRepositoryTests() {
     });
 
     test('getIntegrationById success', () async {
-      final response = await repository.getIntegrationById('0');
+      final response = await repository.getUserIntegrationById('0');
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.toJson(), {

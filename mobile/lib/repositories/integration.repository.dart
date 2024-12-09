@@ -10,7 +10,7 @@ class IntegrationRepository {
 
   IntegrationRepository({this.client, required this.credentialsRepository});
 
-  Future<Response<OutGetIntegrationDTO>> getIntegrations() async {
+  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations() async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
@@ -19,18 +19,19 @@ class IntegrationRepository {
       client: client,
     );
 
-    return Response<OutGetIntegrationDTO>(
+    return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
       headers: response.headers,
       data: response.data != null
-          ? OutGetIntegrationDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );
   }
 
-  Future<Response<OutGetIntegrationDTO>> getIntegrationByPage(int page) async {
+  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationByPage(
+      int page) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
@@ -39,17 +40,17 @@ class IntegrationRepository {
       client: client,
     );
 
-    return Response<OutGetIntegrationDTO>(
+    return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
       data: response.data != null
-          ? OutGetIntegrationDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );
   }
 
-  Future<Response<OutGetIntegrationDTO>> getIntegrationByPageAndSize(
+  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationByPageAndSize(
       int page, int size) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
@@ -59,22 +60,41 @@ class IntegrationRepository {
       client: client,
     );
 
-    return Response<OutGetIntegrationDTO>(
+    return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
       data: response.data != null
-          ? OutGetIntegrationDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );
   }
 
-  Future<Response<OutGetIntegrationDTO>> getIntegrationById(
+  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationById(
       String integrationId) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
       endpoint: '/user/integrations/$integrationId',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutGetUserIntegrationDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      data: response.data != null
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
+          : null,
+      errors: response.errors,
+    );
+  }
+
+  Future<Response<OutGetIntegrationDTO>> getIntegration() async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call(
+      method: 'GET',
+      endpoint: '/integrations',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );

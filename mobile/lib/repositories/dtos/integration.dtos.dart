@@ -6,15 +6,15 @@ import 'package:triggo/utils/json.dart';
 part 'integration.dtos.g.dart';
 
 @JsonSerializable()
-class InGetIntegrationDTO implements Json {
-  InGetIntegrationDTO();
+class InGetUserIntegrationDTO implements Json {
+  InGetUserIntegrationDTO();
 
   @override
-  factory InGetIntegrationDTO.fromJson(Map<String, dynamic> json) =>
-      _$InGetIntegrationDTOFromJson(json);
+  factory InGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) =>
+      _$InGetUserIntegrationDTOFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$InGetIntegrationDTOToJson(this);
+  Map<String, dynamic> toJson() => _$InGetUserIntegrationDTOToJson(this);
 }
 
 Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
@@ -22,9 +22,29 @@ Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
 }
 
 @JsonSerializable()
-class OutGetIntegrationDTO implements Json {
+class OutGetUserIntegrationDTO implements Json {
   @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
   final Page<IntegrationDTO> page;
+
+  OutGetUserIntegrationDTO({
+    required this.page,
+  });
+
+  factory OutGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetUserIntegrationDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetUserIntegrationDTOToJson(this);
+}
+
+Page<String> pageIntegrationsNameFromJson(Map<String, dynamic> json) {
+  return pageFromJson<String>(json, (e) => e as String);
+}
+
+@JsonSerializable()
+class OutGetIntegrationDTO implements Json {
+  @JsonKey(fromJson: pageIntegrationsNameFromJson, toJson: pageToJson)
+  final Page<String> page;
 
   OutGetIntegrationDTO({
     required this.page,
