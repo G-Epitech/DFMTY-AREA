@@ -58,6 +58,7 @@ export class DiscordOAuth2PageComponent implements OnInit {
           )
           .subscribe(() => {
             this.loading.set(false);
+            this.closeWindow();
           });
       } else {
         this.#discordRepository
