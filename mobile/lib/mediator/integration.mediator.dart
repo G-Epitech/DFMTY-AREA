@@ -8,7 +8,7 @@ class IntegrationMediator with ChangeNotifier {
 
   IntegrationMediator(this._integrationRepository);
 
-  Future<List<Integration>> getIntegrations() async {
+  Future<List<Integration>> getUserIntegrations() async {
     List<Integration> integrations = [];
     try {
       final res = await _integrationRepository.getUserIntegrations();
@@ -22,6 +22,25 @@ class IntegrationMediator with ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
+      // Display error message with a snackbar or dialog (something like that)
+      return [];
+    }
+  }
+
+  Future<List<String>> getIntegrationNames() async {
+    List<String> integrations = [];
+    try {
+      final res = await _integrationRepository.getIntegrationNames();
+      if (res.statusCode == Codes.ok && res.data != null) {
+        for (var integration in res.data!.page.data) {
+          integrations.add(integration.name);
+        }
+        return integrations;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      print("Error4: $e");
       // Display error message with a snackbar or dialog (something like that)
       return [];
     }

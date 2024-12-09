@@ -26,14 +26,14 @@ Map<String, dynamic> _$OutGetUserIntegrationDTOToJson(
       'page': pageToJson(instance.page),
     };
 
-OutGetIntegrationDTO _$OutGetIntegrationDTOFromJson(
+OutGetIntegrationNamesDTO _$OutGetIntegrationNamesDTOFromJson(
         Map<String, dynamic> json) =>
-    OutGetIntegrationDTO(
+    OutGetIntegrationNamesDTO(
       page: pageIntegrationsNameFromJson(json['page'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$OutGetIntegrationDTOToJson(
-        OutGetIntegrationDTO instance) =>
+Map<String, dynamic> _$OutGetIntegrationNamesDTOToJson(
+        OutGetIntegrationNamesDTO instance) =>
     <String, dynamic>{
       'page': pageToJson(instance.page),
     };

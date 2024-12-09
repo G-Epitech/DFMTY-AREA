@@ -7,7 +7,7 @@ Page<T> pageFromJson<T>(
     pageSize: json['pageSize'],
     totalPages: json['totalPages'],
     totalRecords: json['totalRecords'],
-    data: (json['data'] as List<T>)
+    data: (json['data'] as List)
         .map((e) => fromJson(e as Map<String, dynamic>))
         .toList(),
   );

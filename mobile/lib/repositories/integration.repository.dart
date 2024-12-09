@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
+import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/dtos/integration.dtos.dart';
@@ -90,22 +91,39 @@ class IntegrationRepository {
     );
   }
 
-  Future<Response<OutGetIntegrationDTO>> getIntegration() async {
-    final accessToken = await credentialsRepository.getAccessToken();
-    final response = await call(
-      method: 'GET',
-      endpoint: '/integrations',
-      headers: {'Authorization': 'Bearer $accessToken'},
-      client: client,
-    );
+  Future<Response<OutGetIntegrationNamesDTO>> getIntegrationNames() async {
+    //    final accessToken = await credentialsRepository.getAccessToken();
+    //     final response = await call(
+    //       method: 'GET',
+    //       endpoint: '/integrations',
+    //       headers: {'Authorization': 'Bearer $accessToken'},
+    //       client: client,
+    //     );
+    //
+    //     return Response<OutGetIntegrationNamesDTO>(
+    //       statusCode: response.statusCode,
+    //       message: response.message,
+    //       data: response.data != null
+    //           ? OutGetIntegrationNamesDTO.fromJson(response.data!)
+    //           : null,
+    //       errors: response.errors,
+    //     );
+    final json = {
+      "page": {
+        "pageNumber": 1,
+        "pageSize": 10,
+        "totalPages": 1,
+        "totalRecords": 3,
+        "data": [
+          {"name": "Discord"},
+        ]
+      },
+    };
 
-    return Response<OutGetIntegrationDTO>(
-      statusCode: response.statusCode,
-      message: response.message,
-      data: response.data != null
-          ? OutGetIntegrationDTO.fromJson(response.data!)
-          : null,
-      errors: response.errors,
+    return Response<OutGetIntegrationNamesDTO>(
+      statusCode: Codes.ok,
+      message: "Ok",
+      data: OutGetIntegrationNamesDTO.fromJson(json),
     );
   }
 }
