@@ -13,6 +13,7 @@ import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
 import { environment } from '../environments/environment';
 import { provideIcons } from '@ng-icons/core';
+import {
   heroHome,
   heroBolt,
   heroLink,
@@ -21,6 +22,7 @@ import { provideIcons } from '@ng-icons/core';
   heroCheck,
   heroChevronLeft,
   heroChevronRight,
+} from '@ng-icons/heroicons/outline';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -40,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       provide: 'BASE_URL',
       useValue: environment.apiUrl,
     },
+    provideIcons({
       heroHome,
       heroLink,
       heroBolt,
@@ -48,6 +51,7 @@ export const appConfig: ApplicationConfig = {
       heroChevronRight,
       heroChevronLeft,
       heroCheck,
+    }),
     provideAnimations(),
     provideToastr({
       timeOut: 5000,

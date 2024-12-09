@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { BrnDialogImports } from '@spartan-ng/ui-dialog-brain';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -9,6 +14,8 @@ import {
 import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
+import { finalize } from 'rxjs/operators';
+import { DiscordRepository } from '@repositories/integrations';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -28,6 +35,7 @@ import { NgIcon } from '@ng-icons/core';
 })
 export class IntegrationAddDialogComponent {
   selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
+  readonly #discordRepository = inject(DiscordRepository);
 
   readonly availableIntegrations: IntegrationAvailableCardProps[] = [
     {
@@ -39,6 +47,19 @@ export class IntegrationAddDialogComponent {
         'Receive notifications about your projects',
         'Customize your notifications',
       ],
+      linkFn: () => {
+        this.#discordRepository.getUri().subscribe({
+          next: uri => {
+            if (!uri) {
+              return;
+            }
+            const newWindow = window.open(`${uri}`, '_blank');
+            if (newWindow) {
+              newWindow.opener = window;
+            }
+          },
+        });
+      },
     },
   ];
 

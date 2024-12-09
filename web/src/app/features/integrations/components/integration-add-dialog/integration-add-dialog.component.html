@@ -75,7 +75,12 @@
         </div>
 
         <div class="mt-6 pt-4">
-          <button trBtn class="w-full">Link Integration</button>
+          <button
+            trBtn
+            class="w-full"
+            (click)="selectedIntegration()?.linkFn()">
+            Link Integration
+          </button>
         </div>
       </div>
     }

@@ -6,6 +6,7 @@ export interface IntegrationAvailableCardProps {
   name: string;
   description: string;
   features: string[];
+  linkFn: () => void;
 }
 
 @Component({
