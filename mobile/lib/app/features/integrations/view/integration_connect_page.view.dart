@@ -74,12 +74,24 @@ class _PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        'Connect',
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(
+            Icons.arrow_back,
+            size: 26.0,
+            weight: 2.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Text(
+          'Connect',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ],
     );
   }
 }

@@ -11,61 +11,25 @@ class IntegrationRepository {
 
   IntegrationRepository({this.client, required this.credentialsRepository});
 
-  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations() async {
+  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
+      {int page = 0, int size = 10}) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integrations',
+      endpoint: '/user/integrations?page=$page&size=$size',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
+
+    print("&Response Code: ${response.statusCode}");
+    print("&Response: ${response.data}");
 
     return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
       headers: response.headers,
       data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson(response.data!)
-          : null,
-      errors: response.errors,
-    );
-  }
-
-  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationByPage(
-      int page) async {
-    final accessToken = await credentialsRepository.getAccessToken();
-    final response = await call(
-      method: 'GET',
-      endpoint: '/user/integrations/?page=$page',
-      headers: {'Authorization': 'Bearer $accessToken'},
-      client: client,
-    );
-
-    return Response<OutGetUserIntegrationDTO>(
-      statusCode: response.statusCode,
-      message: response.message,
-      data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson(response.data!)
-          : null,
-      errors: response.errors,
-    );
-  }
-
-  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationByPageAndSize(
-      int page, int size) async {
-    final accessToken = await credentialsRepository.getAccessToken();
-    final response = await call(
-      method: 'GET',
-      endpoint: '/user/integrations/?page=$page&size=$size',
-      headers: {'Authorization': 'Bearer $accessToken'},
-      client: client,
-    );
-
-    return Response<OutGetUserIntegrationDTO>(
-      statusCode: response.statusCode,
-      message: response.message,
-      data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationDTO.fromJson({'page': response.data!})
           : null,
       errors: response.errors,
     );

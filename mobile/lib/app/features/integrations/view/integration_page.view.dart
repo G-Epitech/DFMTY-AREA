@@ -165,14 +165,12 @@ class _IntegrationListViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          final integration = integrations[0];
-          return _IntegrationListItem(integration: integration);
-        },
-      ),
+    return ListView.builder(
+      itemCount: integrations.length,
+      itemBuilder: (context, index) {
+        final integration = integrations[index];
+        return _IntegrationListItem(integration: integration);
+      },
     );
   }
 }
@@ -185,8 +183,7 @@ class _IntegrationConnectionButton extends StatelessWidget {
     return TriggoButton(
       text: 'New integration',
       onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(
-            context, RoutesNames.connectIntegration, (route) => false);
+        Navigator.pushNamed(context, RoutesNames.connectIntegration);
       },
     );
   }

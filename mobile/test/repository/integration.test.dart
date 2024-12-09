@@ -113,8 +113,8 @@ void integrationRepositoryTests() {
         ).toJson()
       });
     });
-    test('getIntegrationByPage success', () async {
-      final response = await repository.getUserIntegrationByPage(1);
+    test('getIntegrations success', () async {
+      final response = await repository.getUserIntegrations();
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.page.pageNumber, 1);
@@ -124,8 +124,8 @@ void integrationRepositoryTests() {
       expect(response.data?.page.data, []);
     });
 
-    test('getIntegrationByPageAndSize success', () async {
-      final response = await repository.getUserIntegrationByPageAndSize(1, 10);
+    test('getIntegrations success', () async {
+      final response = await repository.getUserIntegrations(page: 1, size: 10);
 
       expect(response.statusCode, equals(Codes.ok));
       expect(response.data?.page.pageNumber, 1);
