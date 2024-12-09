@@ -8,7 +8,6 @@ import {
 } from '@features/integrations/components/integration-available-card/integration-available-card.component';
 import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage } from '@angular/common';
-import { TrIconComponent } from '@triggo-ui/icon';
 import { NgIcon } from '@ng-icons/core';
 
 @Component({
@@ -20,7 +19,6 @@ import { NgIcon } from '@ng-icons/core';
     IntegrationAvailableCardComponent,
     TrInputDirective,
     NgOptimizedImage,
-    TrIconComponent,
     NgIcon,
   ],
   templateUrl: './integration-add-dialog.component.html',

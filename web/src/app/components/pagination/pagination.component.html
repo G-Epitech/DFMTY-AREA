@@ -3,7 +3,9 @@
     trBtn
     variant="outline"
     size="sm"
-    class="mr-1 w-10 h-10 flex items-center justify-center">
+    class="mr-1 w-10 h-10 flex items-center justify-center"
+    (click)="previousPage()"
+    [disabled]="selectedPage() === 1">
     <ng-icon name="heroChevronLeft" strokeWidth="0.2rem" size="1rem" />
   </button>
   <div class="flex">
@@ -11,8 +13,9 @@
       @for (page of pages; track page; let first = $first; let last = $last) {
         <button
           trBtn
-          variant="outline"
+          [variant]="selectedPage() === page ? 'default' : 'outline'"
           size="sm"
+          (click)="selectPage(page)"
           class="w-10 h-10 flex items-center justify-center rounded-none
                  {{ first ? 'rounded-l-md' : '' }}
                  {{ last ? 'rounded-r-md' : '' }}">
@@ -22,15 +25,17 @@
     } @else {
       <button
         trBtn
-        variant="outline"
+        [variant]="selectedPage() === 1 ? 'default' : 'outline'"
         size="sm"
+        (click)="selectPage(1)"
         class="w-10 h-10 flex items-center justify-center rounded-none rounded-l-md">
         1
       </button>
       <button
         trBtn
-        variant="outline"
+        [variant]="selectedPage() === 2 ? 'default' : 'outline'"
         size="sm"
+        (click)="selectPage(2)"
         class="w-10 h-10 flex items-center justify-center rounded-none">
         2
       </button>
@@ -43,8 +48,9 @@
       </button>
       <button
         trBtn
-        variant="outline"
+        [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
         size="sm"
+        (click)="selectPage(pages.length)"
         class="w-10 h-10 flex items-center justify-center rounded-none rounded-r-md">
         {{ pages.length }}
       </button>
@@ -54,7 +60,9 @@
     trBtn
     variant="outline"
     size="sm"
-    class="ml-1 w-10 h-10 flex items-center justify-center">
+    class="ml-1 w-10 h-10 flex items-center justify-center"
+    (click)="nextPage()"
+    [disabled]="selectedPage() === totalPages()">
     <ng-icon name="heroChevronRight" strokeWidth="0.2rem" size="1rem" />
   </button>
 </div>
