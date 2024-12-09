@@ -5,7 +5,7 @@ using Zeus.Daemon.Runner.Builder;
 var builder = DaemonRunnerBuilder.CreateBuilder(args);
 {
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure();
+    builder.Services.AddInfrastructure(builder.Configuration);
 }
 
 var runner = builder.Build();
