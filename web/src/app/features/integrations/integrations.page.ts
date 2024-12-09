@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { IntegrationModel } from '@models/integration';
-import { BehaviorSubject, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, concat, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
@@ -49,9 +49,11 @@ export class IntegrationsPageComponent {
   readonly integrations: Observable<PageModel<IntegrationModel>> =
     this.#usersMediator.me().pipe(
       switchMap(user =>
-        this.#pageOptionsSubject.pipe(
-          switchMap(pageOptions =>
-            this.#usersMediator.getIntegrations(user.id, pageOptions)
+        concat(
+          this.#pageOptionsSubject.pipe(
+            switchMap(pageOptions =>
+              this.#usersMediator.getIntegrations(user.id, pageOptions)
+            )
           )
         )
       ),
