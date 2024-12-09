@@ -11,11 +11,11 @@ public class ServicesSettings
         public string Name { get; init; } = null!;
         public string IconUri { get; init; } = null!;
         public string Color { get; init; } = null!;
-        public Dictionary<string, Event> Events { get; init; } = null!;
+        public Dictionary<string, Trigger> Triggers { get; init; } = null!;
         public Dictionary<string, Action> Actions { get; init; } = null!;
     }
 
-    public class Event
+    public class Trigger
     {
         public string Name { get; init; } = null!;
         public string Description { get; init; } = null!;
