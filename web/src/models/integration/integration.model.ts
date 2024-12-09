@@ -19,16 +19,13 @@ export class IntegrationModel {
     type: IntegrationTypeEnum,
     properties: IntegrationDiscordProps | string
   ) {
-    console.log(properties);
     this.id = id;
     this.ownerId = ownerId;
     this.isValid = isValid;
     this.type = type;
-    console.log(type);
     switch (type) {
       case IntegrationTypeEnum.DISCORD:
         this.#discordProps = properties as IntegrationDiscordProps;
-        console.log(properties);
         break;
       case IntegrationTypeEnum.GMAIL:
         this.#gmailProps = properties as string;

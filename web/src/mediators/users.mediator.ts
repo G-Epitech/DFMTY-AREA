@@ -23,7 +23,6 @@ export class UsersMediator {
     pageOptions: PageOptions
   ): Observable<PageModel<IntegrationModel>> {
     return this.#usersRepository.getIntegrations(userId, pageOptions).pipe(
-      tap(dto => console.log(dto)),
       map(res => {
         return {
           ...res,
@@ -37,8 +36,7 @@ export class UsersMediator {
             );
           }),
         };
-      }),
-      tap(res => console.log(res))
+      })
     );
   }
 }
