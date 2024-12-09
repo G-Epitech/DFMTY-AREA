@@ -16,7 +16,7 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
           },
-          "Events": {
+          "Triggers": {
             "type": "object",
             "patternProperties": {
               "^[A-Za-z0-9_]+$": {
@@ -169,11 +169,14 @@
           "Name",
           "IconUri",
           "Color",
-          "Events",
+          "Triggers",
           "Actions"
         ]
       }
     }
   },
+  "required": [
+    "ServicesSettings"
+  ],
   "additionalProperties": false
 }

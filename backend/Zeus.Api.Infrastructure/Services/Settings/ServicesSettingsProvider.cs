@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 
 using Zeus.Api.Application.Interfaces.Services.Settings;
@@ -12,12 +13,13 @@ public class ServicesSettingsProvider : IServicesSettingsProvider
     public ServicesSettingsProvider(IOptions<ServicesSettings> settings)
     {
         Services = settings.Value.Services.ToDictionary(
-            @service => @service.Key,
-            IServicesSettingsProvider.IService (@service) => new Service(
-                @service.Value.Name,
-                @service.Value.IconUri,
-                @service.Value.Color, @service.Value.Events,
-                @service.Value.Actions));
+            service => service.Key,
+            IServicesSettingsProvider.IService (service) => new Service(
+                service.Value.Name,
+                service.Value.IconUri,
+                service.Value.Color,
+                service.Value.Triggers,
+                service.Value.Actions));
     }
 
     private class Service : IServicesSettingsProvider.IService
@@ -25,35 +27,35 @@ public class ServicesSettingsProvider : IServicesSettingsProvider
         public string Name { get; }
         public string IconUri { get; }
         public string Color { get; }
-        public Dictionary<string, IServicesSettingsProvider.IEvent> Events { get; }
+        public Dictionary<string, IServicesSettingsProvider.ITrigger> Triggers { get; }
         public Dictionary<string, IServicesSettingsProvider.IAction> Actions { get; }
 
-        public Service(string name, string iconUri, string color, Dictionary<string, ServicesSettings.Event> events,
+        public Service(string name, string iconUri, string color, Dictionary<string, ServicesSettings.Trigger> triggers,
             Dictionary<string, ServicesSettings.Action> actions)
         {
             Name = name;
             IconUri = iconUri;
             Color = color;
-            Events = events.ToDictionary(
-                @event => @event.Key,
-                IServicesSettingsProvider.IEvent (@event) => new Event(
-                    @event.Value.Name,
-                    @event.Value.Description,
-                    @event.Value.Icon,
-                    @event.Value.Parameters,
-                    @event.Value.Facts));
+            Triggers = triggers.ToDictionary(
+                trigger => trigger.Key,
+                IServicesSettingsProvider.ITrigger (trigger) => new Trigger(
+                    trigger.Value.Name,
+                    trigger.Value.Description,
+                    trigger.Value.Icon,
+                    trigger.Value.Parameters,
+                    trigger.Value.Facts));
             Actions = actions.ToDictionary(
-                @action => action.Key,
-                IServicesSettingsProvider.IAction (@action) => new Action(
-                    @action.Value.Name,
-                    @action.Value.Description,
-                    @action.Value.Icon,
-                    @action.Value.Parameters,
-                    @action.Value.Facts));
+                action => action.Key,
+                IServicesSettingsProvider.IAction (action) => new Action(
+                    action.Value.Name,
+                    action.Value.Description,
+                    action.Value.Icon,
+                    action.Value.Parameters,
+                    action.Value.Facts));
         }
     }
 
-    private class Event : IServicesSettingsProvider.IEvent
+    private class Trigger : IServicesSettingsProvider.ITrigger
     {
         public string Name { get; }
         public string Description { get; }
@@ -61,7 +63,7 @@ public class ServicesSettingsProvider : IServicesSettingsProvider
         public Dictionary<string, IServicesSettingsProvider.IParameter> Parameters { get; }
         public Dictionary<string, IServicesSettingsProvider.IFact> Facts { get; }
 
-        public Event(string name, string description, string icon,
+        public Trigger(string name, string description, string icon,
             Dictionary<string, ServicesSettings.Parameter> parameters,
             Dictionary<string, ServicesSettings.Fact> facts)
         {
@@ -69,17 +71,17 @@ public class ServicesSettingsProvider : IServicesSettingsProvider
             Description = description;
             Icon = icon;
             Parameters = parameters.ToDictionary(
-                @parameter => @parameter.Key,
-                IServicesSettingsProvider.IParameter (@parameter) => new Parameter(
-                    @parameter.Value.Name,
-                    @parameter.Value.Description,
-                    @parameter.Value.Type));
+                parameter => parameter.Key,
+                IServicesSettingsProvider.IParameter (parameter) => new Parameter(
+                    parameter.Value.Name,
+                    parameter.Value.Description,
+                    parameter.Value.Type));
             Facts = facts.ToDictionary(
-                @fact => fact.Key,
-                IServicesSettingsProvider.IFact (@fact) => new Fact(
-                    @fact.Value.Name,
-                    @fact.Value.Description,
-                    @fact.Value.Type));
+                fact => fact.Key,
+                IServicesSettingsProvider.IFact (fact) => new Fact(
+                    fact.Value.Name,
+                    fact.Value.Description,
+                    fact.Value.Type));
         }
     }
 
@@ -99,17 +101,17 @@ public class ServicesSettingsProvider : IServicesSettingsProvider
             Description = description;
             Icon = icon;
             Parameters = parameters.ToDictionary(
-                @parameter => @parameter.Key,
-                IServicesSettingsProvider.IParameter (@parameter) => new Parameter(
-                    @parameter.Value.Name,
-                    @parameter.Value.Description,
-                    @parameter.Value.Type));
+                parameter => parameter.Key,
+                IServicesSettingsProvider.IParameter (parameter) => new Parameter(
+                    parameter.Value.Name,
+                    parameter.Value.Description,
+                    parameter.Value.Type));
             Facts = facts.ToDictionary(
-                @fact => fact.Key,
-                IServicesSettingsProvider.IFact (@fact) => new Fact(
-                    @fact.Value.Name,
-                    @fact.Value.Description,
-                    @fact.Value.Type));
+                fact => fact.Key,
+                IServicesSettingsProvider.IFact (fact) => new Fact(
+                    fact.Value.Name,
+                    fact.Value.Description,
+                    fact.Value.Type));
         }
     }
 
