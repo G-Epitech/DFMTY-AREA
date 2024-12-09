@@ -6,8 +6,10 @@ import 'banner.triggo.dart';
 class BaseScaffold extends StatelessWidget {
   final Widget? body;
   final String title;
+  final bool getBack;
 
-  const BaseScaffold({super.key, this.body, required this.title});
+  const BaseScaffold(
+      {super.key, this.body, required this.title, this.getBack = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class BaseScaffold extends StatelessWidget {
               children: [
                 TriggoBanner(),
                 const SizedBox(height: 16.0),
-                _PageTitle(title: title),
+                _PageTitle(title: title, getBack: getBack),
                 const SizedBox(height: 4.0),
                 _MainContainer(body: body!),
               ],
@@ -36,17 +38,40 @@ class BaseScaffold extends StatelessWidget {
 
 class _PageTitle extends StatelessWidget {
   final String title;
-  const _PageTitle({required this.title});
+  final bool getBack;
+  const _PageTitle({required this.title, this.getBack = false});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
-    );
+    if (!getBack) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      );
+    } else {
+      return Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(
+              Icons.arrow_back,
+              size: 26.0,
+              weight: 2.0,
+            ),
+          ),
+          SizedBox(width: 10.0),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleLarge,
+          )
+        ],
+      );
+    }
   }
 }
 
