@@ -14,12 +14,30 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: Center(
-        child: Text(
-          "Home Page",
-          style: Theme.of(context).textTheme.titleLarge,
+      title: "Home Page",
+      body: _HomeContainer(),
+    );
+  }
+}
+
+class _HomeContainer extends StatelessWidget {
+  const _HomeContainer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              ),
+            ),
+          ],
         ),
-      ),
+      ],
     );
   }
 }

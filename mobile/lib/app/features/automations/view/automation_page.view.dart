@@ -11,6 +11,31 @@ class AutomationPage extends StatefulWidget {
 class _IntegrationPageState extends State<AutomationPage> {
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(body: Center(child: Text("Automation Page")));
+    return BaseScaffold(
+      title: 'Automations',
+      body: _AutomationContainer(),
+    );
+  }
+}
+
+class _AutomationContainer extends StatelessWidget {
+  const _AutomationContainer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
