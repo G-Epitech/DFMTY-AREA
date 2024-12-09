@@ -78,3 +78,18 @@ class OutGetIntegrationNamesDTO implements Json {
   @override
   Map<String, dynamic> toJson() => _$OutGetIntegrationNamesDTOToJson(this);
 }
+
+@JsonSerializable()
+class OutGetIntegrationURIDTO implements Json {
+  final String uri;
+
+  OutGetIntegrationURIDTO({
+    required this.uri,
+  });
+
+  factory OutGetIntegrationURIDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetIntegrationURIDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetIntegrationURIDTOToJson(this);
+}

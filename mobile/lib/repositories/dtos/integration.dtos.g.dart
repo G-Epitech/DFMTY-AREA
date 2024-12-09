@@ -37,3 +37,15 @@ Map<String, dynamic> _$OutGetIntegrationNamesDTOToJson(
     <String, dynamic>{
       'page': pageToJson(instance.page),
     };
+
+OutGetIntegrationURIDTO _$OutGetIntegrationURIDTOFromJson(
+        Map<String, dynamic> json) =>
+    OutGetIntegrationURIDTO(
+      uri: json['uri'] as String,
+    );
+
+Map<String, dynamic> _$OutGetIntegrationURIDTOToJson(
+        OutGetIntegrationURIDTO instance) =>
+    <String, dynamic>{
+      'uri': instance.uri,
+    };

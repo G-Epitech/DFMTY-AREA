@@ -126,4 +126,23 @@ class IntegrationRepository {
       data: OutGetIntegrationNamesDTO.fromJson(json),
     );
   }
+
+  Future<Response<OutGetIntegrationURIDTO>> getIntegrationURI(
+      String name) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final res = await call(
+      method: 'POST',
+      endpoint: '/integrations/$name/uri',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutGetIntegrationURIDTO>(
+      statusCode: res.statusCode,
+      message: res.message,
+      data:
+          res.data != null ? OutGetIntegrationURIDTO.fromJson(res.data!) : null,
+      errors: res.errors,
+    );
+  }
 }

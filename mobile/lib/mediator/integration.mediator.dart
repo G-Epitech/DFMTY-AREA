@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/integration.repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class IntegrationMediator with ChangeNotifier {
   final IntegrationRepository _integrationRepository;
@@ -43,6 +44,28 @@ class IntegrationMediator with ChangeNotifier {
       print("Error4: $e");
       // Display error message with a snackbar or dialog (something like that)
       return [];
+    }
+  }
+
+  Future<void> launchURL(String name) async {
+    try {
+      final res = await _integrationRepository.getIntegrationURI(name);
+
+      if (res.statusCode == Codes.ok && res.data != null) {
+        final urlString = res.data!.uri;
+        final url = Uri.parse(urlString);
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url);
+        } else {
+          throw 'Could not launch $url';
+        }
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      print("Error launching URL: $e");
+      // Display error message with a snackbar or dialog (something like that)
+      rethrow;
     }
   }
 }
