@@ -7,4 +7,5 @@ class RoutesNames {
   static const String integrations = "integrations_screen";
   static const String connectIntegration = "connect_integration_screen";
   static const String automations = "automations_screen";
+  static const String createAutomation = "create_automation_screen";
 }

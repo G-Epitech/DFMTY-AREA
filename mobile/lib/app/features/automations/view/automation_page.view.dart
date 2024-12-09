@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:triggo/app/routes/routes_names.dart';
+import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
 class AutomationPage extends StatefulWidget {
@@ -31,11 +33,26 @@ class _AutomationContainer extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: _AutomationCreationButton(),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _AutomationCreationButton extends StatelessWidget {
+  const _AutomationCreationButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return TriggoButton(
+      text: "Create Automation",
+      onPressed: () {
+        Navigator.pushNamed(context, RoutesNames.createAutomation);
+      },
     );
   }
 }
