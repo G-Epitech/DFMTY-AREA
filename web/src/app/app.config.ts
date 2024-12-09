@@ -20,8 +20,8 @@ import {
   heroExclamationTriangle,
   heroCheckCircle,
   heroCheck,
-  heroChevronLeft,
-  heroChevronRight,
+  heroArrowLeft,
+  heroArrowRight,
 } from '@ng-icons/heroicons/outline';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -48,8 +48,8 @@ export const appConfig: ApplicationConfig = {
       heroBolt,
       heroCheckCircle,
       heroExclamationTriangle,
-      heroChevronRight,
-      heroChevronLeft,
+      heroArrowRight,
+      heroArrowLeft,
       heroCheck,
     }),
     provideAnimations(),

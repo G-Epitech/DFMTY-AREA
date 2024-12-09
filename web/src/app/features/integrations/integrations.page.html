@@ -4,12 +4,13 @@
     <tr-integration-add-dialog />
   </div>
 
-  <div class="flex justify-between">
-    <input trInput placeholder="Search for an integration" />
+  <div class="flex justify-between gap-3">
+    <tr-input-search placeholder="Search for an integration" class="w-full" />
     <tr-pagination
       [totalPages]="totalPages()"
       (pageChange)="pageChanged($event)" />
   </div>
+
   <div class="flex-grow bg-secondary rounded-md overflow-auto">
     <div class="p-4 space-y-4 flex-col flex">
       @if (loading()) { @for (_ of [].constructor(5); track $index) {

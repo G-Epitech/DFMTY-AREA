@@ -2,18 +2,18 @@ namespace Zeus.Api.Application.Interfaces.Services.Settings;
 
 public interface IServicesSettingsProvider
 {
-    public Dictionary<string, IService>  Services { get; }
+    public Dictionary<string, IService> Services { get; }
 
     public interface IService
     {
         public string Name { get; }
         public string IconUri { get; }
         public string Color { get; }
-        public Dictionary<string, IEvent> Events { get; }
+        public Dictionary<string, ITrigger> Triggers { get; }
         public Dictionary<string, IAction> Actions { get; }
     }
 
-    public interface IEvent
+    public interface ITrigger
     {
         public string Name { get; }
         public string Description { get; }

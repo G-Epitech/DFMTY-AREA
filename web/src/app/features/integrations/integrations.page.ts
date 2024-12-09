@@ -15,6 +15,7 @@ import { AsyncPipe } from '@angular/common';
 import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
 import { PaginationComponent } from '@app/components';
+import { TrInputSearchComponent } from '@triggo-ui/input';
 import { TrInputDirective } from '@triggo-ui/input';
 import { PageModel, PageOptions } from '@models/page';
 import { UsersMediator } from '@mediators/users.mediator';
@@ -32,6 +33,7 @@ import { TrSkeletonComponent } from '@triggo-ui/skeleton';
     TrInputDirective,
     TrSpinnerComponent,
     TrSkeletonComponent,
+    TrInputSearchComponent,
   ],
   templateUrl: './integrations.page.html',
   styles: [],
