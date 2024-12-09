@@ -1,0 +1,60 @@
+<div class="flex">
+  <button
+    trBtn
+    variant="outline"
+    size="sm"
+    class="mr-1 w-10 h-10 flex items-center justify-center">
+    <ng-icon name="heroChevronLeft" strokeWidth="0.2rem" size="1rem" />
+  </button>
+  <div class="flex">
+    @if (pages.length <= 4) {
+      @for (page of pages; track page; let first = $first; let last = $last) {
+        <button
+          trBtn
+          variant="outline"
+          size="sm"
+          class="w-10 h-10 flex items-center justify-center rounded-none
+                 {{ first ? 'rounded-l-md' : '' }}
+                 {{ last ? 'rounded-r-md' : '' }}">
+          {{ page }}
+        </button>
+      }
+    } @else {
+      <button
+        trBtn
+        variant="outline"
+        size="sm"
+        class="w-10 h-10 flex items-center justify-center rounded-none rounded-l-md">
+        1
+      </button>
+      <button
+        trBtn
+        variant="outline"
+        size="sm"
+        class="w-10 h-10 flex items-center justify-center rounded-none">
+        2
+      </button>
+      <button
+        trBtn
+        variant="outline"
+        size="sm"
+        class="w-10 h-10 flex items-center justify-center rounded-none">
+        ...
+      </button>
+      <button
+        trBtn
+        variant="outline"
+        size="sm"
+        class="w-10 h-10 flex items-center justify-center rounded-none rounded-r-md">
+        {{ pages.length }}
+      </button>
+    }
+  </div>
+  <button
+    trBtn
+    variant="outline"
+    size="sm"
+    class="ml-1 w-10 h-10 flex items-center justify-center">
+    <ng-icon name="heroChevronRight" strokeWidth="0.2rem" size="1rem" />
+  </button>
+</div>

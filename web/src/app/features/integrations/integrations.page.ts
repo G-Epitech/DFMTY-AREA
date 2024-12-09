@@ -8,10 +8,16 @@ import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
+import { PaginationComponent } from '@app/components';
 
 @Component({
   selector: 'tr-integrations',
-  imports: [AsyncPipe, IntegrationLinkedCardComponent, IntegrationAddDialogComponent],
+  imports: [
+    AsyncPipe,
+    IntegrationLinkedCardComponent,
+    IntegrationAddDialogComponent,
+    PaginationComponent,
+  ],
   templateUrl: './integrations.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
