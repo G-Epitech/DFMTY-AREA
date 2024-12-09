@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TrButtonDirective } from '@triggo-ui/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tr-home',
@@ -6,5 +8,19 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TrButtonDirective,
+    RouterLink,
+  ],
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  constructor() {}
+
+  openDiscordOAuthPage() {
+    const url = `${window.location.origin}/oauth2/discord`;
+    const newWindow = window.open(url, '_blank');
+    if (newWindow) {
+      newWindow.opener = window;
+    }
+  }
+}
