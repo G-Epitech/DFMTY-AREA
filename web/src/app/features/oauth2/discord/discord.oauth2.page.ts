@@ -82,7 +82,6 @@ export class DiscordOAuth2PageComponent implements OnInit {
                 return;
               }
               this.uri = uri;
-              this.loading.set(false);
               window.location.href = uri;
             });
         }
@@ -90,6 +89,10 @@ export class DiscordOAuth2PageComponent implements OnInit {
   }
 
   closeWindow(): void {
-    window.close();
+    if (window.opener) {
+      window.close();
+    } else {
+      window.location.href = '/';
+    }
   }
 }
