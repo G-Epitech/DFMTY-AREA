@@ -38,7 +38,7 @@ public class IntegrationService : IIntegrationService
     {
         var discordIntegration = (DiscordIntegration)integration;
 
-        var accessToken = discordIntegration.Tokens.First(x => x.Usage == ServiceTokenUsage.Access);
+        var accessToken = discordIntegration.Tokens.First(x => x.Usage == IntegrationTokenUsage.Access);
         var discordUser = await _discordService.GetUserAsync(new AccessToken(accessToken.Value));
 
         if (discordUser.IsError)

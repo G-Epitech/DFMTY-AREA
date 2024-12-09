@@ -1,11 +1,10 @@
-﻿using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Common.Domain.Models;
+﻿using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.AutomationAggregate.ValueObjects;
 
 public sealed class AutomationTriggerId : ValueObject
 {
-    public Guid Value { get;}
+    public Guid Value { get; }
 
     public AutomationTriggerId(Guid value)
     {
@@ -16,7 +15,7 @@ public sealed class AutomationTriggerId : ValueObject
     {
         return new AutomationTriggerId(Guid.NewGuid());
     }
-    
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
