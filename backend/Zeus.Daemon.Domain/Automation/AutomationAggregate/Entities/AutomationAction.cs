@@ -1,8 +1,8 @@
 ﻿using Zeus.Common.Domain.Models;
-using Zeus.Daemon.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
 
-namespace Zeus.Daemon.Domain.AutomationAggregate.Entities;
+namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
 
 public sealed class AutomationAction : Entity<AutomationActionId>
 {

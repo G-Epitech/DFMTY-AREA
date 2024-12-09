@@ -1,6 +1,6 @@
-﻿using Zeus.Daemon.Domain.AutomationAggregate.Enums;
+﻿using Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
 
-namespace Zeus.Daemon.Domain.AutomationAggregate.ValueObjects;
+namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 
 public struct DynamicParameter
 {

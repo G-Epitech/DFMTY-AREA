@@ -1,6 +1,6 @@
 ﻿using Zeus.Common.Domain.Models;
 
-namespace Zeus.Daemon.Domain.AutomationAggregate.ValueObjects;
+namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 
 public sealed class AutomationTriggerId : ValueObject
 {
