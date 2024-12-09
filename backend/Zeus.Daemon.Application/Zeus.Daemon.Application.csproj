@@ -15,6 +15,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Zeus.Api.Application\Zeus.Api.Application.csproj" />
+      <ProjectReference Include="..\Zeus.Daemon.Domain\Zeus.Daemon.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Discord\Actions\" />
+      <Folder Include="Discord\Triggers\" />
     </ItemGroup>
 
 </Project>
