@@ -21,9 +21,6 @@ class IntegrationRepository {
       client: client,
     );
 
-    print("&Response Code: ${response.statusCode}");
-    print("&Response: ${response.data}");
-
     return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
