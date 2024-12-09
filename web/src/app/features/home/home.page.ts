@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
+import { finalize } from 'rxjs/operators';
+import { DiscordRepository } from '@repositories/integrations';
 
 @Component({
   selector: 'tr-home',
@@ -10,11 +12,30 @@ import { TrButtonDirective } from '@triggo-ui/button';
   imports: [TrButtonDirective],
 })
 export class HomePageComponent {
+  readonly #discordRepository = inject(DiscordRepository);
+
+  loading = signal<boolean>(false);
+  error = signal<boolean>(false);
+
   openDiscordOAuthPage() {
     const url = `${window.location.origin}/oauth2/discord`;
-    const newWindow = window.open(url, '_blank');
-    if (newWindow) {
-      newWindow.opener = window;
-    }
+    this.#discordRepository
+      .getUri()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: uri => {
+          if (!uri) {
+            this.error.set(true);
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+        error: () => {
+          this.error.set(true);
+        },
+      });
   }
 }

@@ -27,24 +27,20 @@ export class DiscordOAuth2PageComponent implements OnInit {
   loading = signal<boolean>(false);
   error = signal<boolean>(false);
   success = signal<boolean>(false);
+  countdown = signal<number>(5);
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loading.set(true);
     this.route.queryParams.subscribe(params => {
-      const accessToken: string | null = params['accessToken'];
       const code: string | null = params['code'];
       const state: string | null = params['state'];
-
-      if (accessToken) {
-        localStorage.setItem('accessToken', accessToken);
-      }
 
       if (code && state) {
         this.#linkDiscordAccount(code, state);
       } else {
-        this.#intializeDiscordAuth();
+        this.error.set(true);
       }
     });
   }
@@ -57,6 +53,7 @@ export class DiscordOAuth2PageComponent implements OnInit {
         next: () => {
           this.success.set(true);
           this.error.set(false);
+          this.startCountdown();
         },
         error: () => {
           this.error.set(true);
@@ -64,22 +61,16 @@ export class DiscordOAuth2PageComponent implements OnInit {
       });
   }
 
-  #intializeDiscordAuth(): void {
-    this.#discordRepository
-      .getUri()
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe({
-        next: uri => {
-          if (!uri) {
-            this.error.set(true);
-            return;
-          }
-          window.location.href = uri;
-        },
-        error: () => {
-          this.error.set(true);
-        },
-      });
+  startCountdown(): void {
+    let count = 5;
+    const interval = setInterval(() => {
+      count -= 1;
+      this.countdown.set(count);
+      if (count === 0) {
+        clearInterval(interval);
+        this.handleCloseWindow();
+      }
+    }, 1000);
   }
 
   handleCloseWindow(): void {
