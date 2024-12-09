@@ -13,14 +13,14 @@ import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
 import { environment } from '../environments/environment';
 import { provideIcons } from '@ng-icons/core';
-import {
   heroHome,
-  heroLink,
   heroBolt,
+  heroLink,
+  heroExclamationTriangle,
+  heroCheckCircle,
   heroCheck,
   heroChevronLeft,
   heroChevronRight,
-} from '@ng-icons/heroicons/outline';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -40,14 +40,14 @@ export const appConfig: ApplicationConfig = {
       provide: 'BASE_URL',
       useValue: environment.apiUrl,
     },
-    provideIcons({
       heroHome,
       heroLink,
       heroBolt,
-      heroCheck,
-      heroChevronLeft,
+      heroCheckCircle,
+      heroExclamationTriangle,
       heroChevronRight,
-    }),
+      heroChevronLeft,
+      heroCheck,
     provideAnimations(),
     provideToastr({
       timeOut: 5000,
