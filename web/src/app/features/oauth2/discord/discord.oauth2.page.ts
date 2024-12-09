@@ -83,11 +83,15 @@ export class DiscordOAuth2PageComponent implements OnInit {
     });
   }
 
-  closeWindow(): void {
+  handleCloseWindow(): void {
     if (window.opener) {
-      window.close();
+      this.closeWindow();
     } else {
       window.location.href = '/';
     }
+  }
+
+  closeWindow(): void {
+    window.close();
   }
 }
