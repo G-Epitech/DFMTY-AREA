@@ -9,6 +9,7 @@ import { AsyncPipe } from '@angular/common';
 import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
 import { PaginationComponent } from '@app/components';
+import { TrInputDirective } from '@triggo-ui/input';
 
 @Component({
   selector: 'tr-integrations',
@@ -17,6 +18,7 @@ import { PaginationComponent } from '@app/components';
     IntegrationLinkedCardComponent,
     IntegrationAddDialogComponent,
     PaginationComponent,
+    TrInputDirective,
   ],
   templateUrl: './integrations.page.html',
   styles: [],
