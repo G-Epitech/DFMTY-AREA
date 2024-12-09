@@ -68,5 +68,5 @@ export const routes: Routes = [
         m => m.DiscordOAuth2PageComponent
       ),
     pathMatch: 'full',
-  }
+  },
 ];

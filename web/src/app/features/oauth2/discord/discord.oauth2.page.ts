@@ -6,8 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { DiscordRepository } from '@repositories/integrations';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
 import { NgOptimizedImage } from '@angular/common';
@@ -27,60 +26,60 @@ export class DiscordOAuth2PageComponent implements OnInit {
 
   loading = signal<boolean>(false);
   error = signal<boolean>(false);
-
-  accessToken: string | null = null;
-  code: string | null = null;
-  state: string | null = null;
-  uri: string | null = null;
+  success = signal<boolean>(false);
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loading.set(true);
     this.route.queryParams.subscribe(params => {
-      this.accessToken = params['accessToken'];
-      this.code = params['code'];
-      this.state = params['state'];
+      const accessToken: string | null = params['accessToken'];
+      const code: string | null = params['code'];
+      const state: string | null = params['state'];
 
-      if (this.accessToken) {
-        localStorage.setItem('accessToken', this.accessToken);
+      if (accessToken) {
+        localStorage.setItem('accessToken', accessToken);
       }
 
-      if (this.code && this.state) {
-        this.#discordRepository
-          .link({ code: this.code, state: this.state })
-          .pipe(
-            catchError(() => {
-              this.error.set(true);
-              this.loading.set(false);
-              return of(null);
-            })
-          )
-          .subscribe(() => {
-            this.loading.set(false);
-            this.closeWindow();
-          });
+      if (code && state) {
+        this.#linkDiscordAccount(code, state);
       } else {
-        this.#discordRepository
-          .getUri()
-          .pipe(
-            catchError(err => {
-              this.error.set(true);
-              this.loading.set(false);
-              return of(null);
-            })
-          )
-          .subscribe(uri => {
-            if (!uri) {
-              this.error.set(true);
-              this.loading.set(false);
-              return;
-            }
-            this.uri = uri;
-            window.location.href = uri;
-          });
+        this.#intializeDiscordAuth();
       }
     });
+  }
+
+  #linkDiscordAccount(code: string, state: string): void {
+    this.#discordRepository
+      .link({ code, state })
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: () => {
+          this.success.set(true);
+          this.error.set(false);
+        },
+        error: () => {
+          this.error.set(true);
+        },
+      });
+  }
+
+  #intializeDiscordAuth(): void {
+    this.#discordRepository
+      .getUri()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: uri => {
+          if (!uri) {
+            this.error.set(true);
+            return;
+          }
+          window.location.href = uri;
+        },
+        error: () => {
+          this.error.set(true);
+        },
+      });
   }
 
   handleCloseWindow(): void {
