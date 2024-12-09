@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DiscordRepository } from '@repositories/integrations';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
@@ -37,55 +37,49 @@ export class DiscordOAuth2PageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.route.queryParams
-      .pipe(
-        filter(
-          params => params['accessToken'] || params['code'] || params['state']
-        )
-      )
-      .subscribe(params => {
-        this.accessToken = params['accessToken'];
-        this.code = params['code'];
-        this.state = params['state'];
+    this.route.queryParams.subscribe(params => {
+      this.accessToken = params['accessToken'];
+      this.code = params['code'];
+      this.state = params['state'];
 
-        if (this.accessToken) {
-          localStorage.setItem('accessToken', this.accessToken);
-        }
+      if (this.accessToken) {
+        localStorage.setItem('accessToken', this.accessToken);
+      }
 
-        if (this.code && this.state) {
-          this.#discordRepository
-            .link({ code: this.code, state: this.state })
-            .pipe(
-              catchError(() => {
-                this.error.set(true);
-                this.loading.set(false);
-                return of(null);
-              })
-            )
-            .subscribe(() => {
+      if (this.code && this.state) {
+        this.#discordRepository
+          .link({ code: this.code, state: this.state })
+          .pipe(
+            catchError(() => {
+              this.error.set(true);
               this.loading.set(false);
-            });
-        } else {
-          this.#discordRepository
-            .getUri()
-            .pipe(
-              catchError(err => {
-                this.error.set(true);
-                this.loading.set(false);
-                return of(null);
-              })
-            )
-            .subscribe(uri => {
-              if (!uri) {
-                this.error.set(true);
-                this.loading.set(false);
-                return;
-              }
-              this.uri = uri;
-              window.location.href = uri;
-            });
-        }
-      });
+              return of(null);
+            })
+          )
+          .subscribe(() => {
+            this.loading.set(false);
+          });
+      } else {
+        this.#discordRepository
+          .getUri()
+          .pipe(
+            catchError(err => {
+              this.error.set(true);
+              this.loading.set(false);
+              return of(null);
+            })
+          )
+          .subscribe(uri => {
+            if (!uri) {
+              this.error.set(true);
+              this.loading.set(false);
+              return;
+            }
+            this.uri = uri;
+            window.location.href = uri;
+          });
+      }
+    });
   }
 
   closeWindow(): void {
