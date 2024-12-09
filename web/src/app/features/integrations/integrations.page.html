@@ -4,7 +4,7 @@
     <tr-integration-add-dialog />
   </div>
 
-  <tr-pagination [totalPages]="6"/>
+  <tr-pagination [totalPages]="21"/>
   <div class="flex-grow bg-secondary rounded-md overflow-auto">
     <div class="p-4 space-y-4 flex-col flex">
       @for (integration of integrations | async; track integration.id) {

@@ -31,29 +31,90 @@
         class="w-10 h-10 flex items-center justify-center rounded-none rounded-l-md">
         1
       </button>
-      <button
-        trBtn
-        [variant]="selectedPage() === 2 ? 'default' : 'outline'"
-        size="sm"
-        (click)="selectPage(2)"
-        class="w-10 h-10 flex items-center justify-center rounded-none">
-        2
-      </button>
-      <button
-        trBtn
-        variant="outline"
-        size="sm"
-        class="w-10 h-10 flex items-center justify-center rounded-none">
-        ...
-      </button>
-      <button
-        trBtn
-        [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
-        size="sm"
-        (click)="selectPage(pages.length)"
-        class="w-10 h-10 flex items-center justify-center rounded-none rounded-r-md">
-        {{ pages.length }}
-      </button>
+
+      @if (selectedPage() <= 3) {
+        @for (page of [2, 3]; track page) {
+          <button
+            trBtn
+            [variant]="selectedPage() === page ? 'default' : 'outline'"
+            size="sm"
+            (click)="selectPage(page)"
+            class="w-10 h-10 flex items-center rounded-none justify-center">
+            {{ page }}
+          </button>
+        }
+        <button
+          trBtn
+          variant="outline"
+          size="sm"
+          class="w-10 h-10 flex items-center rounded-none justify-center">
+          ...
+        </button>
+
+        <button
+          trBtn
+          [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
+          size="sm"
+          (click)="selectPage(pages.length)"
+          class="w-10 h-10 flex items-center justify-center  rounded-none rounded-r-md">
+          {{ pages.length }}
+        </button>
+      } @else if (selectedPage() >= pages.length - 2) {
+        <button
+          trBtn
+          variant="outline"
+          size="sm"
+          class="w-10 h-10 flex items-center rounded-none justify-center">
+          ...
+        </button>
+
+        @for (
+          page of [pages.length - 2, pages.length - 1, pages.length];
+          track page
+        ) {
+          <button
+            trBtn
+            [variant]="selectedPage() === page ? 'default' : 'outline'"
+            size="sm"
+            (click)="selectPage(page)"
+            class="w-10 h-10 flex items-center justify-center rounded-none
+                   {{ page === pages.length ? 'rounded-r-md' : '' }}">
+            {{ page }}
+          </button>
+        }
+      } @else {
+        <button
+          trBtn
+          variant="outline"
+          size="sm"
+          class="w-10 h-10 flex items-center rounded-none justify-center">
+          ...
+        </button>
+
+        <button
+          trBtn
+          size="sm"
+          class="w-10 h-10 flex items-center rounded-none justify-center">
+          {{ selectedPage() }}
+        </button>
+
+        <button
+          trBtn
+          variant="outline"
+          size="sm"
+          class="w-10 h-10 flex items-center rounded-none justify-center">
+          ...
+        </button>
+
+        <button
+          trBtn
+          [variant]="selectedPage() === pages.length ? 'default' : 'outline'"
+          size="sm"
+          (click)="selectPage(pages.length)"
+          class="w-10 h-10 flex items-center justify-center rounded-none rounded-r-md">
+          {{ pages.length }}
+        </button>
+      }
     }
   </div>
   <button
