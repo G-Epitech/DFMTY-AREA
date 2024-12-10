@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+---
+# Collider2D
+
+The `Collider2D` class, part of the `zygarde::physics::components` namespace, represents the core 2D collision detection mechanism.
+It is used by other components, such as `BoxCollider2D`, to manage collision layers and handle collision events.
+
+## Overview
+
+`Collider2D` is a final class designed to handle low-level collision detection and management within a physics engine.
+It maintains a queue of detected collisions and uses layer-based filtering to determine which objects interact.
+
+## Properties
+
+- ``include_layers``: A vector of integers specifying the layers the collider should include in its checks.
+- ``collision_layers``: A vector of integers specifying the collision layers the collider should respond to.
+- ``collision_queue``: Queue of collisions the collider has.
+
+## Example Usage
+The ``Collider2D`` class is a private utility within ``BoxCollider2D``, meaning it is not intended for direct use outside of its friend class.
+Below is an example of how ``BoxCollider2D`` interacts with ``Collider2D`` to process collisions.
+
+```cpp
+#include "box_collider_2_d.hpp"
+
+using namespace zygarde::physics::components;
+
+BoxCollider2D boxCollider(Vector2f(100.0f, 50.0f), {1, 2}, {1});
+
+// Check for collisions in BoxCollider2D, which uses Collider2D internally
+if (boxCollider.HasCollision()) {
+    auto collision = boxCollider.GetNextCollision();
+    // Process collision details
+}
+```

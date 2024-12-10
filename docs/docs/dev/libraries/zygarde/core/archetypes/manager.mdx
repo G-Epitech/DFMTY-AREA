@@ -1,0 +1,122 @@
+---
+sidebar_position: 1
+---
+# Manager
+
+
+The `ArchetypeManager` in the `zygarde::core::archetypes` namespace manages the loading, invocation, and scheduling of archetypes in the game engine. Archetypes are JSON-based configurations that define sets of components for game entities, including properties, behavior scripts, and metadata.
+
+```cpp
+namespace zygarde::core::archetypes {
+class ArchetypeManager final {
+  // Member functions and members described below
+};
+}  // namespace zygarde::core::archetypes
+```
+
+### Overview
+The ArchetypeManager class is responsible for:
+
+- Loading archetypes from specified directories.
+- Invoking archetypes to spawn entities based on archetype configurations.
+- Scheduling invocations to defer the spawning of entities to a later time.
+
+Archetypes define the initial properties and behaviors of entities. Here is an example of an archetype configuration in JSON:
+
+```json
+{
+  "archetype_name": "enemy_pata_normal",
+  "components": [
+    {
+      "name": "rigidbody2d",
+      "data": {
+        "isKinematic": false,
+        "drag": 0
+      }
+    },
+    {
+      "name": "position"
+    },
+    {
+      "name": "box_collider2d",
+      "data": {
+        "size": {
+          "x": 52.5,
+          "y": 60
+        },
+        "collisionLayers": [2],
+        "includeLayers": [1, 8]
+      }
+    },
+    {
+      "name": "tags",
+      "data": {
+        "tags": ["enemy", "pata"]
+      }
+    },
+    {
+      "name": "script_pool",
+      "data": [
+        {
+          "scriptName": "pataScript",
+          "customValues": {
+            "health": 30.0,
+            "verticalSpeed": 20.0,
+            "horizontalSpeed": 80.0,
+            "upperLimitOffset": 30.0,
+            "lowerLimitOffset": 30.0,
+            "fireRate": 0.8,
+            "bulletsType": 0,
+            "scoreIncrease": 100
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Usage
+
+Here is a usage example for the archetype manager
+```cpp
+#include "archetype_manager.hpp"
+#include "registry.hpp"
+
+int main() {
+    using namespace zygarde::core::archetypes;
+
+    // Initialize ArchetypeManager and Registry
+    ArchetypeManager archetypeManager;
+    auto registry = std::make_shared<zygarde::Registry>();
+
+    // Load archetypes from a directory
+    archetypeManager.LoadArchetypes("path/to/archetypes", scriptsRegistry);
+
+    // Directly invoke an archetype to create an entity
+    zygarde::Entity enemy = archetypeManager.InvokeArchetype(registry, "enemy_pata_normal");
+
+    // Schedule an invocation
+    ArchetypeManager::ScheduleInvocationParams params {
+        .archetypeName = "enemy_pata_normal",
+        .registryAttachCallback = [](const std::shared_ptr<zygarde::Registry>& reg, zygarde::Entity entity) {
+            // Custom behavior after attaching entity to registry
+            std::cout << "Entity created and attached to registry\n";
+        }
+    };
+    archetypeManager.ScheduleInvocation(params);
+
+    // Execute scheduled invocations
+    archetypeManager.ExecuteScheduledInvocations(registry);
+
+    return 0;
+}
+```
+
+Generally prefer using the later invocation when inside the scripting loop and immediate invocation outside of it.
+
+### See Also
+
+- Registry
+- Entity
+- ArchetypeLoader

@@ -1,0 +1,31 @@
+---
+sidebar_position: 9
+---
+# `MakeSharedWithDependencies`
+
+Make a new shared pointer of a class and provide it the dependencies handler as first constructor parameter if needed.
+
+:::success Tip
+This method acts like [`MakeWithDependencies`](make-with-dependencies) but returns a shared pointer instead of a plain instance.
+:::
+
+```cpp
+template <typename T, typename... Args>
+std::shared_ptr<T> MakeSharedWithDependencies(Args&&... args);
+```
+This method takes a template parameter `T` which is the class to instantiate.
+
+## Parameters
+- `T`: The class to instantiate.
+- `args`: The arguments to pass to the class constructor.
+
+## Return value
+- A shared pointer to the instance of the class `T`.
+
+## Notes
+:::info
+If you want to get access to the current `DependenciesHandler` instance in the constructor of the service, you can pass a `DependenciesHandler::Ptr` as the first argument of the constructor.
+:::
+
+## Examples
+Refer to the [`MakeWithDependencies` example section](make-with-dependencies#examples) for an example of how to use this method.

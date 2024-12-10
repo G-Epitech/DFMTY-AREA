@@ -1,0 +1,46 @@
+---
+sidebar_position: 7
+---
+# `Has`
+
+Check if a service is registered in the handler.
+
+```cpp
+template <typename T>
+bool Has() const;
+```
+This method takes a template parameter `T` which is the service to check for.
+
+## Parameters
+- `T`: The service to check for.
+
+## Return value
+- `true` if the service is registered, `false` otherwise.
+
+## Examples
+```cpp
+class MyServiceA {
+ public:
+  void DoSomething() { std::cout << "Doing something" << std::endl; }
+};
+
+class MyServiceB {
+ public:
+  void DoSomething() { std::cout << "Doing something" << std::endl; }
+};
+
+int main() {
+  auto handler = DependenciesHandler::Create();
+
+  handler->Add<MyServiceA>();
+
+  if (handler->Has<MyServiceA>()) {
+    std::cout << "Service A is registered" << std::endl;  // Will print "Service A is registered"
+  }
+  if (handler->Has<MyServiceB>()) {
+    std::cout << "Service B is registered" << std::endl;  // Will not be called
+  }
+
+  return 0;
+}
+```

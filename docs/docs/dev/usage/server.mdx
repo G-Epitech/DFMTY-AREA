@@ -1,0 +1,71 @@
+---
+sidebar_position: 2
+---
+
+# Server Usage
+Welcome to the **R-Type server CLI** documentation. Each server type has its own CLI options.
+This document provides detailed instructions on how to use the CLI for the **master** server.
+
+## General Usage
+The R-Type server CLI can be invoked with the following format:
+```bash
+./r-type_server [server_type] ...(type specific arguments)
+```
+
+### Available Server Types
+
+- **Master**: The master server is responsible for managing the game sessions and routing messages between clients and game servers.
+- **Room**: The game server is responsible for managing the game logic and state for a single game session.
+
+Each server type has its own set of arguments and options, accessible via the ``--help`` flag.
+
+## Master Server CLI
+
+The ``master`` server is responsible for managing the infrastructure,
+including spawning and scaling lobby servers. Below is the detailed usage guide for the master server.
+
+### Usage
+```bash
+./r-type_server master [options]
+```
+
+### Available Options
+| Option     | Argument | Description                               |
+|------------|----------|-------------------------------------------|
+| `--help`   | None     | Produces the help message for the master. |
+| `--config` | `<file>` | Path to the master's configuration file.  |
+
+### Environment File
+The ``--config`` option allows you to specify a configuration file that defines
+key parameters for the master server. This environment file must follow the format outlined below.
+
+#### Sample Configuration File
+```dotenv
+NAME='jedusor'
+PORT=3000
+TICKS=60
+MAX_GAMES=5
+```
+
+#### Configuration Variables
+| Variable    | Description                                                                |
+|-------------|----------------------------------------------------------------------------|
+| `NAME`      | The name of the master server.                                             |
+| `PORT`      | The port on which the master server runs.                                  |
+| `TICKS`     | The tick rate (in milliseconds) for each game lobby managed by the master. |
+| `MAX_GAMES` | The maximum number of games (lobby servers) that the master can spawn.     |
+
+#### Example Usage
+Here is an example of how you might use the **``master``** server:
+
+
+```bash
+./r-type_server master --config master.env
+```
+
+#### Further Help
+For more information on the different server types and their specific CLI options, you can run:
+
+```bash
+./r-type_server [server_type] --help
+```

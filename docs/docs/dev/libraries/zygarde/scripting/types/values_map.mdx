@@ -1,0 +1,30 @@
+---
+sidebar_position: 3
+sidebar_label: Values Map
+---
+# Values Map
+
+The `ValuesMap` is a type alias for a map that associates string keys with arbitrary values. It is primarily used to store custom script values in the Zygarde engine, providing a flexible way to pass parameters to scripts at runtime.
+
+## Overview
+
+The `ValuesMap` allows developers to create dynamic scripts that can adapt to varying configurations by storing key-value pairs. This is particularly useful for managing properties that may change during gameplay, such as script parameters or state data.
+
+## Key Concepts
+
+| **Concept**           | **Description**                                                                                                  |
+|-----------------------|------------------------------------------------------------------------------------------------------------------|
+| **Dynamic Storage**   | A flexible map that can hold various types of values, enabling scripts to access configuration data dynamically. |
+| **Custom Parameters** | Allows scripts to receive custom values tailored to specific gameplay scenarios.                                 |
+
+## Example Usage
+
+```cpp
+#include "values_map.hpp"
+
+zygarde::scripting::types::ValuesMap customValues;
+customValues["speed"] = 10.0f;
+customValues["isActive"] = true;
+
+// Use customValues in a script
+```

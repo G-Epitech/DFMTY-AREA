@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+sidebar_label: Position
+---
+# Position System
+
+The `PositionSystem` is a core component of the physics engine that manages the precise application of movement offsets to an entity’s position in 2D space. This system ensures that the entities’ positions are accurately updated based on previously calculated movement offsets, providing the foundation for smooth and responsive movement across frames.
+
+## Overview
+
+The `PositionSystem` operates on entities that contain `Rigidbody2D` and `Position` components. It reads the movement offset from each entity’s `Rigidbody2D` and applies this offset to update the `Position` component. This system complements other movement calculations by handling the final step of setting the entity’s actual position in the game world.
+
+## Key Concepts
+
+| **Concept**                   | **Description**                                                                                                                                           |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Movement Offset**           | The offset, calculated in previous systems (e.g., `MovementSystem`), represents the intended movement distance and direction for an entity in this frame. |
+| **Position Update**           | The `PositionSystem` modifies an entity’s `Position` based on the movement offset, ensuring accurate placement.                                           |
+| **Frame-Independent Updates** | By applying offsets per frame, the system ensures smooth and predictable movement across varied frame rates.                                              |
+
+## Core Functionality
+
+1. **Apply Movement Offset**: The core responsibility of `PositionSystem` is to apply each entity’s movement offset to its position.
+2. **Per-Frame Update**: During each frame, it processes all entities within the registry, ensuring that all relevant entities’ positions are updated to reflect recent movement changes.
+
+## Process Flow
+
+1. **Run**: The `Run` method iterates through all entities that have `Rigidbody2D` and `Position` components. For each entity, it applies the movement offset to the position.
+2. **ApplyMovementOffset**: This helper function reads the movement offset from the entity’s `Rigidbody2D` and adds it to the `Position` component, updating the entity's position in the game world.

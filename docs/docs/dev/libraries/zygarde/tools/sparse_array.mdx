@@ -1,0 +1,93 @@
+---
+sidebar_position: 3
+sidebar_label: Sparse Array
+---
+
+# Sparse Array
+
+The `sparse_array` class is a specialized container designed to manage components within an entity-component system (ECS). It allows for the efficient storage of component data while supporting sparse allocation, enabling developers to work with potentially large and varied datasets without wasting memory on unused indices.
+
+## Overview
+
+The `sparse_array` class provides a flexible and efficient way to manage component data, using optional storage to accommodate sparse data distributions. This design makes it ideal for scenarios where not all entities will have every component, thus optimizing memory usage and access patterns.
+
+## Key Concepts
+
+| **Concept**          | **Description**                                                                                                      |
+|----------------------|----------------------------------------------------------------------------------------------------------------------|
+| **Sparse Storage**   | Uses `std::optional` to allow for the presence or absence of components in the array, enabling efficient memory use. |
+| **Dynamic Resizing** | Supports dynamic resizing of the internal container to accommodate changing needs while managing sparse data.        |
+| **Iterators**        | Provides standard iterator functionality for easy traversal and manipulation of components stored in the array.      |
+
+## Core Functionality
+
+### 1. Constructors
+
+The `sparse_array` class includes multiple constructors to support default, copy, and move semantics.
+
+```cpp
+sparse_array();
+sparse_array(sparse_array const &);
+sparse_array(sparse_array &&) noexcept;
+```
+
+### 2. Access Operators
+
+The class provides operator overloads to access components by index, utilizing optional types to handle potentially missing components.
+
+```cpp
+reference_type operator[](size_t idx);
+const_reference_type operator[](size_t idx) const;
+```
+
+### 3. Iterators
+
+The `sparse_array` supports iterators, enabling users to traverse its contents seamlessly.
+
+```cpp
+iterator begin();
+const_iterator begin() const;
+const_iterator cbegin() const;
+iterator end();
+const_iterator end() const;
+const_iterator cend() const;
+```
+
+### 4. Size and Manipulation
+
+Methods are provided for managing the size of the array, including resizing, inserting, and erasing components.
+
+```cpp
+size_type size() const;
+reference_type insertAt(size_type pos, Component const &);
+reference_type insertAt(size_type pos, Component &&);
+template <class... Params> reference_type emplaceAt(size_type pos, Params &&...);
+void erase(size_type pos);
+size_type getIndex(value_type const &) const;
+void resize(size_type new_size);
+```
+
+## Example Usage
+
+Below is an example demonstrating how to use the `sparse_array` to store and manipulate components in an ECS setup.
+
+```cpp
+#include "sparse_array.hpp"
+
+sparse_array<Position> positionArray;
+positionArray.insertAt(0, Position{10, 20});
+positionArray.insertAt(1, Position{30, 40});
+
+// Accessing elements
+auto pos1 = positionArray[0];
+if (pos1) {
+// Work with the position
+}
+
+// Resizing the array
+positionArray.resize(10);
+```
+
+## Conclusion
+
+The `sparse_array` class is an essential component for managing sparsely populated data in an ECS. Its design enables efficient memory usage while providing a clear and convenient interface for interacting with component data. By utilizing the `sparse_array`, developers can build more flexible and scalable game architectures within the Zygarde engine framework.

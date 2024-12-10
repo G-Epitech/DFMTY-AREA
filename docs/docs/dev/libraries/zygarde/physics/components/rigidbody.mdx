@@ -1,0 +1,43 @@
+---
+sidebar_position: 3
+---
+# Rigidbody2D
+
+The `Rigidbody2D` class, part of the `zygarde::physics::components` namespace, represents a 2D rigid body in a physics engine.
+This component is used to apply forces, set velocities, and control properties such as drag and kinematic states.
+
+## Overview
+
+`Rigidbody2D` is a final class that handles basic physical properties for 2D objects, including movement, forces, drag, and kinematic settings.
+It is commonly used for dynamic objects affected by physical forces.
+
+## Properties
+
+- ``velocity``: A ``Vector2f`` representing the initial velocity.
+- ``isKinematic``: A boolean indicating whether the rigid body is kinematic (i.e., not affected by forces or collisions).
+- ``drag``: A float representing the drag value applied to the object.
+
+The `Rigidbody2D` will contain the simulated movement offset after the movement system. But the movement offset will only be applied to the position after the `Position System`.
+We first need to check it with the collision system to see the real movement.
+
+## Example Usage
+```cpp
+using namespace zygarde::physics::components;
+
+core::types::Vector2f initialVelocity(10.0f, 5.0f);
+Rigidbody2D rigidbody(initialVelocity, false, 0.8f);
+
+// Apply a force
+rigidbody.AddForce(3.0f, 2.0f);
+
+// Set a new velocity
+rigidbody.SetVelocity(core::types::Vector2f(15.0f, 7.5f));
+
+// Cancel velocity
+rigidbody.CancelVelocity();
+
+// Check kinematic state
+if (rigidbody.IsKinematic()) {
+    // Do something specific for kinematic bodies
+}
+```

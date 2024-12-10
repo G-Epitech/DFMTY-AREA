@@ -1,0 +1,54 @@
+---
+sidebar_position: 2
+---
+
+# Vcpkg Setup
+
+How to setup vcpkg for a seamless development experience.
+
+## Introduction
+
+**vcpkg** is a cross-platform package manager for C++ libraries. It simplifies the process of acquiring, managing, and integrating open-source libraries into your projects. Whether you are building a project for Windows, Linux, or macOS, vcpkg provides a unified way to install dependencies and ensure compatibility across multiple platforms.
+
+## Setup
+
+After you finished installing vcpkg (checkout the [official documentation](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd) for more information)
+you will have the `VCPKG_ROOT` environment variable set to the path where vcpkg is installed. If not go and re-read the official documentation.
+
+With that you can easily run the Makefile at the root of the repository to build the project.
+
+## Manifest
+
+Vcpkg has what we call a manifest file, which is a file that lists all the dependencies that your project needs.
+This file is called `vcpkg.json` and is located at the root of the repository.
+
+This will let us include dependencies in the project without having to manually install them via the `vcpkg cli`.
+
+It will automatically install the dependencies when you build the project.
+
+## CMake and Vcpkg
+
+To use vcpkg with CMake, you need to set the `CMAKE_TOOLCHAIN_FILE` variable to the path of the vcpkg toolchain file.
+This file is located at `$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake`.
+
+Here is an example of how to use it:
+
+```bash
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+```
+
+To automate the process of setting the `CMAKE_TOOLCHAIN_FILE` variable, you can use **[CMake presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)**.
+
+## CLion and Vcpkg
+
+At G-Epitech we are huge fans of Jetbrains products, so here is a little tip on how to use vcpkg with CLion.
+
+First, you need to set the `CMAKE_TOOLCHAIN_FILE` variable in the CMake options.
+
+Go to `File > Settings > Build, Execution, Deployment > CMake` and add the following line to the `CMake options` field:
+
+```bash
+-DCMAKE_TOOLCHAIN_FILE=<VCPKG_ROOT>/scripts/buildsystems/vcpkg.cmake
+```
+
+Another thing you can do is go to `View > Tool Windows > Vcpkg` and you will have a nice UI to manage your dependencies.

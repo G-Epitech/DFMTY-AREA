@@ -1,0 +1,53 @@
+---
+sidebar_position: 4
+---
+# `Get`
+
+Get an instance of a service if it is registered in the handler.
+
+```cpp
+template <typename T>
+std::shared_ptr<T> Get();
+```
+This method takes a template parameter `T` which is the service to get.
+
+## Parameters
+- `T`: The service to register.
+
+## Return value
+- A shared pointer to the instance of the service if is found in the handler, `nullptr` otherwise.
+
+## Notes
+:::warning
+Don't forget to check if the returned pointer is `nullptr` before using it.
+:::
+
+## Examples
+```cpp
+class MyServiceA {
+ public:
+  void DoSomething() { std::cout << "Doing something" << std::endl; }
+};
+
+class MyServiceB {
+ public:
+  void DoSomething() { std::cout << "Doing something" << std::endl; }
+};
+
+int main() {
+  auto handler = DependenciesHandler::Create();
+
+  handler->Add<MyServiceA>();
+
+  auto refA = handler->Get<MyServiceA>();  // Will work fine
+  auto refB = handler->Get<MyServiceB>();  // Will return nullptr
+
+  if (refA) {
+    refA->DoSomething(); // Will print "Doing something"
+  }
+  if (refB) {
+    refB->DoSomething(); // Will not be called
+  }
+  return 0;
+}
+```

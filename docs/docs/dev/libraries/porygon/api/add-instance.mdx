@@ -1,0 +1,42 @@
+---
+sidebar_position: 3
+---
+# `AddInstance`
+
+Register a new service in the handler from an existing instance.
+
+```cpp
+template <typename T>
+void AddInstance(std::shared_ptr<T> instance);
+```
+This method takes a template parameter `T` which is the service to register.
+
+## Parameters
+- `T`: The service to register.
+- `instance`: The instance of the service to register.
+
+## Return value
+- None
+
+## Notes
+:::warning
+If you want to get access to the current `DependenciesHandler` instance you will have to manage it yourself.
+:::
+
+## Examples
+```cpp
+class MyService {
+ public:
+  void DoSomething() { std::cout << "Doing something" << std::endl; }
+};
+
+int main() {
+  auto handler = DependenciesHandler::Create();
+  auto myService = std::make_shared<MyService>();
+
+  handler->AddInstance(myService);
+  auto ref = handler->Get<MyService>();
+  ref.DoSomething();
+  return 0;
+}
+```

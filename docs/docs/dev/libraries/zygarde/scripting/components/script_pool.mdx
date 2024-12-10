@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+sidebar_label: ScriptPool
+---
+# Script Pool
+
+The `ScriptPool` class manages a collection of `MonoBehaviour` scripts in the Zygarde engine. <br/>
+
+It provides functionality for adding, retrieving, and managing scripts, facilitating the organization and execution of various behaviors associated with game entities.
+
+It is mainly used so an entity can have shared scripts.
+
+## Public Member Functions
+```cpp
+void AddScript(const std::shared_ptr<MonoBehaviour>& script);
+```
+Adds a MonoBehaviour script to the script pool.
+
+```cpp
+template <typename T>
+[[nodiscard]] std::shared_ptr<T> GetScript();
+```
+Retrieves a script of type T from the pool.
+
+```cpp
+[[nodiscard]] inline std::list<std::shared_ptr<MonoBehaviour>> GetScripts() noexcept;
+```
+Returns a list of all scripts currently in the pool.
+

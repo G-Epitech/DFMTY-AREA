@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+sidebar_label: Movement
+---
+# Movement System
+The ``MovementSystem`` is responsible for calculating and applying movement and drag forces on entities in a 2D physics environment.
+By factoring in each entity’s velocity, drag, and time elapsed since the last update, the system computes movement offsets to smoothly update entity positions, allowing for frame rate-independent, realistic motion.
+
+
+## Overview
+The ``MovementSystem`` operates on entities with ``Rigidbody2D`` and Position components, using delta time to ensure consistent and accurate physics-based movement regardless of frame rate.
+The system applies drag to the entity's velocity and computes an offset based on this adjusted velocity. This offset is then used to update the entity's position in the game world.
+
+## Key Concepts
+
+| **Concept**             | **Description**                                                                                                                                                                  |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Delta Time**          | The `delta_time` value from the game loop determines how much time has passed since the last update, affecting the calculation of movement and velocity adjustments.             |
+| **Position Offset**     | The system calculates the position offset for each entity's `Rigidbody2D` based on its velocity and delta time, which helps in determining the entity's new position.            |
+| **Drag Application**    | Drag is applied to gradually reduce an entity’s velocity, simulating resistance. The amount of drag applied each frame depends on the `delta_time` and drag coefficient.         |
+| **Velocity Adjustment** | The system checks and adjusts the entity's velocity, considering both drag and time passed. If drag is very high, the system sets velocity to zero, effectively stopping motion. |
+
+## Core Functionality
+
+1. **Drag Application**: The system reduces the entity’s velocity according to its drag coefficient. For high drag values, the velocity approaches zero quickly, effectively stopping the entity.
+
+2. **Offset Computation**: Based on the adjusted velocity and the delta time, the system calculates a movement offset. This offset is used to simulate where the entity will be after applying movement in the current frame.
+
+3. **Smooth Movement**: By calculating the position offset each frame, MovementSystem achieves smooth and continuous movement that is not affected by fluctuations in frame rate.

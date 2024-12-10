@@ -1,0 +1,52 @@
+---
+sidebar_position: 1
+---
+
+# Client API
+
+This API will give you all the tools you need to interact with server.\
+The first thing you need to do is to create a new instance of the client with the basics informations:
+- The server address
+- The server port
+
+Next, you need to connect to the server with the `Register` method.
+
+```cpp
+auto client = new api::Client("127.0.0.1", 5000);
+
+payload::Connection connectPayload = {
+  .pseudo = "TekMath"
+};
+
+bool success = client->Register(connectPayload);
+if (!success)
+  throw std::runtime_error("Failed to connect to the server.");
+```
+
+The API handle the TCP initialisation, the connection to the server and the confirmations between us.\
+Thanks [Abra](/docs/dev/libraries/abra) for the help on the API 😉.
+
+Next, when you have get the lobby ID (the method to list lobby is not implemented yet), you can join a lobby with the following code:
+
+```cpp
+payload::JoinRoom joinPayload = {
+  .lobbyId = 1
+};
+
+auto success = client->JoinRoom(joinPayload);
+if (!success)
+  throw std::runtime_error("Failed to join the lobby.");
+```
+
+The API will get the lobby UDP infos, connect to the UDP and reply to the server with client UDP infos.
+
+Now, you can send and receive messages from the server.
+
+:::note
+The first `Register` method have a timeout of 5 seconds.\
+The `JoinRoom` method have a timeout of 10 seconds.
+:::
+
+:::info
+If you want to be sure that you are connected to the server (TCP only), you can use the method `IsConnected`.
+:::

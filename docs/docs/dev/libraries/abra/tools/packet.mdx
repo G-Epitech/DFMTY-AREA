@@ -1,0 +1,87 @@
+---
+sidebar_position: 1
+---
+
+# Packet
+
+A packet is a class used by the API to represent a message sent or received by the server.\
+The good practice to create a packet is to use the **[PacketBuilder](packet-builder)** class.
+
+The class can be used to send a packet to a client or a server (the class will be exploited by the API) or when you receive a new packet.
+
+## Packet Header Props
+
+Here is how the packet header is structured:
+```cpp title="tools/packet/props/header.hpp"
+struct PacketHeaderProps {
+    unsigned payloadLength: kPacketHeaderPayloadLengthSize = 0; // 0..1023  (10 bits)
+    unsigned payloadType: kPacketHeaderPayloadTypeSize = 0;     // 0..15    (4 bits)
+    unsigned offsetFlag: kPacketHeaderFlagSize = 0;             // 0..1     (1 bit)
+    unsigned turnFlag: kPacketHeaderFlagSize = 0;               // 0..1     (1 bit)
+};
+```
+The header is mainly used by the API to determine the packet type and the payload length.\
+You can use it by calling the `GetHeaderProps` method from the packet class.
+
+:::warning
+If you manually create a packet, you must set the header properties correctly.
+All the properties are documented with Bit Fields
+:::
+
+The constants values are defined in `header.hpp` but you can also find documentation about bits allocation in **[Network Protocol - Header](/docs/dev/networking/network-protocol#header)**.
+
+
+## Packet Message Props
+
+Here is how message props are structured:
+```cpp title="tools/packet/props/message.hpp"
+struct PacketMessageProps {
+    unsigned messageId: kPacketMessageIdSize = 0;     // 0..1048575 (20 bits)
+    unsigned messageType: kPacketMessageTypeSize = 0; // 0..63      (6 bits)
+    unsigned : 6;
+};
+```
+
+The last 6 bits are used for padding and are not used by the API.\
+The message props are not used by the API and are mainly used by the client/server to determine the message type and the message id.\
+You can use it by calling the `GetMessageProps` method from the packet class.
+
+## Packet Offset Props
+
+Here is how offset props are structured:
+```cpp title="tools/packet/props/offset.hpp"
+struct PacketOffsetProps {
+    unsigned offset: kPacketOffsetSize = 0;         // 0..32767 (15 bits)
+    unsigned offsetFlag: kPacketOffsetFlagSize = 0; // 0..1 (1 bit)
+};
+```
+
+This structure is optional and is used to determine the offset of the packet.\
+This part is used by the API for **Multi Packets**.
+
+:::info
+If you try to get offset props from a packet that does not have an offset (offset flag to 0 in the header), the API will throw an exception.\
+You can use `packetInstance.OffsetIsEnabled()` to check if the packet has an offset.
+:::
+
+## Packet Turn Props
+
+Here is how turn props are structured:
+```cpp title="tools/packet/props/turn.hpp"
+struct PacketTurnProps {
+    unsigned turn: kPacketTurnSize = 0; // 0..65535 (16 bits)
+};
+```
+
+This structure is optional and is used to determine the turn of the packet.\
+It's not used by the API and is mainly used by the client/server to determine the turn of the packet in case of multi stats payload for example.
+
+:::info
+If you try to get turn props from a packet that does not have a turn (turn flag to 0 in the header), the API will throw an exception.\
+You can use `packetInstance.TurnIsEnabled()` to check if the packet has an turn.
+:::
+
+## Packet Payload
+
+The packet payload is defined by a typename template.\
+The payload is the data that the packet contains. It can be a part of a list in case of **Multi Packets** usage.

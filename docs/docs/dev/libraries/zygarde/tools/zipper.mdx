@@ -1,0 +1,68 @@
+---
+sidebar_position: 2
+sidebar_label: Zipper
+---
+
+# Zipper
+
+The `zipper` class is a utility that encapsulates the functionality of `zipper_iterator`, providing an easy interface for iterating over multiple containers in a synchronized manner. By utilizing the `zipper`, developers can efficiently access and process related data stored in separate container types, making it especially useful in entity-component systems (ECS).
+
+## Overview
+
+The `zipper` class is designed to work with sparse arrays, allowing for the combination of various containers into a single iterable structure. This allows for parallel processing of components from different types, enhancing the performance and readability of systems that operate on multiple attributes of entities.
+
+## Key Concepts
+
+| **Concept**                   | **Description**                                                                                                     |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **Container Aggregation**     | Combines multiple sparse arrays into a single iterable object, facilitating the handling of related data sets.      |
+| **Dynamic Iteration**         | Provides dynamic begin and end functions, allowing the zipper to adapt to changes in the underlying data structure. |
+| **Integration with Iterator** | Leverages `zipper_iterator` to manage simultaneous iteration over the contained sparse arrays.                      |
+
+## Core Functionality
+
+### 1. Constructor
+
+The `zipper` constructor initializes the zipper with a variadic number of sparse arrays, setting up the underlying data structures for iteration.
+
+```cpp
+explicit zipper(sparse_array<Containers>::ptr &&...cs);
+```
+
+### 2. Begin Iterator
+
+The `begin` method returns an iterator pointing to the start of the zipped containers, allowing the user to begin iterating over the elements.
+
+```cpp
+iterator begin();
+```
+
+### 3. End Iterator
+
+The `end` method returns an iterator representing the end of the zipped containers. This is crucial for managing the iteration boundary.
+
+```cpp
+iterator end();
+```
+
+## Example Usage
+
+Here’s an example demonstrating how to use the `zipper` class to iterate over different component types in an ECS architecture.
+
+```cpp
+#include "zipper.hpp"
+
+sparse_array<Position> positions = {...};
+sparse_array<Velocity> velocities = {...};
+
+zygarde::tools::zipper<Position, Velocity> zipped(positions, velocities);
+
+for (auto it = zipped.begin(); it != zipped.end(); ++it) {
+auto [position, velocity] = *it; // Retrieve position and velocity
+// Process the components together
+}
+```
+
+## Conclusion
+
+The `zipper` class serves as a powerful abstraction for handling multiple sparse arrays in a unified manner, allowing for synchronized iteration over different component types. By leveraging this class, developers can create more efficient and maintainable ECS systems within the Zygarde engine framework.
