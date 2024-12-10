@@ -21,7 +21,7 @@ class _ConnectIntegrationScreenState extends State<ConnectIntegrationScreen> {
         integrationMediator.getIntegrationNames();
 
     return BaseScaffold(
-      title: 'Create',
+      title: 'Connect Integration',
       body: _IntegrationNamesContainer(integrations: integrationsNames),
       getBack: true,
     );

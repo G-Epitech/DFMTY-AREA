@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:triggo/app/features/automations/view/automation_create_page.view.dart';
 import 'package:triggo/app/features/automations/view/automation_page.view.dart';
 import 'package:triggo/app/features/home/home.dart';
 import 'package:triggo/app/features/integrations/view/integration_connect_page.view.dart';
@@ -29,8 +28,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return customPageRouteBuilder(const AutomationPage());
     case (RoutesNames.connectIntegration):
       return customPageRouteBuilder(const ConnectIntegrationScreen());
-    case (RoutesNames.createAutomation):
-      return customPageRouteBuilder(const CreateAutomationPage());
     default:
       return customPageRouteBuilder(const Placeholder());
   }
