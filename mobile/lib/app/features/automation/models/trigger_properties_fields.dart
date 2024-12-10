@@ -10,12 +10,12 @@ class TriggerPropertiesFieldsValues {
 
 class TriggerPropertiesFields {
   final String name;
-  final String selectedValue;
+  final String? selectedValue;
   final List<TriggerPropertiesFieldsValues> values;
 
   TriggerPropertiesFields({
     required this.name,
-    required this.selectedValue,
+    this.selectedValue,
     required this.values,
   });
 

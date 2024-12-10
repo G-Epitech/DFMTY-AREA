@@ -19,7 +19,6 @@ class AutomationScreen extends StatelessWidget {
           id: 'id2',
         ),
       ],
-      selectedValue: 'id1',
     )
   ];
 

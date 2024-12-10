@@ -5,7 +5,7 @@ import 'package:triggo/app/theme/colors/colors.dart';
 class DropdownItem extends StatelessWidget {
   final TriggerPropertiesFieldsValues option;
 
-  const DropdownItem({required this.option});
+  const DropdownItem({super.key, required this.option});
 
   @override
   Widget build(BuildContext context) {

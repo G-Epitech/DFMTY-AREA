@@ -7,7 +7,7 @@ import 'package:triggo/app/features/automation/widgets/field_container.widget.da
 class DropdownExample extends StatelessWidget {
   final List<TriggerPropertiesFields> fields;
 
-  const DropdownExample({required this.fields});
+  const DropdownExample({super.key, required this.fields});
 
   @override
   Widget build(BuildContext context) {
