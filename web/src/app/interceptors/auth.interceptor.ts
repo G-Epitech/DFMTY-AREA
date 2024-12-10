@@ -22,8 +22,8 @@ export const authInterceptor: HttpInterceptorFn = (
   }
   const accessToken = tokenMediator.getAccessToken();
   if (!accessToken) {
-    void router.navigate(['/login']);
-    return next(req);
+    // void router.navigate(['/login']);
+    // return next(req);
   }
   const request = attachAuthHeaders(req, accessToken);
   return next(request).pipe(
@@ -39,8 +39,12 @@ export const authInterceptor: HttpInterceptorFn = (
 
 function attachAuthHeaders(
   req: HttpRequest<unknown>,
-  accessToken: string
+  accessToken: string | null
 ): HttpRequest<unknown> {
+  // If there is no access token, return the request as is
+  if (!accessToken) {
+    return req;
+  }
   return req.clone({
     setHeaders: {
       Authorization: `Bearer ${accessToken}`,

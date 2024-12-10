@@ -57,15 +57,15 @@ class _TriggoNavigationBarItem {
             child: Card(
               color: isSelected ? lightContainer : Colors.grey[100],
               child: SizedBox(
-                height: 80,
+                height: 64,
                 child: Center(
                   child: SvgPicture.asset(
                     iconAsset,
                     color: isSelected
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).textTheme.titleMedium?.color,
-                    width: 32,
-                    height: 32,
+                    width: 27,
+                    height: 27,
                   ),
                 ),
               ),

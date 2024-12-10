@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/integrations/integration.names.dart';
-import 'package:triggo/app/routes/routes_names.dart';
+import 'package:triggo/app/features/integrations/widgets/integrations/discord_connect.integrations.widget.dart';
 import 'package:triggo/app/widgets/banner.triggo.dart';
-import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
-import 'package:triggo/models/integration.model.dart';
-import 'package:triggo/models/integrations/discord.integration.model.dart';
 
-class IntegrationPage extends StatefulWidget {
-  const IntegrationPage({super.key});
+class ConnectIntegrationScreen extends StatefulWidget {
+  const ConnectIntegrationScreen({super.key});
 
   @override
-  State<IntegrationPage> createState() => _IntegrationPageState();
+  State<ConnectIntegrationScreen> createState() =>
+      _ConnectIntegrationScreenState();
 }
 
-class _IntegrationPageState extends State<IntegrationPage> {
+class _ConnectIntegrationScreenState extends State<ConnectIntegrationScreen> {
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
-    final Future<List<Integration>> integrations =
-        integrationMediator.getUserIntegrations();
+    final Future<List<String>> integrationsNames =
+        integrationMediator.getIntegrationNames();
 
     return BaseScaffold(
       body: Padding(
@@ -36,7 +33,7 @@ class _IntegrationPageState extends State<IntegrationPage> {
                 const SizedBox(height: 16.0),
                 _PageTitle(),
                 const SizedBox(height: 4.0),
-                _IntegrationContainer(integrations: integrations),
+                _IntegrationNamesContainer(integrations: integrationsNames),
               ],
             ),
           ),
@@ -46,12 +43,12 @@ class _IntegrationPageState extends State<IntegrationPage> {
   }
 }
 
-class _IntegrationContainer extends StatelessWidget {
-  const _IntegrationContainer({
+class _IntegrationNamesContainer extends StatelessWidget {
+  const _IntegrationNamesContainer({
     required this.integrations,
   });
 
-  final Future<List<Integration>> integrations;
+  final Future<List<String>> integrations;
 
   @override
   Widget build(BuildContext context) {
@@ -64,18 +61,7 @@ class _IntegrationContainer extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    child: _IntegrationConnectionButton(),
-                  ),
-                ),
-              ],
-            ),
-            Expanded(child: _IntegrationList(integrations: integrations)),
+            _IntegrationList(integrations: integrations),
           ],
         ),
       ),
@@ -88,12 +74,24 @@ class _PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        'Integrations',
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(
+            Icons.arrow_back,
+            size: 26.0,
+            weight: 2.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Text(
+          'Connect',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ],
     );
   }
 }
@@ -101,11 +99,11 @@ class _PageTitle extends StatelessWidget {
 class _IntegrationList extends StatelessWidget {
   const _IntegrationList({required this.integrations});
 
-  final Future<List<Integration>> integrations;
+  final Future<List<String>> integrations;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Integration>>(
+    return FutureBuilder<List<String>>(
       future: integrations,
       builder: (context, snapshot) {
         return IntegrationListView(snapshot: snapshot);
@@ -115,16 +113,14 @@ class _IntegrationList extends StatelessWidget {
 }
 
 class IntegrationListView extends StatelessWidget {
-  final AsyncSnapshot<List<Integration>> snapshot;
+  final AsyncSnapshot<List<String>> snapshot;
 
   const IntegrationListView({required this.snapshot, super.key});
 
   @override
   Widget build(BuildContext context) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
+      return CircularProgressIndicator();
     } else if (snapshot.hasError) {
       return _ErrorView(error: snapshot.error!);
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -159,62 +155,36 @@ class _NoDataView extends StatelessWidget {
 }
 
 class _IntegrationListViewContent extends StatelessWidget {
-  final List<Integration> integrations;
+  final List<String> integrations;
 
   const _IntegrationListViewContent({required this.integrations});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: integrations.length,
-      itemBuilder: (context, index) {
-        final integration = integrations[index];
-        return _IntegrationListItem(integration: integration);
-      },
-    );
-  }
-}
-
-class _IntegrationConnectionButton extends StatelessWidget {
-  const _IntegrationConnectionButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoButton(
-      text: 'New integration',
-      onPressed: () {
-        Navigator.pushNamed(context, RoutesNames.connectIntegration);
-      },
+    return Expanded(
+      child: ListView.builder(
+        itemCount: integrations.length,
+        itemBuilder: (context, index) {
+          final integration = integrations[index];
+          return _IntegrationListItem(integration: integration);
+        },
+      ),
     );
   }
 }
 
 class _IntegrationListItem extends StatelessWidget {
-  final Integration integration;
+  final String integration;
 
   const _IntegrationListItem({required this.integration});
 
   @override
   Widget build(BuildContext context) {
-    switch (integration.name) {
-      case IntegrationNames.discord:
-        return DiscordIntegrationListItemWidget(
-            integration: integration as DiscordIntegration);
+    switch (integration) {
+      case "Discord":
+        return DiscordConnectIntegrationListItemWidget();
       default:
-        return _DefaultIntegrationListItem(integration: integration);
+        return Text('Integration not found: $integration');
     }
-  }
-}
-
-class _DefaultIntegrationListItem extends StatelessWidget {
-  final Integration integration;
-
-  const _DefaultIntegrationListItem({required this.integration});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(integration.name),
-    );
   }
 }
