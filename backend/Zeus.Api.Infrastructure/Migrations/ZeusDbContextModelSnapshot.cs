@@ -33,6 +33,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -50,7 +53,6 @@ namespace Zeus.Api.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -70,11 +72,17 @@ namespace Zeus.Api.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.Property<IntegrationType>("Type")
                         .HasColumnType("\"IntegrationType\"");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -92,11 +100,17 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.Property<IntegrationType>("Type")
                         .HasColumnType("\"IntegrationType\"");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -109,6 +123,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -129,6 +146,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

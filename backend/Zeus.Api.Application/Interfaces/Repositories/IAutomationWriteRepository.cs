@@ -1,7 +1,4 @@
 ﻿using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
-using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 

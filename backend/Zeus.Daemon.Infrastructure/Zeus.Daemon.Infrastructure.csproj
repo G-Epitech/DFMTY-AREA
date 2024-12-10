@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Zeus.Api.gRPC.SDK\Zeus.Api.gRPC.SDK.csproj" />
       <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj" />
     </ItemGroup>
 

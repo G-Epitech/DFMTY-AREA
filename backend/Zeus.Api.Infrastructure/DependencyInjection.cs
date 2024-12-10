@@ -16,6 +16,7 @@ using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence;
+using Zeus.Api.Infrastructure.Persistence.Interceptors;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
@@ -48,7 +49,7 @@ public static class DependencyInjection
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        services.AddDbContext(configuration);
+        services.AddDatabase(configuration);
         services.AddConfiguration(configuration);
 
         return services;
@@ -86,7 +87,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static void AddDbContext(this IServiceCollection services,
+    private static void AddDatabase(this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString(ConnectionStrings.DefaultDatabase);
@@ -105,5 +106,7 @@ public static class DependencyInjection
                 o.MapEnum<AutomationActionParameterType>(nameof(AutomationActionParameterType));
             });
         });
+
+        services.AddScoped<AuditableEntitiesInterceptor>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Api.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Discord.Triggers;
 using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
 using Zeus.Daemon.Domain.Automation;
@@ -19,6 +20,24 @@ public class DaemonRunner
     public DaemonRunner(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+    }
+
+    private async Task HasNewAutomations()
+    {
+        var lastUpdate = DateTime.UnixEpoch;
+        var grpc = _serviceProvider.GetRequiredService<SynchronizationGrpcService>();
+        
+        while (true)
+        {
+            var hasChanges = await grpc.HasChangesAsync(lastUpdate, CancellationToken.None);
+            if (hasChanges)
+            {
+                Console.WriteLine("Changes detected!");
+                lastUpdate = DateTime.UtcNow;
+            }
+
+            await Task.Delay(1000);
+        }
     }
 
     /**

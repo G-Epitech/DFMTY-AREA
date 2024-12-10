@@ -1,10 +1,10 @@
 namespace Zeus.Common.Domain.Models;
 
-public abstract class AggregateRoot<TId> : Entity<TId>
+public abstract class AggregateRoot<TId> : AuditableEntity<TId>
     where TId : notnull
 {
-    protected AggregateRoot(TId id)
-        : base(id)
+    protected AggregateRoot(TId id, DateTime updatedAt, DateTime createdAt)
+        : base(id, updatedAt, createdAt)
     {
     }
 #pragma warning disable CS8618

@@ -22,8 +22,8 @@ public class SynchronizationService : Synchronization.SynchronizationBase
 
     public override async Task<SyncStateResponse> GetSyncState(SyncStateRequest request, ServerCallContext context)
     {
-        var lastUpdate = await _sender.Send(new GetAutomationsLastUpdateQuery(AutomationState.Any));
-        var lastUpdateTimestamp = Timestamp.FromDateTime(lastUpdate).Seconds;
+        var lastUpdate = await _sender.Send(new GetAutomationsLastUpdateQuery(AutomationState.Any)) ?? DateTime.MinValue;
+        var lastUpdateTimestamp = new DateTimeOffset(lastUpdate.ToUniversalTime()).ToUnixTimeSeconds();
         
         return new SyncStateResponse
         {
