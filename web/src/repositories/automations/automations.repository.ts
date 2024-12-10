@@ -1,6 +1,6 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AutomationDTO, AutomationManifestDTO } from '@repositories/dto';
 
 @Injectable({
@@ -17,8 +17,7 @@ export class AutomationsRepository {
   }
 
   post(): Observable<string> {
-    const url = `${this.baseUrl}/automations`;
-    return this.#httpClient.post<string>(url, {});
+    return of('id');
   }
 
   getManifest(): Observable<AutomationManifestDTO> {

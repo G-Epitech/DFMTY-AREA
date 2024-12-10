@@ -3,6 +3,7 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable, tap } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
+import { AutomationModel } from '@models/automation';
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +20,9 @@ export class UsersMediator {
   }
 
   getIntegrations(
-    userId: string,
     pageOptions: PageOptions
   ): Observable<PageModel<IntegrationModel>> {
-    return this.#usersRepository.getIntegrations(userId, pageOptions).pipe(
+    return this.#usersRepository.getIntegrations(pageOptions).pipe(
       map(res => {
         return {
           ...res,
@@ -33,6 +33,32 @@ export class UsersMediator {
               integration.isValid,
               integration.type,
               integration.properties
+            );
+          }),
+        };
+      })
+    );
+  }
+
+  getAutomations(
+    pageOptions: PageOptions
+  ): Observable<PageModel<AutomationModel>> {
+    return this.#usersRepository.getAutomations(pageOptions).pipe(
+      map(res => {
+        return {
+          ...res,
+          data: res.data.map(automation => {
+            return new AutomationModel(
+              automation.id,
+              automation.ownerId,
+              automation.label,
+              automation.description,
+              automation.enabled,
+              automation.updatedAt,
+              '#EE883A',
+              'bolt',
+              automation.trigger,
+              automation.actions
             );
           }),
         };

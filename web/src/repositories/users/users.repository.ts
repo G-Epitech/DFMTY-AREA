@@ -53,16 +53,14 @@ export class UsersRepository {
   }
 
   getIntegrations(
-    userId: string,
     pageOptions: PageOptions
   ): Observable<UserIntegrationsGetResponseDTO> {
     const searchParams = pageOptionsToParams(pageOptions);
-    const url = `${this.baseUrl}/users/${userId}/integrations?${searchParams}`;
+    const url = `${this.baseUrl}/user/integrations?${searchParams}`;
     return this.#httpClient.get<UserIntegrationsGetResponseDTO>(url);
   }
 
   getAutomations(
-    userId: string,
     pageOptions: PageOptions
   ): Observable<UserAutomationsGetResponseDTO> {
     const data: UserAutomationsGetResponseDTO = {
@@ -71,6 +69,28 @@ export class UsersRepository {
       totalRecords: 20,
       totalPages: 4,
       data: [
+        {
+          id: '1',
+          label: 'DigitalOcean Droplet',
+          description: 'DigitalOcean Droplet Automation',
+          ownerId: 'userId',
+          enabled: true,
+          updatedAt: new Date(),
+          trigger: {
+            id: '1',
+            identifier: 'DigitalOcean',
+            providers: ['droplet'],
+            parameters: [],
+          },
+          actions: [
+            {
+              id: '1',
+              identifier: 'Slack',
+              providers: ['send-message'],
+              parameters: [],
+            },
+          ],
+        },
         {
           id: '1',
           label: 'DigitalOcean Droplet',

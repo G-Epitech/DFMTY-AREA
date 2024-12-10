@@ -47,16 +47,7 @@ export class IntegrationsPageComponent {
   #pageOptionsSubject = new BehaviorSubject<PageOptions>(this.pageOptions());
 
   readonly integrations: Observable<PageModel<IntegrationModel>> =
-    this.#usersMediator.me().pipe(
-      switchMap(user =>
-        concat(
-          this.#pageOptionsSubject.pipe(
-            switchMap(pageOptions =>
-              this.#usersMediator.getIntegrations(user.id, pageOptions)
-            )
-          )
-        )
-      ),
+    this.#usersMediator.getIntegrations(this.pageOptions()).pipe(
       tap(page => {
         this.totalPages.set(page.totalPages);
         this.loading.set(false);
