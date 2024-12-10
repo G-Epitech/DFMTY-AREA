@@ -53,9 +53,12 @@ Map<String, dynamic> _$OutGetIntegrationURIDTOToJson(
 OutGetUserIntegrationByIdDTO _$OutGetUserIntegrationByIdDTOFromJson(
         Map<String, dynamic> json) =>
     OutGetUserIntegrationByIdDTO(
-      integration: IntegrationDTO.fromJson(json),
+      integration:
+          IntegrationDTO.fromJson(json['integration'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OutGetUserIntegrationByIdDTOToJson(
         OutGetUserIntegrationByIdDTO instance) =>
-    instance.integration.toJson();
+    <String, dynamic>{
+      'integration': instance.integration,
+    };

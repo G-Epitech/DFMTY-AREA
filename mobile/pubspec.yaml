@@ -43,6 +43,7 @@ flutter:
     - assets/icons/home.svg
     - assets/icons/link.svg
     - assets/icons/bolt.svg
+    - assets/icons/chat.svg
 
   uses-material-design: true
 
