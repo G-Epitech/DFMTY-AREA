@@ -1,0 +1,25 @@
+<div
+  class="bg-white p-4 shadow-sm rounded-md hover:cursor-pointer hover:bg-accent">
+  <div class="flex justify-between flex-row items-center">
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <div
+          class="p-2 rounded-md flex items-center justify-center"
+          [ngStyle]="{ 'background-color': automation().color }">
+          <ng-icon [name]="this.iconName()" size="1.8rem" color="white" />
+        </div>
+        <div
+          class="absolute -bottom-1 left-9 p-1.5 rounded-full"
+          [ngStyle]="{
+            'background-color': automation().enabled
+              ? 'var(--tr-green)'
+              : 'var(--tr-gray-2)',
+          }"></div>
+      </div>
+      <h1 class="tr-large">{{ automation().label }}</h1>
+    </div>
+    <span class="text-muted tr-medium"
+      >Last update: {{ automation().lastUpdated | formatDate }}</span
+    >
+  </div>
+</div>

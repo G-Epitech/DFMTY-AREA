@@ -39,9 +39,6 @@ public class DiscordApiService : IDiscordApiService
         {
             return Errors.Services.Discord.FailureDuringRequest;
         }
-        
-        // Log response
-        var json = await response.Content.ReadAsStringAsync();
 
         return new Dictionary<string, string>();
     }

@@ -50,11 +50,11 @@
 }
 
 .tr-large {
-  @include typography($weight: 600, $size: 1.1rem, $letter-spacing: -0.03rem);
+  @include typography($weight: 600, $size: 1rem, $letter-spacing: -0.03rem);
 }
 
 .tr-medium {
-  @include typography($weight: 400, $size: 0.5rem, $letter-spacing: -0.02rem);
+  @include typography($weight: 400, $size: 0.8rem, $letter-spacing: -0.02rem);
 }
 
 .tr-small {
