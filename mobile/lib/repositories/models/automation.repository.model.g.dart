@@ -80,3 +80,69 @@ Map<String, dynamic> _$AutomationManifestToJson(AutomationManifest instance) =>
       'triggers': instance.triggers,
       'actions': instance.actions,
     };
+
+AutomationTriggerParameter _$AutomationTriggerParameterFromJson(
+        Map<String, dynamic> json) =>
+    AutomationTriggerParameter(
+      identifier: json['identifier'] as String,
+      value: json['value'] as String,
+    );
+
+Map<String, dynamic> _$AutomationTriggerParameterToJson(
+        AutomationTriggerParameter instance) =>
+    <String, dynamic>{
+      'identifier': instance.identifier,
+      'value': instance.value,
+    };
+
+AutomationTrigger _$AutomationTriggerFromJson(Map<String, dynamic> json) =>
+    AutomationTrigger(
+      identifier: json['identifier'] as String,
+      parameters: (json['parameters'] as List<dynamic>)
+          .map((e) =>
+              AutomationTriggerParameter.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      providers:
+          (json['providers'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+
+Map<String, dynamic> _$AutomationTriggerToJson(AutomationTrigger instance) =>
+    <String, dynamic>{
+      'identifier': instance.identifier,
+      'parameters': instance.parameters,
+      'providers': instance.providers,
+    };
+
+AutomationActionParameter _$AutomationActionParameterFromJson(
+        Map<String, dynamic> json) =>
+    AutomationActionParameter(
+      identifier: json['identifier'] as String,
+      value: json['value'] as String,
+      type: json['type'] as String,
+    );
+
+Map<String, dynamic> _$AutomationActionParameterToJson(
+        AutomationActionParameter instance) =>
+    <String, dynamic>{
+      'identifier': instance.identifier,
+      'value': instance.value,
+      'type': instance.type,
+    };
+
+AutomationAction _$AutomationActionFromJson(Map<String, dynamic> json) =>
+    AutomationAction(
+      identifier: json['identifier'] as String,
+      parameters: (json['parameters'] as List<dynamic>)
+          .map((e) =>
+              AutomationActionParameter.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      providers:
+          (json['providers'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+
+Map<String, dynamic> _$AutomationActionToJson(AutomationAction instance) =>
+    <String, dynamic>{
+      'identifier': instance.identifier,
+      'parameters': instance.parameters,
+      'providers': instance.providers,
+    };

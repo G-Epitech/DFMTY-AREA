@@ -70,6 +70,46 @@ void automationRepositoryTests() {
           headers: {'Content-Type': 'application/json'},
         ));
 
+    when(mock.get(
+      Uri.parse('${Env.apiUrl}/automations/0'),
+      headers: {
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
+      },
+    )).thenAnswer((_) async => http.Response(
+          jsonEncode({
+            "id": "123",
+            "label": "Automation Example",
+            "description": "This is an example automation",
+            "ownerId": "owner-456",
+            "trigger": {
+              "identifier": "Discord.MessageReceivedInChannel",
+              "parameters": [
+                {"identifier": "channel-id", "value": "789"}
+              ],
+              "providers": ["discord-integration"]
+            },
+            "actions": [
+              {
+                "identifier": "Discord.SendChannelMessage",
+                "parameters": [
+                  {
+                    "type": "var",
+                    "identifier": "message",
+                    "value": "Hello, World!"
+                  }
+                ],
+                "providers": ["discord-integration"]
+              }
+            ],
+            "enabled": true,
+            "updatedAt": "2024-12-10T10:00:00Z"
+          }),
+          200,
+          headers: {'Content-Type': 'application/json'},
+        ));
+
     repository = AutomationRepository(
         client: mock, credentialsRepository: credentialsRepository);
   });
@@ -130,6 +170,41 @@ void automationRepositoryTests() {
           response.data?.manifests['discord-app']?.triggers['message-received']
               ?.facts['message-content']?.type,
           equals('string'));
+    });
+
+    test('getAutomationById success', () async {
+      final response = await repository.getAutomationById('0');
+
+      expect(response.statusCode, equals(Codes.ok));
+      expect(response.data?.id, equals('123'));
+      expect(response.data?.label, equals('Automation Example'));
+      expect(
+          response.data?.description, equals('This is an example automation'));
+      expect(response.data?.ownerId, equals('owner-456'));
+      expect(response.data?.trigger.identifier,
+          equals('Discord.MessageReceivedInChannel'));
+      expect(response.data?.trigger.parameters.length, equals(1));
+      expect(response.data?.trigger.parameters[0].identifier,
+          equals('channel-id'));
+      expect(response.data?.trigger.parameters[0].value, equals('789'));
+      expect(response.data?.trigger.providers.length, equals(1));
+      expect(
+          response.data?.trigger.providers[0], equals('discord-integration'));
+      expect(response.data?.actions.length, equals(1));
+      expect(response.data?.actions[0].identifier,
+          equals('Discord.SendChannelMessage'));
+      expect(response.data?.actions[0].parameters.length, equals(1));
+      expect(response.data?.actions[0].parameters[0].type, equals('var'));
+      expect(response.data?.actions[0].parameters[0].identifier,
+          equals('message'));
+      expect(response.data?.actions[0].parameters[0].value,
+          equals('Hello, World!'));
+      expect(response.data?.actions[0].providers.length, equals(1));
+      expect(response.data?.actions[0].providers[0],
+          equals('discord-integration'));
+      expect(response.data?.enabled, equals(true));
+      expect(response.data?.updatedAt,
+          equals(DateTime.parse('2024-12-10T10:00:00Z')));
     });
   });
 }

@@ -40,3 +40,31 @@ class OutGetAutomationManifestDTO {
     );
   }
 }
+
+@JsonSerializable()
+class OutGetAutomationIDDTO {
+  final String id;
+  final String label;
+  final String description;
+  final String ownerId;
+  final AutomationTrigger trigger;
+  final List<AutomationAction> actions;
+  final bool enabled;
+  final DateTime updatedAt;
+
+  OutGetAutomationIDDTO({
+    required this.id,
+    required this.label,
+    required this.description,
+    required this.ownerId,
+    required this.trigger,
+    required this.actions,
+    required this.enabled,
+    required this.updatedAt,
+  });
+
+  factory OutGetAutomationIDDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetAutomationIDDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OutGetAutomationIDDTOToJson(this);
+}

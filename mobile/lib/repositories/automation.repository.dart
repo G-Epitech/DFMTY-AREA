@@ -30,4 +30,24 @@ class AutomationRepository {
       errors: response.errors,
     );
   }
+
+  Future<Response<OutGetAutomationIDDTO>> getAutomationById(String id) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call(
+      method: 'GET',
+      endpoint: '/automations/$id',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutGetAutomationIDDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      headers: response.headers,
+      data: response.data != null
+          ? OutGetAutomationIDDTO.fromJson(response.data)
+          : null,
+      errors: response.errors,
+    );
+  }
 }
