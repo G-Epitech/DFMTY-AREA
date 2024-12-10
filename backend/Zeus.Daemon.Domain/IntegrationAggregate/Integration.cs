@@ -62,8 +62,14 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     /// </summary>
     public abstract bool IsValid { get; }
 
-    protected Integration(IntegrationId id, IntegrationType type, UserId ownerId, string clientId)
-        : base(id)
+    protected Integration(
+        IntegrationId id,
+        IntegrationType type,
+        UserId ownerId,
+        string clientId,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
     {
         Type = type;
         OwnerId = ownerId;

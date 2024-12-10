@@ -10,8 +10,10 @@ public sealed class User : AggregateRoot<UserId>
         string firstName,
         string lastName,
         string email,
-        string password)
-        : base(id)
+        string password,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -35,7 +37,9 @@ public sealed class User : AggregateRoot<UserId>
             firstName,
             lastName,
             email,
-            password
+            password,
+            DateTime.UtcNow,
+            DateTime.UtcNow
         );
     }
 

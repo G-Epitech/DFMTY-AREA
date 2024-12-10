@@ -6,8 +6,13 @@ namespace Zeus.Daemon.Domain.IntegrationAggregate;
 
 public sealed class GmailIntegration : Integration
 {
-    private GmailIntegration(IntegrationId id, UserId ownerId, string clientId)
-        : base(id, IntegrationType.Gmail, ownerId, clientId)
+    private GmailIntegration(
+        IntegrationId id,
+        UserId ownerId,
+        string clientId,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, IntegrationType.Gmail, ownerId, clientId, updatedAt, createdAt)
     {
     }
 
@@ -23,6 +28,11 @@ public sealed class GmailIntegration : Integration
 
     public static GmailIntegration Create(UserId ownerId, string clientId)
     {
-        return new GmailIntegration(IntegrationId.CreateUnique(), ownerId, clientId);
+        return new GmailIntegration(
+            IntegrationId.CreateUnique(),
+            ownerId,
+            clientId,
+            DateTime.UtcNow,
+            DateTime.UtcNow);
     }
 }

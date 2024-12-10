@@ -15,7 +15,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
     public bool Enabled { get; private set; }
-
+    
     private Automation(
         AutomationId id,
         string label,
@@ -23,8 +23,10 @@ public sealed class Automation : AggregateRoot<AutomationId>
         UserId ownerId,
         AutomationTrigger trigger,
         List<AutomationAction> actions,
+        DateTime updatedAt,
+        DateTime createdAt,
         bool enabled = true)
-        : base(id)
+        : base(id, updatedAt, createdAt)
     {
         _actions = actions;
         Label = label;
@@ -49,6 +51,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
             ownerId,
             trigger,
             actions,
+            DateTime.UtcNow,
+            DateTime.UtcNow,
             enabled);
     }
 
