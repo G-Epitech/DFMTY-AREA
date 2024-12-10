@@ -5,7 +5,7 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Api.Domain.AutomationAggregate;
 
-public sealed class Automation : AggregateRoot<AutomationId, Guid>
+public sealed class Automation : AggregateRoot<AutomationId>
 {
     private readonly List<AutomationAction> _actions;
 
@@ -14,6 +14,7 @@ public sealed class Automation : AggregateRoot<AutomationId, Guid>
     public AutomationTrigger Trigger { get; private set; }
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
+    public bool Enabled { get; private set; }
 
     private Automation(
         AutomationId id,
@@ -21,14 +22,16 @@ public sealed class Automation : AggregateRoot<AutomationId, Guid>
         string description,
         UserId ownerId,
         AutomationTrigger trigger,
-        List<AutomationAction> actions)
+        List<AutomationAction> actions,
+        bool enabled = true)
         : base(id)
     {
+        _actions = actions;
         Label = label;
         Description = description;
         Trigger = trigger;
         OwnerId = ownerId;
-        _actions = actions;
+        Enabled = enabled;
     }
 
     public static Automation Create(
@@ -36,7 +39,8 @@ public sealed class Automation : AggregateRoot<AutomationId, Guid>
         string description,
         UserId ownerId,
         AutomationTrigger trigger,
-        List<AutomationAction> actions)
+        List<AutomationAction> actions,
+        bool enabled = true)
     {
         return new Automation(
             AutomationId.CreateUnique(),
@@ -44,7 +48,8 @@ public sealed class Automation : AggregateRoot<AutomationId, Guid>
             description,
             ownerId,
             trigger,
-            actions);
+            actions,
+            enabled);
     }
 
 #pragma warning disable CS8618

@@ -25,7 +25,6 @@ export class DiscordOAuth2PageComponent implements OnInit {
   readonly #discordRepository = inject(DiscordRepository);
 
   loading = signal<boolean>(false);
-  error = signal<boolean>(false);
   success = signal<boolean>(false);
   countdown = signal<number>(5);
 
@@ -40,7 +39,7 @@ export class DiscordOAuth2PageComponent implements OnInit {
       if (code && state) {
         this.#linkDiscordAccount(code, state);
       } else {
-        this.error.set(true);
+        this.success.set(false);
       }
     });
   }
@@ -52,11 +51,11 @@ export class DiscordOAuth2PageComponent implements OnInit {
       .subscribe({
         next: () => {
           this.success.set(true);
-          this.error.set(false);
           this.startCountdown();
         },
         error: () => {
-          this.error.set(true);
+          this.success.set(false);
+          this.loading.set(false);
         },
       });
   }

@@ -60,9 +60,9 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
 
         var integration = DiscordIntegration.Create(linkRequest.OwnerId, discordUser.Value.Id.ValueString);
         integration.AddToken(new IntegrationToken(discordTokens.Value.AccessToken.Value,
-            discordTokens.Value.TokenType, ServiceTokenUsage.Access));
+            discordTokens.Value.TokenType, IntegrationTokenUsage.Access));
         integration.AddToken(new IntegrationToken(discordTokens.Value.RefreshToken.Value,
-            discordTokens.Value.TokenType, ServiceTokenUsage.Refresh));
+            discordTokens.Value.TokenType, IntegrationTokenUsage.Refresh));
 
         await _integrationWriteRepository.AddIntegrationAsync(integration, cancellationToken);
 
