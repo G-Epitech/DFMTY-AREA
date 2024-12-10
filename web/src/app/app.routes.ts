@@ -21,8 +21,8 @@ export const routes: Routes = [
       {
         path: 'automations',
         loadComponent: () =>
-          import('@features/automations/automations.page').then(
-            m => m.AutomationsPageComponent
+          import('@features/automations/listing/automations-list.page').then(
+            m => m.AutomationsListPageComponent
           ),
         pathMatch: 'full',
       },

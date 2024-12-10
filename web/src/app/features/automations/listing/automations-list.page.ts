@@ -6,10 +6,10 @@ import { Observable, of } from 'rxjs';
 import { PageModel } from '@models/page';
 import { AutomationModel } from '@models/automation.model';
 import { AsyncPipe } from '@angular/common';
-import { AutomationCardComponent } from '@features/automations/components/automation-card/automation-card.component';
+import { AutomationCardComponent } from '@features/automations/listing/components/automation-card/automation-card.component';
 
 @Component({
-  selector: 'tr-automations',
+  selector: 'tr-automations-list',
   imports: [
     TrButtonDirective,
     PaginationComponent,
@@ -17,12 +17,12 @@ import { AutomationCardComponent } from '@features/automations/components/automa
     AsyncPipe,
     AutomationCardComponent,
   ],
-  templateUrl: './automations.page.html',
+  templateUrl: './automations-list.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AutomationsPageComponent {
+export class AutomationsListPageComponent {
   totalPages = signal<number>(3);
 
   automations: Observable<PageModel<AutomationModel>>;
