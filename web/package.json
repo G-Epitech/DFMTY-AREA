@@ -10,6 +10,9 @@
     "lint": "ng lint",
     "format": "prettier --write src/"
   },
+  "engines": {
+    "pnpm": "^9.14.2"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.0",
@@ -26,6 +29,7 @@
     "@ngrx/operators": "^18.1.1",
     "@ngrx/signals": "^18.1.1",
     "@spartan-ng/ui-core": "0.0.1-alpha.356",
+    "@spartan-ng/ui-dialog-brain": "0.0.1-alpha.356",
     "@spartan-ng/ui-formfield-brain": "0.0.1-alpha.356",
     "@spartan-ng/ui-forms-brain": "0.0.1-alpha.356",
     "@spartan-ng/ui-label-brain": "0.0.1-alpha.356",

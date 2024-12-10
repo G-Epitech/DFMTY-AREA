@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/integrations/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
-import 'package:triggo/app/widgets/banner.triggo.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
@@ -22,26 +21,11 @@ class _IntegrationPageState extends State<IntegrationPage> {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
     final Future<List<Integration>> integrations =
-        integrationMediator.getIntegrations();
+        integrationMediator.getUserIntegrations();
 
     return BaseScaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                TriggoBanner(),
-                const SizedBox(height: 16.0),
-                _PageTitle(),
-                const SizedBox(height: 4.0),
-                _IntegrationContainer(integrations: integrations),
-              ],
-            ),
-          ),
-        ),
-      ),
+      title: 'Integrations',
+      body: _IntegrationContainer(integrations: integrations),
     );
   }
 }
@@ -55,45 +39,21 @@ class _IntegrationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.grey[200],
-        ),
-        child: Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    child: _IntegrationConnectionButton(),
-                  ),
-                ),
-              ],
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: _IntegrationConnectionButton(),
+              ),
             ),
-            Expanded(child: _IntegrationList(integrations: integrations)),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _PageTitle extends StatelessWidget {
-  const _PageTitle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        'Integrations',
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+        Expanded(child: _IntegrationList(integrations: integrations)),
+      ],
     );
   }
 }
@@ -108,21 +68,21 @@ class _IntegrationList extends StatelessWidget {
     return FutureBuilder<List<Integration>>(
       future: integrations,
       builder: (context, snapshot) {
-        return IntegrationListView(snapshot: snapshot);
+        return _IntegrationListView(snapshot: snapshot);
       },
     );
   }
 }
 
-class IntegrationListView extends StatelessWidget {
+class _IntegrationListView extends StatelessWidget {
   final AsyncSnapshot<List<Integration>> snapshot;
 
-  const IntegrationListView({required this.snapshot, super.key});
+  const _IntegrationListView({required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
       return _ErrorView(error: snapshot.error!);
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -163,14 +123,12 @@ class _IntegrationListViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          final integration = integrations[0];
-          return _IntegrationListItem(integration: integration);
-        },
-      ),
+    return ListView.builder(
+      itemCount: integrations.length,
+      itemBuilder: (context, index) {
+        final integration = integrations[index];
+        return _IntegrationListItem(integration: integration);
+      },
     );
   }
 }
@@ -183,8 +141,7 @@ class _IntegrationConnectionButton extends StatelessWidget {
     return TriggoButton(
       text: 'New integration',
       onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(
-            context, RoutesNames.connectIntegration, (route) => false);
+        Navigator.pushNamed(context, RoutesNames.connectIntegration);
       },
     );
   }

@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:triggo/app/features/automations/view/automation_create_page.view.dart';
 import 'package:triggo/app/features/automations/view/automation_page.view.dart';
 import 'package:triggo/app/features/home/home.dart';
+import 'package:triggo/app/features/integrations/view/integration_connect_page.view.dart';
 import 'package:triggo/app/features/integrations/view/integration_page.view.dart';
 import 'package:triggo/app/features/login/view/login_screen.dart';
 import 'package:triggo/app/features/register/view/register_screen.dart';
 import 'package:triggo/app/features/splash/view/splash_screen.dart';
 import 'package:triggo/app/features/welcome/view/welcome.screen.dart';
+import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case (RoutesNames.home):
-      return MaterialPageRoute(builder: (_) => const HomeScreen());
+      return customPageRouteBuilder(const HomeScreen());
     case (RoutesNames.login):
-      return MaterialPageRoute(builder: (_) => const LoginScreen());
+      return customPageRouteBuilder(const LoginScreen());
     case (RoutesNames.splashScreen):
-      return MaterialPageRoute(builder: (_) => const SplashScreen());
+      return customPageRouteBuilder(const SplashScreen());
     case (RoutesNames.welcome):
-      return MaterialPageRoute(builder: (_) => const WelcomeScreen());
+      return customPageRouteBuilder(const WelcomeScreen());
     case (RoutesNames.register):
-      return MaterialPageRoute(builder: (_) => const RegisterScreen());
+      return customPageRouteBuilder(const RegisterScreen());
     case (RoutesNames.integrations):
-      return MaterialPageRoute(builder: (_) => const IntegrationPage());
+      return customPageRouteBuilder(const IntegrationPage());
     case (RoutesNames.automations):
-      return MaterialPageRoute(builder: (_) => const AutomationPage());
+      return customPageRouteBuilder(const AutomationPage());
+    case (RoutesNames.connectIntegration):
+      return customPageRouteBuilder(const ConnectIntegrationScreen());
+    case (RoutesNames.createAutomation):
+      return customPageRouteBuilder(const CreateAutomationPage());
     default:
-      return MaterialPageRoute(builder: (_) => const Placeholder());
+      return customPageRouteBuilder(const Placeholder());
   }
 }
