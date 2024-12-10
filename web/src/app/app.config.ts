@@ -22,6 +22,7 @@ import {
   heroCheck,
   heroArrowLeft,
   heroArrowRight,
+  heroInformationCircle,
 } from '@ng-icons/heroicons/outline';
 import {
   heroSparklesSolid,
@@ -57,6 +58,7 @@ export const appConfig: ApplicationConfig = {
       heroCheck,
       heroSparklesSolid,
       heroChatBubbleBottomCenterTextSolid,
+      heroInformationCircle,
     }),
     provideAnimations(),
     provideToastr({

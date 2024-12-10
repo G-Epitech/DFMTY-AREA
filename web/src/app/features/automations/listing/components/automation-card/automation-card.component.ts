@@ -9,6 +9,7 @@ import { NgIcon } from '@ng-icons/core';
 import { NgClass, NgStyle } from '@angular/common';
 import { FormatDatePipe } from '@app/pipes';
 import { RouterLink } from '@angular/router';
+import { iconName } from '@utils/icon';
 
 @Component({
   selector: 'tr-automation-card',
@@ -21,15 +22,7 @@ import { RouterLink } from '@angular/router';
 export class AutomationCardComponent {
   automation = input.required<AutomationModel>();
 
-  iconName = computed(() => {
-    const words = this.automation().iconName.split('-');
-
-    const camelCase = words
-      .map((word, index) =>
-        index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
-      )
-      .join('');
-
-    return `hero${camelCase.charAt(0).toUpperCase() + camelCase.slice(1)}Solid`;
+  icon = computed(() => {
+    return iconName(this.automation().iconName);
   });
 }
