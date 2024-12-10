@@ -1,3 +1,13 @@
-<div class="flex flex-col">
-  <h1 class="tr-title-1">Automations</h1>
+<div class="flex flex-col min-h-full space-y-3">
+  <div class="flex flex-row justify-between items-center w-full">
+    <h1 class="tr-title-1">Automations</h1>
+    <button trBtn>Create Automation</button>
+  </div>
+
+  <div class="flex justify-between gap-3">
+    <tr-input-search placeholder="Search automation" class="w-full" />
+    <tr-pagination [totalPages]="totalPages()" />
+  </div>
+
+  <div class="flex-grow bg-secondary rounded-md overflow-auto"></div>
 </div>
