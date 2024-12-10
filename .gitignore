@@ -7,3 +7,7 @@
 
 # ENV
 .env
+
+# Documentation
+docs/node_modules
+docs/.docusaurus
