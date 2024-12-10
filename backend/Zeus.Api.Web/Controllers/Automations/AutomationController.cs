@@ -39,7 +39,7 @@ public class AutomationController : ApiController
         var automation = await _sender.Send(command);
 
         return automation.Match(
-            result => CreatedAtRoute("", new { id = result.Id.Value }, null),
+            result => CreatedAtRoute(nameof(GetAutomation), new { id = result.Id.Value }, null),
             Problem);
     }
 
