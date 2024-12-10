@@ -1,30 +1,37 @@
+using Microsoft.Extensions.DependencyInjection;
+
 using Zeus.Daemon.Application.Interfaces;
+using Zeus.Daemon.Application.Mappers;
 using Zeus.Daemon.Domain.Automation;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
+using Zeus.Daemon.Domain.IntegrationAggregate;
 
 namespace Zeus.Daemon.Application.Abstracts;
 
 public abstract class TriggerHandler : ITriggerHandler
 {
+    private readonly IServiceProvider _serviceProvider;
+
+    protected TriggerHandler(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
+
     public abstract Task HandleAsync(AutomationExecutionContext context, CancellationToken cancellationToken);
-    
-    public Task ExecuteAsync(AutomationExecutionContext context, Dictionary<string, string> facts,
+
+    public async Task ExecuteAsync(AutomationExecutionContext context, Dictionary<string, string> facts,
         CancellationToken cancellationToken)
     {
         var actions = context.Automation.Actions;
 
         foreach (AutomationAction action in actions)
         {
-            if (action.Providers.Count <= 0)
+            if (_serviceProvider.GetRequiredService(action.GetHandler()) is not IActionHandler handler)
             {
                 continue;
             }
 
-            var integration = context.Integrations.FirstOrDefault(i => i.Id == action.Providers[0]);
-
-            // Execute the action with the integration and facts
+            await handler.HandleAsync(action, new List<Integration>(), facts, cancellationToken);
         }
-
-        return Task.CompletedTask;
     }
 }
