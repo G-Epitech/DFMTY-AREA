@@ -1,13 +1,28 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
-import { AutomationModel } from '@models/automation.model';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { AutomationModel } from '@models/automation';
 import { iconName } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { ContextMenuComponent } from '@features/automations/workspace/components/context-menu/context-menu.component';
-import { Observable, of } from 'rxjs';
 import {
-  ActionCardComponent
-} from '@features/automations/workspace/components/action-card/action-card.component';
+  concat,
+  map,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
+import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
+import { AutomationsMediator } from '@mediators/automations.mediator';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -24,21 +39,18 @@ import {
   standalone: true,
 })
 export class AutomationsWorkspacePageComponent {
-  automation: AutomationModel = new AutomationModel(
-    '1',
-    'Reply “Feur” to “Quoi”',
-    'Description 1',
-    true,
-    new Date(),
-    '#EE883A',
-    'chat-bubble-bottom-center-text'
+  readonly #automationMediator = inject(AutomationsMediator);
+  readonly #route = inject(ActivatedRoute);
+
+  private destory$ = new Subject<void>();
+
+  readonly steps = ['Message received in channel', 'Send message to channel'];
+
+  automation$: Observable<AutomationModel> = this.#route.params.pipe(
+    takeUntil(this.destory$),
+    map(params => params['id'] as string),
+    switchMap(id => this.#automationMediator.getById(id))
   );
 
-  icon = iconName(this.automation.iconName);
-
-  actions: Observable<string[]>;
-
-  constructor() {
-    this.actions = of(['Message received in channel', 'Reply with message']);
-  }
+  protected readonly iconName = iconName;
 }

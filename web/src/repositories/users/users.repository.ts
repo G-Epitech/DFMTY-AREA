@@ -1,6 +1,9 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UsersGetResponseDTO } from '@repositories/users/dto';
+import {
+  UserAutomationsGetResponseDTO,
+  UsersGetResponseDTO,
+} from '@repositories/users/dto';
 import { map, Observable } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { UserIntegrationsGetResponseDTO } from '@repositories/users/dto/user-integrations-get.dto';
@@ -50,11 +53,18 @@ export class UsersRepository {
   }
 
   getIntegrations(
-    userId: string,
     pageOptions: PageOptions
   ): Observable<UserIntegrationsGetResponseDTO> {
     const searchParams = pageOptionsToParams(pageOptions);
-    const url = `${this.baseUrl}/users/${userId}/integrations?${searchParams}`;
+    const url = `${this.baseUrl}/user/integrations?${searchParams}`;
     return this.#httpClient.get<UserIntegrationsGetResponseDTO>(url);
+  }
+
+  getAutomations(
+    pageOptions: PageOptions
+  ): Observable<UserAutomationsGetResponseDTO> {
+    const searchParams = pageOptionsToParams(pageOptions);
+    const url = `${this.baseUrl}/user/automations?${searchParams}`;
+    return this.#httpClient.get<UserAutomationsGetResponseDTO>(url);
   }
 }
