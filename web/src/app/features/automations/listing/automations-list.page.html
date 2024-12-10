@@ -21,10 +21,10 @@
         </div>
         <tr-skeleton class="h-4 w-[150px] bg-secondary" />
       </div>
-      } } @if (automations | async; as page) { @for (automation of page.data;
-      track automation.id) {
+      } } @if (automations | async; as page) { @if (!loading()) { @for
+      (automation of page.data; track automation.id) {
       <tr-automation-card [automation]="automation" />
-      } }
+      } } }
     </div>
   </div>
 </div>

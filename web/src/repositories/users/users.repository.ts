@@ -4,7 +4,7 @@ import {
   UserAutomationsGetResponseDTO,
   UsersGetResponseDTO,
 } from '@repositories/users/dto';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { UserIntegrationsGetResponseDTO } from '@repositories/users/dto/user-integrations-get.dto';
 import { PageOptions } from '@models/page';
@@ -63,58 +63,8 @@ export class UsersRepository {
   getAutomations(
     pageOptions: PageOptions
   ): Observable<UserAutomationsGetResponseDTO> {
-    const data: UserAutomationsGetResponseDTO = {
-      pageNumber: 1,
-      pageSize: 5,
-      totalRecords: 20,
-      totalPages: 4,
-      data: [
-        {
-          id: '1',
-          label: 'DigitalOcean Droplet',
-          description: 'DigitalOcean Droplet Automation',
-          ownerId: 'userId',
-          enabled: true,
-          updatedAt: new Date(),
-          trigger: {
-            id: '1',
-            identifier: 'DigitalOcean',
-            providers: ['droplet'],
-            parameters: [],
-          },
-          actions: [
-            {
-              id: '1',
-              identifier: 'Slack',
-              providers: ['send-message'],
-              parameters: [],
-            },
-          ],
-        },
-        {
-          id: '1',
-          label: 'DigitalOcean Droplet',
-          description: 'DigitalOcean Droplet Automation',
-          ownerId: 'userId',
-          enabled: true,
-          updatedAt: new Date(),
-          trigger: {
-            id: '1',
-            identifier: 'DigitalOcean',
-            providers: ['droplet'],
-            parameters: [],
-          },
-          actions: [
-            {
-              id: '1',
-              identifier: 'Slack',
-              providers: ['send-message'],
-              parameters: [],
-            },
-          ],
-        },
-      ],
-    };
-    return of(data);
+    const searchParams = pageOptionsToParams(pageOptions);
+    const url = `${this.baseUrl}/user/automations?${searchParams}`;
+    return this.#httpClient.get<UserAutomationsGetResponseDTO>(url);
   }
 }

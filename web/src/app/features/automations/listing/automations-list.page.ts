@@ -91,6 +91,7 @@ export class AutomationsListPageComponent implements OnDestroy {
         },
         next: () => {
           this.#toastr.success('Automation created');
+          window.location.reload();
         },
       });
   }

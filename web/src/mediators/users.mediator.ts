@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
 import { AutomationModel } from '@models/automation';
 

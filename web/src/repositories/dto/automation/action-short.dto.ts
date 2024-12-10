@@ -1,5 +1,4 @@
 export interface ActionShortDTO {
-  id: string;
   identifier: string;
   parameters: {
     type: string;
