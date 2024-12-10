@@ -10,6 +10,11 @@
           "Description": "Triggers when a message is received in a specific guild channel.",
           "Icon": "inbox-arrow-down",
           "Parameters": {
+            "GuildId": {
+              "Name": "Guild id",
+              "Description": "The ID of the guild to monitor.",
+              "Type": "string"
+            },
             "ChannelId": {
               "Name": "Channel id",
               "Description": "The ID of the channel to monitor.",

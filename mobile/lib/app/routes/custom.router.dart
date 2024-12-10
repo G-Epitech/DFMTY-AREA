@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-PageRouteBuilder<dynamic> CustomPageRouteBuilder(Widget child) {
+PageRouteBuilder<dynamic> customPageRouteBuilder(Widget child) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
