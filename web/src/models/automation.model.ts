@@ -4,6 +4,8 @@ export class AutomationModel {
   readonly description: string;
   readonly enabled: boolean;
   readonly lastUpdated: Date;
+  readonly color: string;
+  readonly iconName: string;
   readonly trigger?: string;
   readonly actions?: string[];
 
@@ -13,6 +15,8 @@ export class AutomationModel {
     description: string,
     enabled: boolean,
     lastUpdated: Date,
+    color: string,
+    iconName: string,
     trigger?: string,
     actions?: string[]
   ) {
@@ -21,6 +25,8 @@ export class AutomationModel {
     this.description = description;
     this.enabled = enabled;
     this.lastUpdated = lastUpdated;
+    this.color = color;
+    this.iconName = iconName;
     this.trigger = trigger;
     this.actions = actions;
   }
