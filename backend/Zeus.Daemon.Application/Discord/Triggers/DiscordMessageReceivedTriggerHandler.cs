@@ -9,13 +9,13 @@ using Zeus.Daemon.Domain.Discord.Events;
 
 namespace Zeus.Daemon.Application.Discord.Triggers;
 
-public class DiscordMessageReceivedTrigger : TriggerHandler
+public class DiscordMessageReceivedTriggerHandler : TriggerHandler
 {
     private readonly IDiscordWebSocketService _discordWebSocketService;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private AutomationExecutionContext? _context;
 
-    public DiscordMessageReceivedTrigger(IDiscordWebSocketService discordWebSocketService)
+    public DiscordMessageReceivedTriggerHandler(IDiscordWebSocketService discordWebSocketService)
     {
         _discordWebSocketService = discordWebSocketService;
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
