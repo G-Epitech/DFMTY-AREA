@@ -5,8 +5,8 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Common.Application.Behaviors;
-using Zeus.Daemon.Application.Interfaces.Services.Websockets;
-using Zeus.Daemon.Application.Services.Websocket;
+using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
+using Zeus.Daemon.Application.Services.WebSocket;
 
 namespace Zeus.Daemon.Application;
 
