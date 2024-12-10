@@ -19,7 +19,20 @@ class AutomationScreen extends StatelessWidget {
           id: 'id2',
         ),
       ],
-    )
+    ),
+    TriggerPropertiesFields(
+      name: 'List Channels',
+      values: [
+        TriggerPropertiesFieldsValues(
+          name: 'Channel 1',
+          id: 'id1',
+        ),
+        TriggerPropertiesFieldsValues(
+          name: 'Channel 2',
+          id: 'id2',
+        ),
+      ],
+    ),
   ];
 
   AutomationScreen({super.key});

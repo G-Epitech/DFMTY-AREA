@@ -11,22 +11,30 @@ class DropdownExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentField = fields.isNotEmpty ? fields.first : null;
+    return fields.isNotEmpty
+        ? ListView.builder(
+            itemCount: fields.length,
+            itemBuilder: (context, index) {
+              final currentField = fields[index];
 
-    return currentField != null
-        ? DropdownContainer(
-            field: currentField,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                context.read<AutomationTriggerBloc>().add(
-                      AutomationTriggerPropertiesFieldsSelectedValueChanged(
-                        selectedValue: newValue,
-                        name: currentField.name,
-                      ),
-                    );
-              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: DropdownContainer(
+                  field: currentField,
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      context.read<AutomationTriggerBloc>().add(
+                            AutomationTriggerPropertiesFieldsSelectedValueChanged(
+                              selectedValue: newValue,
+                              name: currentField.name,
+                            ),
+                          );
+                    }
+                  },
+                ),
+              );
             },
           )
-        : const Text('No fields available');
+        : const Center(child: Text('No fields available'));
   }
 }
