@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Zeus.Api.Application.Synchronization.Queries;
+namespace Zeus.Api.Application.Synchronization.Queries.GetAutomationsLastUpdate;
 
 public sealed class GetAutomationsLastUpdateQueryValidator : AbstractValidator<GetAutomationsLastUpdateQuery>
 {

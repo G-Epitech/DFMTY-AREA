@@ -20,8 +20,4 @@
       <ProjectReference Include="..\Zeus.Daemon.Domain\Zeus.Daemon.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Discord\Services\Api\Contracts\" />
-    </ItemGroup>
-
 </Project>

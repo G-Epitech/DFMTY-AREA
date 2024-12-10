@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-
-namespace Zeus.Api.gRPC.SDK.Services;
+﻿namespace Zeus.Api.gRPC.SDK.Services;
 
 public class SynchronizationGrpcService
 {
@@ -19,5 +17,15 @@ public class SynchronizationGrpcService
         var response = await _client.GetSyncStateAsync(request, cancellationToken: cancellationToken);
 
         return response.HasChanges;
+    }
+
+    public async Task<IList<Automation>> SyncDeltaAsync(DateTime lastUpdate, CancellationToken cancellationToken = default)
+    {
+        var timestamp = new DateTimeOffset(lastUpdate.ToUniversalTime()).ToUnixTimeSeconds();
+
+        var request = new SyncDeltaRequest { LastSyncTimestamp = timestamp };
+        var response = await _client.SyncDeltaAsync(request, cancellationToken: cancellationToken);
+
+        return response.Automations;
     }
 }

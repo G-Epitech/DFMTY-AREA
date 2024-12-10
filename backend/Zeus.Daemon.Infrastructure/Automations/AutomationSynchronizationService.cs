@@ -1,11 +1,6 @@
 ﻿using Zeus.Api.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Interfaces;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.User.ValueObjects;
+using Zeus.Daemon.Infrastructure.Mapping;
 
 namespace Zeus.Daemon.Infrastructure.Automations;
 
@@ -28,7 +23,7 @@ public class AutomationSynchronizationService
         while (!cancellationToken.IsCancellationRequested)
         {
             await WaitForChangesAsync(cancellationToken);
-            Console.WriteLine("Changes detected");
+            Console.WriteLine("New automations to pull");
             await RefreshAutomationsAsync(cancellationToken);
         }
     }
@@ -44,33 +39,14 @@ public class AutomationSynchronizationService
         }
     }
 
-    private Task RefreshAutomationsAsync(CancellationToken cancellationToken = default)
+    private async Task RefreshAutomationsAsync(CancellationToken cancellationToken = default)
     {
-        if (_lastUpdate != DateTime.UnixEpoch)
-        {
-            return Task.CompletedTask;
-        }
-        
+        var delta = await _synchronizationGrpcService.SyncDeltaAsync(_lastUpdate, cancellationToken);
+
         _lastUpdate = DateTime.UtcNow;
 
-        var triggerParameters = new List<AutomationTriggerParameter>
-        {
-            new() { Value = "1316046870178697267", Identifier = "GuildId" }, new() { Value = "1316046972733620244", Identifier = "ChannelId" },
-        };
-        var trigger = AutomationTrigger.Create("Discord.MessageReceivedInChannel", triggerParameters, new List<IntegrationId>());
+        var automations = delta.Select(d => d.MapToAutomation()).ToList();
 
-        var actionParameters = new List<AutomationActionParameter>
-        {
-            new AutomationActionParameter { Value = "1316046972733620244", Identifier = "ChannelId", Type = AutomationActionParameterType.Raw },
-            new AutomationActionParameter { Value = "C'est la fête mes loulous", Identifier = "Content", Type = AutomationActionParameterType.Raw },
-        };
-        var actions = new List<AutomationAction> { AutomationAction.Create("Discord.SendMessageToChannel", 0, actionParameters, new List<IntegrationId>()) };
-
-        var automation = Automation.Create("Test", "test description", new UserId(Guid.NewGuid()), trigger,
-            actions);
-        
-        var automations = new List<Automation> { automation };
-
-        return _automationHandlersRegistry.RefreshAutomationsAsync(automations, cancellationToken);
+        await _automationHandlersRegistry.RefreshAutomationsAsync(automations, cancellationToken);
     }
 }

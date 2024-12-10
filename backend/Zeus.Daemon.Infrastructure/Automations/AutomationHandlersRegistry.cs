@@ -45,6 +45,13 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
         }
 
         var handler = CreateTriggerHandler(automation.Trigger);
+
+        if (handler == null)
+        {
+            Console.WriteLine($"Handler for trigger '{automation.Trigger.Identifier}' not found. Skipped.");
+            return Task.CompletedTask;
+        }
+
         var context = new AutomationExecutionContext(automation, []);
 
         _handlers.Add(automation.Id, handler);
@@ -83,7 +90,7 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
             }
             else
             {
-                await CancelAutomationAsync(automation.Id, cancellationToken);    
+                await CancelAutomationAsync(automation.Id, cancellationToken);
             }
         }
     }
@@ -99,12 +106,12 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
         await CancelAutomationAsync(automationId, cancellationToken);
     }
 
-    private ITriggerHandler CreateTriggerHandler(AutomationTrigger trigger)
+    private ITriggerHandler? CreateTriggerHandler(AutomationTrigger trigger)
     {
         return trigger.Identifier switch
         {
             "Discord.MessageReceivedInChannel" => ActivatorUtilities.CreateInstance<DiscordMessageReceivedTriggerHandler>(_serviceProvider),
-            _ => throw new NotImplementedException()
+            _ => null
         };
     }
 }

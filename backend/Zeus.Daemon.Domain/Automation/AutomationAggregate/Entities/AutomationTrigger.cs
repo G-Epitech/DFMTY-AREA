@@ -13,7 +13,7 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
     public IReadOnlyList<AutomationTriggerParameter> Parameters => _parameters.AsReadOnly();
     public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
 
-    private AutomationTrigger(
+    public AutomationTrigger(
         AutomationTriggerId id,
         string identifier,
         List<AutomationTriggerParameter> parameters,

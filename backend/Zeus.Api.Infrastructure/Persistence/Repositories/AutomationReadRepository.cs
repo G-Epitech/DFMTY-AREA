@@ -50,4 +50,17 @@ public sealed class AutomationReadRepository : IAutomationReadRepository
         
         return await expression.MaxAsync(x => x.UpdatedAt, cancellationToken);
     }
+
+    public async Task<List<Automation>> GetAutomationsUpdatedAfterAsync(AutomationState state, DateTime lastUpdate, CancellationToken cancellationToken = default)
+    {
+        var expression = Automations
+            .Where(x => x.UpdatedAt > lastUpdate);
+        
+        if (state != AutomationState.Any)
+        {
+            expression = expression.Where(x => x.Enabled == (state == AutomationState.Enabled));
+        }
+        
+        return await expression.ToListAsync(cancellationToken);
+    }
 }
