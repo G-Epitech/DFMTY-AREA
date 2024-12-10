@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  final String title = 'Home Screen';
+class CreateAutomationPage extends StatefulWidget {
+  const CreateAutomationPage({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CreateAutomationPage> createState() => _IntegrationPageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _IntegrationPageState extends State<CreateAutomationPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: "Home Page",
-      body: _HomeContainer(),
+      title: 'Create Automation',
+      body: _AutomationContainer(),
+      getBack: true,
     );
   }
 }
 
-class _HomeContainer extends StatelessWidget {
-  const _HomeContainer();
+class _AutomationContainer extends StatelessWidget {
+  const _AutomationContainer();
 
   @override
   Widget build(BuildContext context) {
