@@ -16,7 +16,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integrations?page=$page&size=$size',
+      endpoint: '/user/integrations/?page=$page&size=$size',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
@@ -32,7 +32,7 @@ class IntegrationRepository {
     );
   }
 
-  Future<Response<OutGetUserIntegrationDTO>> getUserIntegrationById(
+  Future<Response<OutGetUserIntegrationByIdDTO>> getUserIntegrationById(
       String integrationId) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
@@ -42,11 +42,11 @@ class IntegrationRepository {
       client: client,
     );
 
-    return Response<OutGetUserIntegrationDTO>(
+    return Response<OutGetUserIntegrationByIdDTO>(
       statusCode: response.statusCode,
       message: response.message,
       data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationByIdDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );

@@ -1,4 +1,4 @@
-<div class="bg-white rounded-md p-4 shadow-sm ">
+<div class="bg-white rounded-md p-4 shadow-sm">
   @switch (integration().type) {
     @case (IntegrationTypeEnum.DISCORD) {
       <tr-integration-linked-discord [props]="integration().discordProps" />

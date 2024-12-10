@@ -93,3 +93,18 @@ class OutGetIntegrationURIDTO implements Json {
   @override
   Map<String, dynamic> toJson() => _$OutGetIntegrationURIDTOToJson(this);
 }
+
+@JsonSerializable()
+class OutGetUserIntegrationByIdDTO implements Json {
+  final IntegrationDTO integration;
+
+  OutGetUserIntegrationByIdDTO({
+    required this.integration,
+  });
+
+  factory OutGetUserIntegrationByIdDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetUserIntegrationByIdDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetUserIntegrationByIdDTOToJson(this);
+}
