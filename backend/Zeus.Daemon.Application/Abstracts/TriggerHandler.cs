@@ -7,9 +7,7 @@ namespace Zeus.Daemon.Application.Abstracts;
 public abstract class TriggerHandler : ITriggerHandler
 {
     public abstract Task HandleAsync(AutomationExecutionContext context, CancellationToken cancellationToken);
-
-    public abstract Task ListenAsync(AutomationExecutionContext context, CancellationToken cancellationToken);
-
+    
     public Task ExecuteAsync(AutomationExecutionContext context, Dictionary<string, string> facts,
         CancellationToken cancellationToken)
     {
