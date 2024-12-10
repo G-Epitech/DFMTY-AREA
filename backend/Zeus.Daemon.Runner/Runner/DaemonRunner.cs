@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Daemon.Application.Discord.Triggers;
-using Zeus.Daemon.Application.Interfaces.Services.Websockets;
+using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
 using Zeus.Daemon.Domain.Automation;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
@@ -33,10 +33,10 @@ public class DaemonRunner
 
         var task = discord.ConnectAsync();
 
-        var parameters = new List<DynamicParameter>
+        var parameters = new List<AutomationTriggerParameter>
         {
-            new DynamicParameter { Value = "965293637145591868", Identifier = "GuildId" },
-            new DynamicParameter { Value = "965293637145591871", Identifier = "ChannelId" },
+            new AutomationTriggerParameter { Value = "965293637145591868", Identifier = "GuildId" },
+            new AutomationTriggerParameter { Value = "965293637145591871", Identifier = "ChannelId" },
         };
         var trigger = AutomationTrigger.Create("DiscordMessageReceived", parameters, new List<IntegrationId>());
 

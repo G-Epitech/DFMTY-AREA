@@ -6,17 +6,17 @@ namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
 
 public sealed class AutomationTrigger : Entity<AutomationTriggerId>
 {
-    private readonly List<DynamicParameter> _parameters;
+    private readonly List<AutomationTriggerParameter> _parameters;
     private readonly List<IntegrationId> _providers;
 
     public string Identifier { get; private set; }
-    public IReadOnlyList<DynamicParameter> Parameters => _parameters.AsReadOnly();
+    public IReadOnlyList<AutomationTriggerParameter> Parameters => _parameters.AsReadOnly();
     public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
 
     private AutomationTrigger(
         AutomationTriggerId id,
         string identifier,
-        List<DynamicParameter> parameters,
+        List<AutomationTriggerParameter> parameters,
         List<IntegrationId> providers)
         : base(id)
     {
@@ -25,7 +25,8 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
         _providers = providers;
     }
 
-    public static AutomationTrigger Create(string identifier, List<DynamicParameter> parameters, List<IntegrationId> providers)
+    public static AutomationTrigger Create(string identifier, List<AutomationTriggerParameter> parameters,
+        List<IntegrationId> providers)
     {
         return new AutomationTrigger(
             AutomationTriggerId.CreateUnique(),
@@ -33,10 +34,4 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
             parameters,
             providers);
     }
-
-#pragma warning disable CS8618
-    private AutomationTrigger()
-    {
-    }
-#pragma warning restore CS8618
 }

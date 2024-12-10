@@ -1,6 +1,6 @@
 ﻿namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
 
-public enum DynamicParameterType
+public enum AutomationActionParameterType
 {
     Var,
     Raw

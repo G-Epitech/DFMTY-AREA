@@ -1,4 +1,3 @@
-using Zeus.Daemon.Application.Interfaces.Services.Websockets;
 using Zeus.Daemon.Domain.Automation;
 
 namespace Zeus.Daemon.Application.Interfaces;

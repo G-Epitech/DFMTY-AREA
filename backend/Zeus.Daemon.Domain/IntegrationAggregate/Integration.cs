@@ -5,7 +5,7 @@ using Zeus.Daemon.Domain.User.ValueObjects;
 
 namespace Zeus.Daemon.Domain.IntegrationAggregate;
 
-public abstract class Integration : AggregateRoot<IntegrationId, Guid>
+public abstract class Integration : AggregateRoot<IntegrationId>
 {
     /// <summary>
     /// List of tokens associated with the integration.
@@ -34,7 +34,7 @@ public abstract class Integration : AggregateRoot<IntegrationId, Guid>
     /// Public list of tokens associated with the integration.
     /// </summary>
     public IReadOnlyList<IntegrationToken> Tokens => _tokens.AsReadOnly();
-    
+
     /// <summary>
     /// Adds a token to the integration.
     /// </summary>
@@ -45,7 +45,7 @@ public abstract class Integration : AggregateRoot<IntegrationId, Guid>
     {
         _tokens.Add(token);
     }
-    
+
     /// <summary>
     /// Removes a token from the integration.
     /// </summary>
@@ -56,22 +56,17 @@ public abstract class Integration : AggregateRoot<IntegrationId, Guid>
     {
         _tokens.Remove(token);
     }
-    
+
     /// <summary>
     /// Determines if the integration is valid and has at least one token.
     /// </summary>
     public abstract bool IsValid { get; }
 
-    protected Integration(IntegrationId id, IntegrationType type, UserId ownerId, string clientId) : base(id)
+    protected Integration(IntegrationId id, IntegrationType type, UserId ownerId, string clientId)
+        : base(id)
     {
         Type = type;
         OwnerId = ownerId;
         ClientId = clientId;
     }
-    
-#pragma warning disable CS8618
-    protected Integration()
-    {
-    }
-#pragma warning restore CS8618
 }
