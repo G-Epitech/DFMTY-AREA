@@ -15,7 +15,7 @@
         <tr-spinner class="w-12 h-12 text-primary" />
         <p class="text-muted">Connecting to Discord...</p>
       </div>
-    } @if (!success()) {
+    } @if (!loading && !success()) {
     <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
       <ng-icon
         name="heroExclamationTriangle"
