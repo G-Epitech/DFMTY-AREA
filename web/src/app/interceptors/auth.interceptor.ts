@@ -35,7 +35,6 @@ function attachAuthHeaders(
   req: HttpRequest<unknown>,
   accessToken: string | null
 ): HttpRequest<unknown> {
-  // If there is no access token, return the request as is
   if (!accessToken) {
     return req;
   }
