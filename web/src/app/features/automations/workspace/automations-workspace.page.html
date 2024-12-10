@@ -8,7 +8,15 @@
       </div>
       <h1 class="tr-title-2">{{ automation.label }}</h1>
     </div>
-    <div class="flex-grow bg-secondary rounded-md overflow-auto p-4"></div>
+    <div class="flex-grow bg-secondary rounded-md overflow-auto p-4">
+      <div class="flex flex-col">
+        @for (action of actions | async; track action) {
+        <tr-action-card [label]="action" />
+        @if (!$last) {
+        <div class="border-r-4 border-secondary-foreground p-3.5 w-[50%] border-dashed"></div>
+        } }
+      </div>
+    </div>
   </div>
   <div class="w-[17%] h-full pt-2.5">
     <tr-context-menu />
