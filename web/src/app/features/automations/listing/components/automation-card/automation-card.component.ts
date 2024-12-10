@@ -4,7 +4,7 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { AutomationModel } from '@models/automation.model';
+import { AutomationModel } from '@models/automation/automation.model';
 import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';
 import { FormatDatePipe } from '@app/pipes';

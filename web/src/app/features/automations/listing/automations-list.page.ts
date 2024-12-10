@@ -4,7 +4,7 @@ import { PaginationComponent } from '@app/components';
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import { Observable, of } from 'rxjs';
 import { PageModel } from '@models/page';
-import { AutomationModel } from '@models/automation.model';
+import { AutomationModel } from '@models/automation/automation.model';
 import { AsyncPipe } from '@angular/common';
 import { AutomationCardComponent } from '@features/automations/listing/components/automation-card/automation-card.component';
 
