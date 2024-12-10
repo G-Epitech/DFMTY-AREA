@@ -30,7 +30,7 @@ public class DiscordMessageReceivedTrigger : TriggerHandler
         return Task.CompletedTask;
     }
 
-    private Task HandleEvent(JsonObject data, CancellationToken cancellationToken)
+    private Task HandleEvent(JsonNode data, CancellationToken cancellationToken)
     {
         if (_context is null)
         {
