@@ -50,4 +50,28 @@ class AutomationRepository {
       errors: response.errors,
     );
   }
+
+  Future<Response<OutGetAutomationsDTO>> getUserAutomations() async {
+    print('getUserAutomations');
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call(
+      method: 'GET',
+      endpoint: '/user/automations',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    print(response.statusCode);
+    print(response.data);
+
+    return Response<OutGetAutomationsDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      headers: response.headers,
+      data: response.data != null
+          ? OutGetAutomationsDTO.fromJson(response.data)
+          : null,
+      errors: response.errors,
+    );
+  }
 }

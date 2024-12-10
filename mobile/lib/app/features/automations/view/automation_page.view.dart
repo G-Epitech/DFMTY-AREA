@@ -186,16 +186,26 @@ class _AutomationListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(automation.name,
-                      style: Theme.of(context).textTheme.labelLarge),
+                  Expanded(
+                    child: Text(
+                      automation.name,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 5),
               Row(
                 children: [
-                  Text(
-                    automation.description,
-                    style: Theme.of(context).textTheme.labelMedium,
+                  Expanded(
+                    child: Text(
+                      automation.description,
+                      style: Theme.of(context).textTheme.labelMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

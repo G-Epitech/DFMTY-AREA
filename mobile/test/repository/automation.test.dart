@@ -176,34 +176,36 @@ void automationRepositoryTests() {
       final response = await repository.getAutomationById('0');
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.id, equals('123'));
-      expect(response.data?.label, equals('Automation Example'));
-      expect(
-          response.data?.description, equals('This is an example automation'));
-      expect(response.data?.ownerId, equals('owner-456'));
-      expect(response.data?.trigger.identifier,
+      expect(response.data!.automation.id, equals('123'));
+      expect(response.data!.automation.label, equals('Automation Example'));
+      expect(response.data!.automation.description,
+          equals('This is an example automation'));
+      expect(response.data!.automation.ownerId, equals('owner-456'));
+      expect(response.data!.automation.trigger.identifier,
           equals('Discord.MessageReceivedInChannel'));
-      expect(response.data?.trigger.parameters.length, equals(1));
-      expect(response.data?.trigger.parameters[0].identifier,
+      expect(response.data!.automation.trigger.parameters.length, equals(1));
+      expect(response.data!.automation.trigger.parameters[0].identifier,
           equals('channel-id'));
-      expect(response.data?.trigger.parameters[0].value, equals('789'));
-      expect(response.data?.trigger.providers.length, equals(1));
       expect(
-          response.data?.trigger.providers[0], equals('discord-integration'));
-      expect(response.data?.actions.length, equals(1));
-      expect(response.data?.actions[0].identifier,
-          equals('Discord.SendChannelMessage'));
-      expect(response.data?.actions[0].parameters.length, equals(1));
-      expect(response.data?.actions[0].parameters[0].type, equals('var'));
-      expect(response.data?.actions[0].parameters[0].identifier,
-          equals('message'));
-      expect(response.data?.actions[0].parameters[0].value,
-          equals('Hello, World!'));
-      expect(response.data?.actions[0].providers.length, equals(1));
-      expect(response.data?.actions[0].providers[0],
+          response.data!.automation.trigger.parameters[0].value, equals('789'));
+      expect(response.data!.automation.trigger.providers.length, equals(1));
+      expect(response.data!.automation.trigger.providers[0],
           equals('discord-integration'));
-      expect(response.data?.enabled, equals(true));
-      expect(response.data?.updatedAt,
+      expect(response.data!.automation.actions.length, equals(1));
+      expect(response.data!.automation.actions[0].identifier,
+          equals('Discord.SendChannelMessage'));
+      expect(response.data!.automation.actions[0].parameters.length, equals(1));
+      expect(response.data!.automation.actions[0].parameters[0].type,
+          equals('var'));
+      expect(response.data!.automation.actions[0].parameters[0].identifier,
+          equals('message'));
+      expect(response.data!.automation.actions[0].parameters[0].value,
+          equals('Hello, World!'));
+      expect(response.data!.automation.actions[0].providers.length, equals(1));
+      expect(response.data!.automation.actions[0].providers[0],
+          equals('discord-integration'));
+      expect(response.data!.automation.enabled, equals(true));
+      expect(response.data!.automation.updatedAt,
           equals(DateTime.parse('2024-12-10T10:00:00Z')));
     });
   });

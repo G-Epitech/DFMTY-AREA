@@ -26,3 +26,15 @@ Map<String, dynamic> _$OutGetAutomationIDDTOToJson(
     <String, dynamic>{
       'automation': instance.automation,
     };
+
+OutGetAutomationsDTO _$OutGetAutomationsDTOFromJson(
+        Map<String, dynamic> json) =>
+    OutGetAutomationsDTO(
+      page: pageAutomationsFromJson(json['page'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$OutGetAutomationsDTOToJson(
+        OutGetAutomationsDTO instance) =>
+    <String, dynamic>{
+      'page': pageToJson(instance.page),
+    };

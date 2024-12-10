@@ -1,6 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triggo/repositories/models/automation.repository.model.dart';
+import 'package:triggo/repositories/utils/page_serializer.utils.dart';
 import 'package:triggo/utils/json.dart';
+
+import '../models/page.repository.model.dart';
 
 part 'automation.dtos.g.dart';
 
@@ -53,4 +56,24 @@ class OutGetAutomationIDDTO {
       _$OutGetAutomationIDDTOFromJson({'automation': json});
 
   Map<String, dynamic> toJson() => _$OutGetAutomationIDDTOToJson(this);
+}
+
+Page<AutomationDTO> pageAutomationsFromJson(Map<String, dynamic> json) {
+  return pageFromJson<AutomationDTO>(json, AutomationDTO.fromJson);
+}
+
+@JsonSerializable()
+class OutGetAutomationsDTO implements Json {
+  @JsonKey(fromJson: pageAutomationsFromJson, toJson: pageToJson)
+  final Page<AutomationDTO> page;
+
+  OutGetAutomationsDTO({
+    required this.page,
+  });
+
+  factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetAutomationsDTOFromJson({'page': json});
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
 }
