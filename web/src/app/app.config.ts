@@ -15,10 +15,13 @@ import { environment } from '../environments/environment';
 import { provideIcons } from '@ng-icons/core';
 import {
   heroHome,
-  heroLink,
   heroBolt,
+  heroLink,
   heroExclamationTriangle,
   heroCheckCircle,
+  heroCheck,
+  heroArrowLeft,
+  heroArrowRight,
 } from '@ng-icons/heroicons/outline';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -43,8 +46,11 @@ export const appConfig: ApplicationConfig = {
       heroHome,
       heroLink,
       heroBolt,
-      heroExclamationTriangle,
       heroCheckCircle,
+      heroExclamationTriangle,
+      heroArrowRight,
+      heroArrowLeft,
+      heroCheck,
     }),
     provideAnimations(),
     provideToastr({
