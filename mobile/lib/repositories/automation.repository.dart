@@ -15,7 +15,7 @@ class AutomationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integrations/?page=$page&size=$size',
+      endpoint: '/automations/manifest',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
