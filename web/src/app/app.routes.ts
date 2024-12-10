@@ -27,6 +27,13 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'automations/:id',
+        loadComponent: () =>
+          import(
+            '@features/automations/workspace/automations-workspace.page'
+          ).then(m => m.AutomationsWorkspacePageComponent),
+      },
+      {
         path: 'integrations',
         loadComponent: () =>
           import('@features/integrations/integrations.page').then(
