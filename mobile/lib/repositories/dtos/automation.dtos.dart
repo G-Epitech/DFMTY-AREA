@@ -17,7 +17,7 @@ class InGetAutomationManifestDTO implements Json {
 }
 
 class OutGetAutomationManifestDTO {
-  final Map<String, AutomationManifest> manifests;
+  final Map<String, AutomationManifestDTO> manifests;
 
   OutGetAutomationManifestDTO({
     required this.manifests,
@@ -28,7 +28,7 @@ class OutGetAutomationManifestDTO {
       manifests: json.map(
         (key, value) => MapEntry(
           key,
-          AutomationManifest.fromJson(value as Map<String, dynamic>),
+          AutomationManifestDTO.fromJson(value as Map<String, dynamic>),
         ),
       ),
     );
@@ -43,28 +43,14 @@ class OutGetAutomationManifestDTO {
 
 @JsonSerializable()
 class OutGetAutomationIDDTO {
-  final String id;
-  final String label;
-  final String description;
-  final String ownerId;
-  final AutomationTrigger trigger;
-  final List<AutomationAction> actions;
-  final bool enabled;
-  final DateTime updatedAt;
+  final AutomationDTO automation;
 
   OutGetAutomationIDDTO({
-    required this.id,
-    required this.label,
-    required this.description,
-    required this.ownerId,
-    required this.trigger,
-    required this.actions,
-    required this.enabled,
-    required this.updatedAt,
+    required this.automation,
   });
 
   factory OutGetAutomationIDDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetAutomationIDDTOFromJson(json);
+      _$OutGetAutomationIDDTOFromJson({'automation': json});
 
   Map<String, dynamic> toJson() => _$OutGetAutomationIDDTOToJson(this);
 }

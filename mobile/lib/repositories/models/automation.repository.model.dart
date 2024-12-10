@@ -3,34 +3,34 @@ import 'package:json_annotation/json_annotation.dart';
 part 'automation.repository.model.g.dart';
 
 @JsonSerializable()
-class AutomationManifestTriggerActionProperty {
+class AutomationManifestTriggerActionPropertyDTO {
   final String name;
   final String description;
   final String type;
 
-  AutomationManifestTriggerActionProperty({
+  AutomationManifestTriggerActionPropertyDTO({
     required this.name,
     required this.description,
     required this.type,
   });
 
-  factory AutomationManifestTriggerActionProperty.fromJson(
+  factory AutomationManifestTriggerActionPropertyDTO.fromJson(
           Map<String, dynamic> json) =>
-      _$AutomationManifestTriggerActionPropertyFromJson(json);
+      _$AutomationManifestTriggerActionPropertyDTOFromJson(json);
 
   Map<String, dynamic> toJson() =>
-      _$AutomationManifestTriggerActionPropertyToJson(this);
+      _$AutomationManifestTriggerActionPropertyDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationManifestTriggerAction {
+class AutomationManifestTriggerActionDTO {
   final String name;
   final String description;
   final String icon;
-  final Map<String, AutomationManifestTriggerActionProperty> parameters;
-  final Map<String, AutomationManifestTriggerActionProperty> facts;
+  final Map<String, AutomationManifestTriggerActionPropertyDTO> parameters;
+  final Map<String, AutomationManifestTriggerActionPropertyDTO> facts;
 
-  AutomationManifestTriggerAction({
+  AutomationManifestTriggerActionDTO({
     required this.name,
     required this.description,
     required this.icon,
@@ -38,22 +38,23 @@ class AutomationManifestTriggerAction {
     required this.facts,
   });
 
-  factory AutomationManifestTriggerAction.fromJson(Map<String, dynamic> json) =>
-      _$AutomationManifestTriggerActionFromJson(json);
+  factory AutomationManifestTriggerActionDTO.fromJson(
+          Map<String, dynamic> json) =>
+      _$AutomationManifestTriggerActionDTOFromJson(json);
 
   Map<String, dynamic> toJson() =>
-      _$AutomationManifestTriggerActionToJson(this);
+      _$AutomationManifestTriggerActionDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationManifest {
+class AutomationManifestDTO {
   final String name;
   final String iconUri;
   final String color;
-  final Map<String, AutomationManifestTriggerAction> triggers;
-  final Map<String, AutomationManifestTriggerAction> actions;
+  final Map<String, AutomationManifestTriggerActionDTO> triggers;
+  final Map<String, AutomationManifestTriggerActionDTO> actions;
 
-  AutomationManifest({
+  AutomationManifestDTO({
     required this.name,
     required this.iconUri,
     required this.color,
@@ -61,77 +62,105 @@ class AutomationManifest {
     required this.actions,
   });
 
-  factory AutomationManifest.fromJson(Map<String, dynamic> json) =>
-      _$AutomationManifestFromJson(json);
+  factory AutomationManifestDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationManifestDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AutomationManifestToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationManifestDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationTriggerParameter {
+class AutomationTriggerParameterDTO {
   final String identifier;
   final String value;
 
-  AutomationTriggerParameter({
+  AutomationTriggerParameterDTO({
     required this.identifier,
     required this.value,
   });
 
-  factory AutomationTriggerParameter.fromJson(Map<String, dynamic> json) =>
-      _$AutomationTriggerParameterFromJson(json);
+  factory AutomationTriggerParameterDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationTriggerParameterDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AutomationTriggerParameterToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationTriggerParameterDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationTrigger {
+class AutomationTriggerDTO {
   final String identifier;
-  final List<AutomationTriggerParameter> parameters;
+  final List<AutomationTriggerParameterDTO> parameters;
   final List<String> providers;
 
-  AutomationTrigger({
+  AutomationTriggerDTO({
     required this.identifier,
     required this.parameters,
     required this.providers,
   });
 
-  factory AutomationTrigger.fromJson(Map<String, dynamic> json) =>
-      _$AutomationTriggerFromJson(json);
+  factory AutomationTriggerDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationTriggerDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AutomationTriggerToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationTriggerDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationActionParameter extends AutomationTriggerParameter {
+class AutomationActionParameterDTO extends AutomationTriggerParameterDTO {
   final String type;
 
-  AutomationActionParameter({
+  AutomationActionParameterDTO({
     required super.identifier,
     required super.value,
     required this.type,
   });
 
-  factory AutomationActionParameter.fromJson(Map<String, dynamic> json) =>
-      _$AutomationActionParameterFromJson(json);
+  factory AutomationActionParameterDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationActionParameterDTOFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$AutomationActionParameterToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationActionParameterDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationAction {
+class AutomationActionDTO {
   final String identifier;
-  final List<AutomationActionParameter> parameters;
+  final List<AutomationActionParameterDTO> parameters;
   final List<String> providers;
 
-  AutomationAction({
+  AutomationActionDTO({
     required this.identifier,
     required this.parameters,
     required this.providers,
   });
 
-  factory AutomationAction.fromJson(Map<String, dynamic> json) =>
-      _$AutomationActionFromJson(json);
+  factory AutomationActionDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationActionDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AutomationActionToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationActionDTOToJson(this);
+}
+
+@JsonSerializable()
+class AutomationDTO {
+  final String id;
+  final String label;
+  final String description;
+  final String ownerId;
+  final AutomationTriggerDTO trigger;
+  final List<AutomationActionDTO> actions;
+  final bool enabled;
+  final DateTime updatedAt;
+
+  AutomationDTO({
+    required this.id,
+    required this.label,
+    required this.description,
+    required this.ownerId,
+    required this.trigger,
+    required this.actions,
+    required this.enabled,
+    required this.updatedAt,
+  });
+
+  factory AutomationDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AutomationDTOToJson(this);
 }
