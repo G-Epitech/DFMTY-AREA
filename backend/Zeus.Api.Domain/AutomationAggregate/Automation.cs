@@ -15,6 +15,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
     public bool Enabled { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     private Automation(
         AutomationId id,

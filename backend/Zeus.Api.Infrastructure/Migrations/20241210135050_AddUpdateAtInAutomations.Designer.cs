@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zeus.Api.Domain.AutomationAggregate.Enums;
@@ -14,9 +15,11 @@ using Zeus.Api.Infrastructure.Persistence;
 namespace Zeus.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ZeusDbContext))]
-    partial class ZeusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241210135050_AddUpdateAtInAutomations")]
+    partial class AddUpdateAtInAutomations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -28,6 +28,9 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         builder.Property(x => x.Description)
             .HasMaxLength(AutomationDescriptionMaxLength);
         builder.Property(x => x.Enabled);
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedOnAddOrUpdate()
+            .IsRequired();
 
         builder.HasOne<User>()
             .WithMany()
