@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Zeus.Daemon.Application.Abstracts;
-using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
+using Zeus.Daemon.Application.Discord.Services.Websocket;
 using Zeus.Daemon.Domain.Automation;
 using Zeus.Daemon.Domain.Discord.Enums;
 using Zeus.Daemon.Domain.Discord.Events;
@@ -15,7 +15,8 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private AutomationExecutionContext? _context;
 
-    public DiscordMessageReceivedTriggerHandler(IDiscordWebSocketService discordWebSocketService)
+    public DiscordMessageReceivedTriggerHandler(IDiscordWebSocketService discordWebSocketService,
+        IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _discordWebSocketService = discordWebSocketService;
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
@@ -44,12 +45,14 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
         }
 
         var parameters = _context.Automation.Trigger.Parameters;
-        var guildId = parameters.FirstOrDefault(p => p.Identifier == "GuildId").Value ??
+        var guildId = parameters.FirstOrDefault(p => p.Identifier == "GuildId")?.Value ??
                       String.Empty;
-        var channelId = parameters.FirstOrDefault(p => p.Identifier == "ChannelId").Value ??
+        var channelId = parameters.FirstOrDefault(p => p.Identifier == "ChannelId")?.Value ??
                         String.Empty;
 
-        if (messageCreate.GuildId != guildId || messageCreate.ChannelId != channelId)
+        if (messageCreate.GuildId != guildId ||
+            messageCreate.ChannelId != channelId ||
+            messageCreate.Author.Bot == true)
         {
             return Task.CompletedTask;
         }

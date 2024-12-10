@@ -2,11 +2,11 @@ using Zeus.Common.Domain.Models;
 
 namespace Zeus.Daemon.Domain.Discord.ValueObjects;
 
-public sealed class DiscordChannelId : ValueObject
+public sealed class DiscordGuildId : ValueObject
 {
     public string Value { get; }
 
-    public DiscordChannelId(string value)
+    public DiscordGuildId(string value)
     {
         Value = value;
     }
