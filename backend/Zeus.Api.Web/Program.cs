@@ -1,3 +1,7 @@
+using System.Text.Json.Serialization;
+
+using Microsoft.AspNetCore.Mvc;
+
 using Scalar.AspNetCore;
 
 using Zeus.Api.Application;
@@ -15,7 +19,10 @@ var builder = WebApplication.CreateBuilder(args);
         .AddAuthentication(builder.Configuration)
         .AddMappings();
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
     builder.Services.AddOpenApi();
     builder.Services.AddCors(builder.Environment);
 }
