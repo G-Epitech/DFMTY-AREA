@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { TokenMediator } from '@mediators/token.mediator';
 
 export const authInterceptor: HttpInterceptorFn = (
@@ -15,16 +14,11 @@ export const authInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
   const tokenMediator = inject(TokenMediator);
-  const router = inject(Router);
 
   if (req.url.includes('auth')) {
     return next(req);
   }
   const accessToken = tokenMediator.getAccessToken();
-  if (!accessToken) {
-    // void router.navigate(['/login']);
-    // return next(req);
-  }
   const request = attachAuthHeaders(req, accessToken);
   return next(request).pipe(
     catchError(error => {
@@ -41,7 +35,6 @@ function attachAuthHeaders(
   req: HttpRequest<unknown>,
   accessToken: string | null
 ): HttpRequest<unknown> {
-  // If there is no access token, return the request as is
   if (!accessToken) {
     return req;
   }
