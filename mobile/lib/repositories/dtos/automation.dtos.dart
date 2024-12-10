@@ -77,3 +77,25 @@ class OutGetAutomationsDTO implements Json {
   @override
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
 }
+
+@JsonSerializable()
+class InPostAutomationDTO implements Json {
+  InPostAutomationDTO();
+
+  factory InPostAutomationDTO.fromJson(Map<String, dynamic> json) =>
+      _$InPostAutomationDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$InPostAutomationDTOToJson(this);
+}
+
+@JsonSerializable()
+class OutPostAutomationDTO implements Json {
+  OutPostAutomationDTO();
+
+  factory OutPostAutomationDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutPostAutomationDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutPostAutomationDTOToJson(this);
+}

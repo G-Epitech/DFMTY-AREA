@@ -74,4 +74,26 @@ class AutomationRepository {
       errors: response.errors,
     );
   }
+
+  Future<Response<OutPostAutomationDTO>> postAutomation(
+      InPostAutomationDTO inPostAutomationDTO) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call<InPostAutomationDTO>(
+      method: 'POST',
+      endpoint: '/automations',
+      body: inPostAutomationDTO,
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutPostAutomationDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      headers: response.headers,
+      data: response.data != null
+          ? OutPostAutomationDTO.fromJson(response.data)
+          : null,
+      errors: response.errors,
+    );
+  }
 }

@@ -38,3 +38,18 @@ Map<String, dynamic> _$OutGetAutomationsDTOToJson(
     <String, dynamic>{
       'page': pageToJson(instance.page),
     };
+
+InPostAutomationDTO _$InPostAutomationDTOFromJson(Map<String, dynamic> json) =>
+    InPostAutomationDTO();
+
+Map<String, dynamic> _$InPostAutomationDTOToJson(
+        InPostAutomationDTO instance) =>
+    <String, dynamic>{};
+
+OutPostAutomationDTO _$OutPostAutomationDTOFromJson(
+        Map<String, dynamic> json) =>
+    OutPostAutomationDTO();
+
+Map<String, dynamic> _$OutPostAutomationDTOToJson(
+        OutPostAutomationDTO instance) =>
+    <String, dynamic>{};
