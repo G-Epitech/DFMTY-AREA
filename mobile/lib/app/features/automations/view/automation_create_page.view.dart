@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 
@@ -37,11 +38,13 @@ class _AutomationContainer extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    automationMediator.createAutomation();
-                  },
-                  child: Text('Fetch Automations'),
+                child: Center(
+                  child: TriggoButton(
+                    text: "Create Automation",
+                    onPressed: () {
+                      automationMediator.createAutomation();
+                    },
+                  ),
                 ),
               ),
             ),
