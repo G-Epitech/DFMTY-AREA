@@ -5,5 +5,5 @@ public class DiscordSettings
     public string ApiEndpoint { get; init; } = null!;
     public string WebsocketEndpoint { get; init; } = null!;
     public string ClientId { get; init; } = null!;
-    public string ClientSecret { get; init; } = null!;
+    public string BotToken { get; init; } = null!;
 }

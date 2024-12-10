@@ -10,5 +10,5 @@ var builder = DaemonRunnerBuilder.CreateBuilder(args);
 
 var runner = builder.Build();
 {
-    runner.Run();
+    await runner.Run();
 }

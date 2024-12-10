@@ -5,5 +5,5 @@ public interface IDiscordSettingsProvider
     public string ApiEndpoint { get; }
     public string WebsocketEndpoint { get; }
     public string ClientId { get; }
-    public string ClientSecret { get; }
+    public string BotToken { get; }
 }

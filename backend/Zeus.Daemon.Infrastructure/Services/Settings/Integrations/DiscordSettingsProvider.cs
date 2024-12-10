@@ -8,13 +8,13 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
     public string ApiEndpoint { get; }
     public string WebsocketEndpoint { get; }
     public string ClientId { get; }
-    public string ClientSecret { get; }
+    public string BotToken { get; }
 
     public DiscordSettingsProvider(DiscordSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
         WebsocketEndpoint = settings.WebsocketEndpoint;
         ClientId = settings.ClientId;
-        ClientSecret = settings.ClientSecret;
+        BotToken = settings.BotToken;
     }
 }
