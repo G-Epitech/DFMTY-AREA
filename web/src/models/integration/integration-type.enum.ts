@@ -1,4 +1,4 @@
 export enum IntegrationTypeEnum {
-  DISCORD,
-  GMAIL,
+  DISCORD = 'Discord',
+  GMAIL = 'Gmail',
 }

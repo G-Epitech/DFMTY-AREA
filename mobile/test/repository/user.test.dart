@@ -30,15 +30,19 @@ void userRepositoryTests() {
     when(mock.get(
       Uri.parse('${Env.apiUrl}/user'),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer dummy'
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"id": "example", "firstName": "example", "lastName": "example", "email": "example@example.com",'
+          '{'
+          '"id": "example",'
+          '"firstName": "example",'
+          '"lastName": "example",'
+          '"email": "example@example.com",'
           '"picture": "example"'
           '}',
           200,
-          headers: {'Content-Type': 'application/json'},
         ));
 
     repository = UserRepository(

@@ -1,5 +1,8 @@
 import { IntegrationTypeEnum } from '@models/integration/integration-type.enum';
-import { IntegrationDiscordProps } from '@models/integration/properties';
+import {
+  IntegrationDiscordProps,
+  IntegrationProps,
+} from '@models/integration/properties';
 
 export class IntegrationModel {
   readonly id: string;
@@ -14,7 +17,7 @@ export class IntegrationModel {
     ownerId: string,
     isValid: boolean,
     type: IntegrationTypeEnum,
-    props: IntegrationDiscordProps | string
+    properties: IntegrationDiscordProps | string
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -22,10 +25,10 @@ export class IntegrationModel {
     this.type = type;
     switch (type) {
       case IntegrationTypeEnum.DISCORD:
-        this.#discordProps = props as IntegrationDiscordProps;
+        this.#discordProps = properties as IntegrationDiscordProps;
         break;
       case IntegrationTypeEnum.GMAIL:
-        this.#gmailProps = props as string;
+        this.#gmailProps = properties as string;
         break;
     }
   }
