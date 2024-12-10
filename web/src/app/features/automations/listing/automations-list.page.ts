@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   inject,
+  OnDestroy,
   signal,
 } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -10,11 +11,10 @@ import { PaginationComponent } from '@app/components';
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import {
   BehaviorSubject,
-  concat,
   delay,
   Observable,
-  of,
-  switchMap,
+  Subject,
+  takeUntil,
   tap,
 } from 'rxjs';
 import { PageModel, PageOptions } from '@models/page';
@@ -22,8 +22,9 @@ import { AutomationModel } from '@models/automation/automation.model';
 import { AsyncPipe } from '@angular/common';
 import { AutomationCardComponent } from '@features/automations/listing/components/automation-card/automation-card.component';
 import { UsersMediator } from '@mediators/users.mediator';
-import { IntegrationModel } from '@models/integration';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { AutomationsMediator } from '@mediators/automations.mediator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tr-automations-list',
@@ -40,8 +41,12 @@ import { TrSkeletonComponent } from '@triggo-ui/skeleton';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AutomationsListPageComponent {
+export class AutomationsListPageComponent implements OnDestroy {
   readonly #usersMediator = inject(UsersMediator);
+  readonly #automationsMediator = inject(AutomationsMediator);
+  readonly #toastr = inject(ToastrService);
+
+  private destroy$ = new Subject<void>();
 
   pageOptions = signal<PageOptions>({
     page: 0,
@@ -74,5 +79,24 @@ export class AutomationsListPageComponent {
       size: options.size,
       page: page - 1,
     }));
+  }
+
+  createAutomation(): void {
+    this.#automationsMediator
+      .create()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: () => {
+          this.#toastr.error('Error creating automation');
+        },
+        next: () => {
+          this.#toastr.success('Automation created');
+        },
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
