@@ -16,6 +16,8 @@
       </div>
       <h1 class="tr-large">{{ automation().label }}</h1>
     </div>
-    <span class="text-muted tr-medium">Last update: </span>
+    <span class="text-muted tr-medium"
+      >Last update: {{ automation().lastUpdated | formatDate }}</span
+    >
   </div>
 </div>

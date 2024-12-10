@@ -54,7 +54,7 @@
 }
 
 .tr-medium {
-  @include typography($weight: 400, $size: 0.7rem, $letter-spacing: -0.02rem);
+  @include typography($weight: 400, $size: 0.8rem, $letter-spacing: -0.02rem);
 }
 
 .tr-small {
