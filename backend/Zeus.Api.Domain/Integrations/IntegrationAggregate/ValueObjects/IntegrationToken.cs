@@ -9,9 +9,9 @@ public sealed class IntegrationToken : ValueObject
 
     public string Type { get; }
 
-    public ServiceTokenUsage Usage { get; }
+    public IntegrationTokenUsage Usage { get; }
 
-    public IntegrationToken(string value, string type, ServiceTokenUsage usage)
+    public IntegrationToken(string value, string type, IntegrationTokenUsage usage)
     {
         Value = value;
         Type = type;
@@ -24,7 +24,7 @@ public sealed class IntegrationToken : ValueObject
         yield return Type;
         yield return Usage;
     }
-    
+
 #pragma warning disable CS8618
     private IntegrationToken()
     {

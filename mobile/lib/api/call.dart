@@ -10,7 +10,7 @@ Future<Response<dynamic>> call<T extends Json>({
   required String method,
   required String endpoint,
   T? body,
-  String? bearerToken,
+  String? accessToken,
   http.Client? client,
   Map<String, String>? headers,
 }) async {
@@ -18,7 +18,7 @@ Future<Response<dynamic>> call<T extends Json>({
 
   try {
     final uri = Uri.parse('${Env.apiUrl}$endpoint');
-    final requestHeaders = _buildHeaders(bearerToken, headers);
+    final requestHeaders = _buildHeaders(accessToken, headers);
 
     final response = await _makeRequest(
       httpClient: httpClient,
@@ -45,10 +45,11 @@ Future<Response<dynamic>> call<T extends Json>({
 }
 
 Map<String, String> _buildHeaders(
-    String? bearerToken, Map<String, String>? headers) {
+    String? accessToken, Map<String, String>? headers) {
   return {
-    'Content-Type': 'application/json',
-    if (bearerToken != null) 'Authorization': 'Bearer $bearerToken',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Accept': '*/*',
+    if (accessToken != null) 'Authorization': 'Bearer $accessToken',
     if (headers != null) ...headers,
   };
 }
