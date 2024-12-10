@@ -64,12 +64,6 @@ const config: Config = {
           label: 'The project',
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Developer docs',
-        },
-        {
           href: 'https://github.com/G-Epitech/DFMTY-AREA',
           label: 'Repository',
           position: 'right',

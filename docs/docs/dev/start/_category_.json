@@ -1,8 +1,0 @@
-{
-  "label": "Get Started",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "In this documentation series we will go over how to build and setup the\nproject so you can start contributing to the project."
-  }
-}
