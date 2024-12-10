@@ -23,5 +23,11 @@ public class UsersConfiguration: IEntityTypeConfiguration<User>
             .HasMaxLength(100);
         builder.Property(u => u.Password)
             .HasMaxLength(255);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
     }
 }

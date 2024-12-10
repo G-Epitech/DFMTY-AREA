@@ -19,12 +19,22 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
 
     public static IntegrationLinkRequest Create(UserId ownerId, IntegrationType integrationType)
     {
-        return new IntegrationLinkRequest(IntegrationLinkRequestId.CreateUnique(), ownerId, integrationType);
+        return new IntegrationLinkRequest(
+            IntegrationLinkRequestId.CreateUnique(),
+            ownerId,
+            integrationType,
+            DateTime.UtcNow,
+            DateTime.UtcNow
+        );
     }
 
-    private IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
-        IntegrationType integrationType)
-        : base(id)
+    private IntegrationLinkRequest(
+        IntegrationLinkRequestId id,
+        UserId ownerId,
+        IntegrationType integrationType,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
     {
         OwnerId = ownerId;
         Type = integrationType;

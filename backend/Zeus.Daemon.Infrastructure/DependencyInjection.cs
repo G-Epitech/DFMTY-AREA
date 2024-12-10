@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Api.gRPC.SDK;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Infrastructure.Integrations;
 using Zeus.Daemon.Infrastructure.Services.Settings.Integrations;
@@ -13,7 +14,10 @@ public static class DependencyInjection
     {
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
-
+        services.AddZeusApiGrpc(new GrpcConfiguration
+        {
+            Host = new Uri("http://localhost:5069")
+        });
         return services;
     }
 }

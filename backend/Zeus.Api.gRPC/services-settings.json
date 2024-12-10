@@ -1,0 +1,76 @@
+{
+  "ServicesSettings": {
+    "Discord": {
+      "Name": "Discord",
+      "IconUri": "https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/653714c1f22aef3b6921d63d_636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg",
+      "Color": "#5865F2",
+      "Triggers": {
+        "MessageReceivedInChannel": {
+          "Name": "Message received in channel",
+          "Description": "Triggers when a message is received in a specific guild channel.",
+          "Icon": "inbox-arrow-down",
+          "Parameters": {
+            "ChannelId": {
+              "Name": "Channel id",
+              "Description": "The ID of the channel to monitor.",
+              "Type": "string"
+            }
+          },
+          "Facts": {
+            "MessageId": {
+              "Name": "Message id",
+              "Description": "The ID of the received message.",
+              "Type": "string"
+            },
+            "Content": {
+              "Name": "Message content",
+              "Description": "The content of the received message.",
+              "Type": "string"
+            },
+            "SenderId": {
+              "Name": "Sender id",
+              "Description": "The ID of the sender of the message.",
+              "Type": "string"
+            },
+            "SenderUsername": {
+              "Name": "Sender username",
+              "Description": "The username of the sender of the message.",
+              "Type": "string"
+            },
+            "ReceptionTime": {
+              "Name": "Reception time",
+              "Description": "The time when the message was received.",
+              "Type": "datetime"
+            }
+          }
+        }
+      },
+      "Actions": {
+        "SendMessageToChannel": {
+          "Name": "Send message to channel",
+          "Description": "Sends a message to a specific guild channel as triggo bot.",
+          "Icon": "chat-bubble-oval-right-ellipsis",
+          "Parameters": {
+            "ChannelId": {
+              "Name": "Channel id",
+              "Description": "The ID of the channel to send the message to.",
+              "Type": "string"
+            },
+            "Content": {
+              "Name": "Message content",
+              "Description": "The content of the message to send.",
+              "Type": "string"
+            }
+          },
+          "Facts": {
+            "MessageId": {
+              "Name": "Message id",
+              "Description": "The ID of the sent message.",
+              "Type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

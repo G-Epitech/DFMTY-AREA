@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
@@ -18,6 +17,12 @@ public class IntegrationLinkRequestConfiguration : IEntityTypeConfiguration<Inte
             .ValueGeneratedNever()
             .HasConversion(i => i.Value, v => new IntegrationLinkRequestId(v));
         builder.Property(i => i.Type);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(i => i.OwnerId)

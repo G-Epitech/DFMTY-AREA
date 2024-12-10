@@ -7,8 +7,13 @@ namespace Zeus.Api.Domain.Integrations.IntegrationAggregate;
 
 public sealed class DiscordIntegration : Integration
 {
-    private DiscordIntegration(IntegrationId id, UserId ownerId, string clientId)
-        : base(id, IntegrationType.Discord, ownerId, clientId)
+    private DiscordIntegration(
+        IntegrationId id,
+        UserId ownerId,
+        string clientId,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, IntegrationType.Discord, ownerId, clientId, updatedAt, createdAt)
     {
     }
 
@@ -30,6 +35,11 @@ public sealed class DiscordIntegration : Integration
 
     public static DiscordIntegration Create(UserId ownerId, string clientId)
     {
-        return new DiscordIntegration(IntegrationId.CreateUnique(), ownerId, clientId);
+        return new DiscordIntegration(
+            IntegrationId.CreateUnique(),
+            ownerId,
+            clientId,
+            DateTime.UtcNow,
+            DateTime.UtcNow);
     }
 }

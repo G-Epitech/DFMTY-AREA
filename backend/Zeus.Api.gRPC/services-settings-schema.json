@@ -1,0 +1,182 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "ServicesSettings": {
+      "^[A-Za-z0-9_]+$": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IconUri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "Color": {
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+          },
+          "Triggers": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Za-z0-9_]+$": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Icon": {
+                    "type": "string"
+                  },
+                  "Parameters": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^[A-Za-z0-9_]+$": {
+                        "type": "object",
+                        "properties": {
+                          "Name": {
+                            "type": "string"
+                          },
+                          "Description": {
+                            "type": "string"
+                          },
+                          "Type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "Name",
+                          "Description",
+                          "Type"
+                        ]
+                      }
+                    }
+                  },
+                  "Facts": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^[A-Za-z0-9_]+$": {
+                        "type": "object",
+                        "properties": {
+                          "Name": {
+                            "type": "string"
+                          },
+                          "Description": {
+                            "type": "string"
+                          },
+                          "Type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "Name",
+                          "Description",
+                          "Type"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Name",
+                  "Description",
+                  "Icon",
+                  "Parameters",
+                  "Facts"
+                ]
+              }
+            }
+          },
+          "Actions": {
+            "type": "object",
+            "patternProperties": {
+              "^[A-Za-z0-9_]+$": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Icon": {
+                    "type": "string"
+                  },
+                  "Parameters": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^[A-Za-z0-9_]+$": {
+                        "type": "object",
+                        "properties": {
+                          "Name": {
+                            "type": "string"
+                          },
+                          "Description": {
+                            "type": "string"
+                          },
+                          "Type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "Name",
+                          "Description",
+                          "Type"
+                        ]
+                      }
+                    }
+                  },
+                  "Facts": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^[A-Za-z0-9_]+$": {
+                        "type": "object",
+                        "properties": {
+                          "Name": {
+                            "type": "string"
+                          },
+                          "Description": {
+                            "type": "string"
+                          },
+                          "Type": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "Name",
+                          "Description",
+                          "Type"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "Name",
+                  "Description",
+                  "Icon",
+                  "Parameters",
+                  "Facts"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "Name",
+          "IconUri",
+          "Color",
+          "Triggers",
+          "Actions"
+        ]
+      }
+    }
+  },
+  "required": [
+    "ServicesSettings"
+  ],
+  "additionalProperties": false
+}

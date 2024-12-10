@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services
         .AddApplication()
         .AddInfrastructure(builder.Configuration)
+        .AddAuthentication(builder.Configuration)
         .AddMappings();
 
     builder.Services.AddControllers();
