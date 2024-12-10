@@ -11,9 +11,10 @@
         </div>
         <div
           class="absolute -bottom-1 left-9 p-1.5 rounded-full"
-          [ngClass]="{
-            'bg-green-400': automation().enabled,
-            'bg-gray-300': !automation().enabled,
+          [ngStyle]="{
+            'background-color': automation().enabled
+              ? 'var(--tr-green)'
+              : 'var(--tr-gray-2)',
           }"></div>
       </div>
       <h1 class="tr-large">{{ automation().label }}</h1>

@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
+
 using Zeus.Api.Domain.AutomationAggregate.Enums;
 using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
@@ -27,7 +29,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    Password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +46,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                     Label = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Enabled = table.Column<bool>(type: "boolean", nullable: false)
+                    Enabled = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,7 +67,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<IntegrationType>(type: "\"IntegrationType\"", nullable: false)
+                    Type = table.Column<IntegrationType>(type: "\"IntegrationType\"", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,7 +89,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<IntegrationType>(type: "\"IntegrationType\"", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ClientId = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    ClientId = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

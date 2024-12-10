@@ -33,6 +33,12 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         builder.Property(i => i.ClientId)
             .HasMaxLength(ClientIdMaxLength);
         builder.Property(i => i.Type);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(i => i.OwnerId)

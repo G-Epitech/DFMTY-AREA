@@ -1,6 +1,6 @@
 namespace Zeus.Api.Web.Contracts.Integrations;
 
-public abstract record GetIntegrationPropertiesResponse();
+public abstract record GetIntegrationPropertiesResponse;
 
 public record GetIntegrationResponse(
     Guid Id,

@@ -22,7 +22,15 @@ export class FormatDatePipe implements PipeTransform {
     } else if (isYesterday) {
       dayLabel = 'Yesterday';
     } else {
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
       dayLabel = days[date.getDay()];
     }
 

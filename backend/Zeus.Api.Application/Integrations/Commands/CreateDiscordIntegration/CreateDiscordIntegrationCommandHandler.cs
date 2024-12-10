@@ -1,5 +1,3 @@
-using System.Text;
-
 using ErrorOr;
 
 using MediatR;
@@ -26,7 +24,7 @@ public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDisc
     public CreateDiscordIntegrationCommandHandler(
         IIntegrationLinkRequestReadRepository integrationLinkRequestReadRepository,
         IIntegrationLinkRequestWriteRepository integrationLinkRequestWriteRepository,
-        IIntegrationWriteRepository integrationWriteRepository, 
+        IIntegrationWriteRepository integrationWriteRepository,
         IDiscordService discordService)
     {
         _integrationWriteRepository = integrationWriteRepository;

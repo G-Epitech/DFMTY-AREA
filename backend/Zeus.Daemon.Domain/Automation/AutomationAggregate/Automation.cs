@@ -23,8 +23,10 @@ public sealed class Automation : AggregateRoot<AutomationId>
         UserId ownerId,
         AutomationTrigger trigger,
         List<AutomationAction> actions,
+        DateTime updatedAt,
+        DateTime createdAt,
         bool enabled = true)
-        : base(id)
+        : base(id, updatedAt, createdAt)
     {
         _actions = actions;
         Label = label;
@@ -49,6 +51,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
             ownerId,
             trigger,
             actions,
+            DateTime.UtcNow,
+            DateTime.UtcNow,
             enabled);
     }
 }

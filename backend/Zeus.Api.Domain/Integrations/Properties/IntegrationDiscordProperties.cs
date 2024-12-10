@@ -1,5 +1,3 @@
-using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
-
 namespace Zeus.Api.Domain.Integrations.Properties;
 
 public record IntegrationDiscordProperties(
