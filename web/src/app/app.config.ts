@@ -61,7 +61,7 @@ export const appConfig: ApplicationConfig = {
       heroCheck,
       heroSparklesSolid,
       heroChatBubbleBottomCenterTextSolid,
-      heroBoltSolid
+      heroBoltSolid,
       heroInformationCircle,
       heroChatBubbleOvalLeftEllipsis,
       heroPlus,

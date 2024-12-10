@@ -56,7 +56,7 @@ export class UsersMediator {
               automation.enabled,
               automation.updatedAt,
               '#EE883A',
-              'bolt',
+              'chat-bubble-bottom-center-text',
               automation.trigger,
               automation.actions
             );

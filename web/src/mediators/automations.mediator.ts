@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
-import { Observable } from 'rxjs';
-import { AutomationDTO } from '@repositories/dto';
+import { map, Observable } from 'rxjs';
+import { AutomationModel } from '@models/automation';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,22 @@ export class AutomationsMediator {
     return this.#automationsRepository.post();
   }
 
-  getById(id: string): Observable<AutomationDTO> {
-    return this.#automationsRepository.getById(id);
+  getById(id: string): Observable<AutomationModel> {
+    return this.#automationsRepository.getById(id).pipe(
+      map(dto => {
+        return new AutomationModel(
+          dto.id,
+          dto.ownerId,
+          dto.label,
+          dto.description,
+          dto.enabled,
+          dto.updatedAt,
+          '#EE883A',
+          'chat-bubble-bottom-center-text',
+          dto.trigger,
+          dto.actions
+        );
+      })
+    );
   }
 }
