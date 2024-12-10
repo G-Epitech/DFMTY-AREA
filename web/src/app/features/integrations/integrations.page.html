@@ -4,16 +4,29 @@
     <tr-integration-add-dialog />
   </div>
 
-  <div class="flex items-center justify-between w-full gap-3">
-    <tr-input-search placeholder="Search automation" class="w-full"/>
-    <tr-pagination [totalPages]="21" />
+  <div class="flex justify-between gap-3">
+    <tr-input-search placeholder="Search for an integration" class="w-full" />
+    <tr-pagination
+      [totalPages]="totalPages()"
+      (pageChange)="pageChanged($event)" />
   </div>
 
   <div class="flex-grow bg-secondary rounded-md overflow-auto">
-    <div class="p-4 space-y-4 h-full flex-col flex">
-      @for (integration of integrations | async; track integration.id) {
-      <tr-integration-linked-card [integration]="integration" />
+    <div class="p-4 space-y-4 flex-col flex">
+      @if (loading()) {
+        @for (_ of [].constructor(5); track $index) {
+      <div class="bg-white rounded-md p-4 shadow-sm flex gap-2">
+        <tr-skeleton class="w-12 h-12 rounded-full bg-secondary" />
+        <div class="space-y-2">
+          <tr-skeleton class="h-4 w-[250px] bg-secondary" />
+          <tr-skeleton class="h-4 w-[200px] bg-secondary" />
+        </div>
+      </div>
       }
+      } @if (integrations | async ; as page) { @if (!loading()) { @for
+      (integration of page.data; track integration.id) {
+      <tr-integration-linked-card [integration]="integration" />
+      } } }
     </div>
   </div>
 </div>
