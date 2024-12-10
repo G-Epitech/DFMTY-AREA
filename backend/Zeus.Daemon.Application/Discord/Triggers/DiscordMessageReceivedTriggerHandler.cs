@@ -30,6 +30,13 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
 
         return Task.CompletedTask;
     }
+    
+    public override Task CancelAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Cancelling DiscordMessageReceivedTriggerHandler.");
+        _context = null;
+        return Task.CompletedTask;
+    }
 
     private Task HandleEvent(JsonNode data, CancellationToken cancellationToken)
     {

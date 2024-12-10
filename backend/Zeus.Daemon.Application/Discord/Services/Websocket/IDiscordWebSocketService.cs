@@ -6,6 +6,6 @@ namespace Zeus.Daemon.Application.Discord.Services.Websocket;
 
 public interface IDiscordWebSocketService
 {
-    public Task ConnectAsync();
+    public Task ConnectAsync(CancellationToken cancellationToken);
     public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler);
 }

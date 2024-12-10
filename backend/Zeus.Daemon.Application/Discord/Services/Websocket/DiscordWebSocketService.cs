@@ -11,7 +11,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService
 {
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
     private readonly ClientWebSocket _webSocket;
-    private readonly CancellationTokenSource _cancellationTokenSource;
+    private CancellationToken? _cancellationToken;
 
     private int _heartbeatInterval;
 
@@ -22,19 +22,19 @@ public class DiscordWebSocketService : IDiscordWebSocketService
     {
         _integrationsSettingsProvider = integrationsSettingsProvider;
         _webSocket = new ClientWebSocket();
-        _cancellationTokenSource = new CancellationTokenSource();
         _heartbeatInterval = 0;
         _eventHandlers = new List<(DiscordGatewayEventType, Func<JsonNode, CancellationToken, Task>)>();
     }
 
-    public async Task ConnectAsync()
+    public async Task ConnectAsync(CancellationToken cancellationToken)
     {
         var uri = new Uri(_integrationsSettingsProvider.Discord.WebsocketEndpoint + "?v=10&encoding=json");
-
-        await _webSocket.ConnectAsync(uri, _cancellationTokenSource.Token);
+        
+        _cancellationToken = cancellationToken;
+        await _webSocket.ConnectAsync(uri, _cancellationToken ?? CancellationToken.None);
         Console.WriteLine("WebSocket connected to Discord.");
 
-        await ListenAsync(_cancellationTokenSource.Token);
+        await ListenAsync(_cancellationToken ?? CancellationToken.None);
     }
 
     private async Task ListenAsync(CancellationToken cancellationToken)
@@ -136,6 +136,6 @@ public class DiscordWebSocketService : IDiscordWebSocketService
     {
         var messageBytes = Encoding.UTF8.GetBytes(message);
         await _webSocket.SendAsync(new ArraySegment<byte>(messageBytes), WebSocketMessageType.Text, true,
-            _cancellationTokenSource.Token);
+            _cancellationToken ?? CancellationToken.None);
     }
 }

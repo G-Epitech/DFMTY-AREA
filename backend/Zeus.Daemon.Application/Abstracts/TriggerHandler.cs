@@ -18,6 +18,8 @@ public abstract class TriggerHandler : ITriggerHandler
     }
 
     public abstract Task HandleAsync(AutomationExecutionContext context, CancellationToken cancellationToken);
+    
+    public abstract Task CancelAsync(CancellationToken cancellationToken);
 
     public async Task ExecuteAsync(AutomationExecutionContext context, Dictionary<string, string> facts,
         CancellationToken cancellationToken)
