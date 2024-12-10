@@ -75,7 +75,7 @@ class AutomationRepository {
     );
   }
 
-  Future<Response<OutPostAutomationDTO>> postAutomation(
+  Future<Response<OutPostAutomationDTO>> createAutomation(
       InPostAutomationDTO inPostAutomationDTO) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call<InPostAutomationDTO>(

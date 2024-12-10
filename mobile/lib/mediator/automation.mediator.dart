@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/repositories/automation.repository.dart';
+import 'package:triggo/repositories/dtos/automation.dtos.dart';
 
 class AutomationMediator with ChangeNotifier {
   final AutomationRepository _automationRepository;
@@ -29,6 +30,22 @@ class AutomationMediator with ChangeNotifier {
       print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       return [];
+    }
+  }
+
+  Future<bool> createAutomation() async {
+    try {
+      InPostAutomationDTO automation = InPostAutomationDTO();
+      final res = await _automationRepository.createAutomation(automation);
+      if (res.statusCode == Codes.created) {
+        return true;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      print("Error: $e");
+      // Display error message with a snackbar or dialog (something like that)
+      return false;
     }
   }
 }
