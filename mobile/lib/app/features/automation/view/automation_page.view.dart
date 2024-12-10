@@ -1,16 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/automation/bloc/automation_trigger_bloc.dart';
+import 'package:triggo/app/features/automation/models/trigger_properties_fields.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
-class AutomationScreen extends StatefulWidget {
-  const AutomationScreen({super.key});
+class AutomationScreen extends StatelessWidget {
+  final List<TriggerPropertiesFields> initialFields = [
+    TriggerPropertiesFields(
+      name: 'List Guilds',
+      values: [
+        TriggerPropertiesFieldsValues(
+          name: 'Guild 1',
+          id: 'id1',
+        ),
+        TriggerPropertiesFieldsValues(
+          name: 'Guild 2',
+          id: 'id2',
+        ),
+      ],
+      selectedValue: 'id1',
+    )
+  ];
+
+  AutomationScreen({super.key});
 
   @override
-  State<AutomationScreen> createState() => _AutomationScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => AutomationTriggerBloc(
+        triggerPropertiesFields: initialFields,
+      ),
+      child: const _AutomationScreenBody(),
+    );
+  }
 }
 
-class _AutomationScreenState extends State<AutomationScreen> {
+class _AutomationScreenBody extends StatelessWidget {
+  const _AutomationScreenBody();
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
@@ -20,8 +49,14 @@ class _AutomationScreenState extends State<AutomationScreen> {
         ),
         child: Center(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
-            child: _DropdownExample(),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: BlocBuilder<AutomationTriggerBloc, AutomationTriggerState>(
+              builder: (context, state) {
+                return _DropdownExample(
+                  fields: state.triggerPropertiesFields,
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -29,84 +64,77 @@ class _AutomationScreenState extends State<AutomationScreen> {
   }
 }
 
-class _DropdownExample extends StatefulWidget {
-  @override
-  _DropdownExampleState createState() => _DropdownExampleState();
-}
+class _DropdownExample extends StatelessWidget {
+  final List<TriggerPropertiesFields> fields;
 
-class _DropdownExampleState extends State<_DropdownExample> {
-  String _selectedItem = 'Select Guild';
-  bool _error = true;
-
-  List<String> get _guildItems {
-    if (_selectedItem == 'Select Guild') {
-      return ['Select Guild', 'Guild 1', 'Guild 2', 'Guild 3'];
-    } else {
-      return ['Guild 1', 'Guild 2', 'Guild 3'];
-    }
-  }
+  const _DropdownExample({required this.fields});
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonHideUnderline(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Theme.of(context).colorScheme.surface,
-        ),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/people.svg',
-              colorFilter:
-                  ColorFilter.mode(textSecondaryColor, BlendMode.srcIn),
-              width: 18,
-            ),
-            SizedBox(width: 8.0),
-            Expanded(
-              child: DropdownButton<String>(
-                value: _selectedItem,
-                isExpanded: true,
-                items:
-                    _guildItems.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Row(
-                      children: [
-                        Text(
-                          value,
-                          style: const TextStyle(
-                            fontFamily: 'Onest',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: -0.2,
-                            color: textSecondaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+    final currentField = fields.isNotEmpty ? fields.first : null;
+
+    return currentField != null
+        ? DropdownButtonHideUnderline(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedItem = newValue!;
-                    _error = _selectedItem == 'Select Guild';
-                  });
-                },
-                icon: _error
-                    ? Icon(Icons.warning_amber_rounded,
-                        color: Theme.of(context).colorScheme.onError)
-                    : Icon(Icons.arrow_drop_down, color: textSecondaryColor),
-                style: TextStyle(color: Colors.grey),
-                dropdownColor: Colors.white,
-                underline: Container(),
+                color: Theme.of(context).colorScheme.surface,
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/people.svg',
+                    colorFilter: const ColorFilter.mode(
+                      textSecondaryColor,
+                      BlendMode.srcIn,
+                    ),
+                    width: 18,
+                  ),
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: DropdownButton<String>(
+                      value: currentField.selectedValue,
+                      isExpanded: true,
+                      items: currentField.values.map((option) {
+                        return DropdownMenuItem<String>(
+                          value: option.id,
+                          child: Text(
+                            option.name,
+                            style: const TextStyle(
+                              fontFamily: 'Onest',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: -0.2,
+                              color: textSecondaryColor,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      borderRadius: BorderRadius.circular(12.0),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          context.read<AutomationTriggerBloc>().add(
+                                AutomationTriggerPropertiesFieldsSelectedValueChanged(
+                                  selectedValue: newValue,
+                                  name: currentField.name,
+                                ),
+                              );
+                        }
+                      },
+                      icon: currentField.selectedValue == 'Select Guild'
+                          ? Icon(Icons.warning_amber_rounded,
+                              color: Theme.of(context).colorScheme.onError)
+                          : const Icon(Icons.arrow_drop_down,
+                              color: textSecondaryColor),
+                      dropdownColor: Colors.white,
+                      underline: Container(),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : const Text('No fields available');
   }
 }

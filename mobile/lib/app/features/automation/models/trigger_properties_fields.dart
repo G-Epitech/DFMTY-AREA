@@ -19,6 +19,8 @@ class TriggerPropertiesFields {
     required this.values,
   });
 
+  get options => values.map((e) => e.name).toList();
+
   TriggerPropertiesFields copyWith({
     String? selectedValue,
   }) {

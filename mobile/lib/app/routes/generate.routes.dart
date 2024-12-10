@@ -28,7 +28,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.automations):
       return CustomPageRouteBuilder(const AutomationPage());
     case (RoutesNames.automationTrigger):
-      return CustomPageRouteBuilder(const AutomationScreen());
+      return CustomPageRouteBuilder(AutomationScreen());
     case (RoutesNames.connectIntegration):
       return CustomPageRouteBuilder(const ConnectIntegrationScreen());
     default:
