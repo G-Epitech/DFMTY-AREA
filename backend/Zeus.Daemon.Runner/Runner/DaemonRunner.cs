@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Daemon.Application.Discord.Services.Websocket;
 using Zeus.Api.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Discord.Triggers;
-using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
 using Zeus.Daemon.Domain.Automation;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
+using Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Domain.IntegrationAggregate;
 using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
@@ -48,20 +49,40 @@ public class DaemonRunner
     public async Task Run()
     {
         var discord = _serviceProvider.GetRequiredService<IDiscordWebSocketService>();
-        var triggerHandler = ActivatorUtilities.CreateInstance<DiscordMessageReceivedTrigger>(_serviceProvider);
+        var triggerHandler = ActivatorUtilities.CreateInstance<DiscordMessageReceivedTriggerHandler>(_serviceProvider);
 
         var task = discord.ConnectAsync();
 
-        var parameters = new List<AutomationTriggerParameter>
+        var triggerParameters = new List<AutomationTriggerParameter>
         {
-            new AutomationTriggerParameter { Value = "965293637145591868", Identifier = "GuildId" },
-            new AutomationTriggerParameter { Value = "965293637145591871", Identifier = "ChannelId" },
+            new AutomationTriggerParameter { Value = "1316046870178697267", Identifier = "GuildId" },
+            new AutomationTriggerParameter { Value = "1316046972733620244", Identifier = "ChannelId" },
         };
-        var trigger = AutomationTrigger.Create("DiscordMessageReceived", parameters, new List<IntegrationId>());
+        var trigger = AutomationTrigger.Create("DiscordMessageReceived", triggerParameters, new List<IntegrationId>());
+
+        var actionParameters = new List<AutomationActionParameter>
+        {
+            new AutomationActionParameter
+            {
+                Value = "1316046972733620244",
+                Identifier = "ChannelId",
+                Type = AutomationActionParameterType.Raw
+            },
+            new AutomationActionParameter
+            {
+                Value = "C'est la fête mes loulous",
+                Identifier = "Content",
+                Type = AutomationActionParameterType.Raw
+            },
+        };
+        var actions = new List<AutomationAction>
+        {
+            AutomationAction.Create("Discord.SendMessageToChannel", 0, actionParameters, new List<IntegrationId>())
+        };
 
         AutomationExecutionContext context = new(
             Automation.Create("Test", "test description", new UserId(Guid.NewGuid()), trigger,
-                new List<AutomationAction>()),
+                actions),
             new List<Integration>()
         );
 

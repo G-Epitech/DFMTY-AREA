@@ -1,15 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
-  IntegrationModel,
-  IntegrationTypeEnum,
-  IntegrationDiscordProps,
-} from '@models/integration';
-import { Observable, of } from 'rxjs';
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { IntegrationModel } from '@models/integration';
+import { BehaviorSubject, concat, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { IntegrationLinkedCardComponent } from '@features/integrations/components/integration-linked/integration-linked-card.component';
 import { IntegrationAddDialogComponent } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.component';
 import { PaginationComponent } from '@app/components';
 import { TrInputSearchComponent } from '@triggo-ui/input';
+import { TrInputDirective } from '@triggo-ui/input';
+import { PageModel, PageOptions } from '@models/page';
+import { UsersMediator } from '@mediators/users.mediator';
+import { AuthStore } from '@app/store';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
+import { TrSkeletonComponent } from '@triggo-ui/skeleton';
 
 @Component({
   selector: 'tr-integrations',
@@ -18,6 +26,7 @@ import { TrInputSearchComponent } from '@triggo-ui/input';
     IntegrationLinkedCardComponent,
     IntegrationAddDialogComponent,
     PaginationComponent,
+    TrSkeletonComponent,
     TrInputSearchComponent,
   ],
   templateUrl: './integrations.page.html',
@@ -26,65 +35,46 @@ import { TrInputSearchComponent } from '@triggo-ui/input';
   standalone: true,
 })
 export class IntegrationsPageComponent {
-  readonly integrations: Observable<IntegrationModel[]>;
+  readonly #usersMediator = inject(UsersMediator);
+
+  pageOptions = signal<PageOptions>({
+    page: 0,
+    size: 5,
+  });
+  totalPages = signal<number>(3);
+  loading = signal<boolean>(true);
+
+  #pageOptionsSubject = new BehaviorSubject<PageOptions>(this.pageOptions());
+
+  readonly integrations: Observable<PageModel<IntegrationModel>> =
+    this.#usersMediator.me().pipe(
+      switchMap(user =>
+        concat(
+          this.#pageOptionsSubject.pipe(
+            switchMap(pageOptions =>
+              this.#usersMediator.getIntegrations(user.id, pageOptions)
+            )
+          )
+        )
+      ),
+      tap(page => {
+        this.totalPages.set(page.totalPages);
+        this.loading.set(false);
+      })
+    );
 
   constructor() {
-    const discordProps1: IntegrationDiscordProps = {
-      id: '12345',
-      email: 'user1@example.com',
-      username: 'user1',
-      displayName: 'User One',
-      avatarUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      flags: ['flag1', 'flag2'],
-    };
+    effect(() => {
+      const currentPageOptions = this.pageOptions();
+      this.#pageOptionsSubject.next(currentPageOptions);
+    });
+  }
 
-    const discordProps2: IntegrationDiscordProps = {
-      id: '67890',
-      email: 'user2@example.com',
-      username: 'user2',
-      displayName: 'User Two',
-      avatarUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      flags: ['flag3'],
-    };
-
-    this.integrations = of([
-      new IntegrationModel(
-        '1',
-        'owner1',
-        true,
-        IntegrationTypeEnum.DISCORD,
-        discordProps1
-      ),
-      new IntegrationModel(
-        '2',
-        'owner2',
-        false,
-        IntegrationTypeEnum.DISCORD,
-        discordProps2
-      ),
-      new IntegrationModel(
-        '2',
-        'owner2',
-        false,
-        IntegrationTypeEnum.DISCORD,
-        discordProps2
-      ),
-      new IntegrationModel(
-        '2',
-        'owner2',
-        false,
-        IntegrationTypeEnum.DISCORD,
-        discordProps2
-      ),
-      new IntegrationModel(
-        '2',
-        'owner2',
-        false,
-        IntegrationTypeEnum.DISCORD,
-        discordProps2
-      ),
-    ]);
+  pageChanged(page: number): void {
+    this.loading.set(true);
+    this.pageOptions.update(options => ({
+      size: options.size,
+      page: page - 1,
+    }));
   }
 }
