@@ -46,7 +46,8 @@ class IntegrationRepository {
       statusCode: response.statusCode,
       message: response.message,
       data: response.data != null
-          ? OutGetUserIntegrationByIdDTO.fromJson(response.data!)
+          ? OutGetUserIntegrationByIdDTO.fromJson(
+              {'integration': response.data!})
           : null,
       errors: response.errors,
     );

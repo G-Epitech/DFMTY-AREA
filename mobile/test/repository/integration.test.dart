@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
@@ -83,8 +85,20 @@ void integrationRepositoryTests() {
         'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
-          '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": ["Test"]}}',
+          jsonEncode({
+            "id": "0",
+            "ownerId": "0",
+            "type": "Discord",
+            "isValid": true,
+            "properties": {
+              "id": "0",
+              "email": "example@example.com",
+              "username": "example",
+              "displayName": "example",
+              "avatarUri": "example",
+              "flags": ["Test"]
+            }
+          }),
           200,
           headers: {'Content-Type': 'application/json'},
         ));
@@ -169,19 +183,19 @@ void integrationRepositoryTests() {
       final response = await repository.getUserIntegrationById('0');
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.toJson(), {
+      expect(response.data!.integration.toJson(), {
         'id': '0',
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': {
-          'id': '0',
-          'email': 'example@example.com',
-          'username': 'example',
-          'displayName': 'example',
-          'avatarUri': 'example',
-          'flags': ['Test']
-        }
+        'properties': DiscordProperties(
+          id: '0',
+          email: 'example@example.com',
+          username: 'example',
+          displayName: 'example',
+          avatarUri: 'example',
+          flags: ['Test'],
+        ).toJson()
       });
     });
   });

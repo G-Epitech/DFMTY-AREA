@@ -9,6 +9,7 @@ import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/repositories/authentication.repository.dart';
+import 'package:triggo/repositories/automation.repository.dart';
 import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/integration.repository.dart';
 import 'package:triggo/repositories/user.repository.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   late final AuthenticationMediator _authenticationMediator;
   late final IntegrationMediator _integrationMediator;
   late final AutomationMediator _automationMediator;
+  late final AutomationRepository _automationRepository;
 
   @override
   void initState() {
@@ -38,13 +40,16 @@ class _MyAppState extends State<MyApp> {
         UserRepository(credentialsRepository: _credentialsRepository);
     _integrationRepository =
         IntegrationRepository(credentialsRepository: _credentialsRepository);
+    _automationRepository = AutomationRepository(
+      credentialsRepository: _credentialsRepository,
+    );
 
     _authenticationMediator = AuthenticationMediator(
       _authenticationRepository,
       _credentialsRepository,
     );
     _integrationMediator = IntegrationMediator(_integrationRepository);
-    _automationMediator = AutomationMediator();
+    _automationMediator = AutomationMediator(_automationRepository);
   }
 
   @override
