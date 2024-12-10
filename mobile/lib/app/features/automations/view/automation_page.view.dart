@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/automations/view/automation_create_page.view.dart';
 import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
-import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
@@ -60,10 +60,12 @@ class _AutomationCreationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
-        Navigator.pushNamed(context, RoutesNames.createAutomation);
+        automationMediator.createAutomation();
       },
     );
   }
@@ -150,70 +152,83 @@ class _AutomationListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntegrationCard(
-        customWidget: Row(
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: automation.iconColor,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  automation.iconUri,
-                  width: 30,
-                  height: 30,
-                  color: Colors.white,
-                ),
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CreateAutomationPage(
+              automation: automation,
             ),
-            Positioned(
-              bottom: -5,
-              right: -5,
-              child: _ActivityIcon(state: automation.isActive),
+          ),
+        );
+      },
+      child: IntegrationCard(
+        customWidget: Row(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: automation.iconColor,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      automation.iconUri,
+                      width: 30,
+                      height: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -5,
+                  right: -5,
+                  child: _ActivityIcon(state: automation.isActive),
+                )
+              ],
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          automation.name,
+                          style: Theme.of(context).textTheme.labelLarge,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          automation.description,
+                          style: Theme.of(context).textTheme.labelMedium,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
         ),
-        SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      automation.name,
-                      style: Theme.of(context).textTheme.labelLarge,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 5),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      automation.description,
-                      style: Theme.of(context).textTheme.labelMedium,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
+      ),
+    );
   }
 }
 

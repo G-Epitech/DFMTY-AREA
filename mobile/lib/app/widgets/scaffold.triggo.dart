@@ -6,13 +6,15 @@ import 'banner.triggo.dart';
 class BaseScaffold extends StatelessWidget {
   final Widget body;
   final String title;
+  final Widget? header;
   final bool getBack;
 
   const BaseScaffold(
       {super.key,
       required this.body,
       required this.title,
-      this.getBack = false});
+      this.getBack = false,
+      this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class BaseScaffold extends StatelessWidget {
               children: [
                 TriggoBanner(),
                 const SizedBox(height: 16.0),
-                _PageTitle(title: title, getBack: getBack),
+                _PageTitle(title: title, getBack: getBack, header: header),
                 const SizedBox(height: 4.0),
                 _MainContainer(body: body),
               ],
@@ -42,11 +44,14 @@ class BaseScaffold extends StatelessWidget {
 class _PageTitle extends StatelessWidget {
   final String title;
   final bool getBack;
-  const _PageTitle({required this.title, this.getBack = false});
+  final Widget? header;
+  const _PageTitle({required this.title, this.getBack = false, this.header});
 
   @override
   Widget build(BuildContext context) {
-    if (!getBack) {
+    if (header != null) {
+      return header!;
+    } else if (!getBack) {
       return Align(
         alignment: Alignment.centerLeft,
         child: Text(
