@@ -20,5 +20,4 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
     </ItemGroup>
-
 </Project>

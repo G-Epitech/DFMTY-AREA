@@ -52,17 +52,23 @@ class DiscordCustomWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    integration.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Expanded(
+                    child: Text(
+                      integration.displayName,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
               Row(
                 children: [
-                  Text(
-                    '${integration.username} - ${integration.email}',
-                    style: Theme.of(context).textTheme.labelLarge,
+                  Expanded(
+                    child: Text(
+                      '${integration.username} - ${integration.email}',
+                      style: Theme.of(context).textTheme.labelLarge,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

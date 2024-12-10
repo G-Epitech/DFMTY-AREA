@@ -6,15 +6,15 @@ import 'package:triggo/utils/json.dart';
 part 'integration.dtos.g.dart';
 
 @JsonSerializable()
-class InGetIntegrationDTO implements Json {
-  InGetIntegrationDTO();
+class InGetUserIntegrationDTO implements Json {
+  InGetUserIntegrationDTO();
 
   @override
-  factory InGetIntegrationDTO.fromJson(Map<String, dynamic> json) =>
-      _$InGetIntegrationDTOFromJson(json);
+  factory InGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) =>
+      _$InGetUserIntegrationDTOFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$InGetIntegrationDTOToJson(this);
+  Map<String, dynamic> toJson() => _$InGetUserIntegrationDTOToJson(this);
 }
 
 Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
@@ -22,17 +22,74 @@ Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
 }
 
 @JsonSerializable()
-class OutGetIntegrationDTO implements Json {
+class OutGetUserIntegrationDTO implements Json {
   @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
   final Page<IntegrationDTO> page;
 
-  OutGetIntegrationDTO({
+  OutGetUserIntegrationDTO({
     required this.page,
   });
 
-  factory OutGetIntegrationDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetIntegrationDTOFromJson(json);
+  factory OutGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetUserIntegrationDTOFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$OutGetIntegrationDTOToJson(this);
+  Map<String, dynamic> toJson() => _$OutGetUserIntegrationDTOToJson(this);
+}
+
+class IntegrationNamesDTO implements Json {
+  late final String name;
+
+  IntegrationNamesDTO({
+    required this.name,
+  });
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+    };
+  }
+
+  factory IntegrationNamesDTO.fromJson(Map<String, dynamic> json) {
+    return IntegrationNamesDTO(
+      name: json['name'] as String,
+    );
+  }
+}
+
+Page<IntegrationNamesDTO> pageIntegrationsNameFromJson(
+    Map<String, dynamic> json) {
+  return pageFromJson<IntegrationNamesDTO>(json, IntegrationNamesDTO.fromJson);
+}
+
+@JsonSerializable()
+class OutGetIntegrationNamesDTO implements Json {
+  @JsonKey(fromJson: pageIntegrationsNameFromJson, toJson: pageToJson)
+  final Page<IntegrationNamesDTO> page;
+
+  OutGetIntegrationNamesDTO({
+    required this.page,
+  });
+
+  factory OutGetIntegrationNamesDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetIntegrationNamesDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetIntegrationNamesDTOToJson(this);
+}
+
+@JsonSerializable()
+class OutGetIntegrationURIDTO implements Json {
+  final String uri;
+
+  OutGetIntegrationURIDTO({
+    required this.uri,
+  });
+
+  factory OutGetIntegrationURIDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetIntegrationURIDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$OutGetIntegrationURIDTOToJson(this);
 }

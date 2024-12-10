@@ -24,7 +24,7 @@ void apiTests() {
         endpoint: '/auth/login',
         body:
             InLoginDTO(email: 'john.doe@example.com', password: 'password123'),
-        bearerToken: null,
+        accessToken: null,
         client: mockClient,
       );
 
@@ -39,7 +39,7 @@ void apiTests() {
         endpoint: '/auth/login',
         body: InLoginDTO(
             email: 'john.doe@example.com', password: 'wrong-password'),
-        bearerToken: null,
+        accessToken: null,
         client: mockClient,
       );
 
