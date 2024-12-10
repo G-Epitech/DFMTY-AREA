@@ -1,0 +1,16 @@
+button {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Onest, sans-serif;
+}
+
+.pagination-container button {
+  border: none;
+}
+
+.pagination-container button:not(:first-child) {
+  border-left: 1px solid hsl(var(--border) / 1);
+}
