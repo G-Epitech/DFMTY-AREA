@@ -2,11 +2,11 @@
 
 namespace Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 
-public sealed class AutomationId : AggregateRootId<Guid>
+public sealed class AutomationId : ValueObject
 {
-    public override Guid Value { get; protected set; }
+    public Guid Value { get; }
 
-    private AutomationId(Guid value)
+    public AutomationId(Guid value)
     {
         Value = value;
     }
@@ -21,10 +21,4 @@ public sealed class AutomationId : AggregateRootId<Guid>
     {
         yield return Value;
     }
-
-#pragma warning disable CS8618
-    private AutomationId()
-    {
-    }
-#pragma warning restore CS8618
 }

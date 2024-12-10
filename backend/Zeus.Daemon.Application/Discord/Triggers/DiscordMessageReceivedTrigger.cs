@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Zeus.Daemon.Application.Abstracts;
-using Zeus.Daemon.Application.Interfaces.Services.Websockets;
+using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
 using Zeus.Daemon.Domain.Automation;
 using Zeus.Daemon.Domain.Discord.Enums;
 using Zeus.Daemon.Domain.Discord.Events;
