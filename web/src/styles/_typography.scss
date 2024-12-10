@@ -60,7 +60,7 @@
 .tr-small {
   @include typography(
     $weight: 400,
-    $size: 0.125rem,
+    $size: 0.6rem,
     $letter-spacing: -0.013rem
   );
 }

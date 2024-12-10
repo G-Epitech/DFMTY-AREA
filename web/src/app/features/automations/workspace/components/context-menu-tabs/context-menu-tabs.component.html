@@ -1,0 +1,26 @@
+<div class="flex flex-row">
+  <button
+    trBtn
+    class="border-r-0 rounded-r-none [&.active]:bg-accent [&.active]:border-none w-full"
+    variant="outline"
+    [ngClass]="{ active: selectedTab() === 1 }"
+    (click)="selectTab(1)">
+    <ng-icon
+      name="heroBolt"
+      size="1.4rem"
+      strokeWidth="0.11rem"
+      [ngClass]="{ 'text-primary': selectedTab() === 1 }" />
+  </button>
+  <button
+    trBtn
+    class="border-l-0 rounded-l-none [&.active]:bg-accent [&.active]:border-none w-full"
+    variant="outline"
+    [ngClass]="{ active: selectedTab() === 2 }"
+    (click)="selectTab(2)">
+    <ng-icon
+      name="heroInformationCircle"
+      size="1.4rem"
+      strokeWidth="0.11rem"
+      [ngClass]="{ 'text-primary': selectedTab() === 2 }" />
+  </button>
+</div>
