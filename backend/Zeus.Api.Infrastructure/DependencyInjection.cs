@@ -50,7 +50,6 @@ public static class DependencyInjection
 
         services.AddDbContext(configuration);
         services.AddConfiguration(configuration);
-        services.AddAuthentication(configuration);
 
         return services;
     }
@@ -68,7 +67,7 @@ public static class DependencyInjection
         services.AddSingleton<IServicesSettingsProvider, ServicesSettingsProvider>();
     }
 
-    private static void AddAuthentication(this IServiceCollection services,
+    public static IServiceCollection AddAuthentication(this IServiceCollection services,
         IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings();
@@ -84,6 +83,7 @@ public static class DependencyInjection
                     JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
                 options.Events = JwtAuthenticationValidation.GetJwtBearerEvents();
             });
+        return services;
     }
 
     private static void AddDbContext(this IServiceCollection services,

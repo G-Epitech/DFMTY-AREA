@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "Zeus.Api.gRPC";
+
+package synchronization;
+
+service Synchronization {
+  rpc GetSyncState (SyncStateRequest) returns (SyncStateResponse);
+  rpc Sync (SyncRequest) returns (SyncResponse);
+}
+
+message SyncStateRequest {
+  int64 lastSyncTimestamp = 1;
+}
+
+message SyncStateResponse {
+  bool hasChanges = 1;
+}
+
+message SyncRequest {
+  int64 lastSyncTimestamp = 1;
+}
+
+message SyncItem {
+  string id = 1;
+  string type = 2;
+  string data = 3;
+}
+
+message SyncResponse {
+  repeated SyncItem items = 1;
+}
