@@ -52,6 +52,8 @@ class _PageTitle extends StatelessWidget {
         child: Text(
           title,
           style: Theme.of(context).textTheme.titleLarge,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       );
     } else {
@@ -70,7 +72,9 @@ class _PageTitle extends StatelessWidget {
           SizedBox(width: 10.0),
           Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           )
         ],
       );
