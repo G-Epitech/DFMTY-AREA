@@ -3,4 +3,5 @@ namespace Zeus.Daemon.Domain.Discord;
 public record User(
     string Id,
     string Username,
-    string Discriminator);
+    string Discriminator,
+    bool? Bot);

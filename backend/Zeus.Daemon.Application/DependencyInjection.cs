@@ -5,8 +5,9 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Common.Application.Behaviors;
-using Zeus.Daemon.Application.Interfaces.Services.WebSockets;
-using Zeus.Daemon.Application.Services.WebSocket;
+using Zeus.Daemon.Application.Discord.Actions;
+using Zeus.Daemon.Application.Discord.Services.Api;
+using Zeus.Daemon.Application.Discord.Services.Websocket;
 
 namespace Zeus.Daemon.Application;
 
@@ -19,6 +20,9 @@ public static class DependencyInjection
         services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
 
         services.AddSingleton<IDiscordWebSocketService, DiscordWebSocketService>();
+        services.AddSingleton<IDiscordApiService, DiscordApiService>();
+
+        services.AddTransient<DiscordSendMessageActionHandler>();
         return services;
     }
 }

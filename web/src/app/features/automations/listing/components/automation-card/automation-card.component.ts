@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 import { AutomationModel } from '@models/automation.model';
 import { NgIcon } from '@ng-icons/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { FormatDatePipe } from '@app/pipes';
 
 @Component({
   selector: 'tr-automation-card',
-  imports: [NgIcon, NgClass, FormatDatePipe, NgStyle],
+  imports: [NgIcon, FormatDatePipe, NgStyle],
   templateUrl: './automation-card.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
