@@ -1,6 +1,6 @@
 ﻿namespace Zeus.Daemon.Domain.IntegrationAggregate.Enums;
 
-public enum ServiceTokenUsage
+public enum IntegrationTokenUsage
 {
     Access,
     Refresh

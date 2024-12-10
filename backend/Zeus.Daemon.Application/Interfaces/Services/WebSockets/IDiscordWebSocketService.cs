@@ -2,7 +2,7 @@ using System.Text.Json.Nodes;
 
 using Zeus.Daemon.Domain.Discord.Enums;
 
-namespace Zeus.Daemon.Application.Interfaces.Services.Websockets;
+namespace Zeus.Daemon.Application.Interfaces.Services.WebSockets;
 
 public interface IDiscordWebSocketService
 {
