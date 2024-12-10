@@ -11,12 +11,12 @@ const config: Config = {
   url: 'https://g-epitech.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/DFMY-RType/',
+  baseUrl: '/DFMTY-Area/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'G-Epitech', // Usually your GitHub org/user name.
-  projectName: 'DFMY-RType', // Usually your repo name.
+  projectName: 'DFMTY-Area', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -38,7 +38,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/G-Epitech/DFMY-RType/tree/main/docs',
+            'https://github.com/G-Epitech/DFMTY-AREA/tree/main/docs',
         },
         theme: {
           customCss: './src/css/custom.css'
@@ -51,7 +51,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'R-Type',
+      title: 'Triggo',
       logo: {
         alt: 'logo',
         src: 'img/logo.svg',
@@ -70,7 +70,7 @@ const config: Config = {
           label: 'Developer docs',
         },
         {
-          href: 'https://github.com/G-Epitech/DFMY-RType',
+          href: 'https://github.com/G-Epitech/DFMTY-AREA',
           label: 'Repository',
           position: 'right',
         },
