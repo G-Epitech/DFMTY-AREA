@@ -1,5 +1,7 @@
 BACKEND_PATH = 'backend/'
 ZEUS_API_WEB_PATH = "${BACKEND_PATH}Zeus.Api.Web/"
+ZEUS_API_GRPC_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
+ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
 
 pipeline {
     agent any
@@ -14,6 +16,22 @@ pipeline {
                         script {
                             def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
                             sh "docker build -f ${ZEUS_API_WEB_PATH}/Dockerfile -t ${ZEUS_API_WEB_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
+                        }
+                    }
+                }
+                stage('Zeus Api gRPC') {
+                    steps {
+                        script {
+                            def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
+                            sh "docker build -f ${ZEUS_API_GRPC_PATH}/Dockerfile -t ${ZEUS_API_GRPC_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
+                        }
+                    }
+                }
+                stage('Zeus Daemon Runner') {
+                    steps {
+                        script {
+                            def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
+                            sh "docker build -f ${ZEUS_DAEMON_RUNNER_PATH}/Dockerfile -t ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
                         }
                     }
                 }
@@ -45,7 +63,10 @@ pipeline {
         always {
             script {
                 def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
-                sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} || true"
+                def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
+                def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
+
+                sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} ${ZEUS_API_GRPC_IMAGE_TEST} ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} || true"
             }
         }
     }
