@@ -68,23 +68,21 @@ class _IntegrationList extends StatelessWidget {
     return FutureBuilder<List<Integration>>(
       future: integrations,
       builder: (context, snapshot) {
-        return IntegrationListView(snapshot: snapshot);
+        return _IntegrationListView(snapshot: snapshot);
       },
     );
   }
 }
 
-class IntegrationListView extends StatelessWidget {
+class _IntegrationListView extends StatelessWidget {
   final AsyncSnapshot<List<Integration>> snapshot;
 
-  const IntegrationListView({required this.snapshot, super.key});
+  const _IntegrationListView({required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
+      return Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
       return _ErrorView(error: snapshot.error!);
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

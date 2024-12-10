@@ -1,19 +1,16 @@
-import 'package:triggo/models/action.model.dart';
-import 'package:triggo/models/reaction.model.dart';
-
-class ActionReactionLink {
-  Action action;
-  List<Reaction> reactions;
-
-  ActionReactionLink({required this.action, required this.reactions});
-}
+import 'package:flutter/material.dart';
 
 class Automation {
-  String name;
-  String description = '';
-  String imageUrl = '';
-  String iconUrl = '';
-  List<ActionReactionLink> actionReactionLinks = [];
+  final String name;
+  final String description;
+  final String iconUri;
+  final Color iconColor;
+  final bool isActive;
 
-  Automation({required this.name});
+  Automation(
+      {required this.name,
+      required this.description,
+      required this.iconUri,
+      required this.iconColor,
+      required this.isActive});
 }

@@ -4,12 +4,15 @@ import 'package:triggo/app/widgets/navigation_bar.triggo.dart';
 import 'banner.triggo.dart';
 
 class BaseScaffold extends StatelessWidget {
-  final Widget? body;
+  final Widget body;
   final String title;
   final bool getBack;
 
   const BaseScaffold(
-      {super.key, this.body, required this.title, this.getBack = false});
+      {super.key,
+      required this.body,
+      required this.title,
+      this.getBack = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class BaseScaffold extends StatelessWidget {
                 const SizedBox(height: 16.0),
                 _PageTitle(title: title, getBack: getBack),
                 const SizedBox(height: 4.0),
-                _MainContainer(body: body!),
+                _MainContainer(body: body),
               ],
             ),
           ),

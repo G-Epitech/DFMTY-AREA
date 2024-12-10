@@ -14,24 +14,24 @@ import 'package:triggo/app/routes/routes_names.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case (RoutesNames.home):
-      return CustomPageRouteBuilder(const HomeScreen());
+      return customPageRouteBuilder(const HomeScreen());
     case (RoutesNames.login):
-      return CustomPageRouteBuilder(const LoginScreen());
+      return customPageRouteBuilder(const LoginScreen());
     case (RoutesNames.splashScreen):
-      return CustomPageRouteBuilder(const SplashScreen());
+      return customPageRouteBuilder(const SplashScreen());
     case (RoutesNames.welcome):
-      return CustomPageRouteBuilder(const WelcomeScreen());
+      return customPageRouteBuilder(const WelcomeScreen());
     case (RoutesNames.register):
-      return CustomPageRouteBuilder(const RegisterScreen());
+      return customPageRouteBuilder(const RegisterScreen());
     case (RoutesNames.integrations):
-      return CustomPageRouteBuilder(const IntegrationPage());
+      return customPageRouteBuilder(const IntegrationPage());
     case (RoutesNames.automations):
-      return CustomPageRouteBuilder(const AutomationPage());
+      return customPageRouteBuilder(const AutomationPage());
     case (RoutesNames.connectIntegration):
-      return CustomPageRouteBuilder(const ConnectIntegrationScreen());
+      return customPageRouteBuilder(const ConnectIntegrationScreen());
     case (RoutesNames.createAutomation):
-      return MaterialPageRoute(builder: (_) => const CreateAutomationPage());
+      return customPageRouteBuilder(const CreateAutomationPage());
     default:
-      return CustomPageRouteBuilder(const Placeholder());
+      return customPageRouteBuilder(const Placeholder());
   }
 }

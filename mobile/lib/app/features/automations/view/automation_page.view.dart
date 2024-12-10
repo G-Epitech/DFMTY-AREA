@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
+import 'package:triggo/mediator/automation.mediator.dart';
+import 'package:triggo/models/automation.model.dart';
 
 class AutomationPage extends StatefulWidget {
   const AutomationPage({super.key});
@@ -14,15 +18,21 @@ class AutomationPage extends StatefulWidget {
 class _IntegrationPageState extends State<AutomationPage> {
   @override
   Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+    final Future<List<Automation>> automations =
+        automationMediator.getUserAutomations();
     return BaseScaffold(
       title: 'Automations',
-      body: _AutomationContainer(),
+      body: _AutomationContainer(automations: automations),
     );
   }
 }
 
 class _AutomationContainer extends StatelessWidget {
-  const _AutomationContainer();
+  final Future<List<Automation>> automations;
+
+  const _AutomationContainer({required this.automations});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +49,7 @@ class _AutomationContainer extends StatelessWidget {
             ),
           ],
         ),
-        Expanded(child: _AutomationList()),
+        Expanded(child: _AutomationList(automations: automations)),
       ],
     );
   }
@@ -60,21 +70,83 @@ class _AutomationCreationButton extends StatelessWidget {
 }
 
 class _AutomationList extends StatelessWidget {
-  const _AutomationList();
+  final Future<List<Automation>> automations;
+
+  const _AutomationList({required this.automations});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Automation>>(
+      future: automations,
+      builder: (context, snapshot) {
+        return _AutomationListView(snapshot: snapshot);
+      },
+    );
+  }
+}
+
+class _AutomationListView extends StatelessWidget {
+  final AsyncSnapshot<List<Automation>> snapshot;
+
+  const _AutomationListView({required this.snapshot});
+
+  @override
+  Widget build(BuildContext context) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return _ErrorView(error: snapshot.error!);
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return const _NoDataView();
+    } else {
+      return _AutomationViewContent(automations: snapshot.data!);
+    }
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  final Object error;
+
+  const _ErrorView({required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Error: $error');
+  }
+}
+
+class _NoDataView extends StatelessWidget {
+  const _NoDataView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('No automations',
+          style: Theme.of(context).textTheme.titleMedium),
+    );
+  }
+}
+
+class _AutomationViewContent extends StatelessWidget {
+  final List<Automation> automations;
+
+  const _AutomationViewContent({required this.automations});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 20, // Need to be changed to the automation length
+      itemCount: automations.length,
       itemBuilder: (context, index) {
-        return _AutomationListItem(); // Need to be changed to AutomationCard
+        return _AutomationListItem(automation: automations[index]);
       },
     );
   }
 }
 
 class _AutomationListItem extends StatelessWidget {
-  const _AutomationListItem();
+  final Automation automation;
+
+  const _AutomationListItem({required this.automation});
 
   @override
   Widget build(BuildContext context) {
@@ -84,19 +156,26 @@ class _AutomationListItem extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                "https://via.placeholder.com/150",
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: automation.iconColor,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  automation.iconUri,
+                  width: 30,
+                  height: 30,
+                  color: Colors.white,
+                ),
               ),
             ),
             Positioned(
               bottom: -5,
               right: -5,
-              child: _ActivityIcon(state: "active"),
+              child: _ActivityIcon(state: automation.isActive),
             )
           ],
         ),
@@ -107,7 +186,7 @@ class _AutomationListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text("Reply \"feur\" to \"Quoi\"",
+                  Text(automation.name,
                       style: Theme.of(context).textTheme.labelLarge),
                 ],
               ),
@@ -115,7 +194,7 @@ class _AutomationListItem extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "Last update: Monday 18:24",
+                    automation.description,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ],
@@ -129,17 +208,12 @@ class _AutomationListItem extends StatelessWidget {
 }
 
 class _ActivityIcon extends StatelessWidget {
-  final String state;
+  final bool state;
   final Color color;
   _ActivityIcon({required this.state}) : color = _getColor(state);
 
-  static Color _getColor(String state) {
-    switch (state) {
-      case "active":
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
+  static Color _getColor(bool state) {
+    return state ? Colors.green : Colors.grey;
   }
 
   @override
