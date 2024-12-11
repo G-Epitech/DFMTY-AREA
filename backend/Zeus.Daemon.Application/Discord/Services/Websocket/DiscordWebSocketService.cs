@@ -29,7 +29,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService
     public async Task ConnectAsync(CancellationToken cancellationToken)
     {
         var uri = new Uri(_integrationsSettingsProvider.Discord.WebsocketEndpoint + "?v=10&encoding=json");
-        
+
         _cancellationToken = cancellationToken;
         await _webSocket.ConnectAsync(uri, _cancellationToken ?? CancellationToken.None);
         Console.WriteLine("WebSocket connected to Discord.");
@@ -122,8 +122,13 @@ public class DiscordWebSocketService : IDiscordWebSocketService
         switch (eventName)
         {
             case "MESSAGE_CREATE":
-                _eventHandlers.FirstOrDefault(e => e.EventType == DiscordGatewayEventType.MessageCreate)
-                    .Handler(data ?? new JsonObject(), CancellationToken.None); break;
+                {
+                    _eventHandlers
+                        .Where(x => x.EventType == DiscordGatewayEventType.MessageCreate)
+                        .ToList()
+                        .ForEach(x => x.Handler(data ?? new JsonObject(), CancellationToken.None));
+                }
+                break;
         }
     }
 

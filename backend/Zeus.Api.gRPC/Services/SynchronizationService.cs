@@ -29,7 +29,7 @@ public class SynchronizationService : Synchronization.SynchronizationBase
 
     public override async Task<SyncDeltaResponse> SyncDelta(SyncDeltaRequest request, ServerCallContext context)
     {
-        var limitDate = new DateTime(request.LastSyncTimestamp, DateTimeKind.Utc);
+        var limitDate = DateTimeOffset.FromUnixTimeSeconds(request.LastSyncTimestamp).DateTime;
         var automations = await _sender.Send(new GetAutomationsUpdateAfterQuery(AutomationState.Any, limitDate));
 
         return new SyncDeltaResponse()

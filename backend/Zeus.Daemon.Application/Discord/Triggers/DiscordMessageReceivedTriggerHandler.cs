@@ -38,17 +38,17 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
         return Task.CompletedTask;
     }
 
-    private Task HandleEvent(JsonNode data, CancellationToken cancellationToken)
+    private async Task HandleEvent(JsonNode data, CancellationToken cancellationToken)
     {
         if (_context is null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         var messageCreate = JsonSerializer.Deserialize<MessageCreate>(data.ToJsonString(), _jsonSerializerOptions);
         if (messageCreate is null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         var parameters = _context.Automation.Trigger.Parameters;
@@ -61,7 +61,7 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
             messageCreate.ChannelId != channelId ||
             messageCreate.Author.Bot == true)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         var facts = new Dictionary<string, string>
@@ -73,6 +73,8 @@ public class DiscordMessageReceivedTriggerHandler : TriggerHandler
             { "ReceptionTime", DateTimeOffset.Parse(messageCreate.Timestamp).ToString("o") }
         };
 
-        return this.ExecuteAsync(_context, facts, cancellationToken);
+        Console.WriteLine($"React to message '{messageCreate.Id}' from '{messageCreate.Author.Username}'.");
+        await this.ExecuteAsync(_context, facts, cancellationToken);
+        Console.WriteLine($"Reacted to message '{messageCreate.Id}' from '{messageCreate.Author.Username}'.");
     }
 }

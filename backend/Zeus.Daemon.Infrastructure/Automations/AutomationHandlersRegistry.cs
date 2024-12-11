@@ -56,6 +56,8 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
 
         _handlers.Add(automation.Id, handler);
         _tasks[automation.Id] = new CancelableTask(token => handler.HandleAsync(context, token));
+        
+        Console.WriteLine($"Registered automation '{automation.Id.Value.ToString()}'.");
         return Task.CompletedTask;
     }
 
@@ -72,6 +74,7 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
 
         _handlers.Remove(automationId);
         _tasks.Remove(automationId);
+        Console.WriteLine($"Cancelled automation '{automationId.Value.ToString()}'.");
     }
 
     public async Task RefreshAutomationsAsync(IEnumerable<Automation> automations, CancellationToken cancellationToken = default)

@@ -37,6 +37,7 @@ public class DiscordApiService : IDiscordApiService
 
         if (!response.IsSuccessStatusCode)
         {
+            Console.WriteLine("Failed to send message to Discord.");
             return Errors.Services.Discord.FailureDuringRequest;
         }
 

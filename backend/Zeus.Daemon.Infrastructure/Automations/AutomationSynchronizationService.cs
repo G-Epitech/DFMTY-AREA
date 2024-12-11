@@ -47,6 +47,7 @@ public class AutomationSynchronizationService
 
         var automations = delta.Select(d => d.MapToAutomation()).ToList();
 
+        Console.WriteLine($"Syncing {automations.Count} automations");
         await _automationHandlersRegistry.RefreshAutomationsAsync(automations, cancellationToken);
     }
 }
