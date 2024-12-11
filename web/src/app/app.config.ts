@@ -22,10 +22,14 @@ import {
   heroCheck,
   heroArrowLeft,
   heroArrowRight,
+  heroInformationCircle,
+  heroChatBubbleOvalLeftEllipsis,
+  heroPlus,
 } from '@ng-icons/heroicons/outline';
 import {
   heroSparklesSolid,
   heroChatBubbleBottomCenterTextSolid,
+  heroBoltSolid
 } from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -57,6 +61,10 @@ export const appConfig: ApplicationConfig = {
       heroCheck,
       heroSparklesSolid,
       heroChatBubbleBottomCenterTextSolid,
+      heroBoltSolid,
+      heroInformationCircle,
+      heroChatBubbleOvalLeftEllipsis,
+      heroPlus,
     }),
     provideAnimations(),
     provideToastr({
