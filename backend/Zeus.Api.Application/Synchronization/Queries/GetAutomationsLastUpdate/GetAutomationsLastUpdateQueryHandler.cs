@@ -2,7 +2,7 @@
 
 using Zeus.Api.Application.Interfaces.Repositories;
 
-namespace Zeus.Api.Application.Synchronization.Queries;
+namespace Zeus.Api.Application.Synchronization.Queries.GetAutomationsLastUpdate;
 
 public class GetAutomationsLastUpdateQueryHandler : IRequestHandler<GetAutomationsLastUpdateQuery, DateTime?>
 {

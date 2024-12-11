@@ -15,7 +15,7 @@ public class DiscordSendMessageActionHandler : IActionHandler
         _discordApiService = discordApiService;
     }
 
-    public Task HandleAsync(AutomationAction action, IReadOnlyCollection<Integration> integrations,
+    public async Task HandleAsync(AutomationAction action, IReadOnlyCollection<Integration> integrations,
         Dictionary<string, string> facts,
         CancellationToken cancellationToken)
     {
@@ -24,11 +24,11 @@ public class DiscordSendMessageActionHandler : IActionHandler
 
         if (channelId is null || content is null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         // TODO: Check permissions
-
-        return _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
+        
+        await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
     }
 }

@@ -16,7 +16,6 @@ public sealed class AutomationId : ValueObject
         return new AutomationId(Guid.NewGuid());
     }
 
-
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

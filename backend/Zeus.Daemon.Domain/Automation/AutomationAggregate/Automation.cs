@@ -16,7 +16,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public UserId OwnerId { get; private set; }
     public bool Enabled { get; private set; }
 
-    private Automation(
+    public Automation(
         AutomationId id,
         string label,
         string description,

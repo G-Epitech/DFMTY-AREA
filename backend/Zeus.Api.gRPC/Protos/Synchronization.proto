@@ -6,7 +6,7 @@ package synchronization;
 
 service Synchronization {
   rpc GetSyncState (SyncStateRequest) returns (SyncStateResponse);
-  rpc Sync (SyncRequest) returns (SyncResponse);
+  rpc SyncDelta (SyncDeltaRequest) returns (SyncDeltaResponse);
 }
 
 message SyncStateRequest {
@@ -17,16 +17,48 @@ message SyncStateResponse {
   bool hasChanges = 1;
 }
 
-message SyncRequest {
+message SyncDeltaRequest {
   int64 lastSyncTimestamp = 1;
 }
 
-message SyncItem {
-  string id = 1;
-  string type = 2;
-  string data = 3;
+message AutomationTriggerParameter {
+  string identifier = 1;
+  string value = 2;
 }
 
-message SyncResponse {
-  repeated SyncItem items = 1;
+message AutomationTrigger {
+  string id = 1;
+  string identifier = 2;
+  repeated AutomationTriggerParameter parameters = 3;
+  repeated string providers = 4;
+}
+
+message AutomationActionParameter {
+  string identifier = 1;
+  string value = 2;
+  string type = 3;
+}
+
+message AutomationAction {
+  string id = 1;
+  string identifier = 2;
+  int32 rank = 3;
+  repeated AutomationActionParameter parameters = 4;
+  repeated string providers = 5;
+}
+
+message Automation {
+  string id = 1;
+  string label = 2;
+  string description = 3;
+  string ownerId = 4;
+  bool enabled = 5;
+  AutomationTrigger trigger = 6;
+  repeated AutomationAction actions = 7;
+  int64 updatedAt = 8;
+  int64 createdAt = 9;
+}
+
+message SyncDeltaResponse {
+  repeated Automation automations = 1;
 }

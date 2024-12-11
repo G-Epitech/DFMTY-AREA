@@ -14,7 +14,7 @@ public sealed class AutomationAction : Entity<AutomationActionId>
     public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
     public int Rank { get; private set; }
 
-    private AutomationAction(
+    public AutomationAction(
         AutomationActionId id,
         string identifier,
         int rank,

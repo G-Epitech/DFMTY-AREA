@@ -33,7 +33,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         var actionParams = new List<AutomationActionParameter>
         {
-            new() { Identifier = "ChannelId", Value = "1316046870178697267", Type = AutomationActionParameterType.Raw },
+            new() { Identifier = "ChannelId", Value = "1316046972733620244", Type = AutomationActionParameterType.Raw },
             new()
             {
                 Identifier = "Content",
