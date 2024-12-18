@@ -1,4 +1,5 @@
 BACKEND_PATH = 'backend/'
+MOBILE_PATH = 'mobile/'
 ZEUS_API_WEB_PATH = "${BACKEND_PATH}Zeus.Api.Web/"
 ZEUS_API_GRPC_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
 ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
@@ -40,18 +41,14 @@ pipeline {
 
         stage('Test') {
             parallel {
-                stage('Flutter App') {
-                  agent {
-                    dockerfile {
-                      filename 'mobile/Dockerfile.test'
+                stage('Mobile App') {
+                    steps {
+                        script {
+                            def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                            sh "docker build -f ${MOBILE_PATH}/Dockerfile.test -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH} --no-cache"
+                            sh "docker run --rm ${MOBILE_IMAGE_TEST}"
+                        }
                     }
-                  }
-                  steps {
-                    dir ('mobile') {
-                      sh 'flutter pub get'
-                      sh 'flutter test'
-                    }
-                  }
                 }
             }
         }
@@ -83,8 +80,9 @@ pipeline {
                 def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
                 def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
                 def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
 
-                sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} ${ZEUS_API_GRPC_IMAGE_TEST} ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} || true"
+                sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} ${ZEUS_API_GRPC_IMAGE_TEST} ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${MOBILE_IMAGE_TEST} || true"
             }
         }
     }
