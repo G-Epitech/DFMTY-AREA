@@ -48,7 +48,6 @@ pipeline {
                   }
                   steps {
                     dir ('mobile') {
-                      sh 'flutter pub get'
                       sh 'flutter test'
                     }
                   }

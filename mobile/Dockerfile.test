@@ -1,12 +1,46 @@
-FROM ubuntu:20.04
+# Utilisez une image officielle comme base
+FROM debian:bullseye-slim
 
-RUN apt-get update && apt-get install -y \
+# Mettre à jour le système et installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    unzip \
     git \
+    unzip \
+    zip \
+    xz-utils \
+    openjdk-17-jdk \
+    ca-certificates \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/flutter/flutter.git -b stable --depth 1 /usr/local/flutter
+# Définir le répertoire Flutter
+WORKDIR /usr/local
+
+# Télécharger et installer Flutter
+RUN git clone https://github.com/flutter/flutter.git \
+    && /usr/local/flutter/bin/flutter doctor
+
+# Configurer Git pour accepter le répertoire
+RUN git config --global --add safe.directory /usr/local/flutter
+
+# Créer un utilisateur non-root
+RUN useradd -ms /bin/bash flutteruser
+
+# Donner les droits nécessaires à l'utilisateur
+RUN chown -R flutteruser:flutteruser /usr/local/flutter
+
+# Passer à l'utilisateur non-root
+USER flutteruser
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Ajouter Flutter au PATH
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
-WORKDIR /app
+# Pré-télécharger les dépendances Flutter (sans interface utilisateur)
+RUN flutter precache \
+    && flutter doctor -v
+
+# Commande par défaut (peut être écrasée par Jenkins)
+CMD ["flutter", "test"]
