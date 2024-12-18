@@ -38,6 +38,24 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            parallel {
+                stage('Flutter App') {
+                  agent {
+                    dockerfile {
+                      filename 'mobile/Dockerfile.test'
+                    }
+                  }
+                  steps {
+                    dir ('mobile') {
+                      sh 'flutter pub get'
+                      sh 'flutter test'
+                    }
+                  }
+                }
+            }
+        }
+
         stage ('Mirror') {
             when {
                 branch 'main'
