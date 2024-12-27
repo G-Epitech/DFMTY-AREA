@@ -1,4 +1,4 @@
-﻿using Zeus.Common.Domain.Models;
+﻿using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
 using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Domain.User.ValueObjects;

@@ -4,7 +4,7 @@ using FluentValidation;
 
 using MediatR;
 
-namespace Zeus.Common.Application.Behaviors;
+namespace Zeus.BuildingBlocks.Application.Behaviors;
 
 public class ValidateBehavior<TMessage, TResponse> :
     IPipelineBehavior<TMessage, TResponse>

@@ -1,4 +1,4 @@
-namespace Zeus.Common.Domain.Models;
+namespace Zeus.BuildingBlocks.Domain.Models;
 
 public abstract class AggregateRoot<TId> : AuditableEntity<TId>
     where TId : notnull

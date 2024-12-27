@@ -1,7 +1,7 @@
 ﻿using Zeus.Api.Domain.AutomationAggregate.Entities;
 using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Api.Domain.UserAggregate.ValueObjects;
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Domain.AutomationAggregate;
 

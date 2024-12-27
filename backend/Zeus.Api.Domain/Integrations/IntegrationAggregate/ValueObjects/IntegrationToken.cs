@@ -1,5 +1,5 @@
 ﻿using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 

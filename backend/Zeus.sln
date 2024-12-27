@@ -23,13 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Infrastructure", "Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj", "{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Domain", "Zeus.Common.Domain\Zeus.Common.Domain.csproj", "{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Domain", "Zeus.BuildingBlocks.Domain\Zeus.BuildingBlocks.Domain.csproj", "{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Application", "Zeus.Common.Application\Zeus.Common.Application.csproj", "{195C4E51-228D-40ED-AF8F-C9722A251B98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Application", "Zeus.BuildingBlocks.Application\Zeus.BuildingBlocks.Application.csproj", "{195C4E51-228D-40ED-AF8F-C9722A251B98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Extensions", "Zeus.Common.Extensions\Zeus.Common.Extensions.csproj", "{2936C839-BF56-4ABD-8C0C-774C825A0397}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Extensions", "Zeus.BuildingBlocks.Extensions\Zeus.BuildingBlocks.Extensions.csproj", "{2936C839-BF56-4ABD-8C0C-774C825A0397}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Migrations", "Zeus.Api.Migrations\Zeus.Api.Migrations.csproj", "{563D98E6-0AE1-4071-A1DB-077C8E10217B}"
 EndProject

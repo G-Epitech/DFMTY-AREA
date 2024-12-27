@@ -1,4 +1,4 @@
-namespace Zeus.Common.Domain.Models;
+namespace Zeus.BuildingBlocks.Domain.Models;
 
 public abstract class Entity<TId> : IEquatable<Entity<TId>>
     where TId : notnull

@@ -1,4 +1,4 @@
-﻿namespace Zeus.Common.Domain.Models;
+﻿namespace Zeus.BuildingBlocks.Domain.Models;
 
 public interface IAuditableEntity
 {

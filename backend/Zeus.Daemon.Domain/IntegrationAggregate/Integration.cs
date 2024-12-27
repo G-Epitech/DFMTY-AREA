@@ -1,4 +1,4 @@
-﻿using Zeus.Common.Domain.Models;
+﻿using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Daemon.Domain.IntegrationAggregate.Enums;
 using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
 using Zeus.Daemon.Domain.User.ValueObjects;
