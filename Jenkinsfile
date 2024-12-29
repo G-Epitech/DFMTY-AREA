@@ -36,6 +36,15 @@ pipeline {
                         }
                     }
                 }
+                stage('Mobile App') {
+                    steps {
+                        script {
+                            sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
+                            def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                            sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH} --no-cache"
+                        }
+                    }
+                }
             }
         }
 
@@ -45,7 +54,6 @@ pipeline {
                     steps {
                         script {
                             def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
-                            sh "docker build -f ${MOBILE_PATH}/Dockerfile.test -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH} --no-cache"
                             sh "docker run --rm ${MOBILE_IMAGE_TEST}"
                         }
                     }

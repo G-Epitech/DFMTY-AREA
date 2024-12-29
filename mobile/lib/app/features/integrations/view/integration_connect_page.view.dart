@@ -54,6 +54,7 @@ class _IntegrationNamesContainer extends StatelessWidget {
   }
 }
 
+/*
 class _PageTitle extends StatelessWidget {
   const _PageTitle();
 
@@ -80,6 +81,7 @@ class _PageTitle extends StatelessWidget {
     );
   }
 }
+*/
 
 class _IntegrationList extends StatelessWidget {
   const _IntegrationList({required this.integrations});

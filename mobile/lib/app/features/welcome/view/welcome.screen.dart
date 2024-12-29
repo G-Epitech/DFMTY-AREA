@@ -37,7 +37,10 @@ class WelcomeScreen extends StatelessWidget {
                   'assets/icons/bubbles.svg',
                   width: 50,
                   height: 50,
-                  color: Theme.of(context).colorScheme.primary,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ],
             ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class CreateAutomationPage extends StatefulWidget {
@@ -33,8 +31,8 @@ class _AutomationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
+/*    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);*/
 
     return Column(
       children: [
@@ -78,7 +76,10 @@ class _Header extends StatelessWidget {
                 automation.iconUri,
                 width: 25,
                 height: 25,
-                color: Colors.white,
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
@@ -99,6 +100,7 @@ class _Header extends StatelessWidget {
 
 class CustomRectangleList extends StatelessWidget {
   final Automation automation;
+
   const CustomRectangleList({super.key, required this.automation});
 
   @override
