@@ -29,16 +29,26 @@ Future<Response<dynamic>> call<T extends Json>({
     );
 
     final responseJson = _parseResponse(response);
-    final errors = _parseErrors(responseJson);
+    if (response.statusCode >= 400) {
+      final problemDetails = _parseProblemDetails(responseJson);
+      return Response(
+        statusCode: Codes.fromStatusCode(response.statusCode),
+        message: problemDetails.title ?? '',
+        data: null,
+        errors: problemDetails.errors,
+        headers: response.headers,
+      );
+    }
+
     return Response(
       statusCode: Codes.fromStatusCode(response.statusCode),
       message: response.reasonPhrase ?? '',
-      data: errors == null ? responseJson : null,
-      errors: errors,
+      data: responseJson,
+      errors: null,
       headers: response.headers,
     );
   } catch (e) {
-    rethrow;
+    throw Exception('Failed to call API: $e');
   } finally {
     httpClient.close();
   }
@@ -75,16 +85,27 @@ Future<http.Response> _makeRequest<T extends Json>({
 
 dynamic _parseResponse(http.Response response) {
   try {
+    if (response.body.isEmpty) {
+      return null;
+    }
     return jsonDecode(response.body);
   } catch (e) {
     throw Exception('Error parsing response: $e');
   }
 }
 
-List<String>? _parseErrors(Map<String, dynamic> data) {
-  if (data.containsKey('errors')) {
-    return List<String>.from(data['errors']);
+ProblemDetails _parseProblemDetails(Map<String, dynamic> data) {
+  try {
+    return ProblemDetails(
+      type: data['type'] as String?,
+      title: data['title'] as String? ?? 'Unknown error',
+      status: data['status'] as int? ?? 0,
+      detail: data['detail'] as String?,
+      instance: data['instance'] as String?,
+      errors: (data['errors'] as Map<String, dynamic>?)
+          ?.map((key, value) => MapEntry(key, List<String>.from(value))),
+    );
+  } catch (e) {
+    throw Exception('Error parsing problem details: $e');
   }
-
-  return null;
 }

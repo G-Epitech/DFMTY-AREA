@@ -4,7 +4,7 @@ class Response<T> {
   final Codes statusCode;
   final String message;
   final T? data;
-  final List<String>? errors;
+  final Map<String, List<String>>? errors;
   final Map<String, String>? headers;
 
   Response({
@@ -13,5 +13,23 @@ class Response<T> {
     this.data,
     this.errors,
     this.headers,
+  });
+}
+
+class ProblemDetails {
+  final String? type;
+  final String? title;
+  final int? status;
+  final String? detail;
+  final String? instance;
+  final Map<String, List<String>>? errors;
+
+  ProblemDetails({
+    this.type,
+    this.title,
+    this.status,
+    this.detail,
+    this.instance,
+    this.errors,
   });
 }
