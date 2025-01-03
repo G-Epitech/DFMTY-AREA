@@ -1,5 +1,5 @@
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
-using Zeus.Daemon.Domain.IntegrationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 namespace Zeus.Daemon.Application.Interfaces;
 

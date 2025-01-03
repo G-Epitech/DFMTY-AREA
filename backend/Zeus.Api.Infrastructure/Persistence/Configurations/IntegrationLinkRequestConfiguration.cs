@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 

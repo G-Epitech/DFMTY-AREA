@@ -1,4 +1,4 @@
-using Zeus.Daemon.Domain.Automation;
+using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Interfaces;
 

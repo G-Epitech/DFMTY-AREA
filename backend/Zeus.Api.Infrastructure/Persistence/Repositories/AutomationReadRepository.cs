@@ -1,8 +1,8 @@
 ﻿using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
-using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;

@@ -3,10 +3,10 @@ using ErrorOr;
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Api.Domain.Errors.Automations;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Automations.Query.GetAutomation;
 

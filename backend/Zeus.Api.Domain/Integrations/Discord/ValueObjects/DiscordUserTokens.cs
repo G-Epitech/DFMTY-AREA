@@ -1,5 +1,5 @@
-using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.BuildingBlocks.Domain.Models;
+using Zeus.Common.Domain.Authentication.ValueObjects;
 
 namespace Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 

@@ -2,10 +2,11 @@ using Zeus.Api.Application;
 using Zeus.Api.gRPC.Mappings;
 using Zeus.Api.gRPC.Services;
 using Zeus.Api.Infrastructure;
+using Zeus.Common.Domain.ProvidersSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Configuration.AddJsonFile("services-settings.json", optional: false, reloadOnChange: true);
+    await builder.Services.AddProvidersSettingsAsync();
 
     builder.Services
         .AddApplication()

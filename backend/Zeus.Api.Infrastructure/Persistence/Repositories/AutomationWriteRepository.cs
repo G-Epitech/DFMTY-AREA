@@ -1,5 +1,5 @@
 ﻿using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 

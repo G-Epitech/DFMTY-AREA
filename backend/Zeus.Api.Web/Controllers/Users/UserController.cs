@@ -8,13 +8,14 @@ using Zeus.Api.Application.Automations.Query.GetAutomations;
 using Zeus.Api.Application.Integrations.Query.GetIntegrations;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Users.Query;
-using Zeus.Api.Domain.AutomationAggregate;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Web.Contracts.Automations;
 using Zeus.Api.Web.Contracts.Common;
 using Zeus.Api.Web.Contracts.Integrations;
 using Zeus.Api.Web.Contracts.Users;
 using Zeus.Api.Web.Mapping;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.ProvidersSettings;
 
 namespace Zeus.Api.Web.Controllers.Users;
 
@@ -34,7 +35,7 @@ public class UserController : ApiController
 
     [HttpGet(Name = "GetAuthUser")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthUser()
+    public async Task<IActionResult> GetAuthUser([FromServices] ProvidersSettings settings)
     {
         var authUser = _authUserContext.User;
         if (authUser is null)

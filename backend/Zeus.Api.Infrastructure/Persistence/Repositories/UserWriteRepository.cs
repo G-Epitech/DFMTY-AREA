@@ -1,5 +1,5 @@
 ﻿using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
