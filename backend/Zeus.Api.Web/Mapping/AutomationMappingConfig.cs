@@ -1,9 +1,7 @@
 using Mapster;
 
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.Entities;
-using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Api.Web.Contracts.Automations;
+using Zeus.Common.Domain.AutomationAggregate;
 
 namespace Zeus.Api.Web.Mapping;
 

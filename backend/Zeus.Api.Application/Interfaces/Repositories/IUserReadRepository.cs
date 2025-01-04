@@ -1,5 +1,5 @@
-﻿using Zeus.Api.Domain.UserAggregate;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+﻿using Zeus.Common.Domain.UserAggregate;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 

@@ -4,7 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Synchronization.Queries.GetAutomationsLastUpdate;
 using Zeus.Api.Application.Synchronization.Queries.GetAutomationsUpdateAfter;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
 
 namespace Zeus.Api.gRPC.Services;
 

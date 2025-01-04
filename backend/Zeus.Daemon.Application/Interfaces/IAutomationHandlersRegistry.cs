@@ -1,5 +1,5 @@
-﻿using Zeus.Daemon.Domain.Automation.AutomationAggregate;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
+﻿using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 
 namespace Zeus.Daemon.Application.Interfaces;
 

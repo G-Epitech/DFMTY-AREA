@@ -1,10 +1,9 @@
-﻿using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.User.ValueObjects;
-
-using Automation = Zeus.Daemon.Domain.Automation.AutomationAggregate.Automation;
+﻿using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Daemon.Infrastructure.Mapping;
 

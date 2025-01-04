@@ -4,8 +4,6 @@ using Mapster;
 
 using MapsterMapper;
 
-using Zeus.Api.Application.Integrations.Query.GetIntegration;
-
 namespace Zeus.Api.Web.Mapping;
 
 public static class DependencyInjection

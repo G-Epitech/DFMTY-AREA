@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
 
 namespace Zeus.Api.Application.Synchronization.Queries.GetAutomationsUpdateAfter;
 

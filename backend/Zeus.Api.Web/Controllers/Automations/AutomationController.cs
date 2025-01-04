@@ -25,7 +25,7 @@ public class AutomationController : ApiController
         _mapper = mapper;
     }
 
-    [HttpPost("", Name = "CreateAutomation")]
+    [HttpPost(Name = "CreateAutomation")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateAutomation()
     {
@@ -43,7 +43,7 @@ public class AutomationController : ApiController
             Problem);
     }
 
-    [HttpGet("{id}", Name = "GetAutomation")]
+    [HttpGet("{id:guid}", Name = "GetAutomation")]
     [ProducesResponseType<GetAutomationResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAutomation(Guid id)
     {

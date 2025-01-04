@@ -1,8 +1,8 @@
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Discord.Services.Api;
 using Zeus.Daemon.Application.Interfaces;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
-using Zeus.Daemon.Domain.IntegrationAggregate;
 
 namespace Zeus.Daemon.Application.Discord.Actions;
 

@@ -1,5 +1,5 @@
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.Discord;
 

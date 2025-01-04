@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Services.Integrations;
-using Zeus.Common.Application.Behaviors;
+using Zeus.BuildingBlocks.Application.Behaviors;
 
 namespace Zeus.Api.Application;
 

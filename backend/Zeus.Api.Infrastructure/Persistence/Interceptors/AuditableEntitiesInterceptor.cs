@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 
-using MediatR;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Infrastructure.Persistence.Interceptors;
 
