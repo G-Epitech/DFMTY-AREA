@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
+
 using Zeus.Api.Infrastructure.Persistence;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 #nullable disable
 

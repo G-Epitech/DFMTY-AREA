@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Mappers;
-using Zeus.Daemon.Domain.Automation;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
-using Zeus.Daemon.Domain.IntegrationAggregate;
+using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Abstracts;
 

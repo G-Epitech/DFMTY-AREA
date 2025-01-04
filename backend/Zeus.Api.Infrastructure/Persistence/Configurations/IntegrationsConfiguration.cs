@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 

@@ -4,7 +4,7 @@ using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.Common.Application.Behaviors;
+using Zeus.BuildingBlocks.Application.Behaviors;
 using Zeus.Daemon.Application.Discord.Actions;
 using Zeus.Daemon.Application.Discord.Services.Api;
 using Zeus.Daemon.Application.Discord.Services.Websocket;

@@ -8,8 +8,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Zeus.Api.Domain\Zeus.Api.Domain.csproj" />
-      <ProjectReference Include="..\Zeus.Common.Application\Zeus.Common.Application.csproj" />
-      <ProjectReference Include="..\Zeus.Common.Extensions\Zeus.Common.Extensions.csproj" />
+      <ProjectReference Include="..\Zeus.BuildingBlocks.Application\Zeus.BuildingBlocks.Application.csproj" />
+      <ProjectReference Include="..\Zeus.BuildingBlocks.Extensions\Zeus.BuildingBlocks.Extensions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

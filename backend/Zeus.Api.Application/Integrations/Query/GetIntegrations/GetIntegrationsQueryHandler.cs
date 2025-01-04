@@ -5,8 +5,8 @@ using MediatR;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Integrations.Query.GetIntegrations;

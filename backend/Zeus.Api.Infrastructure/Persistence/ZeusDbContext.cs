@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence;
 

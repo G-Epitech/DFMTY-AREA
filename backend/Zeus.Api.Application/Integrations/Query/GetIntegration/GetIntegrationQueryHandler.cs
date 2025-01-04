@@ -9,8 +9,8 @@ using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Domain.Errors.Integrations;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Integrations.Query.GetIntegration;
 

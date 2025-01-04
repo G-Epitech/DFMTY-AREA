@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "Discord": {
+      "$ref": "#/$defs/providerSettings"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "Discord"
+  ],
+  "$defs": {
+    "varType": {
+      "type": "string",
+      "enum": [
+        "string",
+        "datetime",
+        "integer",
+        "float",
+        "boolean",
+        "object"
+      ]
+    },
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Type": {
+          "$ref": "#/$defs/varType"
+        }
+      },
+      "required": [
+        "Name",
+        "Description",
+        "Type"
+      ]
+    },
+    "fact": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Type": {
+          "$ref": "#/$defs/varType"
+        }
+      },
+      "required": [
+        "Name",
+        "Description",
+        "Type"
+      ]
+    },
+    "trigger": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Icon": {
+          "type": "string"
+        },
+        "Parameters": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "$ref": "#/$defs/parameter"
+            }
+          }
+        },
+        "Facts": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string"
+                },
+                "Description": {
+                  "type": "string"
+                },
+                "Type": {
+                  "$ref": "#/$defs/varType"
+                }
+              },
+              "required": [
+                "Name",
+                "Description",
+                "Type"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "Name",
+        "Description",
+        "Icon",
+        "Parameters",
+        "Facts"
+      ]
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Icon": {
+          "type": "string"
+        },
+        "Parameters": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "$ref": "#/$defs/parameter"
+            }
+          }
+        },
+        "Facts": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "$ref": "#/$defs/fact"
+            }
+          }
+        }
+      },
+      "required": [
+        "Name",
+        "Description",
+        "Icon",
+        "Parameters",
+        "Facts"
+      ]
+    },
+    "providerSettings": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "IconUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "Color": {
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "Triggers": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "$ref": "#/$defs/trigger"
+            }
+          }
+        },
+        "Actions": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Za-z0-9_]+$": {
+              "$ref": "#/$defs/action"
+            }
+          }
+        }
+      },
+      "required": [
+        "Name",
+        "IconUri",
+        "Color",
+        "Triggers",
+        "Actions"
+      ]
+    }
+  }
+}
