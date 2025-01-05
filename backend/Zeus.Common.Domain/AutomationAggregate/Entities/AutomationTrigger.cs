@@ -1,9 +1,12 @@
-﻿using Zeus.BuildingBlocks.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.AutomationAggregate.Entities;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class AutomationTrigger : Entity<AutomationTriggerId>
 {
     private readonly List<AutomationTriggerParameter> _parameters;

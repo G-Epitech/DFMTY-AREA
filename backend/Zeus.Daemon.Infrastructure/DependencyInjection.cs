@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.Api.gRPC.SDK;
+using Zeus.Api.Presentation.gRPC.SDK;
 using Zeus.Daemon.Application.Discord.Triggers;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;

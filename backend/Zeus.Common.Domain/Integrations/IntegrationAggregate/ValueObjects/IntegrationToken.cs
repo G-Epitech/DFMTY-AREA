@@ -1,8 +1,11 @@
-﻿using Zeus.BuildingBlocks.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class IntegrationToken : ValueObject
 {
     public string Value { get; }

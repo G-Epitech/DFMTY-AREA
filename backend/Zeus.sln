@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{750068C9-CB1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Daemon", "Daemon", "{19DBA0AD-5D78-4300-BB8D-EFC0DFEF0CE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Web", "Zeus.Api.Web\Zeus.Api.Web.csproj", "{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.Web", "Zeus.Api.Presentation.Web\Zeus.Api.Presentation.Web.csproj", "{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Infrastructure", "Zeus.Api.Infrastructure\Zeus.Api.Infrastructure.csproj", "{80B90B08-0EF8-403D-9666-F8A49A09A800}"
 EndProject
@@ -33,13 +33,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Extensi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Migrations", "Zeus.Api.Migrations\Zeus.Api.Migrations.csproj", "{563D98E6-0AE1-4071-A1DB-077C8E10217B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.gRPC", "Zeus.Api.gRPC\Zeus.Api.gRPC.csproj", "{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC", "Zeus.Api.Presentation.gRPC\Zeus.Api.Presentation.gRPC.csproj", "{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.gRPC.SDK", "Zeus.Api.gRPC.SDK\Zeus.Api.gRPC.SDK.csproj", "{F3E8B14D-631E-468F-81AD-10698E6FA0D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC.SDK", "Zeus.Api.Presentation.gRPC.SDK\Zeus.Api.Presentation.gRPC.SDK.csproj", "{F3E8B14D-631E-468F-81AD-10698E6FA0D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6177C21B-1BCE-4925-AC04-FFB23B67AEF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Domain", "Zeus.Common.Domain\Zeus.Common.Domain.csproj", "{D4D27FFE-5E17-47A6-A829-AFB266164A4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.Shared", "Zeus.Api.Presentation.Shared\Zeus.Api.Presentation.Shared.csproj", "{89CBC98E-2863-4445-9D05-94ACD5A78E39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,7 @@ Global
 		{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 		{F3E8B14D-631E-468F-81AD-10698E6FA0D1} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 		{D4D27FFE-5E17-47A6-A829-AFB266164A4A} = {6177C21B-1BCE-4925-AC04-FFB23B67AEF3}
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -127,5 +130,9 @@ Global
 		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
