@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class SplashView extends StatelessWidget {
+  const SplashView({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const SplashScreen());
+    return MaterialPageRoute<void>(builder: (_) => const SplashView());
   }
 
   @override

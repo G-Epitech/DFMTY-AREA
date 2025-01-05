@@ -1,12 +1,11 @@
 class RoutesNames {
-  static const String login = "login_screen";
-  static const String home = "home_screen";
-  static const String splashScreen = "splash_screen";
-  static const String welcome = "welcome_screen";
-  static const String register = "register_screen";
-  static const String integrations = "integrations_screen";
-  static const String connectIntegration = "connect_integration_screen";
-  static const String automations = "automations_screen";
-  static const String createAutomation = "create_automation_screen";
-  static const String automationTrigger = "automation_trigger_screen";
+  static const String login = "login_view";
+  static const String home = "home_view";
+  static const String splashScreen = "splash_view";
+  static const String welcome = "welcome_view";
+  static const String register = "register_view";
+  static const String integrations = "integrations_view";
+  static const String connectIntegration = "connect_integration_view";
+  static const String automations = "automations_view";
+  static const String createAutomation = "create_automation_view";
 }

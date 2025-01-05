@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 
 class DiscordConnectIntegrationListItemWidget extends StatelessWidget {

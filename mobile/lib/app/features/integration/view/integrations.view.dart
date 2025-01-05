@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/integrations/integration.names.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -8,14 +8,14 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
-class IntegrationScreen extends StatefulWidget {
-  const IntegrationScreen({super.key});
+class IntegrationsView extends StatefulWidget {
+  const IntegrationsView({super.key});
 
   @override
-  State<IntegrationScreen> createState() => _IntegrationScreenState();
+  State<IntegrationsView> createState() => _IntegrationsViewState();
 }
 
-class _IntegrationScreenState extends State<IntegrationScreen> {
+class _IntegrationsViewState extends State<IntegrationsView> {
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
@@ -110,7 +110,7 @@ class _NoDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('No connected integrations',
+      child: Text('No connected integration',
           style: Theme.of(context).textTheme.titleMedium),
     );
   }

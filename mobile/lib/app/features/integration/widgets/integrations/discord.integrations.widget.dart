@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
 class DiscordIntegrationListItemWidget extends StatelessWidget {

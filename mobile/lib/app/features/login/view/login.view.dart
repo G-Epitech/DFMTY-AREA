@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/login/bloc/login_bloc.dart';
-import 'package:triggo/app/features/login/view/login_form.dart';
+import 'package:triggo/app/features/login/widgets/login_form.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const LoginScreen());
+    return MaterialPageRoute<void>(builder: (_) => const LoginView());
   }
 
   @override

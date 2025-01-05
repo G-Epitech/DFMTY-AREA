@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/view/automation.view.dart';
-import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-class AutomationsScreen extends StatefulWidget {
-  const AutomationsScreen({super.key});
+class AutomationsView extends StatefulWidget {
+  const AutomationsView({super.key});
 
   @override
-  State<AutomationsScreen> createState() => _IntegrationPageState();
+  State<AutomationsView> createState() => _IntegrationPageState();
 }
 
-class _IntegrationPageState extends State<AutomationsScreen> {
+class _IntegrationPageState extends State<AutomationsView> {
   @override
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =

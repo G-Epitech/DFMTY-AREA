@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomLoginRouter extends PageRouteBuilder {
+class CustomAuthRouter extends PageRouteBuilder {
   final Widget child;
 
-  CustomLoginRouter({required this.child})
+  CustomAuthRouter({required this.child})
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );

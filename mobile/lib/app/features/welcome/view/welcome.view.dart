@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/login/routes/custom.router.dart';
-import 'package:triggo/app/features/login/view/login_screen.dart';
-import 'package:triggo/app/features/register/view/register_screen.dart';
+import 'package:triggo/app/features/login/view/login.view.dart';
+import 'package:triggo/app/features/register/view/register.view.dart';
+import 'package:triggo/app/routes/custom_auth.router.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                   text: "Login",
                   onPressed: () {
                     Navigator.of(context).push(
-                      CustomLoginRouter(child: const LoginScreen()),
+                      CustomAuthRouter(child: const LoginView()),
                     );
                   },
                 )),
@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                   text: "Register",
                   onPressed: () {
                     Navigator.of(context).push(
-                      CustomLoginRouter(child: const RegisterScreen()),
+                      CustomAuthRouter(child: const RegisterView()),
                     );
                   },
                 )),

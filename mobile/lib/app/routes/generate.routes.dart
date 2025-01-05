@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
 import 'package:triggo/app/features/automation/view/automations.view.dart';
 import 'package:triggo/app/features/home/home.dart';
-import 'package:triggo/app/features/integrations/view/integration_connect_page.view.dart';
-import 'package:triggo/app/features/integrations/view/integration_page.view.dart';
-import 'package:triggo/app/features/login/view/login_screen.dart';
-import 'package:triggo/app/features/register/view/register_screen.dart';
-import 'package:triggo/app/features/splash/view/splash_screen.dart';
-import 'package:triggo/app/features/welcome/view/welcome.screen.dart';
+import 'package:triggo/app/features/integration/view/integration_connect.view.dart';
+import 'package:triggo/app/features/integration/view/integrations.view.dart';
+import 'package:triggo/app/features/login/view/login.view.dart';
+import 'package:triggo/app/features/register/view/register.view.dart';
+import 'package:triggo/app/features/splash/view/splash.view.dart';
+import 'package:triggo/app/features/welcome/view/welcome.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case (RoutesNames.home):
-      return customScreenBuilder(const HomeScreen());
+      return customScreenBuilder(const HomeView());
     case (RoutesNames.login):
-      return customScreenBuilder(const LoginScreen());
+      return customScreenBuilder(const LoginView());
     case (RoutesNames.splashScreen):
-      return customScreenBuilder(const SplashScreen());
+      return customScreenBuilder(const SplashView());
     case (RoutesNames.welcome):
-      return customScreenBuilder(const WelcomeScreen());
+      return customScreenBuilder(const WelcomeView());
     case (RoutesNames.register):
-      return customScreenBuilder(const RegisterScreen());
+      return customScreenBuilder(const RegisterView());
     case (RoutesNames.integrations):
-      return customScreenBuilder(const IntegrationScreen());
+      return customScreenBuilder(const IntegrationsView());
     case (RoutesNames.automations):
-      return customScreenBuilder(const AutomationsScreen());
-    case (RoutesNames.automationTrigger):
-      return customScreenBuilder(AutomationParameterView());
+      return customScreenBuilder(const AutomationsView());
     case (RoutesNames.connectIntegration):
-      return customScreenBuilder(const ConnectIntegrationScreen());
+      return customScreenBuilder(const IntegrationConnectView());
     default:
       return customScreenBuilder(const Placeholder());
   }
