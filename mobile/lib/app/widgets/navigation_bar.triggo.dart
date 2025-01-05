@@ -11,23 +11,25 @@ class TriggoNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Row(
-        children: [
-          _TriggoNavigationBarItem(
-            routeName: RoutesNames.home,
-            iconAsset: 'assets/icons/home.svg',
-          ).build(context),
-          _TriggoNavigationBarItem(
-            routeName: RoutesNames.integrations,
-            iconAsset: 'assets/icons/link.svg',
-          ).build(context),
-          _TriggoNavigationBarItem(
-            routeName: RoutesNames.automations,
-            iconAsset: 'assets/icons/bolt.svg',
-          ).build(context),
-        ],
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        child: Row(
+          children: [
+            _TriggoNavigationBarItem(
+              routeName: RoutesNames.home,
+              iconAsset: 'assets/icons/home.svg',
+            ).build(context),
+            _TriggoNavigationBarItem(
+              routeName: RoutesNames.integrations,
+              iconAsset: 'assets/icons/link.svg',
+            ).build(context),
+            _TriggoNavigationBarItem(
+              routeName: RoutesNames.automations,
+              iconAsset: 'assets/icons/bolt.svg',
+            ).build(context),
+          ],
+        ),
       ),
     );
   }

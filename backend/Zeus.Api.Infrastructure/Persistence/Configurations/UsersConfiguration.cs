@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Zeus.Api.Domain.UserAggregate;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
@@ -23,5 +23,11 @@ public class UsersConfiguration: IEntityTypeConfiguration<User>
             .HasMaxLength(100);
         builder.Property(u => u.Password)
             .HasMaxLength(255);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
     }
 }

@@ -10,12 +10,10 @@ using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence;
+using Zeus.Api.Infrastructure.Persistence.Interceptors;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
@@ -23,6 +21,9 @@ using Zeus.Api.Infrastructure.Services.Settings;
 using Zeus.Api.Infrastructure.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 namespace Zeus.Api.Infrastructure;
 
@@ -48,9 +49,8 @@ public static class DependencyInjection
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        services.AddDbContext(configuration);
+        services.AddDatabase(configuration);
         services.AddConfiguration(configuration);
-        services.AddAuthentication(configuration);
 
         return services;
     }
@@ -63,12 +63,9 @@ public static class DependencyInjection
 
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
-
-        services.Configure<ServicesSettings>(configuration.GetSection(ServicesSettings.SectionName));
-        services.AddSingleton<IServicesSettingsProvider, ServicesSettingsProvider>();
     }
 
-    private static void AddAuthentication(this IServiceCollection services,
+    public static IServiceCollection AddAuthentication(this IServiceCollection services,
         IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings();
@@ -84,9 +81,10 @@ public static class DependencyInjection
                     JwtAuthenticationValidation.GetTokenValidationParameters(jwtSettings);
                 options.Events = JwtAuthenticationValidation.GetJwtBearerEvents();
             });
+        return services;
     }
 
-    private static void AddDbContext(this IServiceCollection services,
+    private static void AddDatabase(this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString(ConnectionStrings.DefaultDatabase);
@@ -105,5 +103,7 @@ public static class DependencyInjection
                 o.MapEnum<AutomationActionParameterType>(nameof(AutomationActionParameterType));
             });
         });
+
+        services.AddScoped<AuditableEntitiesInterceptor>();
     }
 }

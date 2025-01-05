@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
@@ -31,8 +33,9 @@ void integrationRepositoryTests() {
     when(mock.get(
       Uri.parse('${Env.apiUrl}/user/integrations'),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer dummy'
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
           '{"pageNumber": 2, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
@@ -46,8 +49,9 @@ void integrationRepositoryTests() {
     when(mock.get(
       Uri.parse('${Env.apiUrl}/user/integrations/?page=1'),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer dummy'
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
           '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
@@ -58,13 +62,14 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integrations/?page=1&size=10'),
+      Uri.parse('${Env.apiUrl}/user/integrations/?page=0&size=10'),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer dummy'
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"pageNumber": 1, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
+          '{"pageNumber": 2, "pageSize": 10, "totalPages": 1, "totalRecords": 1,'
           '"data": [{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
           '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": []}}]'
           '}',
@@ -75,12 +80,25 @@ void integrationRepositoryTests() {
     when(mock.get(
       Uri.parse('${Env.apiUrl}/user/integrations/0'),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer dummy'
+        'Authorization': 'Bearer dummy',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': '*/*'
       },
     )).thenAnswer((_) async => http.Response(
-          '{"id": "0", "ownerId": "0", "type": "Discord", "isValid": true, "properties": {'
-          '"id": "0", "email": "example@example.com", "username": "example", "displayName": "example", "avatarUri": "example", "flags": ["Test"]}}',
+          jsonEncode({
+            "id": "0",
+            "ownerId": "0",
+            "type": "Discord",
+            "isValid": true,
+            "properties": {
+              "id": "0",
+              "email": "example@example.com",
+              "username": "example",
+              "displayName": "example",
+              "avatarUri": "example",
+              "flags": ["Test"]
+            }
+          }),
           200,
           headers: {'Content-Type': 'application/json'},
         ));
@@ -117,18 +135,31 @@ void integrationRepositoryTests() {
       final response = await repository.getUserIntegrations();
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageNumber, 2);
       expect(response.data?.page.pageSize, 10);
       expect(response.data?.page.totalPages, 1);
       expect(response.data?.page.totalRecords, 1);
-      expect(response.data?.page.data, []);
+      expect(response.data?.page.data[0].toJson(), {
+        'id': '0',
+        'ownerId': '0',
+        'type': 'Discord',
+        'isValid': true,
+        'properties': DiscordProperties(
+          id: '0',
+          email: 'example@example.com',
+          username: 'example',
+          displayName: 'example',
+          avatarUri: 'example',
+          flags: [],
+        ).toJson()
+      });
     });
 
     test('getIntegrations success', () async {
-      final response = await repository.getUserIntegrations(page: 1, size: 10);
+      final response = await repository.getUserIntegrations(page: 0, size: 10);
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.page.pageNumber, 1);
+      expect(response.data?.page.pageNumber, 2);
       expect(response.data?.page.pageSize, 10);
       expect(response.data?.page.totalPages, 1);
       expect(response.data?.page.totalRecords, 1);
@@ -152,19 +183,19 @@ void integrationRepositoryTests() {
       final response = await repository.getUserIntegrationById('0');
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.toJson(), {
+      expect(response.data!.integration.toJson(), {
         'id': '0',
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': {
-          'id': '0',
-          'email': 'example@example.com',
-          'username': 'example',
-          'displayName': 'example',
-          'avatarUri': 'example',
-          'flags': ['Test']
-        }
+        'properties': DiscordProperties(
+          id: '0',
+          email: 'example@example.com',
+          username: 'example',
+          displayName: 'example',
+          avatarUri: 'example',
+          flags: ['Test'],
+        ).toJson()
       });
     });
   });

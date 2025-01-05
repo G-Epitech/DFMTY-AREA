@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/integrations/widgets/integrations/discord_connect.integrations.widget.dart';
-import 'package:triggo/app/widgets/banner.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 
@@ -22,23 +21,9 @@ class _ConnectIntegrationScreenState extends State<ConnectIntegrationScreen> {
         integrationMediator.getIntegrationNames();
 
     return BaseScaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                TriggoBanner(),
-                const SizedBox(height: 16.0),
-                _PageTitle(),
-                const SizedBox(height: 4.0),
-                _IntegrationNamesContainer(integrations: integrationsNames),
-              ],
-            ),
-          ),
-        ),
-      ),
+      title: 'Connect Integration',
+      body: _IntegrationNamesContainer(integrations: integrationsNames),
+      getBack: true,
     );
   }
 }

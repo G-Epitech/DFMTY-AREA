@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
@@ -33,6 +33,12 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         builder.Property(i => i.ClientId)
             .HasMaxLength(ClientIdMaxLength);
         builder.Property(i => i.Type);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(i => i.OwnerId)

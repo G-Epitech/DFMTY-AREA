@@ -4,7 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Integrations.Commands.CreateIntegrationLinkRequest;
 

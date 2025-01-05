@@ -1,0 +1,87 @@
+# 🌐 Server
+
+# Backend Layer of Triggo: REST API
+
+The backend layer of Triggo will be represented by a REST API to meet the technical requirements of the application while adhering to web standards.
+
+## Technical Requirements
+
+- Quick and simple technology onboarding
+- Fast execution + analysis tools
+- Security aligned with industry standards
+- Compliance with the Cyber Resilience Act (CRA)
+
+To address the first requirement from the outset, we will filter the compared technologies in this document to those known/learned by the team members.
+
+---
+
+### NestJS
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginBottom: '20px'}}>
+  <img src="https://skillicons.dev/icons?i=nest" alt="NestJS" style={{width: '100px'}} />
+</div>
+
+NestJS is a NodeJS framework designed to build web applications "efficiently and scalably" ([reference](https://nestjs.com/)). This framework is user-friendly and allows the setup of a REST API while following well-known architectural formats.
+
+The execution speed is heavily dependent on the NodeJS JavaScript engine. According to benchmarks by [TechEmpower](https://www.techempower.com), in 2022, NodeJS handled **607,368 requests per second**.
+
+However, NestJS has some drawbacks tied to JavaScript, such as execution time and lack of typing. Additionally, NestJS does not offer certain features out of the box. For instance, adding community modules is sometimes required to handle needs like caching.
+
+One significant advantage of using a JavaScript framework is its compatibility with monorepos. This allows developers to create a shared library between the website and API, including common elements like types.
+
+---
+
+### PHP (Symfony Framework)
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginBottom: '20px'}}>
+  <img src="https://skillicons.dev/icons?i=php" alt="PHP" style={{width: '100px'}} />
+</div>
+
+PHP is a versatile programming language described as "fast, flexible, and pragmatic" ([reference](https://www.php.net/)). It is widely used in web development and often employed for REST API creation, particularly with the Symfony framework.
+
+Many large companies still use PHP today, despite its age, primarily for REST API development. However, PHP is known for vulnerabilities such as SQL injection and XSS attacks. Symfony addresses these issues by integrating session management and protections against such threats.
+
+That said, Symfony has notable disadvantages. The framework is quite large and can be excessive for producing "simple" REST APIs. According to [TechEmpower](https://www.techempower.com), in 2022, Symfony handled **34,254 requests per second**. This relatively slow performance is mainly due to the framework's extensive abstraction layer.
+
+---
+
+### ASP.NET Core
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginBottom: '20px'}}>
+  <img src="https://skillicons.dev/icons?i=cs" alt="DotNET" style={{width: '100px'}} />
+</div>
+
+ASP.NET Core is a cross-platform, open-source framework for building web applications and services using C#. It is marketed as "fast, scalable, and secure" ([reference](https://dotnet.microsoft.com)).
+
+Like PHP, .NET is widely used in many companies, valued for the flexibility and power of C# and its ecosystem. All REST API requirements can be met using Microsoft-designed modules (e.g., caching, ORM, authentication).
+
+In terms of speed, .NET sets records. According to [TechEmpower](https://www.techempower.com), in 2022, it handled **7,006,142 requests per second**.
+
+Built to support the most complex architectures, .NET offers integrated development environments like Visual Studio and Rider, making it easy to get started with the framework and deploy the first API.
+
+However, .NET’s documentation and available resources are fewer than the previously mentioned frameworks. Many .NET developers come from specialized training and rely primarily on the official documentation, a mark of its clarity and consistency.
+
+The framework was a standout choice for the team, as it naturally fulfills all expected criteria. This project will offer valuable experience, strengthening professional skills and showcasing expertise to major industries.
+
+---
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginBottom: '20px', flexWrap: 'wrap'}}>
+  <div style={{width: '100%'}}>
+    <img src="/DFMTY-Area/img/benchmark.png" alt="BenchMark" style={{width: '30%'}} />
+  </div>
+  <div style={{color: '#D7D7D7'}}>Requests / seconds per Framework in 2022 (source: www.techempower.com)<a href="https://www.techempower.com">TechEmpower</a></div>
+</div>
+
+---
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', marginBottom: '20px', flexWrap: 'wrap'}}>
+  <div style={{width: '100%'}}>
+    <img src="/DFMTY-Area/img/languages_abilities_table.png" alt="languages_abilities_table" style={{width: '30%'}} />
+  </div>
+  <div style={{color: '#D7D7D7'}}>Criteria for comparing different programming languages</div>
+</div>
+
+---
+
+Several tests have already been carried out on each Framework, giving us an in-depth look at set-up, execution and learning times.
+In conclusion, we've chosen to use ASP.NET Core for this project because of its performance, speed of execution and robust C# infrastructure. This Framework perfectly meets our needs for creating scalable and secure REST APIs, while offering great flexibility.

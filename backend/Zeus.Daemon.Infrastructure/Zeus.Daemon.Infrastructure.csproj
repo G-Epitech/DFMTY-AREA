@@ -10,4 +10,9 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Zeus.Api.gRPC.SDK\Zeus.Api.gRPC.SDK.csproj" />
+      <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Zeus.Api.Domain.AutomationAggregate;
-using Zeus.Api.Domain.AutomationAggregate.Entities;
-using Zeus.Api.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
@@ -28,6 +28,12 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         builder.Property(x => x.Description)
             .HasMaxLength(AutomationDescriptionMaxLength);
         builder.Property(x => x.Enabled);
+        builder.Property(x => x.CreatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
+        builder.Property(x => x.UpdatedAt)
+            .ValueGeneratedNever()
+            .IsRequired();
 
         builder.HasOne<User>()
             .WithMany()

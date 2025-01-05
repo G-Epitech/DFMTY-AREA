@@ -4,14 +4,18 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Zeus.Api.Application.Automations.Query.GetAutomations;
 using Zeus.Api.Application.Integrations.Query.GetIntegrations;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Users.Query;
 using Zeus.Api.Infrastructure.Authentication.Context;
+using Zeus.Api.Web.Contracts.Automations;
 using Zeus.Api.Web.Contracts.Common;
 using Zeus.Api.Web.Contracts.Integrations;
 using Zeus.Api.Web.Contracts.Users;
 using Zeus.Api.Web.Mapping;
+using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.ProvidersSettings;
 
 namespace Zeus.Api.Web.Controllers.Users;
 
@@ -31,7 +35,7 @@ public class UserController : ApiController
 
     [HttpGet(Name = "GetAuthUser")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthUser()
+    public async Task<IActionResult> GetAuthUser([FromServices] ProvidersSettings settings)
     {
         var authUser = _authUserContext.User;
         if (authUser is null)
@@ -83,6 +87,41 @@ public class UserController : ApiController
             integrationsResult.Value.TotalPages,
             integrationsResult.Value.TotalItems,
             integrationResponses.ToArray());
+
+        return Ok(httpResponse);
+    }
+
+    [HttpGet("automations", Name = "GetAuthUserAutomations")]
+    [ProducesResponseType<PageResponse<GetAutomationResponse>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAuthUserAutomations([FromQuery] int page = 0, [FromQuery] int size = 10)
+    {
+        var authUser = _authUserContext.User;
+        if (authUser is null)
+        {
+            return Unauthorized();
+        }
+
+        var automationsResult = await _sender.Send(new GetAutomationsQuery(authUser.Id, page, size));
+        if (automationsResult.IsError)
+        {
+            return Problem(automationsResult.Errors);
+        }
+
+        var automationsResponses = new List<GetAutomationResponse>();
+
+        foreach (Automation automation in automationsResult.Value.Items)
+        {
+            var automationResponse = _mapper.Map<GetAutomationResponse>(automation);
+
+            automationsResponses.Add(automationResponse);
+        }
+
+        var httpResponse = new PageResponse<GetAutomationResponse>(
+            automationsResult.Value.Index,
+            automationsResult.Value.Size,
+            automationsResult.Value.TotalPages,
+            automationsResult.Value.TotalItems,
+            automationsResponses.ToArray());
 
         return Ok(httpResponse);
     }

@@ -1,20 +1,27 @@
+using System.Text.Json.Serialization;
+
 using Scalar.AspNetCore;
 
 using Zeus.Api.Application;
 using Zeus.Api.Infrastructure;
 using Zeus.Api.Web.Http;
 using Zeus.Api.Web.Mapping;
+using Zeus.Common.Domain.ProvidersSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Configuration.AddJsonFile("services-settings.json", optional: false, reloadOnChange: true);
+    await builder.Services.AddProvidersSettingsAsync();
 
     builder.Services
         .AddApplication()
         .AddInfrastructure(builder.Configuration)
+        .AddAuthentication(builder.Configuration)
         .AddMappings();
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
     builder.Services.AddOpenApi();
     builder.Services.AddCors(builder.Environment);
 }

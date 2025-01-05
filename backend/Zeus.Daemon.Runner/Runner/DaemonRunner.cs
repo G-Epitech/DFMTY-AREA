@@ -1,22 +1,37 @@
-﻿namespace Zeus.Daemon.Runner.Runner;
+﻿using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Daemon.Application.Discord.Services.Websocket;
+using Zeus.Daemon.Infrastructure.Automations;
+
+namespace Zeus.Daemon.Runner.Runner;
 
 public class DaemonRunner
 {
     private readonly IServiceProvider _serviceProvider;
-    
+
     public DaemonRunner(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
-    
-    /**
-     * To use dependency injection in a class that is not registered in the service collection,
-     * you can use the ActivatorUtilities class, like so:
-     * ActivatorUtilities.CreateInstance<IService>(_serviceProvider);
-     */
-    public void Run()
+
+    private Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
     {
-        Console.WriteLine("Running daemon...");
+        var automationsListener = _serviceProvider.GetRequiredService<AutomationSynchronizationService>();
+        return automationsListener.ListenUpdatesAsync(cancellationToken);
+    }
+
+    private Task ListenDiscordAsync(CancellationToken cancellationToken = default)
+    {
+        var discord = _serviceProvider.GetRequiredService<IDiscordWebSocketService>();
+
+        return discord.ConnectAsync(cancellationToken);
+    }
+
+    public async Task Run(CancellationToken cancellationToken = default)
+    {
+        await Task.WhenAll(
+            ListenUpdatesAsync(cancellationToken),
+            ListenDiscordAsync(cancellationToken)
+        );
     }
 }

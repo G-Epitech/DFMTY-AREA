@@ -49,3 +49,16 @@ Map<String, dynamic> _$OutGetIntegrationURIDTOToJson(
     <String, dynamic>{
       'uri': instance.uri,
     };
+
+OutGetUserIntegrationByIdDTO _$OutGetUserIntegrationByIdDTOFromJson(
+        Map<String, dynamic> json) =>
+    OutGetUserIntegrationByIdDTO(
+      integration:
+          IntegrationDTO.fromJson(json['integration'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$OutGetUserIntegrationByIdDTOToJson(
+        OutGetUserIntegrationByIdDTO instance) =>
+    <String, dynamic>{
+      'integration': instance.integration,
+    };

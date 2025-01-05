@@ -1,6 +1,6 @@
-﻿using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
+﻿using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;

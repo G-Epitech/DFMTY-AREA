@@ -1,7 +1,7 @@
-using Zeus.Api.Domain.Integrations.Common.Enums;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 
@@ -19,12 +19,22 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
 
     public static IntegrationLinkRequest Create(UserId ownerId, IntegrationType integrationType)
     {
-        return new IntegrationLinkRequest(IntegrationLinkRequestId.CreateUnique(), ownerId, integrationType);
+        return new IntegrationLinkRequest(
+            IntegrationLinkRequestId.CreateUnique(),
+            ownerId,
+            integrationType,
+            DateTime.UtcNow,
+            DateTime.UtcNow
+        );
     }
 
-    private IntegrationLinkRequest(IntegrationLinkRequestId id, UserId ownerId,
-        IntegrationType integrationType)
-        : base(id)
+    private IntegrationLinkRequest(
+        IntegrationLinkRequestId id,
+        UserId ownerId,
+        IntegrationType integrationType,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
     {
         OwnerId = ownerId;
         Type = integrationType;
