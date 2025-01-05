@@ -56,47 +56,41 @@ podTemplate(containers: [
 
         stage('Mobile Build') {
             container('docker') {
-                stage('Mobile App') {
-                    sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
-                    def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
-                    sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH}"
-                }
+                sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH}"
             }
         }
 
         stage('Mobile Test') {
             container('docker') {
-                stage('Mobile App') {
-                    def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
-                    def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
-                    if (runStatus != 0) {
-                        sh "docker rmi ${MOBILE_IMAGE_TEST}"
-                        error "Docker run failed for Mobile App"
-                    }
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
+                if (runStatus != 0) {
+                    sh "docker rmi ${MOBILE_IMAGE_TEST}"
+                    error "Docker run failed for Mobile App"
                 }
             }
         }
 
-        stage('Git actions') {
+        stage('Git Mirror') {
             container('git') {
-                stage('Mirror push') {
-                    checkout scm
+                checkout scm
 
-                    sh "git config --global --add safe.directory ${WORKSPACE}"
+                sh "git config --global --add safe.directory ${WORKSPACE}"
 
-                    def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
 
-                    if (currentBranch == 'main') {
-                        sh "git remote add mirror ${MIRROR_URL}"
+                if (currentBranch == 'main') {
+                    sh "git remote add mirror ${MIRROR_URL}"
 
-                        sh "git checkout main"
+                    sh "git checkout main"
 
-                        withCredentials([sshUserPrivateKey(credentialsId: 'G-EPIJENKINS_SSH_KEY', keyFileVariable: 'PRIVATE_KEY')]) {
-                            sh 'GIT_SSH_COMMAND="ssh -i $PRIVATE_KEY" git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"'
-                        }
-                    } else {
-                        echo "Not on main branch, skipping mirror push."
+                    withCredentials([sshUserPrivateKey(credentialsId: 'G-EPIJENKINS_SSH_KEY', keyFileVariable: 'PRIVATE_KEY')]) {
+                        sh 'GIT_SSH_COMMAND="ssh -i $PRIVATE_KEY" git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"'
                     }
+                } else {
+                    echo "Not on main branch, skipping mirror push."
                 }
             }
         }
