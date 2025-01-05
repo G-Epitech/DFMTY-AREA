@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:triggo/app/features/automation/view/automation.view.dart';
-import 'package:triggo/app/features/automations/view/automation_page.view.dart';
+import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
+import 'package:triggo/app/features/automation/view/automations.view.dart';
 import 'package:triggo/app/features/home/home.dart';
 import 'package:triggo/app/features/integrations/view/integration_connect_page.view.dart';
 import 'package:triggo/app/features/integrations/view/integration_page.view.dart';
@@ -14,24 +14,24 @@ import 'package:triggo/app/routes/routes_names.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case (RoutesNames.home):
-      return customPageRouteBuilder(const HomeScreen());
+      return customScreenBuilder(const HomeScreen());
     case (RoutesNames.login):
-      return customPageRouteBuilder(const LoginScreen());
+      return customScreenBuilder(const LoginScreen());
     case (RoutesNames.splashScreen):
-      return customPageRouteBuilder(const SplashScreen());
+      return customScreenBuilder(const SplashScreen());
     case (RoutesNames.welcome):
-      return customPageRouteBuilder(const WelcomeScreen());
+      return customScreenBuilder(const WelcomeScreen());
     case (RoutesNames.register):
-      return customPageRouteBuilder(const RegisterScreen());
+      return customScreenBuilder(const RegisterScreen());
     case (RoutesNames.integrations):
-      return customPageRouteBuilder(const IntegrationPage());
+      return customScreenBuilder(const IntegrationScreen());
     case (RoutesNames.automations):
-      return customPageRouteBuilder(const AutomationPage());
+      return customScreenBuilder(const AutomationsScreen());
     case (RoutesNames.automationTrigger):
-      return CustomPageRouteBuilder(AutomationScreen());
+      return customScreenBuilder(AutomationParameterView());
     case (RoutesNames.connectIntegration):
-      return customPageRouteBuilder(const ConnectIntegrationScreen());
+      return customScreenBuilder(const ConnectIntegrationScreen());
     default:
-      return customPageRouteBuilder(const Placeholder());
+      return customScreenBuilder(const Placeholder());
   }
 }

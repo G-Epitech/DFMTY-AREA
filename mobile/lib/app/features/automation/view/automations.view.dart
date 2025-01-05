@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automations/view/automation_create_page.view.dart';
+import 'package:triggo/app/features/automation/view/automation.view.dart';
 import 'package:triggo/app/features/integrations/widgets/integration.widget.dart';
+import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-class AutomationPage extends StatefulWidget {
-  const AutomationPage({super.key});
+class AutomationsScreen extends StatefulWidget {
+  const AutomationsScreen({super.key});
 
   @override
-  State<AutomationPage> createState() => _IntegrationPageState();
+  State<AutomationsScreen> createState() => _IntegrationPageState();
 }
 
-class _IntegrationPageState extends State<AutomationPage> {
+class _IntegrationPageState extends State<AutomationsScreen> {
   @override
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
@@ -123,8 +124,8 @@ class _NoDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('No automations',
-          style: Theme.of(context).textTheme.titleMedium),
+      child:
+          Text('No automation', style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }
@@ -154,14 +155,8 @@ class _AutomationListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CreateAutomationPage(
-              automation: automation,
-            ),
-          ),
-        );
+        Navigator.push(context,
+            customScreenBuilder(AutomationView(automation: automation)));
       },
       child: IntegrationCard(
         customWidget: Row(
@@ -181,7 +176,10 @@ class _AutomationListItem extends StatelessWidget {
                       automation.iconUri,
                       width: 30,
                       height: 30,
-                      color: Colors.white,
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
@@ -235,6 +233,7 @@ class _AutomationListItem extends StatelessWidget {
 class _ActivityIcon extends StatelessWidget {
   final bool state;
   final Color color;
+
   _ActivityIcon({required this.state}) : color = _getColor(state);
 
   static Color _getColor(bool state) {

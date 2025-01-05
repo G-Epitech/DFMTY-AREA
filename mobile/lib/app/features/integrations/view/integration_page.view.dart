@@ -8,14 +8,14 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
-class IntegrationPage extends StatefulWidget {
-  const IntegrationPage({super.key});
+class IntegrationScreen extends StatefulWidget {
+  const IntegrationScreen({super.key});
 
   @override
-  State<IntegrationPage> createState() => _IntegrationPageState();
+  State<IntegrationScreen> createState() => _IntegrationScreenState();
 }
 
-class _IntegrationPageState extends State<IntegrationPage> {
+class _IntegrationScreenState extends State<IntegrationScreen> {
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
