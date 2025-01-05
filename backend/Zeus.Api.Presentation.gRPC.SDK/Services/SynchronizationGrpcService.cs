@@ -1,5 +1,7 @@
 ﻿using Grpc.Core;
 
+using Zeus.Api.Presentation.gRPC.Contracts;
+
 namespace Zeus.Api.Presentation.gRPC.SDK.Services;
 
 public class SynchronizationGrpcService

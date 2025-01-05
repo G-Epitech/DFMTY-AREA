@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Api.Presentation.gRPC.Contracts;
 using Zeus.Api.Presentation.gRPC.SDK.Services;
 
 namespace Zeus.Api.Presentation.gRPC.SDK;

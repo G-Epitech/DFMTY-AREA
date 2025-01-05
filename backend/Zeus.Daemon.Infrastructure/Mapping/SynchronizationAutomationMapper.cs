@@ -9,7 +9,7 @@ namespace Zeus.Daemon.Infrastructure.Mapping;
 
 public static class SynchronizationAutomationMapper
 {
-    public static Automation MapToAutomation(this Api.Presentation.gRPC.Automation automation)
+    public static Automation MapToAutomation(this Api.Presentation.gRPC.Contracts.Automation automation)
     {
         var automationId = new AutomationId(Guid.Parse(automation.Id));
         var ownerId = new UserId(Guid.Parse(automation.OwnerId));
@@ -27,7 +27,7 @@ public static class SynchronizationAutomationMapper
         );
     }
 
-    private static AutomationTrigger MapToAutomationTrigger(this Api.Presentation.gRPC.AutomationTrigger trigger)
+    private static AutomationTrigger MapToAutomationTrigger(this Api.Presentation.gRPC.Contracts.AutomationTrigger trigger)
     {
         var automationTriggerId = new AutomationTriggerId(Guid.Parse(trigger.Id));
 
@@ -39,12 +39,12 @@ public static class SynchronizationAutomationMapper
         );
     }
 
-    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Api.Presentation.gRPC.AutomationTriggerParameter parameter)
+    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Api.Presentation.gRPC.Contracts.AutomationTriggerParameter parameter)
     {
         return new AutomationTriggerParameter { Identifier = parameter.Identifier, Value = parameter.Value };
     }
 
-    private static AutomationAction MapToAutomationAction(this Api.Presentation.gRPC.AutomationAction action)
+    private static AutomationAction MapToAutomationAction(this Api.Presentation.gRPC.Contracts.AutomationAction action)
     {
         var automationActionId = new AutomationActionId(Guid.Parse(action.Id));
 

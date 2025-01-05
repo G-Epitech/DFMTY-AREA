@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Protobuf Include="..\Zeus.Api.Presentation.gRPC\Protos\*.proto" GrpcServices="Client"/>
+        <Protobuf Include="..\Zeus.Api.Presentation.gRPC.Contracts\*.proto" GrpcServices="Client" Link="Contracts\%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Google.Protobuf" Version="3.29.1" />

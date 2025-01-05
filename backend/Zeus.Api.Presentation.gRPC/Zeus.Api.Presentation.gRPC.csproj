@@ -21,12 +21,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\*.proto" GrpcServices="Server" />
+        <Protobuf Include="..\Zeus.Api.Presentation.gRPC.Contracts\*.proto" GrpcServices="Server" Link="Contracts\%(Filename)%(Extension)" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Zeus.Api.Application\Zeus.Api.Application.csproj" />
       <ProjectReference Include="..\Zeus.Api.Infrastructure\Zeus.Api.Infrastructure.csproj" />
       <ProjectReference Include="..\Zeus.Api.Presentation.Shared\Zeus.Api.Presentation.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Update="..\Zeus.Api.Presentation.gRPC.Contracts" />
     </ItemGroup>
 </Project>
