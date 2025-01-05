@@ -10,11 +10,15 @@ class TriggerPropertiesFieldsValues {
 
 class TriggerPropertiesFields {
   final String name;
+  final String label;
+  final String icon;
   final String? selectedValue;
   final List<TriggerPropertiesFieldsValues> values;
 
   TriggerPropertiesFields({
     required this.name,
+    required this.label,
+    required this.icon,
     this.selectedValue,
     required this.values,
   });
@@ -26,6 +30,8 @@ class TriggerPropertiesFields {
   }) {
     return TriggerPropertiesFields(
       name: name,
+      label: label,
+      icon: icon,
       selectedValue: selectedValue ?? this.selectedValue,
       values: values,
     );

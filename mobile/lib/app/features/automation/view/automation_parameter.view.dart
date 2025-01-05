@@ -10,6 +10,8 @@ class AutomationParameterView extends StatelessWidget {
   final List<TriggerPropertiesFields> initialFields = [
     TriggerPropertiesFields(
       name: 'List Guilds',
+      label: 'Guild',
+      icon: 'assets/icons/people.svg',
       values: [
         TriggerPropertiesFieldsValues(
           name: 'Guild 1',
@@ -23,6 +25,8 @@ class AutomationParameterView extends StatelessWidget {
     ),
     TriggerPropertiesFields(
       name: 'List Channels',
+      label: 'Channel',
+      icon: 'assets/icons/chat.svg',
       values: [
         TriggerPropertiesFieldsValues(
           name: 'Channel 1',

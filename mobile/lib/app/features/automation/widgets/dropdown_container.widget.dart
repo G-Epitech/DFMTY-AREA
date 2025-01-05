@@ -30,7 +30,7 @@ class DropdownContainer extends StatelessWidget {
         DropdownMenuItem<String>(
           value: null,
           child: Text(
-            'Select a Guild',
+            'Select a ${field.label}',
             style: _textStyle(),
           ),
         ),
@@ -76,7 +76,7 @@ class _DropdownButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _Icon(),
+            _Icon(icon: field.icon),
             const SizedBox(width: 8.0),
             _Dropdown(field: field, items: items, onChanged: onChanged),
           ],
@@ -87,10 +87,14 @@ class _DropdownButton extends StatelessWidget {
 }
 
 class _Icon extends StatelessWidget {
+  final String icon;
+
+  const _Icon({required this.icon});
+
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-      'assets/icons/people.svg',
+      icon,
       colorFilter: const ColorFilter.mode(
         textSecondaryColor,
         BlendMode.srcIn,
@@ -141,7 +145,9 @@ class _Dropdown extends StatelessWidget {
         icon: _getDropdownIcon(context),
         dropdownColor: Colors.white,
         underline: Container(),
-        hint: field.selectedValue == null ? _hintText('Select a Guild') : null,
+        hint: field.selectedValue == null
+            ? _hintText('Select a ${field.label}')
+            : null,
       ),
     );
   }

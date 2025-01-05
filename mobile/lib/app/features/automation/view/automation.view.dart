@@ -109,13 +109,13 @@ class CustomRectangleList extends StatelessWidget {
     return Column(
       children: [
         _TriggerListItem(
-          icon: Icons.message,
+          icon: "assets/icons/chat.svg",
           color: Color(0xFF5865F2),
           text: "Message received in channel",
         ),
         SizedBox(height: 10),
         _TriggerListItem(
-          icon: Icons.tag_faces,
+          icon: "assets/icons/people.svg",
           color: Color(0xFF5865F2),
           text: "React to a message",
         ),
@@ -125,7 +125,7 @@ class CustomRectangleList extends StatelessWidget {
 }
 
 class _TriggerListItem extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final Color color;
   final String text;
 
@@ -143,10 +143,10 @@ class _TriggerListItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFF5865F2), width: 2),
+          border: Border.all(color: Color(0xFF5865F2), width: 3),
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
             Container(
@@ -156,7 +156,18 @@ class _TriggerListItem extends StatelessWidget {
                 color: color,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SvgPicture.asset(
+                  icon,
+                  width: 20,
+                  height: 20,
+                  colorFilter: ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
             ),
             SizedBox(width: 10),
             Expanded(
