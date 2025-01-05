@@ -4,7 +4,7 @@ import {
   UserAutomationsGetResponseDTO,
   UsersGetResponseDTO,
 } from '@repositories/users/dto';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { UserIntegrationsGetResponseDTO } from '@repositories/users/dto/user-integrations-get.dto';
 import { PageOptions } from '@models/page';
