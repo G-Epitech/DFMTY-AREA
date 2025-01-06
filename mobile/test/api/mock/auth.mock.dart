@@ -21,7 +21,12 @@ void _loginMock(MockClient mock) {
     if (invocation.namedArguments[const Symbol('headers')] == null) {
       return http.Response(
         jsonEncode({
-          'errors': ['No headers']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 400,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         400,
       );
@@ -29,7 +34,12 @@ void _loginMock(MockClient mock) {
     if (invocation.namedArguments[const Symbol('body')] == null) {
       return http.Response(
         jsonEncode({
-          'errors': ['No body']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 400,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         400,
       );
@@ -51,7 +61,12 @@ void _loginMock(MockClient mock) {
     } else {
       return http.Response(
         jsonEncode({
-          'errors': ['Invalid credentials']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 401,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         401,
       );
@@ -67,7 +82,12 @@ void _refreshTokenMock(MockClient mock) {
     if (invocation.namedArguments[const Symbol('headers')] == null) {
       return http.Response(
         jsonEncode({
-          'errors': ['No headers']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 400,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         400,
       );
@@ -88,7 +108,12 @@ void _refreshTokenMock(MockClient mock) {
     } else {
       return http.Response(
         jsonEncode({
-          'errors': ['Invalid token']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 401,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         401,
       );
@@ -105,7 +130,12 @@ void _registerMock(MockClient mock) {
     if (invocation.namedArguments[const Symbol('headers')] == null) {
       return http.Response(
         jsonEncode({
-          'errors': ['No headers']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 400,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         400,
       );
@@ -113,7 +143,12 @@ void _registerMock(MockClient mock) {
     if (invocation.namedArguments[const Symbol('body')] == null) {
       return http.Response(
         jsonEncode({
-          'errors': ['No body']
+          "type":
+              "https://https://datatracker.ietf.org/doc/html/rfc7231#section-**",
+          "title": "Short human-readable title",
+          "status": 400,
+          "detail": "Human-readable explanation",
+          "instance": "/**/endpoint-path"
         }),
         400,
       );
