@@ -1,8 +1,8 @@
-BACKEND_PATH = 'backend/'
-MOBILE_PATH = 'mobile/'
-ZEUS_API_WEB_PATH = "${BACKEND_PATH}Zeus.Api.Web/"
-ZEUS_API_GRPC_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
-ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
+BACKEND_PATH = 'backend'
+MOBILE_PATH = 'mobile'
+ZEUS_API_WEB_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.Web"
+ZEUS_API_GRPC_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.gRPC"
+ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}/Zeus.Daemon.Runner"
 
 podTemplate(containers: [
     containerTemplate(

@@ -37,7 +37,7 @@ services:
     restart: always
     build:
       context: backend/
-      dockerfile: Zeus.Api.Web/Dockerfile
+      dockerfile: Zeus.Api.Presentation.Web/Dockerfile
     env_file:
       - .env
     ports:
@@ -53,7 +53,7 @@ services:
     restart: always
     build:
       context: backend/
-      dockerfile: Zeus.Api.gRPC/Dockerfile
+      dockerfile: Zeus.Api.Presentation.gRPC/Dockerfile
     env_file:
       - .env
     networks:

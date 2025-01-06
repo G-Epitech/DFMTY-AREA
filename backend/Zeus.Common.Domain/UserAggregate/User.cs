@@ -1,8 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.UserAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class User : AggregateRoot<UserId>
 {
     private User(
