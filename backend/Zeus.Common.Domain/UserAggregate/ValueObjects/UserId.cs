@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Common.Domain.UserAggregate.ValueObjects;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class UserId : ValueObject
 {
     public Guid Value { get; }
