@@ -28,7 +28,7 @@ export class PaginationComponent {
 
   selectPage(page: number): void {
     if (page >= 1 && page <= this.totalPages()) {
-      this.selectedPage.set(page);
+      this.selectedPage.set(page - 1);
       this.pageChange.emit(page);
     }
   }

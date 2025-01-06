@@ -25,7 +25,8 @@ import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ToastrService } from 'ngx-toastr';
-import { PagerCacheService } from '@features/automations/listing/pager-cache.service';
+import { PagerCacheService } from '@common/cache/pager-cache.service';
+import { AUTOMATION_CACHE_SERVICE } from '@common/cache/injection-tokens';
 
 @Component({
   selector: 'tr-automations-list',
@@ -46,8 +47,9 @@ export class AutomationsListPageComponent implements OnDestroy {
   readonly #usersMediator = inject(UsersMediator);
   readonly #automationsMediator = inject(AutomationsMediator);
   readonly #toastr = inject(ToastrService);
-  readonly #cacheService: PagerCacheService<AutomationModel> =
-    inject(PagerCacheService);
+  readonly #cacheService: PagerCacheService<AutomationModel> = inject(
+    AUTOMATION_CACHE_SERVICE
+  );
 
   private destroy$ = new Subject<void>();
 
@@ -98,6 +100,7 @@ export class AutomationsListPageComponent implements OnDestroy {
           window.location.reload();
         },
       });
+    this.#cacheService.clearLastPage();
   }
 
   ngOnDestroy() {
