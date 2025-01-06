@@ -28,6 +28,25 @@
         @if (!loading()) {
           @for (integration of page.data; track integration.id) {
             <tr-integration-linked-card [integration]="integration" />
+          } @empty {
+            <div
+              class="flex flex-col items-center justify-center h-full min-h-[300px] p-8 space-y-4 text-center">
+              <div class="rounded-full bg-accent p-4 flex items-center justify-center">
+                <ng-icon
+                  name="heroLink"
+                  size="2rem"
+                  strokeWidth="0.15rem"
+                  class="mb-0.5 text-primary"></ng-icon>
+              </div>
+
+              <div class="space-y-2">
+                <h3 class="text-lg font-medium">No integrations found</h3>
+                <p class="text-sm text-muted-foreground max-w-[450px]">
+                  Get started by adding your first integration. Connect your
+                  favorite tools and services to enhance your workflow.
+                </p>
+              </div>
+            </div>
           }
         }
       }

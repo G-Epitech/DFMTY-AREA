@@ -15,6 +15,7 @@ import { TrInputSearchComponent } from '@triggo-ui/input';
 import { PageModel, PageOptions } from '@models/page';
 import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'tr-integrations',
@@ -25,6 +26,7 @@ import { TrSkeletonComponent } from '@triggo-ui/skeleton';
     PaginationComponent,
     TrSkeletonComponent,
     TrInputSearchComponent,
+    NgIcon,
   ],
   templateUrl: './integrations.page.html',
   styles: [],
