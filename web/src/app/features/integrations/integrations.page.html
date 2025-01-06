@@ -13,18 +13,24 @@
 
   <div class="flex-grow bg-secondary rounded-md overflow-auto">
     <div class="p-4 space-y-4 flex-col flex">
-      @if (loading()) { @for (_ of [].constructor(5); track $index) {
-      <div class="bg-white rounded-md p-4 flex gap-2">
-        <tr-skeleton class="w-12 h-12 rounded-full bg-secondary" />
-        <div class="space-y-2">
-          <tr-skeleton class="h-4 w-[250px] bg-secondary" />
-          <tr-skeleton class="h-4 w-[200px] bg-secondary" />
-        </div>
-      </div>
-      } } @if (integrations | async ; as page) { @if (!loading()) { @for
-      (integration of page.data; track integration.id) {
-      <tr-integration-linked-card [integration]="integration" />
-      } } }
+      @if (loading()) {
+        @for (_ of [].constructor(5); track $index) {
+          <div class="bg-white rounded-md p-4 flex gap-2">
+            <tr-skeleton class="w-12 h-12 rounded-full bg-secondary" />
+            <div class="space-y-2">
+              <tr-skeleton class="h-4 w-[250px] bg-secondary" />
+              <tr-skeleton class="h-4 w-[200px] bg-secondary" />
+            </div>
+          </div>
+        }
+      }
+      @if (integrations | async; as page) {
+        @if (!loading()) {
+          @for (integration of page.data; track integration.id) {
+            <tr-integration-linked-card [integration]="integration" />
+          }
+        }
+      }
     </div>
   </div>
 </div>
