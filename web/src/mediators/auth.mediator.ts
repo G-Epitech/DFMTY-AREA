@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AuthRepository, TokenRepository } from '@repositories/auth';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AppRouter } from '@app/app.router';
 
@@ -26,9 +26,8 @@ export class AuthMediator {
         lastName: lastName,
       })
       .pipe(
-        tap({
-          next: tokens => this.#tokenRepository.storeTokens(tokens),
-        })
+        map(res => new TokensModel(res.accessToken, res.refreshToken)),
+        tap(tokens => this.#tokenRepository.storeTokens(tokens))
       );
   }
 
@@ -39,9 +38,8 @@ export class AuthMediator {
         password: password,
       })
       .pipe(
-        tap({
-          next: tokens => this.#tokenRepository.storeTokens(tokens),
-        })
+        map(res => new TokensModel(res.accessToken, res.refreshToken)),
+        tap(tokens => this.#tokenRepository.storeTokens(tokens))
       );
   }
 

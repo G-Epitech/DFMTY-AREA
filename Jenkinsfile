@@ -66,8 +66,8 @@ podTemplate(containers: [
             container('docker') {
                 def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
                 def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
+                sh "docker rmi ${MOBILE_IMAGE_TEST}"
                 if (runStatus != 0) {
-                    sh "docker rmi ${MOBILE_IMAGE_TEST}"
                     error "Docker run failed for Mobile App"
                 }
             }
@@ -77,9 +77,7 @@ podTemplate(containers: [
             container('git') {
                 checkout scm
 
-                sh "git config --global --add safe.directory ${WORKSPACE}"
-
-                def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                def currentBranch = env.CHANGE_BRANCH
 
                 if (currentBranch == 'main') {
                     sh "git remote add mirror ${MIRROR_URL}"
