@@ -29,6 +29,26 @@
         @if (!loading()) {
           @for (automation of page.data; track automation.id) {
             <tr-automation-card [automation]="automation" />
+          } @empty {
+            <div
+              class="flex flex-col items-center justify-center h-full min-h-[300px] p-8 space-y-4 text-center">
+              <div
+                class="rounded-full bg-accent p-4 flex items-center justify-center">
+                <ng-icon
+                  name="heroBolt"
+                  size="2rem"
+                  strokeWidth="0.1rem"
+                  class="mb-0.5 text-primary"></ng-icon>
+              </div>
+
+              <div class="space-y-2">
+                <h3 class="text-lg font-medium">No automations found</h3>
+                <p class="text-sm text-muted-foreground max-w-[450px]">
+                  Get started by adding your first automation. Automate your
+                  workflows and save time.
+                </p>
+              </div>
+            </div>
           }
         }
       }
