@@ -48,9 +48,7 @@ podTemplate(containers: [
                 stage('Mirror push') {
                     checkout scm
 
-                    sh "git config --global --add safe.directory ${WORKSPACE}"
-
-                    def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    def currentBranch = env.CHANGE_BRANCH
 
                     if (currentBranch == 'main') {
                         sh "git remote add mirror ${MIRROR_URL}"
@@ -61,7 +59,7 @@ podTemplate(containers: [
                             sh 'GIT_SSH_COMMAND="ssh -i $PRIVATE_KEY" git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"'
                         }
                     } else {
-                        echo "Not on main branch, skipping mirror push."
+                        echo "Not on main branch (${currentBranch}), skipping mirror push."
                     }
                 }
             }
