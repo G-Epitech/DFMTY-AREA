@@ -1,5 +1,5 @@
-import { TriggerShortDTO } from '@repositories/dto/automation/trigger-short.dto';
-import { ActionShortDTO } from '@repositories/dto/automation/action-short.dto';
+import { TriggerShortDTO } from '@repositories/automations/dto/trigger-short.dto';
+import { ActionShortDTO } from '@repositories/automations/dto/action-short.dto';
 
 export interface AutomationDTO {
   id: string;

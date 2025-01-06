@@ -17,23 +17,13 @@ export class AuthRepository {
 
   constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
-  register(dto: AuthRegisterRequestDTO): Observable<TokensModel> {
+  register(dto: AuthRegisterRequestDTO): Observable<AuthRegisterResponseDTO> {
     const url = `${this.baseUrl}/auth/register`;
-    const response = this.#httpClient.post<AuthRegisterResponseDTO>(url, dto);
-    return response.pipe(
-      map(res => {
-        return new TokensModel(res.accessToken, res.refreshToken);
-      })
-    );
+    return this.#httpClient.post<AuthRegisterResponseDTO>(url, dto);
   }
 
-  login(dto: AuthLoginRequestDTO): Observable<TokensModel> {
+  login(dto: AuthLoginRequestDTO): Observable<AuthLoginResponseDTO> {
     const url = `${this.baseUrl}/auth/login`;
-    const response = this.#httpClient.post<AuthLoginResponseDTO>(url, dto);
-    return response.pipe(
-      map(res => {
-        return new TokensModel(res.accessToken, res.refreshToken);
-      })
-    );
+    return this.#httpClient.post<AuthLoginResponseDTO>(url, dto);
   }
 }
