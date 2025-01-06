@@ -49,8 +49,6 @@ class IntegrationMediator with ChangeNotifier {
     try {
       final res = await _integrationRepository.getIntegrationURI(name);
 
-      print(res);
-
       if (res.statusCode == Codes.ok && res.data != null) {
         final urlString = res.data!.uri;
         final url = Uri.parse(urlString);
@@ -63,7 +61,6 @@ class IntegrationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print(e);
       // Display error message with a snackbar or dialog (something like that)
       rethrow;
     }
