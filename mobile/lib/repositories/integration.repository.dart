@@ -16,7 +16,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integrations/?page=$page&size=$size',
+      endpoint: '/user/integration/?page=$page&size=$size',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
@@ -37,7 +37,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integrations/$integrationId',
+      endpoint: '/user/integration/$integrationId',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
@@ -57,7 +57,7 @@ class IntegrationRepository {
     //    final accessToken = await credentialsRepository.getAccessToken();
     //     final response = await call(
     //       method: 'GET',
-    //       endpoint: '/integrations',
+    //       endpoint: '/integration',
     //       headers: {'Authorization': 'Bearer $accessToken'},
     //       client: client,
     //     );
@@ -94,7 +94,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final res = await call(
       method: 'POST',
-      endpoint: '/integrations/$name/uri',
+      endpoint: '/integration/$name/uri',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
