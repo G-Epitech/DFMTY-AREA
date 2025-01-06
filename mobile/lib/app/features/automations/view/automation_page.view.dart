@@ -181,7 +181,10 @@ class _AutomationListItem extends StatelessWidget {
                       automation.iconUri,
                       width: 30,
                       height: 30,
-                      color: Colors.white,
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
@@ -235,6 +238,7 @@ class _AutomationListItem extends StatelessWidget {
 class _ActivityIcon extends StatelessWidget {
   final bool state;
   final Color color;
+
   _ActivityIcon({required this.state}) : color = _getColor(state);
 
   static Color _getColor(bool state) {
