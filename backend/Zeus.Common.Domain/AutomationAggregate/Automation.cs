@@ -1,10 +1,13 @@
-﻿using Zeus.BuildingBlocks.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.AutomationAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class Automation : AggregateRoot<AutomationId>
 {
     private readonly List<AutomationAction> _actions;
@@ -15,7 +18,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
     public bool Enabled { get; private set; }
-    
+
     public Automation(
         AutomationId id,
         string label,

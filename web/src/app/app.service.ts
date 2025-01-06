@@ -12,6 +12,8 @@ export class AppService {
   async appInit(): Promise<void> {
     if (this.#tokenMediator.accessTokenIsValid()) {
       this.#authStore.me();
+    } else {
+      this.#authStore.cancel();
     }
   }
 }

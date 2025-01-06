@@ -1,7 +1,10 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AutomationDTO, AutomationManifestDTO } from '@repositories/dto';
+import {
+  AutomationDTO,
+  AutomationManifestDTO,
+} from '@repositories/automations/dto';
 
 @Injectable({
   providedIn: 'root',

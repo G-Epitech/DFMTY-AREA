@@ -52,7 +52,6 @@ class AutomationRepository {
   }
 
   Future<Response<OutGetAutomationsDTO>> getUserAutomations() async {
-    print('getUserAutomations');
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
@@ -60,9 +59,6 @@ class AutomationRepository {
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
-
-    print(response.statusCode);
-    print(response.data);
 
     return Response<OutGetAutomationsDTO>(
       statusCode: response.statusCode,

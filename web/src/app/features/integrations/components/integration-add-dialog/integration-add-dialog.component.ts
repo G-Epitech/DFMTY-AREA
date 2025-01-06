@@ -14,8 +14,7 @@ import {
 import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
-import { finalize } from 'rxjs/operators';
-import { DiscordRepository } from '@repositories/integrations';
+import { IntegrationsMediator } from '@mediators/integrations.mediator';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -35,7 +34,7 @@ import { DiscordRepository } from '@repositories/integrations';
 })
 export class IntegrationAddDialogComponent {
   selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
-  readonly #discordRepository = inject(DiscordRepository);
+  readonly #integrationsMediator = inject(IntegrationsMediator);
 
   readonly availableIntegrations: IntegrationAvailableCardProps[] = [
     {
@@ -48,7 +47,7 @@ export class IntegrationAddDialogComponent {
         'Customize your notifications',
       ],
       linkFn: () => {
-        this.#discordRepository.getUri().subscribe({
+        this.#integrationsMediator.discordRepository.getUri().subscribe({
           next: uri => {
             if (!uri) {
               return;

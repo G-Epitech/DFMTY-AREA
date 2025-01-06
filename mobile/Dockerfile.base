@@ -1,0 +1,41 @@
+FROM debian:bullseye-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  curl \
+  git \
+  unzip \
+  ca-certificates \
+  wget \
+  openjdk-17-jdk \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+RUN wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip -O /tmp/android-commandlinetools.zip \
+  && mkdir -p /usr/local/android-sdk/cmdline-tools/latest \
+  && unzip /tmp/android-commandlinetools.zip -d /usr/local/android-sdk/cmdline-tools \
+  && mv /usr/local/android-sdk/cmdline-tools/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest/ \
+  && rm -rf /usr/local/android-sdk/cmdline-tools/cmdline-tools \
+  && rm /tmp/android-commandlinetools.zip
+
+ENV ANDROID_SDK_ROOT=/usr/local/android-sdk
+ENV ANDROID_HOME=$ANDROID_SDK_ROOT
+ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:${PATH}"
+
+RUN yes | sdkmanager --licenses
+
+RUN sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+
+WORKDIR /usr/local
+
+RUN git clone https://github.com/flutter/flutter.git
+
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+
+WORKDIR /app
+
+COPY pubspec.yaml pubspec.lock ./
+
+RUN flutter pub get
+
+LABEL stage=mobile-base

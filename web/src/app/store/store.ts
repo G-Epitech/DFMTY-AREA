@@ -20,7 +20,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
   user: undefined,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const AuthStore = signalStore(
@@ -37,6 +37,7 @@ export const AuthStore = signalStore(
         tokenMediator.accessTokenIsValid()
       );
     }),
+    isLoading: computed(() => store.isLoading()),
   })),
   withMethods((store, usersMediator = inject(UsersMediator)) => ({
     me: rxMethod<void>(
@@ -53,5 +54,6 @@ export const AuthStore = signalStore(
       )
     ),
     reset: () => patchState(store, initialState),
+    cancel: () => patchState(store, { isLoading: false }),
   }))
 );

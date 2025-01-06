@@ -69,12 +69,12 @@ export class LoginFormComponent implements OnDestroy {
           next: () => this.#store.me(),
           error: () => {
             this.loginLoading.set(false);
-            this.#toastr.error('Invalid email or password');
+            this.#toastr.error('Invalid email or password', 'Login failed');
           },
         })
       )
       .subscribe(() => {
-        this.#toastr.success('Logged in successfully');
+        this.#toastr.success('Logged in successfully', 'Success');
         this.loginLoading.set(false);
       });
   }

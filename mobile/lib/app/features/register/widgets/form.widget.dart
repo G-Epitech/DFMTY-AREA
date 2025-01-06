@@ -51,9 +51,9 @@ class _Label extends StatelessWidget {
 class _FirstNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
+    /*final displayError = context.select(
       (RegisterBloc bloc) => bloc.state.firstName.displayError,
-    );
+    );*/
 
     return TriggoInput(
       placeholder: 'First Name',
@@ -67,9 +67,9 @@ class _FirstNameInput extends StatelessWidget {
 class _LastNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
+    /*final displayError = context.select(
       (RegisterBloc bloc) => bloc.state.lastName.displayError,
-    );
+    );*/
 
     return TriggoInput(
       placeholder: 'Last Name',
@@ -83,9 +83,9 @@ class _LastNameInput extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
+    /*final displayError = context.select(
       (RegisterBloc bloc) => bloc.state.email.displayError,
-    );
+    );*/
 
     return TriggoInput(
       placeholder: 'Email',
@@ -99,9 +99,9 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
+    /*final displayError = context.select(
       (RegisterBloc bloc) => bloc.state.password.displayError,
-    );
+    );*/
 
     return TriggoInput(
       placeholder: 'Password',

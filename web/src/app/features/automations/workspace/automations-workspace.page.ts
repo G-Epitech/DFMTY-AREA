@@ -2,9 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
-  OnInit,
-  signal,
 } from '@angular/core';
 import { AutomationModel } from '@models/automation';
 import { iconName } from '@utils/icon';
@@ -12,10 +9,8 @@ import { NgIcon } from '@ng-icons/core';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { ContextMenuComponent } from '@features/automations/workspace/components/context-menu/context-menu.component';
 import {
-  concat,
   map,
   Observable,
-  of,
   Subject,
   switchMap,
   takeUntil,

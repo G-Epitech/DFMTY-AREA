@@ -1,7 +1,10 @@
-﻿using Zeus.BuildingBlocks.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class IntegrationId : ValueObject
 {
     public Guid Value { get; }

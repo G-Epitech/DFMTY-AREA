@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationView extends StatefulWidget {
@@ -62,7 +60,10 @@ class _Header extends StatelessWidget {
                 automation.iconUri,
                 width: 25,
                 height: 25,
-                color: Colors.white,
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
@@ -88,8 +89,8 @@ class _AutomationTriggerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
+    /*final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);*/
 
     return Column(
       children: [

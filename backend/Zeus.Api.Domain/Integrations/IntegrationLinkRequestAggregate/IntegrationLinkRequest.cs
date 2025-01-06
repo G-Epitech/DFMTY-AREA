@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.Integrations.Common.Enums;
@@ -5,6 +7,7 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
 {
     /// <summary>

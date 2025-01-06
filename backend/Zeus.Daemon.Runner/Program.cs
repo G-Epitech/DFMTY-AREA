@@ -4,8 +4,12 @@ using Zeus.Daemon.Runner.Builder;
 
 var builder = DaemonRunnerBuilder.CreateBuilder(args);
 {
+    #region Services
+
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
+
+    #endregion Services
 }
 
 var runner = builder.Build();

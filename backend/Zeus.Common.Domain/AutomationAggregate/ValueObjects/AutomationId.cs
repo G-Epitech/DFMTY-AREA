@@ -1,6 +1,10 @@
-﻿using Zeus.BuildingBlocks.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 
 public sealed class AutomationId : ValueObject
 {
