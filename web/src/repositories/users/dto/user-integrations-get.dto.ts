@@ -1,4 +1,4 @@
-import { PageDTO } from '@repositories/dto/page.dto';
-import { IntegrationDTO } from '@repositories/dto';
+import { PageDTO } from '@repositories/utils/dto/page.dto';
+import { IntegrationDTO } from '@repositories/integrations/dto/integration.dto';
 
 export type UserIntegrationsGetResponseDTO = PageDTO<IntegrationDTO>;
