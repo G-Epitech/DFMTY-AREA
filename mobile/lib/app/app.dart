@@ -14,14 +14,14 @@ import 'package:triggo/repositories/credentials.repository.dart';
 import 'package:triggo/repositories/integration.repository.dart';
 import 'package:triggo/repositories/user.repository.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class TriggoApp extends StatefulWidget {
+  const TriggoApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<TriggoApp> createState() => _TriggoAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _TriggoAppState extends State<TriggoApp> {
   late final AuthenticationRepository _authenticationRepository;
   late final CredentialsRepository _credentialsRepository;
   late final UserRepository _userRepository;
@@ -70,6 +70,7 @@ class _MyAppState extends State<MyApp> {
           userRepository: _userRepository,
         )..add(AuthenticationSubscriptionRequested()),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Triggo',
           theme: triggoTheme,
           initialRoute: RoutesNames.splashScreen,

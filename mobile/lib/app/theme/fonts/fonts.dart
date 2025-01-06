@@ -3,7 +3,7 @@ import 'package:triggo/app/theme/colors/colors.dart';
 
 TextStyle baseTextStyle = const TextStyle(
   fontFamily: 'Onest',
-  color: textColor,
+  color: textPrimaryColor,
   letterSpacing: -0.2,
 );
 
