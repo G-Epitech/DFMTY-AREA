@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Zeus.BuildingBlocks.Domain\Zeus.BuildingBlocks.Domain.csproj" />
       <ProjectReference Include="..\Zeus.Common.Domain\Zeus.Common.Domain.csproj" />
     </ItemGroup>
 

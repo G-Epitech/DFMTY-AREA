@@ -2,7 +2,7 @@ using ErrorOr;
 
 using MediatR;
 
-using Zeus.Api.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Automations.Query.GetAutomations;

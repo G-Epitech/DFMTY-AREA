@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{750068C9-CB1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Daemon", "Daemon", "{19DBA0AD-5D78-4300-BB8D-EFC0DFEF0CE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Web", "Zeus.Api.Web\Zeus.Api.Web.csproj", "{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.Web", "Zeus.Api.Presentation.Web\Zeus.Api.Presentation.Web.csproj", "{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Infrastructure", "Zeus.Api.Infrastructure\Zeus.Api.Infrastructure.csproj", "{80B90B08-0EF8-403D-9666-F8A49A09A800}"
 EndProject
@@ -23,19 +23,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Daemon.Infrastructure", "Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj", "{1AED7E27-9A71-457A-9F46-ACEA5A7B17E1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{4F30FF27-F4A0-4469-AE8F-26CBAA0D4F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Domain", "Zeus.Common.Domain\Zeus.Common.Domain.csproj", "{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Domain", "Zeus.BuildingBlocks.Domain\Zeus.BuildingBlocks.Domain.csproj", "{407E2CD0-F2B5-463F-B19A-B0E2CB874F96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Application", "Zeus.Common.Application\Zeus.Common.Application.csproj", "{195C4E51-228D-40ED-AF8F-C9722A251B98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Application", "Zeus.BuildingBlocks.Application\Zeus.BuildingBlocks.Application.csproj", "{195C4E51-228D-40ED-AF8F-C9722A251B98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Extensions", "Zeus.Common.Extensions\Zeus.Common.Extensions.csproj", "{2936C839-BF56-4ABD-8C0C-774C825A0397}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.BuildingBlocks.Extensions", "Zeus.BuildingBlocks.Extensions\Zeus.BuildingBlocks.Extensions.csproj", "{2936C839-BF56-4ABD-8C0C-774C825A0397}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Migrations", "Zeus.Api.Migrations\Zeus.Api.Migrations.csproj", "{563D98E6-0AE1-4071-A1DB-077C8E10217B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.gRPC", "Zeus.Api.gRPC\Zeus.Api.gRPC.csproj", "{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC", "Zeus.Api.Presentation.gRPC\Zeus.Api.Presentation.gRPC.csproj", "{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.gRPC.SDK", "Zeus.Api.gRPC.SDK\Zeus.Api.gRPC.SDK.csproj", "{F3E8B14D-631E-468F-81AD-10698E6FA0D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC.SDK", "Zeus.Api.Presentation.gRPC.SDK\Zeus.Api.Presentation.gRPC.SDK.csproj", "{F3E8B14D-631E-468F-81AD-10698E6FA0D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6177C21B-1BCE-4925-AC04-FFB23B67AEF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Common.Domain", "Zeus.Common.Domain\Zeus.Common.Domain.csproj", "{D4D27FFE-5E17-47A6-A829-AFB266164A4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.Shared", "Zeus.Api.Presentation.Shared\Zeus.Api.Presentation.Shared.csproj", "{89CBC98E-2863-4445-9D05-94ACD5A78E39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC.Contracts", "Zeus.Api.Presentation.gRPC.Contracts\Zeus.Api.Presentation.gRPC.Contracts.csproj", "{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +68,9 @@ Global
 		{563D98E6-0AE1-4071-A1DB-077C8E10217B} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 		{D7679FA2-CFD3-4F6B-B481-EC517ABB1D14} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 		{F3E8B14D-631E-468F-81AD-10698E6FA0D1} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
+		{D4D27FFE-5E17-47A6-A829-AFB266164A4A} = {6177C21B-1BCE-4925-AC04-FFB23B67AEF3}
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
+		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -118,5 +129,17 @@ Global
 		{F3E8B14D-631E-468F-81AD-10698E6FA0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3E8B14D-631E-468F-81AD-10698E6FA0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3E8B14D-631E-468F-81AD-10698E6FA0D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D27FFE-5E17-47A6-A829-AFB266164A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89CBC98E-2863-4445-9D05-94ACD5A78E39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

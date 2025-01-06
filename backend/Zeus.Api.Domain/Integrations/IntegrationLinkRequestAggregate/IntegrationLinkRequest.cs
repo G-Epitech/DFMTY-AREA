@@ -1,10 +1,13 @@
-using Zeus.Api.Domain.Integrations.Common.Enums;
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
-using Zeus.Api.Domain.UserAggregate.ValueObjects;
-using Zeus.Common.Domain.Models;
+using Zeus.BuildingBlocks.Domain.Models;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
 {
     /// <summary>

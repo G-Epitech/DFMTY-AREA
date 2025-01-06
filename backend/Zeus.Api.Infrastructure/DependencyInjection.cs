@@ -10,9 +10,6 @@ using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
-using Zeus.Api.Domain.AutomationAggregate.Enums;
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
 using Zeus.Api.Infrastructure.Persistence;
@@ -24,6 +21,9 @@ using Zeus.Api.Infrastructure.Services.Settings;
 using Zeus.Api.Infrastructure.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 namespace Zeus.Api.Infrastructure;
 
@@ -63,9 +63,6 @@ public static class DependencyInjection
 
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
-
-        services.Configure<ServicesSettings>(configuration.GetSection(ServicesSettings.SectionName));
-        services.AddSingleton<IServicesSettingsProvider, ServicesSettingsProvider>();
     }
 
     public static IServiceCollection AddAuthentication(this IServiceCollection services,

@@ -8,11 +8,11 @@ using ErrorOr;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
-using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Discord;
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord.Contracts;
+using Zeus.Common.Domain.Authentication.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Services.Integrations.Discord;
 

@@ -27,7 +27,6 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       return [];
     }
@@ -43,7 +42,6 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       return false;
     }

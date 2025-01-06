@@ -1,53 +1,85 @@
-BACKEND_PATH = 'backend/'
-ZEUS_API_WEB_PATH = "${BACKEND_PATH}Zeus.Api.Web/"
-ZEUS_API_GRPC_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
-ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}Zeus.Api.gRPC/"
+BACKEND_PATH = 'backend'
+MOBILE_PATH = 'mobile'
+ZEUS_API_WEB_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.Web"
+ZEUS_API_GRPC_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.gRPC"
+ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}/Zeus.Daemon.Runner"
 
-pipeline {
-    agent any
-    environment {
-        MIRROR_URL = 'git@github.com:EpitechPromo2027/B-DEV-500-NAN-5-2-area-matheo.coquet.git'
-    }
-    stages {
-        stage ('Build') {
-            parallel {
-                stage('Zeus Api Web') {
-                    steps {
-                        script {
-                            def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
-                            sh "docker build -f ${ZEUS_API_WEB_PATH}/Dockerfile -t ${ZEUS_API_WEB_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
-                        }
+podTemplate(containers: [
+    containerTemplate(
+        name: 'docker',
+        image: 'docker',
+        command: 'sleep',
+        args: '1h'
+    ),
+    containerTemplate(
+        name: 'git',
+        image: 'alpine/git',
+        command: 'sleep',
+        args: '1h'
+    )
+], volumes: [
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+]) {
+    node(POD_LABEL) {
+
+        container('docker') {
+            stage('Checkout') {
+                checkout scm
+            }
+        }
+
+        stage('Backend Build') {
+            parallel(
+                'Zeus Api Web': {
+                    container('docker') {
+                        def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
+                        sh "docker build -f ${ZEUS_API_WEB_PATH}/Dockerfile -t ${ZEUS_API_WEB_IMAGE_TEST} ${BACKEND_PATH}"
+                        sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST}"
+                    }
+                },
+                'Zeus Api gRPC': {
+                    container('docker') {
+                        def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
+                        sh "docker build -f ${ZEUS_API_GRPC_PATH}/Dockerfile -t ${ZEUS_API_GRPC_IMAGE_TEST} ${BACKEND_PATH}"
+                        sh "docker rmi ${ZEUS_API_GRPC_IMAGE_TEST}"
+                    }
+                },
+                'Zeus Daemon Runner': {
+                    container('docker') {
+                        def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
+                        sh "docker build -f ${ZEUS_DAEMON_RUNNER_PATH}/Dockerfile -t ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${BACKEND_PATH}"
+                        sh "docker rmi ${ZEUS_DAEMON_RUNNER_IMAGE_TEST}"
                     }
                 }
-                stage('Zeus Api gRPC') {
-                    steps {
-                        script {
-                            def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
-                            sh "docker build -f ${ZEUS_API_GRPC_PATH}/Dockerfile -t ${ZEUS_API_GRPC_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
-                        }
-                    }
-                }
-                stage('Zeus Daemon Runner') {
-                    steps {
-                        script {
-                            def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
-                            sh "docker build -f ${ZEUS_DAEMON_RUNNER_PATH}/Dockerfile -t ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${BACKEND_PATH} --no-cache"
-                        }
-                    }
+            )
+        }
+
+        stage('Mobile Build') {
+            container('docker') {
+                sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH}"
+            }
+        }
+
+        stage('Mobile Test') {
+            container('docker') {
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
+                sh "docker rmi ${MOBILE_IMAGE_TEST}"
+                if (runStatus != 0) {
+                    error "Docker run failed for Mobile App"
                 }
             }
         }
 
-        stage ('Mirror') {
-            when {
-                branch 'main'
-            }
-            steps {
+        stage('Git Mirror') {
+            container('git') {
                 checkout scm
-                script {
-                    if (sh(script: "git remote | grep mirror", returnStatus: true) == 0) {
-                        sh "git remote remove mirror"
-                    }
+
+                def currentBranch = env.CHANGE_BRANCH
+
+                if (currentBranch == 'main') {
                     sh "git remote add mirror ${MIRROR_URL}"
 
                     sh "git checkout main"
@@ -55,18 +87,9 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'G-EPIJENKINS_SSH_KEY', keyFileVariable: 'PRIVATE_KEY')]) {
                         sh 'GIT_SSH_COMMAND="ssh -i $PRIVATE_KEY" git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"'
                     }
+                } else {
+                    echo "Not on main branch, skipping mirror push."
                 }
-            }
-        }
-    }
-    post {
-        always {
-            script {
-                def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
-                def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
-                def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
-
-                sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} ${ZEUS_API_GRPC_IMAGE_TEST} ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} || true"
             }
         }
     }

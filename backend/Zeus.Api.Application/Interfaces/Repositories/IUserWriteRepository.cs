@@ -1,4 +1,4 @@
-﻿using Zeus.Api.Domain.UserAggregate;
+﻿using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 

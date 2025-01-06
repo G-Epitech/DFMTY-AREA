@@ -5,11 +5,11 @@ using MediatR;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Domain.Errors.Integrations;
-using Zeus.Api.Domain.Integrations.Common.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.Enums;
-using Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
 

@@ -1,8 +1,8 @@
 using ErrorOr;
 
-using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.Integrations.Discord;
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
+using Zeus.Common.Domain.Authentication.ValueObjects;
 
 namespace Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 

@@ -1,16 +1,15 @@
-﻿using Zeus.Daemon.Domain.Automation.AutomationAggregate.Entities;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.Enums;
-using Zeus.Daemon.Domain.Automation.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.IntegrationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.User.ValueObjects;
-
-using Automation = Zeus.Daemon.Domain.Automation.AutomationAggregate.Automation;
+﻿using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Daemon.Infrastructure.Mapping;
 
 public static class SynchronizationAutomationMapper
 {
-    public static Automation MapToAutomation(this Api.gRPC.Automation automation)
+    public static Automation MapToAutomation(this Api.Presentation.gRPC.Contracts.Automation automation)
     {
         var automationId = new AutomationId(Guid.Parse(automation.Id));
         var ownerId = new UserId(Guid.Parse(automation.OwnerId));
@@ -28,7 +27,7 @@ public static class SynchronizationAutomationMapper
         );
     }
 
-    private static AutomationTrigger MapToAutomationTrigger(this Api.gRPC.AutomationTrigger trigger)
+    private static AutomationTrigger MapToAutomationTrigger(this Api.Presentation.gRPC.Contracts.AutomationTrigger trigger)
     {
         var automationTriggerId = new AutomationTriggerId(Guid.Parse(trigger.Id));
 
@@ -40,12 +39,12 @@ public static class SynchronizationAutomationMapper
         );
     }
 
-    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Api.gRPC.AutomationTriggerParameter parameter)
+    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Api.Presentation.gRPC.Contracts.AutomationTriggerParameter parameter)
     {
         return new AutomationTriggerParameter { Identifier = parameter.Identifier, Value = parameter.Value };
     }
 
-    private static AutomationAction MapToAutomationAction(this Api.gRPC.AutomationAction action)
+    private static AutomationAction MapToAutomationAction(this Api.Presentation.gRPC.Contracts.AutomationAction action)
     {
         var automationActionId = new AutomationActionId(Guid.Parse(action.Id));
 
