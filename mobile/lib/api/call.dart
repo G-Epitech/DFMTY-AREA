@@ -18,6 +18,7 @@ Future<Response<dynamic>> call<T extends Json>({
 
   try {
     final uri = Uri.parse('${Env.apiUrl}$endpoint');
+    print('Calling API: $method $uri');
     final requestHeaders = _buildHeaders(accessToken, headers);
 
     final response = await _makeRequest(
@@ -28,7 +29,11 @@ Future<Response<dynamic>> call<T extends Json>({
       body: body,
     );
 
+    print('Response: ${response.body.isEmpty ? 'No body' : response.body}');
+
     final responseJson = _parseResponse(response);
+
+    print('Response JSON: $responseJson');
     if (response.statusCode >= 400) {
       final problemDetails = _parseProblemDetails(responseJson);
       return Response(
