@@ -77,7 +77,7 @@ podTemplate(containers: [
             container('git') {
                 checkout scm
 
-                def currentBranch = env.CHANGE_BRANCH
+                def currentBranch = env.BRANCH_NAME
 
                 if (currentBranch == 'main') {
                     sh "git remote add mirror ${MIRROR_URL}"
