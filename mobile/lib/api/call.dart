@@ -18,7 +18,6 @@ Future<Response<dynamic>> call<T extends Json>({
 
   try {
     final uri = Uri.parse('${Env.apiUrl}$endpoint');
-    print('Request: $method $uri');
     final requestHeaders = _buildHeaders(accessToken, headers);
 
     final response = await _makeRequest(
@@ -28,8 +27,6 @@ Future<Response<dynamic>> call<T extends Json>({
       headers: requestHeaders,
       body: body,
     );
-
-    print('Response: ${response.body}');
 
     final responseJson = _parseResponse(response);
     final errors = _parseErrors(responseJson);

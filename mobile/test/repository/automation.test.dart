@@ -30,7 +30,7 @@ void automationRepositoryTests() {
         CredentialsRepository(secureStorage: mockSecureStorage);
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/automation/manifest'),
+      Uri.parse('${Env.apiUrl}/automations/manifest'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',
@@ -71,7 +71,7 @@ void automationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/automation/0'),
+      Uri.parse('${Env.apiUrl}/automations/0'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',
