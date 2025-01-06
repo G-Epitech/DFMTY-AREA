@@ -4,6 +4,7 @@ import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
 import { AutomationModel } from '@models/automation';
+import { UserModel } from '@models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,32 +12,57 @@ import { AutomationModel } from '@models/automation';
 export class UsersMediator {
   readonly #usersRepository = inject(UsersRepository);
 
-  getById(id: string) {
-    return this.#usersRepository.getById(id);
+  getById(id: string): Observable<UserModel> {
+    return this.#usersRepository
+      .getById(id)
+      .pipe(
+        map(
+          res =>
+            new UserModel(
+              res.id,
+              res.email,
+              res.firstName,
+              res.lastName,
+              res.picture
+            )
+        )
+      );
   }
 
-  me() {
-    return this.#usersRepository.getUser();
+  me(): Observable<UserModel> {
+    return this.#usersRepository
+      .getUser()
+      .pipe(
+        map(
+          res =>
+            new UserModel(
+              res.id,
+              res.email,
+              res.firstName,
+              res.lastName,
+              res.picture
+            )
+        )
+      );
   }
 
   getIntegrations(
     pageOptions: PageOptions
   ): Observable<PageModel<IntegrationModel>> {
     return this.#usersRepository.getIntegrations(pageOptions).pipe(
-      map(res => {
-        return {
-          ...res,
-          data: res.data.map(integration => {
-            return new IntegrationModel(
+      map(res => ({
+        ...res,
+        data: res.data.map(
+          integration =>
+            new IntegrationModel(
               integration.id,
               integration.ownerId,
               integration.isValid,
               integration.type,
               integration.properties
-            );
-          }),
-        };
-      })
+            )
+        ),
+      }))
     );
   }
 
@@ -44,11 +70,11 @@ export class UsersMediator {
     pageOptions: PageOptions
   ): Observable<PageModel<AutomationModel>> {
     return this.#usersRepository.getAutomations(pageOptions).pipe(
-      map(res => {
-        return {
-          ...res,
-          data: res.data.map(automation => {
-            return new AutomationModel(
+      map(res => ({
+        ...res,
+        data: res.data.map(
+          automation =>
+            new AutomationModel(
               automation.id,
               automation.ownerId,
               automation.label,
@@ -59,10 +85,9 @@ export class UsersMediator {
               'chat-bubble-bottom-center-text',
               automation.trigger,
               automation.actions
-            );
-          }),
-        };
-      })
+            )
+        ),
+      }))
     );
   }
 }

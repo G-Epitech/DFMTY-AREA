@@ -4,9 +4,11 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { AuthStore } from '@app/store';
 import { AppRouter } from '@app/app.router';
 import { switchMap, filter, map } from 'rxjs/operators';
+import { AuthMediator } from '@mediators/auth.mediator';
 
 export const authGuard: CanActivateFn = () => {
   const store = inject(AuthStore);
+  const authMediator = inject(AuthMediator);
   const appRouter = inject(AppRouter);
 
   const isAuthenticated$ = toObservable(store.isAuthenticated);
@@ -18,6 +20,7 @@ export const authGuard: CanActivateFn = () => {
       return isAuthenticated$.pipe(
         map(isAuthenticated => {
           if (!isAuthenticated) {
+            authMediator.logout();
             appRouter.redirectToLogin();
             return false;
           }
