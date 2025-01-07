@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { IntegrationDiscordProps } from '@models/integration';
-import { NgClass, NgOptimizedImage } from '@angular/common';
-import { TrButtonDirective } from '@triggo-ui/button';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BrnDialogImports } from '@spartan-ng/ui-dialog-brain';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { NgIcon } from '@ng-icons/core';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 interface GuildProps {
   id: string;
@@ -15,23 +14,21 @@ interface GuildProps {
 }
 
 @Component({
-  selector: 'tr-integration-linked-discord',
+  selector: 'tr-manage-guild-dialog',
   imports: [
     NgOptimizedImage,
-    TrButtonDirective,
     TrDialogImports,
     BrnDialogImports,
     NgIcon,
     NgClass,
+    TrButtonDirective,
   ],
-  templateUrl: './integration-linked-discord.component.html',
+  templateUrl: './manage-guild-dialog.component.html',
+  standalone: true,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
-export class IntegrationLinkedDiscordComponent {
-  props = input.required<IntegrationDiscordProps>();
-
+export class ManageGuildDialogComponent {
   readonly guilds: GuildProps[] = [
     {
       id: '1',
