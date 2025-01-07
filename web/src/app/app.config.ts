@@ -17,6 +17,7 @@ import {
   heroHome,
   heroBolt,
   heroLink,
+  heroLinkSlash,
   heroExclamationTriangle,
   heroCheckCircle,
   heroCheck,
@@ -53,6 +54,7 @@ export const appConfig: ApplicationConfig = {
     provideIcons({
       heroHome,
       heroLink,
+      heroLinkSlash,
       heroBolt,
       heroCheckCircle,
       heroExclamationTriangle,
