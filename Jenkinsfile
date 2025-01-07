@@ -1,5 +1,6 @@
 BACKEND_PATH = 'backend'
 MOBILE_PATH = 'mobile'
+WEB_PATH = 'web'
 ZEUS_API_WEB_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.Web"
 ZEUS_API_GRPC_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.gRPC"
 ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}/Zeus.Daemon.Runner"
@@ -25,15 +26,61 @@ podTemplate(containers: [
         resourceLimitCpu: '600m',
         resourceRequestMemory: '300Mi',
         resourceLimitMemory: '600Mi'
+    ),
+    containerTemplate(
+        name: 'node',
+        image: 'node:16-alpine',
+        command: 'sleep',
+        args: '1h',
+        ttyEnabled: true,
+        resourceRequestCpu: '500m',
+        resourceLimitCpu: '600m',
+        resourceRequestMemory: '300Mi',
+        resourceLimitMemory: '600Mi'
     )
 ], volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
 ]) {
     node(POD_LABEL) {
-
         container('docker') {
             stage('Checkout') {
                 checkout scm
+            }
+        }
+
+        stage('Web Prepare') {
+            container('docker') {
+                def WEB_IMAGE_TEST = "web-test:${env.BUILD_ID}"
+                sh "docker build -f ${WEB_PATH}/Dockerfile -t ${WEB_IMAGE_TEST} ${WEB_PATH}"
+                sh "docker stop angular-container || true"
+                sh "docker rm angular-container || true"
+                sh "docker run -d --name angular-container ${WEB_IMAGE_TEST} sleep infinity"
+            }
+        }
+
+        stage('Web Build') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run build')
+            }
+        }
+
+        stage('Web Lint') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run lint')
+            }
+        }
+
+        stage('Web Format') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run format:check')
+            }
+        }
+
+        stage('Web Cleanup') {
+            container('docker') {
+                sh "docker stop angular-container"
+                sh "docker rm angular-container"
+                sh "docker rmi web-test:${env.BUILD_ID}"
             }
         }
 
@@ -77,7 +124,7 @@ podTemplate(containers: [
                 def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
                 sh "docker rmi ${MOBILE_IMAGE_TEST}"
                 if (runStatus != 0) {
-                    error "Docker run failed for Mobile App"
+                    error 'Docker run failed for Mobile App'
                 }
             }
         }
@@ -93,15 +140,25 @@ podTemplate(containers: [
 
                     sh "git remote add mirror ${MIRROR_URL}"
 
-                    sh "git checkout main"
+                    sh 'git checkout main'
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'G-EPIJENKINS_SSH_KEY', keyFileVariable: 'PRIVATE_KEY')]) {
                         sh 'GIT_SSH_COMMAND="ssh -i $PRIVATE_KEY" git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"'
                     }
                 } else {
-                    echo "Not on main branch, skipping mirror push."
+                    echo 'Not on main branch, skipping mirror push.'
                 }
             }
         }
+    }
+}
+
+def shInContainer(String containerName, String imageName, String command) {
+    def returnStatus = sh(script: "docker exec ${containerName} ${command}", returnStatus: true)
+    if (returnStatus != 0) {
+        error "Command failed in container ${containerName}: ${command}"
+        sh "docker stop ${containerName}"
+        sh "docker rm ${containerName}"
+        sh "docker rmi ${imageName}"
     }
 }

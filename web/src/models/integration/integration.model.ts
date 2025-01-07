@@ -1,8 +1,5 @@
 import { IntegrationTypeEnum } from '@models/integration/integration-type.enum';
-import {
-  IntegrationDiscordProps,
-  IntegrationProps,
-} from '@models/integration/properties';
+import { IntegrationDiscordProps } from '@models/integration/properties';
 
 export class IntegrationModel {
   readonly id: string;
