@@ -16,6 +16,16 @@ class DiscordMediator with ChangeNotifier {
         for (var integration in res.data!.page.data) {
           guilds.add(DiscordGuild.fromDTO(integration));
         }
+
+        guilds.sort((a, b) {
+          if (a.linked && !b.linked) {
+            return -1;
+          } else if (!a.linked && b.linked) {
+            return 1;
+          }
+          return 0;
+        });
+
         return guilds;
       } else {
         throw Exception(res.message);

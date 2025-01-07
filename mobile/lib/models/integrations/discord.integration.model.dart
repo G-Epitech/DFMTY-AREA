@@ -11,6 +11,7 @@ class DiscordIntegration extends Integration {
 
   DiscordIntegration({
     required super.name,
+    required super.id,
     required this.username,
     required this.email,
     required this.displayName,
@@ -22,6 +23,7 @@ class DiscordIntegration extends Integration {
     DiscordPropertiesDTO properties = dto.properties as DiscordPropertiesDTO;
     return DiscordIntegration(
       name: 'Discord',
+      id: dto.id,
       username: properties.username,
       email: properties.email,
       displayName: properties.displayName,

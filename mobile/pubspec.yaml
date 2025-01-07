@@ -46,6 +46,8 @@ flutter:
     - assets/icons/people.svg
     - assets/icons/chat.svg
     - assets/icons/cog-6-tooth.svg
+    - assets/icons/check.svg
+    - assets/icons/plus.svg
 
   uses-material-design: true
 
