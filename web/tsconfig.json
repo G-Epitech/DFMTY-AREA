@@ -21,6 +21,7 @@
       "@models/*": ["src/models/*"],
       "@mediators/*": ["src/mediators/*"],
       "@utils/*": ["src/utils/*"],
+      "@common/*": ["src/common/*"],
       "@components/*": ["src/app/components/*"],
       "@features/*": ["src/app/features/*"],
       "@app/*": ["src/app/*"],
