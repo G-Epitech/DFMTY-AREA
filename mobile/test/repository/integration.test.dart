@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/env.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/integration.repository.dart';
-import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/integration.repository.dart';
+import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';

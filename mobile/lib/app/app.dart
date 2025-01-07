@@ -8,11 +8,11 @@ import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
-import 'package:triggo/repositories/authentication.repository.dart';
-import 'package:triggo/repositories/automation.repository.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/integration.repository.dart';
-import 'package:triggo/repositories/user.repository.dart';
+import 'package:triggo/repositories/authentification/authentication.repository.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/integration.repository.dart';
+import 'package:triggo/repositories/user/user.repository.dart';
 
 class TriggoApp extends StatefulWidget {
   const TriggoApp({super.key});

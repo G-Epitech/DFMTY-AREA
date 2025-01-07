@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/dtos/authentication.dtos.dart';
+import 'package:triggo/repositories/authentification/dtos/authentication.dtos.dart';
 
 import 'call.test.mocks.dart';
 import 'mock/init.mock.dart';

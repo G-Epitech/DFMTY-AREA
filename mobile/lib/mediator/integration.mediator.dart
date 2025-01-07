@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/models/integration.model.dart';
-import 'package:triggo/repositories/integration.repository.dart';
+import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IntegrationMediator with ChangeNotifier {
