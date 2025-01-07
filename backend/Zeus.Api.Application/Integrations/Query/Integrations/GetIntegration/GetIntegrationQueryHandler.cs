@@ -12,7 +12,7 @@ using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Api.Application.Integrations.Query.GetIntegration;
+namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegration;
 
 public class GetIntegrationQueryHandler : IRequestHandler<GetIntegrationQuery, ErrorOr<GetIntegrationQueryResult>>
 {

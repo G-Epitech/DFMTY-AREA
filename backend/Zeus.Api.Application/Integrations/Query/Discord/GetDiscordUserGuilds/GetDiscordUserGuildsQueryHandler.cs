@@ -11,16 +11,16 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Api.Application.Integrations.Query.GetDiscordGuilds;
+namespace Zeus.Api.Application.Integrations.Query.Discord.GetDiscordUserGuilds;
 
 public class
-    GetDiscordGuildsQueryHandler : IRequestHandler<GetDiscordGuildsQuery, ErrorOr<List<GetDiscordGuildQueryResult>>>
+    GetDiscordUserGuildsQueryHandler : IRequestHandler<GetDiscordUserGuildsQuery, ErrorOr<List<GetDiscordUserGuildQueryResult>>>
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IDiscordService _discordService;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
 
-    public GetDiscordGuildsQueryHandler(IDiscordService discordService,
+    public GetDiscordUserGuildsQueryHandler(IDiscordService discordService,
         IIntegrationReadRepository integrationReadRepository,
         IIntegrationsSettingsProvider integrationsSettingsProvider)
     {
@@ -29,7 +29,7 @@ public class
         _integrationsSettingsProvider = integrationsSettingsProvider;
     }
 
-    public async Task<ErrorOr<List<GetDiscordGuildQueryResult>>> Handle(GetDiscordGuildsQuery query,
+    public async Task<ErrorOr<List<GetDiscordUserGuildQueryResult>>> Handle(GetDiscordUserGuildsQuery query,
         CancellationToken cancellationToken)
     {
         var integrationId = new IntegrationId(query.IntegrationId);
@@ -57,7 +57,7 @@ public class
             return botGuilds.Errors;
         }
 
-        return userGuilds.Value.Select(guild => new GetDiscordGuildQueryResult(
+        return userGuilds.Value.Select(guild => new GetDiscordUserGuildQueryResult(
             guild.Id.ValueString,
             guild.Name,
             guild.IconUri,

@@ -4,7 +4,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Zeus.Api.Application.Integrations.Query.GetDiscordGuilds;
+using Zeus.Api.Application.Integrations.Query.Discord.GetDiscordUserGuilds;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Discord;
 
@@ -34,7 +34,7 @@ public class DiscordPropsController : ApiController
             return Unauthorized();
         }
 
-        var userGuildsResult = await _sender.Send(new GetDiscordGuildsQuery(authUser.Id, integrationId));
+        var userGuildsResult = await _sender.Send(new GetDiscordUserGuildsQuery(authUser.Id, integrationId));
 
         return userGuildsResult.Match(
             result => Ok(result.Select(guild => _mapper.Map<GetDiscordGuildResponse>(guild))),

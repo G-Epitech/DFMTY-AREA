@@ -9,7 +9,7 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
-namespace Zeus.Api.Application.Integrations.Query.GetIntegrations;
+namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrations;
 
 public class
     GetIntegrationsQueryHandler : IRequestHandler<GetIntegrationsQuery, ErrorOr<Page<GetIntegrationQueryResult>>>
