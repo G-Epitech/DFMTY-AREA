@@ -121,7 +121,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -144,7 +144,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -168,7 +168,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -188,7 +188,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',

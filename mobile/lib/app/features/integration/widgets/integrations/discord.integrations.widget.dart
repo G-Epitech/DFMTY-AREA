@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/integration/view/integrations/discord.view.dart';
 import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
+import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
 class DiscordIntegrationListItemWidget extends StatelessWidget {
@@ -24,6 +28,7 @@ class DiscordCustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Stack(
           children: [
@@ -40,6 +45,7 @@ class DiscordCustomWidget extends StatelessWidget {
                 child: Icon(
                   Icons.discord,
                   size: 15,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -49,30 +55,40 @@ class DiscordCustomWidget extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      integration.displayName,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              Text(
+                integration.displayName,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(height: 1.1),
+                overflow: TextOverflow.ellipsis,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      '${integration.username} - ${integration.email}',
-                      style: Theme.of(context).textTheme.labelLarge,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              Text(
+                '${integration.username} - ${integration.email}',
+                style: Theme.of(context).textTheme.labelLarge,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                customScreenBuilder(DiscordView(
+                  discordGuild: integration,
+                )));
+          },
+          icon: SvgPicture.asset(
+            'assets/icons/cog-6-tooth.svg',
+            height: 24,
+            width: 24,
+            colorFilter: ColorFilter.mode(
+              textPrimaryColor,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ],

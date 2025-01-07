@@ -124,8 +124,9 @@ class _NoDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:
-          Text('No automation', style: Theme.of(context).textTheme.titleMedium),
+      child: Text('No automation',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }
