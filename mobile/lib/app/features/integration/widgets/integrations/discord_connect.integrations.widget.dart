@@ -24,7 +24,7 @@ class _DiscordCustomWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        integrationMediator.launchURL("discord");
+        integrationMediator.launchURLFromIntegration("discord");
       },
       child: Row(
         children: [

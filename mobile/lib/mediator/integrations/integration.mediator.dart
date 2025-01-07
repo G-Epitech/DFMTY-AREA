@@ -50,20 +50,28 @@ class IntegrationMediator with ChangeNotifier {
     }
   }
 
-  Future<void> launchURL(String name) async {
+  Future<void> launchURLFromIntegration(String name) async {
     try {
       final res = await _integrationRepository.getIntegrationURI(name);
 
       if (res.statusCode == Codes.ok && res.data != null) {
-        final urlString = res.data!.uri;
-        final url = Uri.parse(urlString);
-        if (await canLaunchUrl(url)) {
-          await launchUrl(url);
-        } else {
-          throw 'Could not launch $url';
-        }
+        await launchURL(res.data!.uri);
       } else {
         throw Exception(res.message);
+      }
+    } catch (e) {
+      // Display error message with a snackbar or dialog (something like that)
+      rethrow;
+    }
+  }
+
+  Future<void> launchURL(String url) async {
+    try {
+      final uriURL = Uri.parse(url);
+      if (await canLaunchUrl(uriURL)) {
+        await launchUrl(uriURL);
+      } else {
+        throw 'Could not launch $url';
       }
     } catch (e) {
       // Display error message with a snackbar or dialog (something like that)

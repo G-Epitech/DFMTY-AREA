@@ -16,23 +16,40 @@ class DiscordView extends StatefulWidget {
   State<DiscordView> createState() => _DiscordViewState();
 }
 
-class _DiscordViewState extends State<DiscordView> {
+class _DiscordViewState extends State<DiscordView> with WidgetsBindingObserver {
   late final DiscordIntegration discord;
+  late DiscordGuildsBloc _discordGuildsBloc;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _discordGuildsBloc.add(LoadDiscordGuilds(discord.id));
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     discord = widget.discordGuild;
+    WidgetsBinding.instance.addObserver(this);
+
+    final integrationMediator =
+        RepositoryProvider.of<IntegrationMediator>(context);
+    _discordGuildsBloc = DiscordGuildsBloc(integrationMediator.discord)
+      ..add(LoadDiscordGuilds(discord.id));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _discordGuildsBloc.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final IntegrationMediator integrationMediator =
-        RepositoryProvider.of<IntegrationMediator>(context);
-    return BlocProvider(
-      create: (context) => DiscordGuildsBloc(
-        integrationMediator.discord,
-      )..add(LoadDiscordGuilds(discord.id)),
+    return BlocProvider.value(
+      value: _discordGuildsBloc,
       child: BaseScaffold(
         title: 'Discord Guild',
         body: Column(children: [
@@ -65,10 +82,14 @@ class _GuildConnectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IntegrationMediator integrationMediator =
+        RepositoryProvider.of<IntegrationMediator>(context);
+
     return TriggoButton(
       text: 'Link a Guild',
       onPressed: () async {
-        print('Linking a guild');
+        await integrationMediator.launchURL(
+            "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");
       },
     );
   }
