@@ -21,4 +21,18 @@ public interface IDiscordService
     /// <param name="accessToken">The access token of the user (build from Oauth2)</param>
     /// <returns>The discord user</returns>
     public Task<ErrorOr<DiscordUser>> GetUserAsync(AccessToken accessToken);
+
+    /// <summary>
+    /// Get discord guilds of a user (/users/@me/guilds)
+    /// </summary>
+    /// <param name="accessToken">The access token of the user (build from Oauth2)</param>
+    /// <returns>Discord user guilds</returns>
+    public Task<ErrorOr<List<DiscordGuild>>> GetUserGuildsAsync(AccessToken accessToken);
+
+    /// <summary>
+    /// Get discord guilds of a bot (/users/@me/guilds)
+    /// </summary>
+    /// <param name="botToken">The triggo bot token</param>
+    /// <returns>Discord bot guilds</returns>
+    public Task<ErrorOr<List<DiscordGuild>>> GetBotGuildsAsync(string botToken);
 }

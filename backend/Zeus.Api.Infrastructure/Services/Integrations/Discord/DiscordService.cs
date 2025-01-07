@@ -54,6 +54,13 @@ public class DiscordService : IDiscordService
 
         return new Uri($"https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.png");
     }
+    
+    private static Uri GetGuildAvatarUri(string guildId, string? iconHash)
+    {
+        return iconHash is null
+            ? new Uri("https://cdn.discordapp.com/embed/avatars/default.png")
+            : new Uri($"https://cdn.discordapp.com/icons/{guildId}/{iconHash}.png");
+    }
 
     public async Task<ErrorOr<DiscordUserTokens>> GetTokensFromOauth2Async(string code)
     {
@@ -106,5 +113,50 @@ public class DiscordService : IDiscordService
             responseContent.GlobalName ?? responseContent.Username,
             avatar,
             []);
+    }
+
+    public async Task<ErrorOr<List<DiscordGuild>>> GetUserGuildsAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+        HttpResponseMessage response = await _httpClient.GetAsync("users/@me/guilds");
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+            return Errors.Integrations.Discord.InvalidDiscordUserCredentials;
+        if (!response.IsSuccessStatusCode)
+            return Errors.Integrations.Discord.InvalidMethod;
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetDiscordUserGuildResponse[]>(_jsonSerializerOptions);
+        if (responseContent is null)
+            return Errors.Integrations.Discord.InvalidBody;
+
+        return responseContent.Select(guild => DiscordGuild.Create(
+            new DiscordGuildId(guild.Id),
+            guild.Name,
+            GetGuildAvatarUri(guild.Id, guild.Icon),
+            guild.ApproximateMemberCount)).ToList();
+    }
+
+    public async Task<ErrorOr<List<DiscordGuild>>> GetBotGuildsAsync(string botToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Bot", botToken);
+        HttpResponseMessage response = await _httpClient.GetAsync("users/@me/guilds");
+        
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+            return Errors.Integrations.Discord.InvalidDiscordUserCredentials;
+        if (!response.IsSuccessStatusCode)
+            return Errors.Integrations.Discord.InvalidMethod;
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetDiscordUserGuildResponse[]>(_jsonSerializerOptions);
+        if (responseContent is null)
+            return Errors.Integrations.Discord.InvalidBody;
+
+        return responseContent.Select(guild => DiscordGuild.Create(
+            new DiscordGuildId(guild.Id),
+            guild.Name,
+            GetGuildAvatarUri(guild.Id, guild.Icon),
+            guild.ApproximateMemberCount)).ToList();
     }
 }

@@ -32,7 +32,7 @@ public class GetIntegrationQueryHandler : IRequestHandler<GetIntegrationQuery, E
         var integrationId = new IntegrationId(query.IntegrationId);
         var userId = new UserId(query.UserId);
 
-        var integration = await _integrationReadRepository.GetIntegrationByIdAsync(integrationId);
+        var integration = await _integrationReadRepository.GetIntegrationByIdAsync(integrationId, cancellationToken);
 
         if (integration is null || integration.OwnerId != userId)
         {
