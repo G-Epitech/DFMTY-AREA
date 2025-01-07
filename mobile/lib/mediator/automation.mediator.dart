@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/models/automation.model.dart';
-import 'package:triggo/repositories/automation.repository.dart';
-import 'package:triggo/repositories/dtos/automation.dtos.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
+import 'package:triggo/repositories/automation/dtos/automation.dtos.dart';
 
 class AutomationMediator with ChangeNotifier {
   final AutomationRepository _automationRepository;

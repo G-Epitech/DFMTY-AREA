@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/dtos/automation.dtos.dart';
+import 'package:triggo/repositories/automation/dtos/automation.dtos.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
 
 class AutomationRepository {
   final http.Client? client;

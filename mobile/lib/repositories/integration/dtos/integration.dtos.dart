@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:triggo/repositories/models/repository.models.dart';
-import 'package:triggo/repositories/utils/page_serializer.utils.dart';
+import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
+import 'package:triggo/repositories/page/models/page.repository.model.dart';
+import 'package:triggo/repositories/page/utils/page_serializer.utils.dart';
 import 'package:triggo/utils/json.dart';
 
 part 'integration.dtos.g.dart';
