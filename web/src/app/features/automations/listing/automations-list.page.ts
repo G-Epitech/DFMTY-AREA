@@ -87,7 +87,7 @@ export class AutomationsListPageComponent implements OnDestroy {
 
   pageChanged(page: number): void {
     this.loading.set(true);
-    this.pageOptions$.next({ ...this.pageOptions$.value, page});
+    this.pageOptions$.next({ ...this.pageOptions$.value, page });
   }
 
   createAutomation(): void {
