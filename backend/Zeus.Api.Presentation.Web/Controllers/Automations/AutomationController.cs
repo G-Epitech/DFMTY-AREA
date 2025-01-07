@@ -2,12 +2,14 @@ using MapsterMapper;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Automations.Commands.CreateAutomation;
 using Zeus.Api.Application.Automations.Query.GetAutomation;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Automations;
+using Zeus.Common.Domain.ProvidersSettings;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Automations;
 
@@ -17,12 +19,15 @@ public class AutomationController : ApiController
     private readonly ISender _sender;
     private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly ProvidersSettings _providersSettings;
 
-    public AutomationController(ISender sender, IAuthUserContext authUserContext, IMapper mapper)
+    public AutomationController(ISender sender, IAuthUserContext authUserContext, IMapper mapper,
+        ProvidersSettings providersSettings)
     {
         _sender = sender;
         _authUserContext = authUserContext;
         _mapper = mapper;
+        _providersSettings = providersSettings;
     }
 
     [HttpPost(Name = "CreateAutomation")]
@@ -64,5 +69,13 @@ public class AutomationController : ApiController
         var automationResponse = _mapper.Map<GetAutomationResponse>(automation.Value);
 
         return Ok(automationResponse);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("schema", Name = "GetAutomationSchema")]
+    [ProducesResponseType<ProvidersSettings>(StatusCodes.Status200OK)]
+    public Task<IActionResult> GetAutomationSchema()
+    {
+        return Task.FromResult<IActionResult>(Ok(_providersSettings));
     }
 }
