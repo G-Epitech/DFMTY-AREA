@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/mediator/integrations/discord.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IntegrationMediator with ChangeNotifier {
   final IntegrationRepository _integrationRepository;
+  final DiscordMediator _discordMediator;
 
-  IntegrationMediator(this._integrationRepository);
+  IntegrationMediator(this._integrationRepository)
+      : _discordMediator = DiscordMediator(_integrationRepository.discord);
+
+  get discord => _discordMediator;
 
   Future<List<Integration>> getUserIntegrations() async {
     List<Integration> integrations = [];
