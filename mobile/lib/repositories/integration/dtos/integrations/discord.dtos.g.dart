@@ -18,12 +18,13 @@ OutGetUserIntegrationDiscordGuildsDTO
     _$OutGetUserIntegrationDiscordGuildsDTOFromJson(
             Map<String, dynamic> json) =>
         OutGetUserIntegrationDiscordGuildsDTO(
-          page: pageIntegrationDiscordGuildsFromJson(
-              json['page'] as Map<String, dynamic>),
+          list: (json['list'] as List<dynamic>)
+              .map((e) => DiscordGuildDTO.fromJson(e as Map<String, dynamic>))
+              .toList(),
         );
 
 Map<String, dynamic> _$OutGetUserIntegrationDiscordGuildsDTOToJson(
         OutGetUserIntegrationDiscordGuildsDTO instance) =>
     <String, dynamic>{
-      'page': pageToJson(instance.page),
+      'list': instance.list,
     };

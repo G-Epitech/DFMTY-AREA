@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
-import 'package:triggo/repositories/page/models/page.repository.model.dart';
-import 'package:triggo/repositories/page/utils/page_serializer.utils.dart';
 import 'package:triggo/utils/json.dart';
 
 part 'discord.dtos.g.dart';
@@ -20,18 +18,12 @@ class InGetUserIntegrationDiscordGuildsDTO implements Json {
       _$InGetUserIntegrationDiscordGuildsDTOToJson(this);
 }
 
-Page<DiscordGuildDTO> pageIntegrationDiscordGuildsFromJson(
-    Map<String, dynamic> json) {
-  return pageFromJson<DiscordGuildDTO>(json, DiscordGuildDTO.fromJson);
-}
-
 @JsonSerializable()
 class OutGetUserIntegrationDiscordGuildsDTO implements Json {
-  @JsonKey(fromJson: pageIntegrationDiscordGuildsFromJson, toJson: pageToJson)
-  final Page<DiscordGuildDTO> page;
+  final List<DiscordGuildDTO> list;
 
   OutGetUserIntegrationDiscordGuildsDTO({
-    required this.page,
+    required this.list,
   });
 
   factory OutGetUserIntegrationDiscordGuildsDTO.fromJson(

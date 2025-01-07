@@ -1,4 +1,5 @@
 import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
+import 'package:triggo/utils/json.dart';
 
 class DiscordPropertiesDTO implements IntegrationPropertiesDTO {
   final String id;
@@ -41,7 +42,7 @@ class DiscordPropertiesDTO implements IntegrationPropertiesDTO {
   }
 }
 
-class DiscordGuildDTO {
+class DiscordGuildDTO implements Json {
   final String id;
   final String name;
   final String iconUri;
@@ -55,6 +56,17 @@ class DiscordGuildDTO {
     required this.approximateMemberCount,
     required this.linked,
   });
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'iconUri': iconUri,
+      'approximateMemberCount': approximateMemberCount,
+      'linked': linked,
+    };
+  }
 
   factory DiscordGuildDTO.fromJson(Map<String, dynamic> json) {
     return DiscordGuildDTO(

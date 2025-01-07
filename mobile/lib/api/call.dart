@@ -28,6 +28,8 @@ Future<Response<dynamic>> call<T extends Json>({
       body: body,
     );
 
+    print(response.statusCode);
+
     final responseJson = _parseResponse(response);
 
     if (response.statusCode >= 400) {

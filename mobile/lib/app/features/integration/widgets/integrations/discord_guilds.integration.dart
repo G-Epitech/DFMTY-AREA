@@ -46,12 +46,12 @@ class _DiscordGuildsCustomWidget extends StatelessWidget {
             // TODO: Implement action
           },
           child: Container(
-            width: 40,
-            height: 40,
+            width: 35,
+            height: 35,
             decoration: BoxDecoration(
               color: guild.linked
                   ? Colors.green
-                  : Theme.of(context).colorScheme.onPrimaryContainer,
+                  : Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
@@ -59,8 +59,8 @@ class _DiscordGuildsCustomWidget extends StatelessWidget {
                 guild.linked
                     ? 'assets/icons/check.svg'
                     : 'assets/icons/plus.svg',
-                height: 20,
-                width: 20,
+                height: 16,
+                width: 16,
                 colorFilter: ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcIn,
