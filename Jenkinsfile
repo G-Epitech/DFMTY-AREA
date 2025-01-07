@@ -81,6 +81,8 @@ podTemplate(containers: [
                 def currentBranch = env.BRANCH_NAME
 
                 if (currentBranch == 'main') {
+                    sh "git config --global --add safe.directory ${WORKSPACE}"
+
                     sh "git remote add mirror ${MIRROR_URL}"
 
                     sh "git checkout main"
