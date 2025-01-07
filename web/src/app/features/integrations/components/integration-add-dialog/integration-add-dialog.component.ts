@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
@@ -14,17 +15,10 @@ import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
-
-interface IntegrationAvailableProps {
-  name: string;
-  iconUri: string;
-  identifier: string;
-  triggers: string[];
-  actions: string[];
-  color: string;
-}
-
-type LinkFunction = () => void;
+import {
+  IntegrationAvailableProps,
+  LinkFunction,
+} from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -47,10 +41,6 @@ export class IntegrationAddDialogComponent {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #schemaStore = inject(SchemaStore);
 
-  selectedIntegration = signal<IntegrationAvailableProps | null>(null);
-  availableIntegrations = signal<IntegrationAvailableProps[]>([]);
-  linkFn = signal<LinkFunction | null>(null);
-
   readonly #linkFunctions: Record<string, LinkFunction> = {
     discord: () => {
       this.#integrationsMediator.discordRepository.getUri().subscribe({
@@ -67,36 +57,63 @@ export class IntegrationAddDialogComponent {
     },
   };
 
+  #searchTerm = signal('');
+
+  selectedIntegration = signal<IntegrationAvailableProps | null>(null);
+  availableIntegrations = signal<IntegrationAvailableProps[]>([]);
+
+  linkFn = computed(() => {
+    const selected = this.selectedIntegration();
+    return selected ? (this.#linkFunctions[selected.identifier] ?? null) : null;
+  });
+
+  filteredIntegrations = computed(() => {
+    const searchTerm = this.#searchTerm().toLowerCase();
+    const integrations = this.availableIntegrations();
+
+    if (!searchTerm) return integrations;
+
+    return integrations.filter(
+      integration =>
+        integration.name.toLowerCase().includes(searchTerm) ||
+        integration.triggers.some(trigger =>
+          trigger.toLowerCase().includes(searchTerm)
+        ) ||
+        integration.actions.some(action =>
+          action.toLowerCase().includes(searchTerm)
+        )
+    );
+  });
+
   constructor() {
     effect(() => {
       const schema = this.#schemaStore.getSchema();
       if (!schema) {
         return;
       }
-      this.availableIntegrations.set(
-        Object.entries(schema.automationServices).map(
-          ([name, integration]) => ({
-            color: integration.color,
-            name: integration.name,
-            iconUri: integration.iconUri,
-            identifier: name,
-            triggers: Object.entries(integration.triggers).map(
-              ([, trigger]) => trigger.name
-            ),
-            actions: Object.entries(integration.actions).map(
-              ([, action]) => action.name
-            ),
-          })
-        )
+
+      const integrations = Object.entries(schema.automationServices).map(
+        ([name, integration]) => ({
+          color: integration.color,
+          name: integration.name,
+          iconUri: integration.iconUri,
+          identifier: name,
+          triggers: Object.entries(integration.triggers).map(
+            ([, trigger]) => trigger.name
+          ),
+          actions: Object.entries(integration.actions).map(
+            ([, action]) => action.name
+          ),
+        })
       );
+
+      this.availableIntegrations.set(integrations);
     });
-    effect(() => {
-      const selectedIntegration = this.selectedIntegration();
-      if (!selectedIntegration) {
-        return;
-      }
-      this.linkFn.set(this.#linkFunctions[selectedIntegration.identifier]);
-    });
+  }
+
+  onSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.#searchTerm.set(input.value);
   }
 
   selectIntegration(integrationProps: IntegrationAvailableProps): void {
@@ -108,9 +125,7 @@ export class IntegrationAddDialogComponent {
   }
 
   linkIntegration(): void {
-    const linkFn = this.linkFn();
-    if (linkFn) {
-      linkFn();
-    }
+    const fn = this.linkFn();
+    if (fn) fn();
   }
 }

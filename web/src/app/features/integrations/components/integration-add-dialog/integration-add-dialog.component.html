@@ -3,26 +3,37 @@
   <tr-dialog-content
     class="min-w-[800px] min-h-[600px]"
     *brnDialogContent="let ctx">
-    @if (selectedIntegration() === null) {
+    @if (!selectedIntegration()) {
       <tr-dialog-header>
         <h3 trDialogTitle>Add Integration</h3>
         <p trDialogDescription>
           Select the integration you want to add to your account.
         </p>
       </tr-dialog-header>
-      <input trInput placeholder="Search an integration" class="w-[32%]" />
-      <div class="grid grid-cols-3 gap-4">
-        @for (
-          availableIntegration of availableIntegrations();
-          track availableIntegration.name
-        ) {
-          <tr-integration-available-card
-            [iconUri]="availableIntegration.iconUri"
-            [name]="availableIntegration.name"
-            [color]="availableIntegration.color"
-            class="w-full"
-            (click)="selectIntegration(availableIntegration)" />
-        }
+
+      <div class="space-y-6">
+        <input
+          trInput
+          placeholder="Search integrations by name, triggers, or actions"
+          class="w-full md:w-[52%]"
+          (input)="onSearch($event)" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          @for (
+            integration of filteredIntegrations();
+            track integration.identifier
+          ) {
+            <tr-integration-available-card
+              [iconUri]="integration.iconUri"
+              [name]="integration.name"
+              [color]="integration.color"
+              class="w-full cursor-pointer transition-transform hover:scale-[1.02]"
+              (click)="selectIntegration(integration)" />
+          } @empty {
+            <div class="col-span-full text-center py-8 text-gray-500">
+              No integrations found matching your search.
+            </div>
+          }
+        </div>
       </div>
     } @else {
       <div class="p-6">
@@ -30,18 +41,20 @@
           class="flex flex-row justify-between items-center border-b pb-4 mb-6">
           <div class="flex items-center space-x-4">
             <div
-              class="w-14 h-14 rounded-md flex flex-col items-center justify-center"
+              class="w-14 h-14 rounded-md flex items-center justify-center transition-colors"
               [ngStyle]="{ 'background-color': selectedIntegration()?.color }">
               <img
-                [ngSrc]="selectedIntegration()?.iconUri || ''"
+                [ngSrc]="selectedIntegration()?.iconUri ?? ''"
                 alt="Integration Logo"
-                [width]="35"
-                [height]="35" />
+                width="35"
+                height="35"
+                class="object-contain" />
             </div>
             <h1 class="tr-title-3">
               {{ selectedIntegration()?.name }} Integration
             </h1>
           </div>
+
           <button
             trBtn
             variant="secondary"
@@ -58,27 +71,18 @@
             <ul class="space-y-2 text-muted">
               @for (trigger of selectedIntegration()?.triggers; track trigger) {
                 <li class="flex items-center">
-                  <ng-icon
-                    name="heroCheck"
-                    strokeWidth="0.2rem"
-                    class="text-primary mr-1"
-                    size="1.25rem" />
-                  <span>{{ trigger }}</span>
+                  <span>- {{ trigger }}</span>
                 </li>
               }
             </ul>
           </section>
+
           <section>
             <h2 class="tr-large mb-3">Actions</h2>
             <ul class="space-y-2 text-muted">
               @for (action of selectedIntegration()?.actions; track action) {
                 <li class="flex items-center">
-                  <ng-icon
-                    name="heroCheck"
-                    strokeWidth="0.2rem"
-                    class="text-primary mr-1"
-                    size="1.25rem" />
-                  <span>{{ action }}</span>
+                  <span>- {{ action }}</span>
                 </li>
               }
             </ul>
@@ -86,7 +90,7 @@
         </div>
 
         <div class="mt-6 pt-4">
-          @if (linkFn() !== null) {
+          @if (linkFn()) {
             <button trBtn class="w-full" (click)="linkIntegration()">
               Link Integration
             </button>
