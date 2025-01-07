@@ -30,7 +30,9 @@ class BaseScaffold extends StatelessWidget {
                 const SizedBox(height: 16.0),
                 _PageTitle(title: title, getBack: getBack, header: header),
                 const SizedBox(height: 4.0),
-                _MainContainer(body: body),
+                Expanded(
+                  child: _MainContainer(body: body),
+                ),
               ],
             ),
           ),
@@ -93,15 +95,13 @@ class _MainContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.grey[200],
-        ),
-        child: body!,
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        color: Colors.grey[200],
       ),
+      child: body!,
     );
   }
 }
