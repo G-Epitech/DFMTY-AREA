@@ -35,7 +35,7 @@ public class UserController : ApiController
 
     [HttpGet(Name = "GetAuthUser")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthUser([FromServices] ProvidersSettings settings)
+    public async Task<IActionResult> GetAuthUser()
     {
         var authUser = _authUserContext.User;
         if (authUser is null)

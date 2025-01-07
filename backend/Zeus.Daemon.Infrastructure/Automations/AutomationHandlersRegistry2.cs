@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿/*
+using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
@@ -9,7 +10,7 @@ using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Infrastructure.Automations;
 
-public class AutomationHandlersRegistry : IAutomationHandlersRegistry
+public class AutomationHandlersRegistry2
 {
     private class CancelableTask
     {
@@ -32,7 +33,7 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
     private readonly Dictionary<AutomationId, CancelableTask> _tasks = [];
     private readonly IServiceProvider _serviceProvider;
 
-    public AutomationHandlersRegistry(IServiceProvider serviceProvider)
+    public AutomationHandlersRegistry2(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
@@ -118,3 +119,4 @@ public class AutomationHandlersRegistry : IAutomationHandlersRegistry
         };
     }
 }
+*/

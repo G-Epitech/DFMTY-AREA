@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Daemon.Application.Discord.Services.Websocket;
+using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Infrastructure.Automations;
 
 namespace Zeus.Daemon.Runner.Runner;
@@ -8,10 +10,12 @@ namespace Zeus.Daemon.Runner.Runner;
 public class DaemonRunner
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IConfigurationRoot _configuration;
 
-    public DaemonRunner(IServiceProvider serviceProvider)
+    public DaemonRunner(IServiceProvider serviceProvider, IConfigurationRoot configuration)
     {
         _serviceProvider = serviceProvider;
+        _configuration = configuration;
     }
 
     private Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
@@ -27,11 +31,13 @@ public class DaemonRunner
         return discord.ConnectAsync(cancellationToken);
     }
 
-    public async Task Run(CancellationToken cancellationToken = default)
+    public Task Run(CancellationToken cancellationToken = default)
     {
-        await Task.WhenAll(
+        var svc = _serviceProvider.GetService<ITriggersRegistry>();
+        while (true) ;
+        /*await Task.WhenAll(
             ListenUpdatesAsync(cancellationToken),
             ListenDiscordAsync(cancellationToken)
-        );
+        );*/
     }
 }

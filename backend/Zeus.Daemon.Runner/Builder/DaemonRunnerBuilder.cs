@@ -11,7 +11,7 @@ public class DaemonRunnerBuilder
 
     public IServiceCollection Services { get; } = new ServiceCollection();
 
-    public IConfigurationRoot Configuration { get; private set; }
+    public IConfigurationManager Configuration { get; private set; }
 
     private DaemonRunnerBuilder()
     {
@@ -23,18 +23,19 @@ public class DaemonRunnerBuilder
         return new DaemonRunnerBuilder { Args = args };
     }
 
-    private IConfigurationRoot BuildConfiguration()
+    private static ConfigurationManager BuildConfiguration()
     {
-        return new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+        var configurationManager = new ConfigurationManager();
+
+        configurationManager.SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddUserSecrets<Program>()
-            .AddEnvironmentVariables()
-            .Build();
+            .AddEnvironmentVariables();
+
+        return configurationManager;
     }
 
     public DaemonRunner Build()
     {
-        return new DaemonRunner(Services.BuildServiceProvider());
+        return new DaemonRunner(Services.BuildServiceProvider(), Configuration.Build());
     }
 }

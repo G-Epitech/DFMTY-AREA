@@ -20,4 +20,8 @@
       <ProjectReference Include="..\Zeus.Daemon.Domain\Zeus.Daemon.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Interfaces\ITriggerHandlerZ.cs" />
+    </ItemGroup>
+
 </Project>

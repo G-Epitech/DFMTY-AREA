@@ -1,6 +1,6 @@
-﻿namespace Zeus.Common.Domain.ProvidersSettings;
+﻿namespace Zeus.Common.Domain.Common.Enums;
 
-public enum VarType
+public enum VariableType
 {
     String,
     Integer,
