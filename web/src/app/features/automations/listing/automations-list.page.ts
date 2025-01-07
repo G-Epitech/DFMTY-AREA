@@ -25,6 +25,10 @@ import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ToastrService } from 'ngx-toastr';
+import { NgIcon } from '@ng-icons/core';
+import {
+  ActionCardComponent
+} from '@features/automations/workspace/components/action-card/action-card.component';
 
 @Component({
   selector: 'tr-automations-list',
@@ -35,6 +39,8 @@ import { ToastrService } from 'ngx-toastr';
     AsyncPipe,
     AutomationCardComponent,
     TrSkeletonComponent,
+    NgIcon,
+    ActionCardComponent,
   ],
   templateUrl: './automations-list.page.html',
   styles: [],
