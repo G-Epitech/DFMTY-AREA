@@ -11,10 +11,7 @@ class DiscordMediator with ChangeNotifier {
   Future<List<DiscordGuild>> getGuilds(String id) async {
     List<DiscordGuild> guilds = [];
     try {
-      print('Getting guilds');
       final res = await _discordRepository.getGuilds(id);
-      print('Got guilds');
-      print(res.data);
       if (res.statusCode == Codes.ok && res.data != null) {
         for (var integration in res.data!.list) {
           guilds.add(DiscordGuild.fromDTO(integration));
@@ -34,7 +31,6 @@ class DiscordMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print('Error getting guilds: $e');
       // Display error message with a snackbar or dialog (something like that)
       return [];
     }

@@ -18,7 +18,6 @@ class DiscordGuildsBloc extends Bloc<DiscordGuildsEvent, DiscordGuildsState> {
     emit(DiscordGuildsLoading());
     try {
       final discordGuilds = await _discordMediator.getGuilds(event.id);
-      print(discordGuilds);
       emit(DiscordGuildsLoaded(discordGuilds));
     } catch (e) {
       emit(DiscordGuildsError(e.toString()));

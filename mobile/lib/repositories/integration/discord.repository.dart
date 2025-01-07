@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
-import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integrations/discord.dtos.dart';
@@ -22,8 +21,8 @@ class DiscordRepository {
     );
 
     return Response<OutGetUserIntegrationDiscordGuildsDTO>(
-      statusCode: Codes.ok,
-      message: "OK",
+      statusCode: res.statusCode,
+      message: res.message,
       data: res.data != null
           ? OutGetUserIntegrationDiscordGuildsDTO.fromJson({'list': res.data})
           : null,
