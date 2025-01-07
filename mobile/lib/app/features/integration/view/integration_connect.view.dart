@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/integration/widgets/integrations/discord_connect.integrations.widget.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
+import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
 
 class IntegrationConnectView extends StatefulWidget {
   const IntegrationConnectView({super.key});
@@ -37,7 +38,6 @@ class _IntegrationNamesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: Colors.grey[200],
@@ -136,7 +136,7 @@ class _IntegrationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (integration) {
-      case "Discord":
+      case IntegrationType.discord:
         return DiscordConnectIntegrationListItemWidget();
       default:
         return Text('Integration not found: $integration');
