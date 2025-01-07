@@ -133,10 +133,11 @@ class _IntegrationConnectionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TriggoButton(
       text: 'New integration',
-      onPressed: () {
-        Navigator.pushNamed(context, RoutesNames.connectIntegration).then((_) {
-          context.read<IntegrationsBloc>().add(ReloadIntegrations());
-        });
+      onPressed: () async {
+        await Navigator.pushNamed(context, RoutesNames.connectIntegration);
+        if (context.mounted) {
+          BlocProvider.of<IntegrationsBloc>(context).add(LoadIntegrations());
+        }
       },
     );
   }
