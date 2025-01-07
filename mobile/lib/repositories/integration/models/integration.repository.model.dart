@@ -41,7 +41,7 @@ class IntegrationDTO implements Json {
     IntegrationPropertiesDTO properties;
     switch (json['type']) {
       case IntegrationType.discord:
-        properties = DiscordProperties.fromJson(json['properties']);
+        properties = DiscordPropertiesDTO.fromJson(json['properties']);
         break;
       default:
         throw Exception('Unknown integration type');

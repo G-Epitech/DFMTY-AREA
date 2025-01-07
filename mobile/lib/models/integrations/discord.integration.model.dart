@@ -19,7 +19,7 @@ class DiscordIntegration extends Integration {
   });
 
   static DiscordIntegration fromDTO(IntegrationDTO dto) {
-    DiscordProperties properties = dto.properties as DiscordProperties;
+    DiscordPropertiesDTO properties = dto.properties as DiscordPropertiesDTO;
     return DiscordIntegration(
       name: 'Discord',
       username: properties.username,
@@ -27,6 +27,32 @@ class DiscordIntegration extends Integration {
       displayName: properties.displayName,
       avatarUri: properties.avatarUri,
       flags: properties.flags,
+    );
+  }
+}
+
+class DiscordGuild {
+  final String id;
+  final String name;
+  final String iconUri;
+  final int approximateMemberCount;
+  final bool linked;
+
+  DiscordGuild({
+    required this.id,
+    required this.name,
+    required this.iconUri,
+    required this.approximateMemberCount,
+    required this.linked,
+  });
+
+  static DiscordGuild fromDTO(DiscordGuildDTO dto) {
+    return DiscordGuild(
+      id: dto.id,
+      name: dto.name,
+      iconUri: dto.iconUri,
+      approximateMemberCount: dto.approximateMemberCount,
+      linked: dto.linked,
     );
   }
 }
