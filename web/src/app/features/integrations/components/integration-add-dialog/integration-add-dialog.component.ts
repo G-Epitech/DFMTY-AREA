@@ -15,6 +15,7 @@ import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
+import { SchemaStore } from '@app/store/schema-store';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -33,8 +34,10 @@ import { IntegrationsMediator } from '@mediators/integrations.mediator';
   standalone: true,
 })
 export class IntegrationAddDialogComponent {
-  selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
   readonly #integrationsMediator = inject(IntegrationsMediator);
+  readonly #schemaStore = inject(SchemaStore);
+
+  selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
 
   readonly availableIntegrations: IntegrationAvailableCardProps[] = [
     {
@@ -61,6 +64,11 @@ export class IntegrationAddDialogComponent {
       },
     },
   ];
+
+  constructor() {
+    console.log(this.#schemaStore.getSchema());
+  }
+
 
   selectIntegration(integration: IntegrationAvailableCardProps): void {
     this.selectedIntegration.set(integration);

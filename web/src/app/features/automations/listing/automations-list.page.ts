@@ -85,21 +85,6 @@ export class AutomationsListPageComponent implements OnDestroy {
       })
     );
 
-  displaySchema(): void {
-    this.#automationsMediator.getSchema().subscribe({
-      error: () => {
-        this.#toastr.error('Error getting automation schema');
-      },
-      next: schema => {
-        console.log(typeof schema)
-        for (const serviceName in schema.automationServices) {
-          const service = schema.automationServices[serviceName];
-          console.log(service);
-        }
-      },
-    });
-  }
-
   pageChanged(page: number): void {
     this.loading.set(true);
     this.pageOptions$.next({ ...this.pageOptions$.value, page });

@@ -11,8 +11,6 @@
       (pageChange)="pageChanged($event)" />
   </div>
 
-  <button (click)="displaySchema()" trBtn>Schema</button>
-
   <div class="h-full bg-secondary rounded-md overflow-auto p-4">
     @if (loading()) {
       <div class="h-full flex flex-col gap-3">
