@@ -68,6 +68,7 @@ export class AutomationsListPageComponent implements OnDestroy {
       switchMap(pageOptions => {
         const cachedPage = this.#cacheService.getPage(pageOptions)();
         if (cachedPage) {
+          this.totalPages.set(cachedPage.totalPages);
           this.loading.set(false);
           return of(cachedPage);
         }
@@ -84,7 +85,7 @@ export class AutomationsListPageComponent implements OnDestroy {
 
   pageChanged(page: number): void {
     this.loading.set(true);
-    this.pageOptions$.next({ ...this.pageOptions$.value, page });
+    this.pageOptions$.next({ ...this.pageOptions$.value, page});
   }
 
   createAutomation(): void {

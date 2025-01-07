@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -54,6 +53,7 @@ export class IntegrationsPageComponent {
       switchMap(pageOptions => {
         const cachedPage = this.#cacheService.getPage(pageOptions)();
         if (cachedPage) {
+          this.totalPages.set(cachedPage.totalPages);
           this.loading.set(false);
           return of(cachedPage);
         }
