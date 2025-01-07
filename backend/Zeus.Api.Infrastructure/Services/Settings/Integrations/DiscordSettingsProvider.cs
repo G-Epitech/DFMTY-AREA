@@ -9,6 +9,7 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
     public string OAuth2Endpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
+    public string BotToken { get; }
     public string RedirectUrl { get; }
     public List<string> Scope { get; }
 
@@ -18,6 +19,7 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
         OAuth2Endpoint = settings.OAuth2Endpoint;
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
+        BotToken = settings.BotToken;
         RedirectUrl = settings.RedirectUrl;
         Scope = settings.Scope;
     }
