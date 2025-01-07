@@ -58,9 +58,5 @@
 }
 
 .tr-small {
-  @include typography(
-    $weight: 400,
-    $size: 0.6rem,
-    $letter-spacing: -0.013rem
-  );
+  @include typography($weight: 400, $size: 0.6rem, $letter-spacing: -0.013rem);
 }

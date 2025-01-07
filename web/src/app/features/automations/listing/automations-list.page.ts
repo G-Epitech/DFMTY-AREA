@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   OnDestroy,
   signal,
@@ -10,12 +9,13 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { PaginationComponent } from '@app/components';
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import {
-  BehaviorSubject,
-  delay,
   Observable,
   Subject,
+  of,
+  switchMap,
   takeUntil,
   tap,
+  BehaviorSubject,
 } from 'rxjs';
 import { PageModel, PageOptions } from '@models/page';
 import { AutomationModel } from '@models/automation/automation.model';
@@ -25,6 +25,9 @@ import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ToastrService } from 'ngx-toastr';
+import { NgIcon } from '@ng-icons/core';
+import { PagerCacheService } from '@common/cache/pager-cache.service';
+import { AUTOMATION_CACHE_SERVICE } from '@common/cache/injection-tokens';
 
 @Component({
   selector: 'tr-automations-list',
@@ -35,6 +38,7 @@ import { ToastrService } from 'ngx-toastr';
     AsyncPipe,
     AutomationCardComponent,
     TrSkeletonComponent,
+    NgIcon,
   ],
   templateUrl: './automations-list.page.html',
   styles: [],
@@ -45,40 +49,45 @@ export class AutomationsListPageComponent implements OnDestroy {
   readonly #usersMediator = inject(UsersMediator);
   readonly #automationsMediator = inject(AutomationsMediator);
   readonly #toastr = inject(ToastrService);
+  readonly #cacheService: PagerCacheService<AutomationModel> = inject(
+    AUTOMATION_CACHE_SERVICE
+  );
 
   private destroy$ = new Subject<void>();
 
-  pageOptions = signal<PageOptions>({
-    page: 0,
-    size: 5,
-  });
-  totalPages = signal<number>(3);
-  loading = signal<boolean>(true);
+  pageOptions$: BehaviorSubject<PageOptions> = new BehaviorSubject<PageOptions>(
+    {
+      page: 0,
+      size: 5,
+    }
+  );
 
-  #pageOptionsSubject = new BehaviorSubject<PageOptions>(this.pageOptions());
+  totalPages = signal(3);
+  loading = signal(true);
 
   readonly automations: Observable<PageModel<AutomationModel>> =
-    this.#usersMediator.getAutomations(this.pageOptions()).pipe(
-      delay(1000),
-      tap(page => {
-        this.totalPages.set(page.totalPages);
-        this.loading.set(false);
+    this.pageOptions$.pipe(
+      switchMap(pageOptions => {
+        const cachedPage = this.#cacheService.getPage(pageOptions)();
+        if (cachedPage) {
+          this.totalPages.set(cachedPage.totalPages);
+          this.loading.set(false);
+          return of(cachedPage);
+        }
+        this.loading.set(true);
+        return this.#usersMediator.getAutomations(pageOptions).pipe(
+          tap(page => {
+            this.totalPages.set(page.totalPages);
+            this.loading.set(false);
+            this.#cacheService.setPage(pageOptions, page);
+          })
+        );
       })
     );
 
-  constructor() {
-    effect(() => {
-      const currentPageOptions = this.pageOptions();
-      this.#pageOptionsSubject.next(currentPageOptions);
-    });
-  }
-
   pageChanged(page: number): void {
     this.loading.set(true);
-    this.pageOptions.update(options => ({
-      size: options.size,
-      page: page - 1,
-    }));
+    this.pageOptions$.next({ ...this.pageOptions$.value, page});
   }
 
   createAutomation(): void {
@@ -94,6 +103,7 @@ export class AutomationsListPageComponent implements OnDestroy {
           window.location.reload();
         },
       });
+    this.#cacheService.clearLastPage();
   }
 
   ngOnDestroy() {
