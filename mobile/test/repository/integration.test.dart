@@ -47,7 +47,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integration/?page=1'),
+      Uri.parse('${Env.apiUrl}/user/integrations/?page=1'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',
@@ -62,7 +62,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integration/?page=0&size=10'),
+      Uri.parse('${Env.apiUrl}/user/integrations/?page=0&size=10'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',
@@ -78,7 +78,7 @@ void integrationRepositoryTests() {
         ));
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integration/0'),
+      Uri.parse('${Env.apiUrl}/user/integrations/0'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',

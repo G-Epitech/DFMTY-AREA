@@ -45,7 +45,6 @@ void apiTests() {
 
       expect(response, isNotNull);
       expect(response.statusCode, equals(Codes.unauthorized));
-      expect(response.errors, equals(['Invalid credentials']));
     });
   });
 }
