@@ -34,7 +34,7 @@ class IntegrationRepository {
       message: response.message,
       headers: response.headers,
       data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson({'page': response.data!})
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );

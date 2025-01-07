@@ -23,16 +23,17 @@ Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
 }
 
 @JsonSerializable()
-class OutGetUserIntegrationDTO implements Json {
-  @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
+class OutGetUserIntegrationDTO implements PageJson<IntegrationDTO> {
+  @override
   final Page<IntegrationDTO> page;
 
-  OutGetUserIntegrationDTO({
-    required this.page,
-  });
+  OutGetUserIntegrationDTO({required this.page});
 
-  factory OutGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetUserIntegrationDTOFromJson(json);
+  factory OutGetUserIntegrationDTO.fromJson(Map<String, dynamic> json) {
+    return OutGetUserIntegrationDTO(
+      page: PageJson.fromJson(json, IntegrationDTO.fromJson).page,
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() => _$OutGetUserIntegrationDTOToJson(this);
