@@ -7,7 +7,7 @@ import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integration.mediator.dart';
+import 'package:triggo/mediator/integrations/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
@@ -29,10 +29,25 @@ class _IntegrationsViewState extends State<IntegrationsView> {
       )..add(LoadIntegrations()),
       child: BaseScaffold(
         title: 'Integrations',
-        body: BlocBuilder<IntegrationsBloc, IntegrationsState>(
-            builder: (context, state) {
-          return _StateManager(state: state);
-        }),
+        body: Column(children: [
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  child: _IntegrationConnectionButton(),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: BlocBuilder<IntegrationsBloc, IntegrationsState>(
+                builder: (context, state) {
+              return _StateManager(state: state);
+            }),
+          ),
+        ]),
       ),
     );
   }
@@ -47,7 +62,8 @@ class _StateManager extends StatelessWidget {
   Widget build(BuildContext context) {
     if (state is IntegrationsLoading) {
       return const Center(child: CircularProgressIndicator());
-    } else if (state is IntegrationsLoaded) {
+    } else if (state is IntegrationsLoaded &&
+        (state as IntegrationsLoaded).integrations.isNotEmpty) {
       return _IntegrationContainer(
           integrations: (state as IntegrationsLoaded).integrations);
     } else if (state is IntegrationsError) {
@@ -69,17 +85,6 @@ class _IntegrationContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: _IntegrationConnectionButton(),
-              ),
-            ),
-          ],
-        ),
         Expanded(child: _IntegrationList(integrations: integrations)),
       ],
     );
@@ -121,6 +126,7 @@ class _NoDataView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text('No connected integration',
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium),
     );
   }

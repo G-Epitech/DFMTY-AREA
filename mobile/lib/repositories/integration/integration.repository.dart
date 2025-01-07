@@ -3,13 +3,21 @@ import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
 
 class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository credentialsRepository;
+  final DiscordRepository discordRepository;
 
-  IntegrationRepository({this.client, required this.credentialsRepository});
+  IntegrationRepository({this.client, required this.credentialsRepository})
+      : discordRepository = DiscordRepository(
+          client: client,
+          credentialsRepository: credentialsRepository,
+        );
+
+  get discord => discordRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
       {int page = 0, int size = 10}) async {
