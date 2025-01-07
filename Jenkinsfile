@@ -10,13 +10,21 @@ podTemplate(containers: [
         name: 'docker',
         image: 'docker',
         command: 'sleep',
-        args: '1h'
+        args: '1h',
+        resourceRequestCpu: '500m',
+        resourceLimitCpu: '1',
+        resourceRequestMemory: '700Mi',
+        resourceLimitMemory: '1Gi'
     ),
     containerTemplate(
         name: 'git',
         image: 'alpine/git',
         command: 'sleep',
-        args: '1h'
+        args: '1h',
+        resourceRequestCpu: '300m',
+        resourceLimitCpu: '600m',
+        resourceRequestMemory: '300Mi',
+        resourceLimitMemory: '600Mi'
     )
 ], volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
