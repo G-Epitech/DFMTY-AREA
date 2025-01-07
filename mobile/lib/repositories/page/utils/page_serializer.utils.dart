@@ -1,4 +1,4 @@
-import 'package:triggo/repositories/models/repository.models.dart';
+import 'package:triggo/repositories/page/models/page.repository.model.dart';
 
 Page<T> pageFromJson<T>(
     Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJson) {

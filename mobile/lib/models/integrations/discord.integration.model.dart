@@ -1,6 +1,6 @@
 import 'package:triggo/models/integration.model.dart';
-import 'package:triggo/repositories/models/integration.repository.model.dart';
-import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
+import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
 
 class DiscordIntegration extends Integration {
   final String username;

@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/dtos/user.dtos.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/user/dtos/user.dtos.dart';
 
 class UserRepository {
   final http.Client? client;

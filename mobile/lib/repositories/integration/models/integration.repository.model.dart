@@ -1,6 +1,5 @@
+import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
 import 'package:triggo/utils/json.dart';
-
-import 'integrations/discord.integrations.dart';
 
 class IntegrationType {
   static const String discord = 'Discord';
