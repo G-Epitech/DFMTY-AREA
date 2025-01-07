@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/dtos/integration.dtos.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
 
 class IntegrationRepository {
   final http.Client? client;

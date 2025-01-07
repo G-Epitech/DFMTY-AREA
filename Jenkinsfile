@@ -3,19 +3,28 @@ MOBILE_PATH = 'mobile'
 ZEUS_API_WEB_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.Web"
 ZEUS_API_GRPC_PATH = "${BACKEND_PATH}/Zeus.Api.Presentation.gRPC"
 ZEUS_DAEMON_RUNNER_PATH = "${BACKEND_PATH}/Zeus.Daemon.Runner"
+MIRROR_URL = 'git@github.com:EpitechPromo2027/B-DEV-500-NAN-5-2-area-matheo.coquet.git'
 
 podTemplate(containers: [
     containerTemplate(
         name: 'docker',
         image: 'docker',
         command: 'sleep',
-        args: '1h'
+        args: '1h',
+        resourceRequestCpu: '500m',
+        resourceLimitCpu: '1',
+        resourceRequestMemory: '700Mi',
+        resourceLimitMemory: '1Gi'
     ),
     containerTemplate(
         name: 'git',
         image: 'alpine/git',
         command: 'sleep',
-        args: '1h'
+        args: '1h',
+        resourceRequestCpu: '300m',
+        resourceLimitCpu: '600m',
+        resourceRequestMemory: '300Mi',
+        resourceLimitMemory: '600Mi'
     )
 ], volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -80,6 +89,8 @@ podTemplate(containers: [
                 def currentBranch = env.BRANCH_NAME
 
                 if (currentBranch == 'main') {
+                    sh "git config --global --add safe.directory ${WORKSPACE}"
+
                     sh "git remote add mirror ${MIRROR_URL}"
 
                     sh "git checkout main"

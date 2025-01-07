@@ -14,6 +14,7 @@ import { TrInputSearchComponent } from '@triggo-ui/input';
 import { PageModel, PageOptions } from '@models/page';
 import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { NgIcon } from '@ng-icons/core';
 import { INTEGRATION_CACHE_SERVICE } from '@common/cache/injection-tokens';
 import { PagerCacheService } from '@common/cache/pager-cache.service';
 
@@ -26,6 +27,7 @@ import { PagerCacheService } from '@common/cache/pager-cache.service';
     PaginationComponent,
     TrSkeletonComponent,
     TrInputSearchComponent,
+    NgIcon,
   ],
   templateUrl: './integrations.page.html',
   styles: [],
