@@ -13,11 +13,13 @@
       <input trInput placeholder="Search an integration" class="w-[32%]" />
       <div class="grid grid-cols-3 gap-4">
         @for (
-          availableIntegration of availableIntegrations;
+          availableIntegration of availableIntegrations();
           track availableIntegration.name
         ) {
           <tr-integration-available-card
-            [props]="availableIntegration"
+            [iconUri]="availableIntegration.iconUri"
+            [name]="availableIntegration.name"
+            [color]="availableIntegration.color"
             class="w-full"
             (click)="selectIntegration(availableIntegration)" />
         }
@@ -27,14 +29,15 @@
         <div
           class="flex flex-row justify-between items-center border-b pb-4 mb-6">
           <div class="flex items-center space-x-4">
-            <img
-              [ngSrc]="
-                selectedIntegration()?.logoAssetName || 'icons/discord_logo.svg'
-              "
-              alt="Integration Logo"
-              class="w-12 h-12 object-contain"
-              [width]="50"
-              [height]="50" />
+            <div
+              class="w-14 h-14 rounded-md flex flex-col items-center justify-center"
+              [ngStyle]="{ 'background-color': selectedIntegration()?.color }">
+              <img
+                [ngSrc]="selectedIntegration()?.iconUri || ''"
+                alt="Integration Logo"
+                [width]="35"
+                [height]="35" />
+            </div>
             <h1 class="tr-title-3">
               {{ selectedIntegration()?.name }} Integration
             </h1>
@@ -51,23 +54,31 @@
 
         <div class="space-y-6">
           <section>
-            <h2 class="tr-large mb-3">Description</h2>
-            <p class="text-muted leading-relaxed">
-              {{ selectedIntegration()?.description }}
-            </p>
-          </section>
-
-          <section>
-            <h2 class="tr-large mb-3">Features</h2>
+            <h2 class="tr-large mb-3">Triggers</h2>
             <ul class="space-y-2 text-muted">
-              @for (feature of selectedIntegration()?.features; track feature) {
+              @for (trigger of selectedIntegration()?.triggers; track trigger) {
                 <li class="flex items-center">
                   <ng-icon
                     name="heroCheck"
                     strokeWidth="0.2rem"
                     class="text-primary mr-1"
                     size="1.25rem" />
-                  <span>{{ feature }}</span>
+                  <span>{{ trigger }}</span>
+                </li>
+              }
+            </ul>
+          </section>
+          <section>
+            <h2 class="tr-large mb-3">Actions</h2>
+            <ul class="space-y-2 text-muted">
+              @for (action of selectedIntegration()?.actions; track action) {
+                <li class="flex items-center">
+                  <ng-icon
+                    name="heroCheck"
+                    strokeWidth="0.2rem"
+                    class="text-primary mr-1"
+                    size="1.25rem" />
+                  <span>{{ action }}</span>
                 </li>
               }
             </ul>
@@ -75,12 +86,11 @@
         </div>
 
         <div class="mt-6 pt-4">
-          <button
-            trBtn
-            class="w-full"
-            (click)="selectedIntegration()?.linkFn()">
-            Link Integration
-          </button>
+          @if (linkFn() !== null) {
+            <button trBtn class="w-full" (click)="linkIntegration()">
+              Link Integration
+            </button>
+          }
         </div>
       </div>
     }

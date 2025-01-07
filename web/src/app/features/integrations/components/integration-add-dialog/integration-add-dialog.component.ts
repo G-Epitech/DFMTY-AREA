@@ -1,21 +1,30 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { BrnDialogImports } from '@spartan-ng/ui-dialog-brain';
 import { TrButtonDirective } from '@triggo-ui/button';
-import {
-  IntegrationAvailableCardComponent,
-  IntegrationAvailableCardProps,
-} from '@features/integrations/components/integration-available-card/integration-available-card.component';
+import { IntegrationAvailableCardComponent } from '@features/integrations/components/integration-available-card/integration-available-card.component';
 import { TrInputDirective } from '@triggo-ui/input';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
+
+interface IntegrationAvailableProps {
+  name: string;
+  iconUri: string;
+  identifier: string;
+  triggers: string[];
+  actions: string[];
+  color: string;
+}
+
+type LinkFunction = () => void;
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -27,6 +36,7 @@ import { SchemaStore } from '@app/store/schema-store';
     TrInputDirective,
     NgOptimizedImage,
     NgIcon,
+    NgStyle,
   ],
   templateUrl: './integration-add-dialog.component.html',
   styles: [],
@@ -37,44 +47,70 @@ export class IntegrationAddDialogComponent {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #schemaStore = inject(SchemaStore);
 
-  selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
+  selectedIntegration = signal<IntegrationAvailableProps | null>(null);
+  availableIntegrations = signal<IntegrationAvailableProps[]>([]);
+  linkFn = signal<LinkFunction | null>(null);
 
-  readonly availableIntegrations: IntegrationAvailableCardProps[] = [
-    {
-      logoAssetName: 'icons/discord_logo.svg',
-      name: 'Discord',
-      description:
-        'Connect your Discord server to Triggo and receive notifications about your projects.',
-      features: [
-        'Receive notifications about your projects',
-        'Customize your notifications',
-      ],
-      linkFn: () => {
-        this.#integrationsMediator.discordRepository.getUri().subscribe({
-          next: uri => {
-            if (!uri) {
-              return;
-            }
-            const newWindow = window.open(`${uri}`, '_blank');
-            if (newWindow) {
-              newWindow.opener = window;
-            }
-          },
-        });
-      },
+  readonly #linkFunctions: Record<string, LinkFunction> = {
+    discord: () => {
+      this.#integrationsMediator.discordRepository.getUri().subscribe({
+        next: uri => {
+          if (!uri) {
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+      });
     },
-  ];
+  };
 
   constructor() {
-    console.log(this.#schemaStore.getSchema());
+    effect(() => {
+      const schema = this.#schemaStore.getSchema();
+      if (!schema) {
+        return;
+      }
+      this.availableIntegrations.set(
+        Object.entries(schema.automationServices).map(
+          ([name, integration]) => ({
+            color: integration.color,
+            name: integration.name,
+            iconUri: integration.iconUri,
+            identifier: name,
+            triggers: Object.entries(integration.triggers).map(
+              ([, trigger]) => trigger.name
+            ),
+            actions: Object.entries(integration.actions).map(
+              ([, action]) => action.name
+            ),
+          })
+        )
+      );
+    });
+    effect(() => {
+      const selectedIntegration = this.selectedIntegration();
+      if (!selectedIntegration) {
+        return;
+      }
+      this.linkFn.set(this.#linkFunctions[selectedIntegration.identifier]);
+    });
   }
 
-
-  selectIntegration(integration: IntegrationAvailableCardProps): void {
-    this.selectedIntegration.set(integration);
+  selectIntegration(integrationProps: IntegrationAvailableProps): void {
+    this.selectedIntegration.set(integrationProps);
   }
 
   backToAvailableIntegrations(): void {
     this.selectedIntegration.set(null);
+  }
+
+  linkIntegration(): void {
+    const linkFn = this.linkFn();
+    if (linkFn) {
+      linkFn();
+    }
   }
 }
