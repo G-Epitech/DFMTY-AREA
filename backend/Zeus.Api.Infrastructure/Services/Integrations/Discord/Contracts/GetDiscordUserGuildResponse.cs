@@ -6,7 +6,7 @@ public record GetDiscordUserGuildResponse(
     string? Icon,
     string? Banner,
     bool Owner,
-    string[] Features,
+    List<string> Features,
     uint ApproximateMemberCount,
     uint ApproximatePresenceCount
 );
