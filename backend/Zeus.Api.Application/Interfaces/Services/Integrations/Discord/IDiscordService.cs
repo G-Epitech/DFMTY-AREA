@@ -35,4 +35,12 @@ public interface IDiscordService
     /// <param name="botToken">The triggo bot token</param>
     /// <returns>Discord bot guilds</returns>
     public Task<ErrorOr<List<DiscordGuild>>> GetBotGuildsAsync(string botToken);
+
+    /// <summary>
+    /// Get discord channels of a guild (/guilds/{guild.id}/channels)
+    /// </summary>
+    /// <param name="guildId">The discord guild id</param>
+    /// <param name="botToken">The triggo bot token</param>
+    /// <returns>Discord guild channels</returns>
+    public Task<ErrorOr<List<DiscordChannel>>> GetGuildChannelsAsync(DiscordGuildId guildId, string botToken);
 }

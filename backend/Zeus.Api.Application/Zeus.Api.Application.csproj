@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Integrations\Query\Discord\GetDiscordGuildChannels\" />
       <Folder Include="Integrations\Query\Integrations\" />
     </ItemGroup>
 
