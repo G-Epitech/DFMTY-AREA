@@ -8,15 +8,15 @@ using Zeus.Api.Application.Integrations.Commands.GenerateDiscordOauth2Uri;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Discord;
 
-namespace Zeus.Api.Presentation.Web.Controllers.Integrations;
+namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Discord;
 
 [Route("integrations/discord")]
-public class DiscordController : ApiController
+public class DiscordCreationController : ApiController
 {
     private readonly ISender _sender;
     private readonly IAuthUserContext _authUserContext;
 
-    public DiscordController(ISender sender, IAuthUserContext authUserContext)
+    public DiscordCreationController(ISender sender, IAuthUserContext authUserContext)
     {
         _sender = sender;
         _authUserContext = authUserContext;
