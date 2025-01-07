@@ -36,51 +36,20 @@ class _IntegrationNamesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.grey[200],
-        ),
-        child: Column(
-          children: [
-            _IntegrationList(integrations: integrations),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        color: Colors.grey[200],
+      ),
+      child: Column(
+        children: [
+          _IntegrationList(integrations: integrations),
+        ],
       ),
     );
   }
 }
-
-/*
-class _PageTitle extends StatelessWidget {
-  const _PageTitle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            size: 26.0,
-            weight: 2.0,
-          ),
-        ),
-        SizedBox(width: 10.0),
-        Text(
-          'Connect',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ],
-    );
-  }
-}
-*/
 
 class _IntegrationList extends StatelessWidget {
   const _IntegrationList({required this.integrations});

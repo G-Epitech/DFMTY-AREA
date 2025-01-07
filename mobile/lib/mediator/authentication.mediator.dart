@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/authentication.repository.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/authentification/authentication.repository.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
 
 enum AuthenticationStatus {
   unknown,

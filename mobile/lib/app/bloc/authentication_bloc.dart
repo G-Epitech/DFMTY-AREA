@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/models/user.model.dart';
-import 'package:triggo/repositories/user.repository.dart';
+import 'package:triggo/repositories/user/user.repository.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

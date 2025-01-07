@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/dtos/integration.dtos.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
 
 class IntegrationRepository {
   final http.Client? client;
@@ -16,7 +16,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integration/?page=$page&size=$size',
+      endpoint: '/user/integrations/?page=$page&size=$size',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
@@ -37,7 +37,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/user/integration/$integrationId',
+      endpoint: '/user/integrations/$integrationId',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
@@ -94,7 +94,7 @@ class IntegrationRepository {
     final accessToken = await credentialsRepository.getAccessToken();
     final res = await call(
       method: 'POST',
-      endpoint: '/integration/$name/uri',
+      endpoint: '/integrations/$name/uri',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );

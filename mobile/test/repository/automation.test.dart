@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/env.dart';
-import 'package:triggo/repositories/automation.repository.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';
