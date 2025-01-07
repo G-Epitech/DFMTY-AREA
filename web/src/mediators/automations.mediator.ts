@@ -1,7 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
-import { AutomationModel } from '@models/automation';
+import {
+  AutomationModel,
+  AutomationSchemaModel,
+  AutomationSchemaService,
+  AutomationSchemaTrigger,
+} from '@models/automation';
+import {
+  AutomationSchemaDTO,
+  TriggerDTO,
+  ActionDTO,
+} from '@repositories/automations/dto';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +40,60 @@ export class AutomationsMediator {
         );
       })
     );
+  }
+
+  getSchema(): Observable<AutomationSchemaModel> {
+    return this.#automationsRepository.getSchema().pipe(
+      map((dto: AutomationSchemaDTO) => {
+        const services: Record<string, AutomationSchemaService> = {};
+        for (const serviceName in dto) {
+          const service = dto[serviceName];
+          const schemaTriggers = this._mapSchemaServiceTriggers(service.triggers);
+          const schemaActions = this._mapSchemaServiceActions(service.actions);
+          services[serviceName] = {
+            name: service.name,
+            color: service.color,
+            iconUri: service.iconUri,
+            triggers: schemaTriggers,
+            actions: schemaActions,
+          };
+        }
+        return new AutomationSchemaModel(services);
+      })
+    );
+  }
+
+  _mapSchemaServiceTriggers(
+    dtoTriggers: Record<string, TriggerDTO>
+  ): Record<string, AutomationSchemaTrigger> {
+    const schemaTriggers: Record<string, AutomationSchemaTrigger> = {};
+
+    for (const [identifier, trigger] of Object.entries(dtoTriggers)) {
+      schemaTriggers[identifier] = {
+        name: trigger.name,
+        description: trigger.description,
+        icon: trigger.icon,
+        parameters: trigger.parameters,
+        facts: trigger.facts,
+      };
+    }
+    return schemaTriggers;
+  }
+
+  _mapSchemaServiceActions(
+    dtoActions: Record<string, ActionDTO>
+  ): Record<string, AutomationSchemaTrigger> {
+    const schemaActions: Record<string, AutomationSchemaTrigger> = {};
+
+    for (const [identifier, action] of Object.entries(dtoActions)) {
+      schemaActions[identifier] = {
+        name: action.name,
+        description: action.description,
+        icon: action.icon,
+        parameters: action.parameters,
+        facts: action.facts,
+      };
+    }
+    return schemaActions;
   }
 }
