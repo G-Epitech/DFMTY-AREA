@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Zeus.Api.Application.Integrations.Query.GetIntegration;
+namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegration;
 
 public class GetIntegrationQueryValidator : AbstractValidator<GetIntegrationQuery>
 {

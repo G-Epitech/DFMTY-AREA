@@ -41,21 +41,21 @@ podTemplate(containers: [
             parallel(
                 'Zeus Api Web': {
                     container('docker') {
-                        def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_ID}"
+                        def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_API_WEB_PATH}/Dockerfile -t ${ZEUS_API_WEB_IMAGE_TEST} ${BACKEND_PATH}"
                         sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST}"
                     }
                 },
                 'Zeus Api gRPC': {
                     container('docker') {
-                        def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_ID}"
+                        def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_API_GRPC_PATH}/Dockerfile -t ${ZEUS_API_GRPC_IMAGE_TEST} ${BACKEND_PATH}"
                         sh "docker rmi ${ZEUS_API_GRPC_IMAGE_TEST}"
                     }
                 },
                 'Zeus Daemon Runner': {
                     container('docker') {
-                        def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_ID}"
+                        def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_DAEMON_RUNNER_PATH}/Dockerfile -t ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${BACKEND_PATH}"
                         sh "docker rmi ${ZEUS_DAEMON_RUNNER_IMAGE_TEST}"
                     }
@@ -66,14 +66,14 @@ podTemplate(containers: [
         stage('Mobile Build') {
             container('docker') {
                 sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
-                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_TAG}"
                 sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH}"
             }
         }
 
         stage('Mobile Test') {
             container('docker') {
-                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_ID}"
+                def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_TAG}"
                 def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
                 sh "docker rmi ${MOBILE_IMAGE_TEST}"
                 if (runStatus != 0) {

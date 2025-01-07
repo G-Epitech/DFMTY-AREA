@@ -6,6 +6,7 @@ public interface IDiscordSettingsProvider
     public string OAuth2Endpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
+    public string BotToken { get; }
     public string RedirectUrl { get; }
     public List<string> Scope { get; }
 }
