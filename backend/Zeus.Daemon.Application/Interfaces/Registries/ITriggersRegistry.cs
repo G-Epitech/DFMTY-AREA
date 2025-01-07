@@ -1,12 +1,10 @@
-using Zeus.Common.Domain.AutomationAggregate;
+﻿using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Domain.Automations;
 
-namespace Zeus.Daemon.Application.Interfaces;
+namespace Zeus.Daemon.Application.Interfaces.Registries;
 
-public interface IAutomationsRegistry
+public interface ITriggersRegistry
 {
     public Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default);
     public Task<bool> RemoveAsync(AutomationId automationId, CancellationToken cancellationToken = default);
-    public Task<bool> RunAsync(AutomationId automationId, IReadOnlyDictionary<string, Fact> facts);
 }

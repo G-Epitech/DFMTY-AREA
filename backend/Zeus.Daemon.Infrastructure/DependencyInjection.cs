@@ -2,11 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Api.Presentation.gRPC.SDK;
+using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Discord.TriggerHandlers;
-using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Infrastructure.Automations;
 using Zeus.Daemon.Infrastructure.Integrations;
+using Zeus.Daemon.Infrastructure.Services.Discord;
 using Zeus.Daemon.Infrastructure.Services.Settings;
 using Zeus.Daemon.Infrastructure.Services.Settings.Integrations;
 
@@ -23,6 +24,9 @@ public static class DependencyInjection
         services.AddSingleton<AutomationSynchronizationService>();
 
         services.AddTransient<DiscordMessageReceivedTriggerHandler>();
+        
+        services.AddSingleton<IDiscordWebSocketService, DiscordWebSocketService>();
+        services.AddSingleton<IDiscordApiService, DiscordApiService>();
 
         configuration
             .GetSection(GRpcApiSettings.SectionName)

@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.Common.Domain.AutomationAggregate.Entities;
-using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.ProvidersSettings;
 using Zeus.Daemon.Application.Interfaces;
+using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 
-namespace Zeus.Daemon.Application.Services;
+namespace Zeus.Daemon.Application.Services.HandlerProviders;
 
-public class TriggersRegistry : ITriggersRegistry
+public sealed class TriggerHandlersProvider: ITriggerHandlersProvider
 {
     private readonly Dictionary<string, ITriggerHandler> _handlers = new();
 
-    public TriggersRegistry(IServiceProvider serviceProvider, ProvidersSettings providersSettings)
+    public TriggerHandlersProvider(IServiceProvider serviceProvider, ProvidersSettings providersSettings)
     {
         RegisterHandlers(serviceProvider
             .GetServices<ITriggerHandler>()
@@ -19,18 +18,9 @@ public class TriggersRegistry : ITriggersRegistry
             .AsReadOnly()
         );
         EnsureEveryTriggerHasHandler(providersSettings);
+        Console.WriteLine("TriggerHandlersProvider initialized");
     }
-
-    public Task<bool> RegisterAsync(AutomationTrigger trigger, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> RemoveAsync(AutomationTriggerId triggerId, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     private void RegisterHandlers(IReadOnlyList<ITriggerHandler> handlers)
     {
         _handlers.EnsureCapacity(handlers.Count);
@@ -63,5 +53,14 @@ public class TriggersRegistry : ITriggersRegistry
                 throw new InvalidOperationException($"Trigger '{triggerIdentifier}' has no handler registered");
             }
         }
+    }
+    
+    public ITriggerHandler GetHandler(string triggerIdentifier)
+    {
+        if (_handlers.TryGetValue(triggerIdentifier, out var handler))
+        {
+            return handler;
+        }
+        throw new InvalidOperationException($"Trigger handler with identifier '{triggerIdentifier}' not found");
     }
 }

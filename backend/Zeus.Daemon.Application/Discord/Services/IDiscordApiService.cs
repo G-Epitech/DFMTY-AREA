@@ -2,7 +2,7 @@ using ErrorOr;
 
 using Zeus.Daemon.Domain.Discord.ValueObjects;
 
-namespace Zeus.Daemon.Application.Discord.Services.Api;
+namespace Zeus.Daemon.Application.Discord.Services;
 
 public interface IDiscordApiService
 {

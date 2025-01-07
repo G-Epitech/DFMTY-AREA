@@ -2,10 +2,11 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
 
+using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.Enums;
 
-namespace Zeus.Daemon.Application.Discord.Services.Websocket;
+namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
 public class DiscordWebSocketService : IDiscordWebSocketService
 {

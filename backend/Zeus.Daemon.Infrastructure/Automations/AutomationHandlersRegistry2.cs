@@ -12,22 +12,7 @@ namespace Zeus.Daemon.Infrastructure.Automations;
 
 public class AutomationHandlersRegistry2
 {
-    private class CancelableTask
-    {
-        public Task Task { get; set; }
-        private CancellationTokenSource CancellationTokenSource { get; set; }
-
-        public CancelableTask(Func<CancellationToken, Task> task)
-        {
-            CancellationTokenSource = new CancellationTokenSource();
-            Task = task(CancellationTokenSource.Token);
-        }
-
-        public void Cancel()
-        {
-            CancellationTokenSource.Cancel();
-        }
-    }
+    
 
     private readonly Dictionary<AutomationId, ITriggerHandler> _handlers = [];
     private readonly Dictionary<AutomationId, CancelableTask> _tasks = [];

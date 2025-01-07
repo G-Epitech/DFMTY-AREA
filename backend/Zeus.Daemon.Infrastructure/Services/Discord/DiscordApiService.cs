@@ -2,11 +2,12 @@ using System.Net.Http.Headers;
 
 using ErrorOr;
 
+using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
 using Zeus.Daemon.Domain.Errors.Services;
 
-namespace Zeus.Daemon.Application.Discord.Services.Api;
+namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
 public class DiscordApiService : IDiscordApiService
 {

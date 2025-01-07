@@ -29,4 +29,13 @@ public class ProvidersSettings
         _cachedActionsIdentifiers.AddRange(Discord.Actions.Keys.Select(k => $"{nameof(Discord)}.{k}"));
         return _cachedActionsIdentifiers;
     }
+    
+    public ProviderSchema GetProviderSchema(string providerName)
+    {
+        return providerName switch
+        {
+            nameof(Discord) => Discord,
+            _ => throw new InvalidOperationException($"Provider '{providerName}' not found")
+        };
+    }
 }

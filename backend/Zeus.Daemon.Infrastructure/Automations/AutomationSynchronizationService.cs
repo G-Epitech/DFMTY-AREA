@@ -1,5 +1,6 @@
 ﻿using Zeus.Api.Presentation.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Interfaces;
+using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Infrastructure.Mapping;
 
 namespace Zeus.Daemon.Infrastructure.Automations;
@@ -7,15 +8,15 @@ namespace Zeus.Daemon.Infrastructure.Automations;
 public class AutomationSynchronizationService
 {
     private readonly SynchronizationGrpcService _synchronizationGrpcService;
-    private readonly IAutomationHandlersRegistry _automationHandlersRegistry;
+    private readonly IAutomationsRegistry _automationsRegistry;
     private DateTime _lastUpdate = DateTime.UnixEpoch;
     private const int RefreshIntervalMilliseconds = 1000;
 
     public AutomationSynchronizationService(SynchronizationGrpcService synchronizationGrpcService,
-        IAutomationHandlersRegistry automationHandlersRegistry)
+        IAutomationsRegistry automationsRegistry)
     {
         _synchronizationGrpcService = synchronizationGrpcService;
-        _automationHandlersRegistry = automationHandlersRegistry;
+        _automationsRegistry = automationsRegistry;
     }
 
     public async Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
@@ -48,6 +49,7 @@ public class AutomationSynchronizationService
         var automations = delta.Select(d => d.MapToAutomation()).ToList();
 
         Console.WriteLine($"Syncing {automations.Count} automations");
-        await _automationHandlersRegistry.RefreshAutomationsAsync(automations, cancellationToken);
+        Task.WaitAll(
+            automations.Select(a => _automationsRegistry.RegisterAsync(a, cancellationToken)).ToList(), cancellationToken);
     }
 }
