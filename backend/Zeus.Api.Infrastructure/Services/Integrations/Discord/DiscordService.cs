@@ -54,7 +54,7 @@ public class DiscordService : IDiscordService
 
         return new Uri($"https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.png");
     }
-    
+
     private static Uri GetGuildAvatarUri(string guildId, string? iconHash)
     {
         return iconHash is null
@@ -142,7 +142,7 @@ public class DiscordService : IDiscordService
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Bot", botToken);
         HttpResponseMessage response = await _httpClient.GetAsync("users/@me/guilds");
-        
+
         if (response.StatusCode == HttpStatusCode.Unauthorized)
             return Errors.Integrations.Discord.InvalidDiscordUserCredentials;
         if (!response.IsSuccessStatusCode)
@@ -158,5 +158,27 @@ public class DiscordService : IDiscordService
             guild.Name,
             GetGuildAvatarUri(guild.Id, guild.Icon),
             guild.ApproximateMemberCount)).ToList();
+    }
+
+    public async Task<ErrorOr<List<DiscordChannel>>> GetGuildChannelsAsync(DiscordGuildId guildId, string botToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Bot", botToken);
+        HttpResponseMessage response = await _httpClient.GetAsync($"guilds/{guildId.ValueString}/channels");
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+            return Errors.Integrations.Discord.InvalidDiscordUserCredentials;
+        if (!response.IsSuccessStatusCode)
+            return Errors.Integrations.Discord.InvalidMethod;
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetDiscordGuildChannelResponse[]>(_jsonSerializerOptions);
+        if (responseContent is null)
+            return Errors.Integrations.Discord.InvalidBody;
+
+        return responseContent.Select(channel => DiscordChannel.Create(
+            new DiscordChannelId(channel.Id),
+            channel.Name ?? "Unknown",
+            (DiscordChannelType)channel.Type)).ToList();
     }
 }
