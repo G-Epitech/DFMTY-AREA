@@ -62,18 +62,14 @@ Page<AutomationDTO> pageAutomationsFromJson(Map<String, dynamic> json) {
 }
 
 @JsonSerializable()
-class OutGetAutomationsDTO implements PageJson<AutomationDTO> {
+class OutGetAutomationsDTO implements Json {
   @JsonKey(fromJson: pageAutomationsFromJson, toJson: pageToJson)
-  @override
   final Page<AutomationDTO> page;
 
   OutGetAutomationsDTO({required this.page});
 
-  factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) {
-    return OutGetAutomationsDTO(
-      page: PageJson.fromJson(json, AutomationDTO.fromJson).page,
-    );
-  }
+  factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutGetAutomationsDTOFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
