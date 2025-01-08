@@ -1,4 +1,4 @@
-<form class="space-y-6" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+<form class="space-y-4" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
   <div>
     <label for="firstName" trLabel
       >First Name
@@ -37,7 +37,10 @@
 
   <div>
     <label for="email" trLabel
-      >Email
+      ><span>Email</span>
+      @if (isControlInvalid(registerForm.controls.email)) {
+        <span class="tr-small text-destructive italic">- {{ getEmailErrorMessage() }}</span>
+      }
       <input
         id="email"
         type="email"
@@ -45,11 +48,6 @@
         class="w-full"
         placeholder="example@email.com"
         [formControl]="registerForm.controls.email" />
-      @if (isControlInvalid(registerForm.controls.email)) {
-        <div class="h-1">
-          <small class="text-destructive">{{ getEmailErrorMessage() }}</small>
-        </div>
-      }
     </label>
   </div>
 
@@ -71,7 +69,7 @@
 
   <button type="submit" trBtn class="w-full" [disabled]="registerLoading()">
     @if (registerLoading()) {
-      <tr-spinner />
+      <tr-spinner size="sm" />
     } @else {
       Register
     }

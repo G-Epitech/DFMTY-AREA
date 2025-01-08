@@ -9,10 +9,21 @@ import { AppRouter } from '@app/app.router';
 import { AuthStore } from '@app/store';
 import { RouterLink } from '@angular/router';
 import { RegisterFormComponent } from '@features/authentication/register/components/register-form/register-form.component';
+import {
+  AuthFooterComponent
+} from '@features/authentication/components/auth-footer/auth-footer.component';
+import {
+  OauthSectionComponent
+} from '@features/authentication/components/oauth-section/oauth-section.component';
 
 @Component({
   selector: 'tr-register',
-  imports: [RouterLink, RegisterFormComponent],
+  imports: [
+    RouterLink,
+    RegisterFormComponent,
+    AuthFooterComponent,
+    OauthSectionComponent,
+  ],
   templateUrl: './register.page.html',
   standalone: true,
   styles: [],

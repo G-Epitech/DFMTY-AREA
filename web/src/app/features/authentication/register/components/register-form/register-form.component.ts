@@ -47,6 +47,7 @@ export class RegisterFormComponent implements OnDestroy {
   readonly #toastr = inject(ToastrService);
 
   registerLoading = signal<boolean>(false);
+  formSubmitted = signal<boolean>(false);
 
   confirmPasswordValidator = (
     control: AbstractControl
@@ -83,7 +84,7 @@ export class RegisterFormComponent implements OnDestroy {
   getEmailErrorMessage() {
     const emailControl = this.registerForm.controls.email;
     if (emailControl.errors?.['required']) {
-      return 'Email is required';
+      return 'Required';
     }
     if (emailControl.errors?.['email']) {
       return 'Invalid email';
