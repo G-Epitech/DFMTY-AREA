@@ -10,22 +10,22 @@ class AutomationRepository {
 
   AutomationRepository({this.client, required this.credentialsRepository});
 
-  Future<Response<OutGetAutomationManifestDTO>> getAutomationManifest(
+  Future<Response<OutGetAutomationSchemaDTO>> getAutomationSchema(
       {int page = 0, int size = 10}) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
-      endpoint: '/automations/manifest',
+      endpoint: '/automations/schema',
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
 
-    return Response<OutGetAutomationManifestDTO>(
+    return Response<OutGetAutomationSchemaDTO>(
       statusCode: response.statusCode,
       message: response.message,
       headers: response.headers,
       data: response.data != null
-          ? OutGetAutomationManifestDTO.fromJson(response.data)
+          ? OutGetAutomationSchemaDTO.fromJson(response.data)
           : null,
       errors: response.errors,
     );

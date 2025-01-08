@@ -6,45 +6,45 @@ part of 'automation.repository.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AutomationManifestTriggerActionPropertyDTO
-    _$AutomationManifestTriggerActionPropertyDTOFromJson(
+AutomationSchemaTriggerActionPropertyDTO
+    _$AutomationSchemaTriggerActionPropertyDTOFromJson(
             Map<String, dynamic> json) =>
-        AutomationManifestTriggerActionPropertyDTO(
+        AutomationSchemaTriggerActionPropertyDTO(
           name: json['name'] as String,
           description: json['description'] as String,
           type: json['type'] as String,
         );
 
-Map<String, dynamic> _$AutomationManifestTriggerActionPropertyDTOToJson(
-        AutomationManifestTriggerActionPropertyDTO instance) =>
+Map<String, dynamic> _$AutomationSchemaTriggerActionPropertyDTOToJson(
+        AutomationSchemaTriggerActionPropertyDTO instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'type': instance.type,
     };
 
-AutomationManifestTriggerActionDTO _$AutomationManifestTriggerActionDTOFromJson(
+AutomationSchemaTriggerActionDTO _$AutomationSchemaTriggerActionDTOFromJson(
         Map<String, dynamic> json) =>
-    AutomationManifestTriggerActionDTO(
+    AutomationSchemaTriggerActionDTO(
       name: json['name'] as String,
       description: json['description'] as String,
       icon: json['icon'] as String,
       parameters: (json['parameters'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
             k,
-            AutomationManifestTriggerActionPropertyDTO.fromJson(
+            AutomationSchemaTriggerActionPropertyDTO.fromJson(
                 e as Map<String, dynamic>)),
       ),
       facts: (json['facts'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
             k,
-            AutomationManifestTriggerActionPropertyDTO.fromJson(
+            AutomationSchemaTriggerActionPropertyDTO.fromJson(
                 e as Map<String, dynamic>)),
       ),
     );
 
-Map<String, dynamic> _$AutomationManifestTriggerActionDTOToJson(
-        AutomationManifestTriggerActionDTO instance) =>
+Map<String, dynamic> _$AutomationSchemaTriggerActionDTOToJson(
+        AutomationSchemaTriggerActionDTO instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
@@ -53,28 +53,27 @@ Map<String, dynamic> _$AutomationManifestTriggerActionDTOToJson(
       'facts': instance.facts,
     };
 
-AutomationManifestDTO _$AutomationManifestDTOFromJson(
-        Map<String, dynamic> json) =>
-    AutomationManifestDTO(
+AutomationSchemaDTO _$AutomationSchemaDTOFromJson(Map<String, dynamic> json) =>
+    AutomationSchemaDTO(
       name: json['name'] as String,
       iconUri: json['iconUri'] as String,
       color: json['color'] as String,
       triggers: (json['triggers'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
             k,
-            AutomationManifestTriggerActionDTO.fromJson(
+            AutomationSchemaTriggerActionDTO.fromJson(
                 e as Map<String, dynamic>)),
       ),
       actions: (json['actions'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
             k,
-            AutomationManifestTriggerActionDTO.fromJson(
+            AutomationSchemaTriggerActionDTO.fromJson(
                 e as Map<String, dynamic>)),
       ),
     );
 
-Map<String, dynamic> _$AutomationManifestDTOToJson(
-        AutomationManifestDTO instance) =>
+Map<String, dynamic> _$AutomationSchemaDTOToJson(
+        AutomationSchemaDTO instance) =>
     <String, dynamic>{
       'name': instance.name,
       'iconUri': instance.iconUri,
