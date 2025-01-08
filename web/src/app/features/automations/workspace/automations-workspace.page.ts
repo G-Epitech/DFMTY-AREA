@@ -1,25 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AutomationModel } from '@models/automation';
 import { iconName } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { ContextMenuComponent } from '@features/automations/workspace/components/context-menu/context-menu.component';
-import {
-  concat,
-  map,
-  Observable,
-  of,
-  Subject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ActivatedRoute } from '@angular/router';

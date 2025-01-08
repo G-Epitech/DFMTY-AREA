@@ -29,7 +29,7 @@ import {
 import {
   heroSparklesSolid,
   heroChatBubbleBottomCenterTextSolid,
-  heroBoltSolid
+  heroBoltSolid,
 } from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';

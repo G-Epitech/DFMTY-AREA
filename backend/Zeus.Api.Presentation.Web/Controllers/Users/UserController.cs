@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Automations.Query.GetAutomations;
-using Zeus.Api.Application.Integrations.Query.GetIntegrations;
+using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrations;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Users.Query;
 using Zeus.Api.Infrastructure.Authentication.Context;

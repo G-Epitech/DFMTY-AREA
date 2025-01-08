@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/env.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
-import 'package:triggo/repositories/integration.repository.dart';
-import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
+import 'package:triggo/repositories/integration/integration.repository.dart';
+import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';
@@ -31,7 +31,7 @@ void integrationRepositoryTests() {
         CredentialsRepository(secureStorage: mockSecureStorage);
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integrations'),
+      Uri.parse('${Env.apiUrl}/user/integration'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',
@@ -121,7 +121,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -144,7 +144,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -168,7 +168,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',
@@ -188,7 +188,7 @@ void integrationRepositoryTests() {
         'ownerId': '0',
         'type': 'Discord',
         'isValid': true,
-        'properties': DiscordProperties(
+        'properties': DiscordPropertiesDTO(
           id: '0',
           email: 'example@example.com',
           username: 'example',

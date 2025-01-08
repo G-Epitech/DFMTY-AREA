@@ -63,9 +63,12 @@ class _TriggoNavigationBarItem {
                 child: Center(
                   child: SvgPicture.asset(
                     iconAsset,
-                    color: isSelected
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).textTheme.titleMedium?.color,
+                    colorFilter: ColorFilter.mode(
+                      (isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).textTheme.titleMedium!.color!),
+                      BlendMode.srcIn,
+                    ),
                     width: 27,
                     height: 27,
                   ),

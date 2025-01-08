@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/authentication.repository.dart';
-import 'package:triggo/repositories/credentials.repository.dart';
+import 'package:triggo/repositories/authentification/authentication.repository.dart';
+import 'package:triggo/repositories/credentials/credentials.repository.dart';
 
 enum AuthenticationStatus {
   unknown,
@@ -41,7 +41,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
       rethrow;
@@ -64,7 +63,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
       rethrow;
@@ -90,7 +88,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
     }
@@ -101,7 +98,6 @@ class AuthenticationMediator with ChangeNotifier {
       await _credentialsRepository.deleteTokens();
       _controller.add(AuthenticationStatus.unauthenticated);
     } catch (e) {
-      print("Error: $e");
       // Display error message with a snackbar or dialog (something like that)
     }
   }

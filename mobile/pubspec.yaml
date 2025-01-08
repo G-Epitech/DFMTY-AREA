@@ -43,7 +43,12 @@ flutter:
     - assets/icons/home.svg
     - assets/icons/link.svg
     - assets/icons/bolt.svg
+    - assets/icons/people.svg
     - assets/icons/chat.svg
+    - assets/icons/cog-6-tooth.svg
+    - assets/icons/check.svg
+    - assets/icons/plus.svg
+    - assets/icons/discord.svg
 
   uses-material-design: true
 

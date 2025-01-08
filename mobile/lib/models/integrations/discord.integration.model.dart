@@ -1,6 +1,6 @@
 import 'package:triggo/models/integration.model.dart';
-import 'package:triggo/repositories/models/integration.repository.model.dart';
-import 'package:triggo/repositories/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
+import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
 
 class DiscordIntegration extends Integration {
   final String username;
@@ -11,6 +11,7 @@ class DiscordIntegration extends Integration {
 
   DiscordIntegration({
     required super.name,
+    required super.id,
     required this.username,
     required this.email,
     required this.displayName,
@@ -19,14 +20,41 @@ class DiscordIntegration extends Integration {
   });
 
   static DiscordIntegration fromDTO(IntegrationDTO dto) {
-    DiscordProperties properties = dto.properties as DiscordProperties;
+    DiscordPropertiesDTO properties = dto.properties as DiscordPropertiesDTO;
     return DiscordIntegration(
       name: 'Discord',
+      id: dto.id,
       username: properties.username,
       email: properties.email,
       displayName: properties.displayName,
       avatarUri: properties.avatarUri,
       flags: properties.flags,
+    );
+  }
+}
+
+class DiscordGuild {
+  final String id;
+  final String name;
+  final String iconUri;
+  final int approximateMemberCount;
+  final bool linked;
+
+  DiscordGuild({
+    required this.id,
+    required this.name,
+    required this.iconUri,
+    required this.approximateMemberCount,
+    required this.linked,
+  });
+
+  static DiscordGuild fromDTO(DiscordGuildDTO dto) {
+    return DiscordGuild(
+      id: dto.id,
+      name: dto.name,
+      iconUri: dto.iconUri,
+      approximateMemberCount: dto.approximateMemberCount,
+      linked: dto.linked,
     );
   }
 }
