@@ -10,11 +10,11 @@ public class AuthenticationMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<LoginQueryResult, AuthenticationResponse>()
+        config.NewConfig<PasswordAuthLoginQueryResult, AuthenticationResponse>()
             .Map(dest => dest.AccessToken, src => src.AccessToken.Value)
             .Map(dest => dest.RefreshToken, src => src.RefreshToken.Value);
 
-        config.NewConfig<RegisterCommandResult, AuthenticationResponse>()
+        config.NewConfig<PasswordAuthRegisterCommandResult, AuthenticationResponse>()
             .Map(dest => dest.AccessToken, src => src.AccessToken.Value)
             .Map(dest => dest.RefreshToken, src => src.RefreshToken.Value);
     }

@@ -11,14 +11,14 @@ using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<RegisterCommandResult>>
+public class PasswordAuthRegisterCommandHandler : IRequestHandler<PasswordAuthRegisterCommand, ErrorOr<PasswordAuthRegisterCommandResult>>
 {
     private readonly IJwtGenerator _jwtGenerator;
     private readonly IUserReadRepository _userReadRepository;
     private readonly IUserWriteRepository _userWriteRepository;
     private readonly IAuthenticationMethodWriteRepository _authenticationMethodWriteRepository;
 
-    public RegisterCommandHandler(IJwtGenerator jwtGenerator, IUserReadRepository userReadRepository,
+    public PasswordAuthRegisterCommandHandler(IJwtGenerator jwtGenerator, IUserReadRepository userReadRepository,
         IUserWriteRepository userWriteRepository,
         IAuthenticationMethodWriteRepository authenticationMethodWriteRepository)
     {
@@ -28,7 +28,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
         _authenticationMethodWriteRepository = authenticationMethodWriteRepository;
     }
 
-    public async Task<ErrorOr<RegisterCommandResult>> Handle(RegisterCommand command,
+    public async Task<ErrorOr<PasswordAuthRegisterCommandResult>> Handle(PasswordAuthRegisterCommand command,
         CancellationToken cancellationToken)
     {
         if (await _userReadRepository.GetUserByEmailAsync(command.Email, cancellationToken) is not null)
@@ -56,6 +56,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
 
-        return new RegisterCommandResult(accessToken, refreshToken, user.Id.Value);
+        return new PasswordAuthRegisterCommandResult(accessToken, refreshToken, user.Id.Value);
     }
 }

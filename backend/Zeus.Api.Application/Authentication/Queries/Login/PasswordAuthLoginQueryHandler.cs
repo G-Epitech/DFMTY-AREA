@@ -9,13 +9,13 @@ using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Application.Authentication.Queries.Login;
 
-public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryResult>>
+public class PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQuery, ErrorOr<PasswordAuthLoginQueryResult>>
 {
     private readonly IUserReadRepository _userReadRepository;
     private readonly IJwtGenerator _jwtGenerator;
     private readonly IAuthenticationMethodReadRepository _authenticationMethodReadRepository;
 
-    public LoginQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator,
+    public PasswordAuthLoginQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator,
         IAuthenticationMethodReadRepository authenticationMethodReadRepository)
     {
         _userReadRepository = userReadRepository;
@@ -23,7 +23,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryR
         _authenticationMethodReadRepository = authenticationMethodReadRepository;
     }
 
-    public async Task<ErrorOr<LoginQueryResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PasswordAuthLoginQueryResult>> Handle(PasswordAuthLoginQuery query, CancellationToken cancellationToken)
     {
         if (await _userReadRepository.GetUserByEmailAsync(query.Email, cancellationToken) is not { } user)
         {
@@ -51,6 +51,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryR
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
 
-        return new LoginQueryResult(accessToken, refreshToken);
+        return new PasswordAuthLoginQueryResult(accessToken, refreshToken);
     }
 }

@@ -29,7 +29,7 @@ public class AuthenticationController : ApiController
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status201Created)]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = _mapper.Map<RegisterCommand>(request);
+        var command = _mapper.Map<PasswordAuthRegisterCommand>(request);
         var authResult = await _sender.Send(command);
 
         return authResult.Match(
@@ -42,7 +42,7 @@ public class AuthenticationController : ApiController
     [ProducesResponseType<AuthenticationResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = _mapper.Map<LoginQuery>(request);
+        var query = _mapper.Map<PasswordAuthLoginQuery>(request);
         var authResult = await _sender.Send(query);
 
         return authResult.Match(

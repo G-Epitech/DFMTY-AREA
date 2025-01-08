@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Zeus.Api.Application.Authentication.Commands.Register;
 
-public class RegisterCommandValidator: AbstractValidator<RegisterCommand>
+public class PasswordAuthRegisterCommandValidator: AbstractValidator<PasswordAuthRegisterCommand>
 {
-    public RegisterCommandValidator()
+    public PasswordAuthRegisterCommandValidator()
     {
         RuleFor(x => x.Email).EmailAddress();
         RuleFor(x => x.Password).MinimumLength(8);
