@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,10 +50,10 @@ class AutomationParameterView extends StatelessWidget {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
 
-    print("automationMediator.automationSchemas");
+    log("automationMediator.automationSchemas");
     if (automationMediator.automationSchemas != null &&
         automationMediator.automationSchemas!.schemas["discord"] != null) {
-      print(automationMediator.automationSchemas!.schemas["discord"]!.name);
+      log(automationMediator.automationSchemas!.schemas["discord"]!.name);
     }
     return BlocProvider(
       create: (_) => AutomationTriggerBloc(

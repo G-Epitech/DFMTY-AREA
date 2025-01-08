@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
+import 'package:triggo/app/features/automation/view/creation/select_integration.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -176,34 +178,43 @@ class _AutomationCreationContainer extends StatelessWidget {
 class _AddTriggerEventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: DottedBorder(
-            color: textPrimaryColor,
-            strokeWidth: 3,
-            dashPattern: [10],
-            borderType: BorderType.RRect,
-            radius: Radius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(12.0),
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'Add a Trigger Event',
-                  style: TextStyle(
-                    color: textPrimaryColor,
-                    fontFamily: containerTitle.fontFamily,
-                    fontSize: 18,
-                    fontWeight: containerTitle.fontWeight,
-                    letterSpacing: containerTitle.letterSpacing,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            customScreenBuilder(AutomationCreationSelectIntegrationView(
+              type: AutomationChoiceEnum.trigger,
+            )));
+      },
+      child: Row(
+        children: [
+          Expanded(
+            child: DottedBorder(
+              color: textPrimaryColor,
+              strokeWidth: 3,
+              dashPattern: [10],
+              borderType: BorderType.RRect,
+              radius: Radius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.all(12.0),
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'Add a Trigger Event',
+                    style: TextStyle(
+                      color: textPrimaryColor,
+                      fontFamily: containerTitle.fontFamily,
+                      fontSize: 18,
+                      fontWeight: containerTitle.fontWeight,
+                      letterSpacing: containerTitle.letterSpacing,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

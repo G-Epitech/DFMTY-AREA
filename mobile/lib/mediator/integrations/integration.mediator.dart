@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -33,7 +35,7 @@ class IntegrationMediator with ChangeNotifier {
     }
   }
 
-  Future<List<AvailableIntegration>> getIntegrationNames() async {
+  Future<List<AvailableIntegration>> getIntegrations() async {
     List<AvailableIntegration> integrations = [];
     try {
       final res = await _integrationRepository.getIntegrationNames();
@@ -51,6 +53,7 @@ class IntegrationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
+      log('Error getting integrations: $e');
       // Display error message with a snackbar or dialog (something like that)
       return [];
     }

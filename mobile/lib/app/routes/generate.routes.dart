@@ -29,7 +29,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.automations):
       return customScreenBuilder(const AutomationsView());
     case (RoutesNames.connectIntegration):
-      return customScreenBuilder(const IntegrationConnectView());
+      return customScreenBuilder(const IntegrationAvailableView());
     case (RoutesNames.automationCreation):
       return customScreenBuilder(const AutomationCreationMainView());
     case (RoutesNames.automationSettings):
