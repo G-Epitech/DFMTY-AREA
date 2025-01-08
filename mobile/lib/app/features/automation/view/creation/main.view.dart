@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
 import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -25,33 +26,30 @@ class _AutomationCreationMainViewState
     extends State<AutomationCreationMainView> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AutomationCreationBloc(),
-      child: BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
-        builder: (context, state) {
-          return BaseScaffold(
-            title: 'Automation',
-            header: _Header(automation: state.automation),
-            getBack: true,
-            body: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                children: [
-                  _AutomationCreationContainer(automation: state.automation),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _SaveButton(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+    return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+      builder: (context, state) {
+        return BaseScaffold(
+          title: 'Automation',
+          header: _Header(automation: state.automation),
+          getBack: true,
+          body: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              children: [
+                _AutomationCreationContainer(automation: state.automation),
+                const Spacer(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _SaveButton(),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -101,14 +99,31 @@ class _Header extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10.0),
-          Text(
-            automation.label.isEmpty ? 'Untitled' : automation.label,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontSize: 20.0,
-                ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )
+          Expanded(
+            child: Text(
+              automation.label.isEmpty ? 'Untitled' : automation.label,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontSize: 20.0,
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              log('Settings button pressed');
+              Navigator.of(context).pushNamed(RoutesNames.automationSettings);
+            },
+            icon: SvgPicture.asset(
+              'assets/icons/cog-6-tooth.svg',
+              height: 24,
+              width: 24,
+              colorFilter: ColorFilter.mode(
+                textPrimaryColor,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -169,8 +184,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
             borderType: BorderType.RRect,
             radius: Radius.circular(8),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding: const EdgeInsets.all(12.0),
               width: double.infinity,
               child: Center(
                 child: Text(

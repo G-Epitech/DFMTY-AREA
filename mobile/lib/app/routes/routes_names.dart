@@ -8,4 +8,5 @@ class RoutesNames {
   static const String connectIntegration = "connect_integration_view";
   static const String automations = "automations_view";
   static const String automationCreation = "automation_creation_view";
+  static const String automationSettings = "automation_settings_view";
 }

@@ -49,6 +49,7 @@ flutter:
     - assets/icons/cog-6-tooth.svg
     - assets/icons/check.svg
     - assets/icons/plus.svg
+    - assets/icons/chevron-right.svg
 
   uses-material-design: true
 
