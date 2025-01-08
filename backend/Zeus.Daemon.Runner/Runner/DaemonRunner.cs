@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
+using Zeus.Common.Extensions.DependencyInjection;
+using Zeus.Common.Extensions.Environment;
 using Zeus.Daemon.Application.Discord.Services;
-using Zeus.Daemon.Application.Interfaces.HandlerProviders;
-using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Infrastructure.Automations;
 
 namespace Zeus.Daemon.Runner.Runner;
@@ -12,11 +13,19 @@ public class DaemonRunner
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IConfigurationRoot _configuration;
+    private readonly ILogger<DaemonRunner> _logger;
+    private readonly IEnvironmentProvider _environmentProvider;
 
     public DaemonRunner(IServiceProvider serviceProvider, IConfigurationRoot configuration)
     {
         _serviceProvider = serviceProvider;
         _configuration = configuration;
+        _logger = serviceProvider.GetRequiredService<ILogger<DaemonRunner>>();
+        _environmentProvider = serviceProvider.GetRequiredService<IEnvironmentProvider>();
+        
+        _logger.LogInformation("Daemon runner initialized");
+        _serviceProvider.StartAutoServices();
+        _logger.LogInformation("Daemon runner auto-started services started");
     }
 
     private Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
@@ -34,12 +43,9 @@ public class DaemonRunner
 
     public async Task Run(CancellationToken cancellationToken = default)
     {
-        _serviceProvider.GetRequiredService<ITriggersRegistry>();
-        _serviceProvider.GetRequiredService<IAutomationsRegistry>();
-        _serviceProvider.GetRequiredService<ITriggerHandlersProvider>();
-        _serviceProvider.GetRequiredService<IActionHandlersProvider>();
-
+        _logger.LogInformation("DaemonRunner running. Environment is {environment}.", _environmentProvider.EnvironmentName);
         await Task.WhenAll(
+            ListenDiscordAsync(cancellationToken),
             ListenUpdatesAsync(cancellationToken)
         );
     }

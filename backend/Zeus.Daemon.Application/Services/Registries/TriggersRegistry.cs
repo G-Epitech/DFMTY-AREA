@@ -1,5 +1,5 @@
 ﻿using Zeus.Common.Domain.AutomationAggregate;
-using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Application.Interfaces.Registries;
 
@@ -12,18 +12,20 @@ public class TriggersRegistry : ITriggersRegistry
     public TriggersRegistry(ITriggerHandlersProvider handlersProvider)
     {
         _handlersProvider = handlersProvider;
-        Console.WriteLine("TriggersRegistry intialized");
     }
 
     public async Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
     {
-        return await _handlersProvider
-            .GetHandler(automation.Trigger.Identifier)
-            .RegisterAsync(automation, cancellationToken);
+        var handler = _handlersProvider.GetHandler(automation.Trigger.Identifier);
+        
+        return await handler.RegisterAsync(automation, cancellationToken);
     }
 
-    public Task<bool> RemoveAsync(AutomationId automationId, CancellationToken cancellationToken = default)
+    public async Task<bool> RemoveAsync(Automation automation, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var handler = _handlersProvider.GetHandler(automation.Trigger.Identifier);
+        var invoker = new TriggerHandlerInvoker(handler);
+
+        return await invoker.RemoveAsync(automation.Id, cancellationToken);
     }
 }

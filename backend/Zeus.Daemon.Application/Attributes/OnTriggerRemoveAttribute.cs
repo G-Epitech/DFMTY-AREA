@@ -1,4 +1,5 @@
 ﻿namespace Zeus.Daemon.Application.Attributes;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-public class OnTriggerRegisterAttribute : Attribute;
+public class OnTriggerRemoveAttribute : Attribute;
+

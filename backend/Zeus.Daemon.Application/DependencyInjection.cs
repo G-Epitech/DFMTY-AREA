@@ -1,14 +1,7 @@
 ﻿using System.Reflection;
 
-using FluentValidation;
-
-using MediatR;
-
 using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.BuildingBlocks.Application.Behaviors;
-using Zeus.Daemon.Application.Attributes;
-using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
@@ -33,19 +26,17 @@ public static class DependencyInjection
         services.AddSingleton<ITriggersRegistry, TriggersRegistry>();
         services.AddSingleton<IAutomationsRegistry, AutomationsRegistry>();
         services.AddSingleton<IAutomationsRunner, AutomationsRunner>();
+        services.AddSingleton<IAutomationsLauncher, AutomationLauncher>();
         return services;
     }
 
     private static IServiceCollection AddTriggerHandlersFromAssembly(this IServiceCollection services)
     {
-        var types = Assembly
-            .GetTypes()
-            .Where(t => t.IsAssignableTo(typeof(ITriggerHandler)) && !t.IsAbstract)
-            .ToList();
+        var types = Assembly.GetTriggerHandlersTypes();
 
         foreach (var type in types)
         {
-            services.AddTransient(typeof(ITriggerHandler), type);
+            services.AddSingleton(type);
         }
         return services;
     }

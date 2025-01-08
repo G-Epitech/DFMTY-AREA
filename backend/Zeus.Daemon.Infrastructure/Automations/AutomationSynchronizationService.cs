@@ -1,5 +1,6 @@
-﻿using Zeus.Api.Presentation.gRPC.SDK.Services;
-using Zeus.Daemon.Application.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+
+using Zeus.Api.Presentation.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Infrastructure.Mapping;
 
@@ -11,12 +12,14 @@ public class AutomationSynchronizationService
     private readonly IAutomationsRegistry _automationsRegistry;
     private DateTime _lastUpdate = DateTime.UnixEpoch;
     private const int RefreshIntervalMilliseconds = 1000;
+    private readonly ILogger _logger;
 
     public AutomationSynchronizationService(SynchronizationGrpcService synchronizationGrpcService,
-        IAutomationsRegistry automationsRegistry)
+        IAutomationsRegistry automationsRegistry, ILogger<AutomationSynchronizationService> logger)
     {
         _synchronizationGrpcService = synchronizationGrpcService;
         _automationsRegistry = automationsRegistry;
+        _logger = logger;
     }
 
     public async Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
@@ -24,7 +27,7 @@ public class AutomationSynchronizationService
         while (!cancellationToken.IsCancellationRequested)
         {
             await WaitForChangesAsync(cancellationToken);
-            Console.WriteLine("New automations to pull");
+            _logger.LogDebug("New automations to pull");
             await RefreshAutomationsAsync(cancellationToken);
         }
     }
@@ -48,7 +51,7 @@ public class AutomationSynchronizationService
 
         var automations = delta.Select(d => d.MapToAutomation()).ToList();
 
-        Console.WriteLine($"Syncing {automations.Count} automations");
+        _logger.LogInformation("Syncing {count} automations", automations.Count);
         Task.WaitAll(
             automations.Select(a => _automationsRegistry.RegisterAsync(a, cancellationToken)).ToList(), cancellationToken);
     }

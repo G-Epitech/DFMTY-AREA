@@ -28,8 +28,8 @@ public class AutomationsRegistry : IAutomationsRegistry
 
     public async Task<bool> RemoveAsync(AutomationId automationId, CancellationToken cancellationToken = default)
     {
-        var valid = _automations.ContainsKey(automationId)
-                    && await _triggersRegistry.RemoveAsync(automationId, cancellationToken);
+        var valid = _automations.TryGetValue(automationId, out var automation)
+                    && await _triggersRegistry.RemoveAsync(automation, cancellationToken);
         
         if (valid)
         {

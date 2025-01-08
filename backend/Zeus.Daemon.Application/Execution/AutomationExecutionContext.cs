@@ -1,7 +1,5 @@
 using System.Reflection;
 
-using Humanizer;
-
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
@@ -12,7 +10,7 @@ using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Domain.Automations;
 
-namespace Zeus.Daemon.Application.Automations;
+namespace Zeus.Daemon.Application.Execution;
 
 public sealed class AutomationExecutionContext
 {
@@ -63,7 +61,7 @@ public sealed class AutomationExecutionContext
 
     private async Task<bool> RunActionAsync(AutomationAction action)
     {
-        var handler = _handlersProvider.GetHandlerTarget(action.Identifier);
+        var handler = _handlersProvider.GetHandler(action.Identifier);
         var parameters = GetHandlerParameters(handler.Method, action);
 
         var res = handler.Method.Invoke(handler.Target, parameters);
@@ -91,12 +89,12 @@ public sealed class AutomationExecutionContext
 
         foreach (var parameter in parameters)
         {
-            var fromParameterAttributeIdentifier = parameter.GetFromParameterIdentifier();
+            var fromParametersAttributeIdentifier = parameter.GetParameterIdentifierFromAttribute();
             var fromIntegrationAttribute = parameter.GetCustomAttribute<FromIntegrationsAttribute>();
 
-            if (fromParameterAttributeIdentifier is not null)
+            if (fromParametersAttributeIdentifier is not null)
             {
-                result[parameter.Position] = GetParameterValue(fromParameterAttributeIdentifier, parameter.ParameterType, action);
+                result[parameter.Position] = GetParameterValue(fromParametersAttributeIdentifier, parameter.ParameterType, action);
             }
             else if (fromIntegrationAttribute is not null)
             {

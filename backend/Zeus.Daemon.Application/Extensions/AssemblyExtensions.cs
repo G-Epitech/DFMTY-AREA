@@ -9,7 +9,14 @@ public static class AssemblyExtensions
     public static IList<Type> GetActionHandlersHostingTypes(this Assembly assembly)
     {
         return assembly.GetTypes()
-            .Where(t => !t.IsAbstract && t.ContainsActionHandlerMethods())
+            .Where(t => t is { IsAbstract: false } && t.ContainsActionHandlerMethods())
+            .ToList();
+    }
+
+    public static IList<Type> GetTriggerHandlersTypes(this Assembly assembly)
+    {
+        return assembly.GetTypes()
+            .Where(t => t is { IsAbstract: false } && t.HasAttribute<TriggerHandlerAttribute>())
             .ToList();
     }
 }

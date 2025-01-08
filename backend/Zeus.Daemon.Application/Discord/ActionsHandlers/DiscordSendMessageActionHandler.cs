@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
@@ -22,14 +21,13 @@ public class DiscordSendMessageActionHandler
     [ActionHandler("Discord.SendMessageToChannel")]
     public async Task<FactsDictionary> RunAsync(
         AutomationId automationId,
-        [FromParameter] string channelId,
-        [FromParameter] string content,
+        [FromParameters] string channelId,
+        [FromParameters] string content,
         CancellationToken cancellationToken
     )
     {
         // TODO: Check permissions
-        Console.WriteLine($"[{automationId.Value.ToString()}] We are here");
-
+        Console.WriteLine($"[{automationId.Value.ToString()}] We are here with channelId: {channelId} and content: {content}");
         await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
         return new FactsDictionary();
     }

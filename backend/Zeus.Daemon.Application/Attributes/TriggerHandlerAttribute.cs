@@ -1,11 +1,11 @@
 ﻿namespace Zeus.Daemon.Application.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class TriggerIdentifierAttribute : Attribute
+public class TriggerHandlerAttribute : Attribute
 {
     public string Identifier { get; }
 
-    public TriggerIdentifierAttribute(string identifier)
+    public TriggerHandlerAttribute(string identifier)
     {
         Identifier = identifier;
     }

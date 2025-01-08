@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
+using Zeus.Common.Extensions.Environment;
 using Zeus.Daemon.Runner.Runner;
 
 namespace Zeus.Daemon.Runner.Builder;
@@ -16,6 +18,12 @@ public class DaemonRunnerBuilder
     private DaemonRunnerBuilder()
     {
         Configuration = BuildConfiguration();
+        Services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
+            loggingBuilder.AddConsole();
+        });
+        Services.AddEnvironmentProvider(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production");
     }
 
     public static DaemonRunnerBuilder CreateBuilder(string[] args)
@@ -29,6 +37,7 @@ public class DaemonRunnerBuilder
 
         configurationManager.SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
 
         return configurationManager;

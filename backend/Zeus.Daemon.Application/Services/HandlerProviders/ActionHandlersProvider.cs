@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 
-using Humanizer;
-
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Zeus.Common.Domain.Common.Enums;
 using Zeus.Common.Domain.ProvidersSettings;
 using Zeus.Daemon.Application.Attributes;
+using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Domain.Automations;
@@ -17,18 +17,24 @@ public class ActionHandlersProvider : IActionHandlersProvider
 {
     private struct ActionHandlerDefinition
     {
-        public Type HostingClass { get; set; }
-        public MethodInfo Method { get; set; }
+        public Type HostingClass { get; init; }
+        public MethodInfo Method { get; init; }
     }
 
     private static readonly Assembly Assembly = typeof(ActionHandlersProvider).Assembly;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger _logger;
 
     private readonly Dictionary<string, ActionHandlerDefinition> _handlers = new();
 
-    public ActionHandlersProvider(IServiceProvider serviceProvider, ProvidersSettings providersSettings)
+    public ActionHandlersProvider(
+        IServiceProvider serviceProvider,
+        ProvidersSettings providersSettings,
+        ILogger<ActionHandlersProvider> logger
+    )
     {
         _serviceProvider = serviceProvider;
+        _logger = logger;
 
         var typesWithHandlers = Assembly.GetActionHandlersHostingTypes();
 
@@ -37,6 +43,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
             CheckHandlerDeclarationsAndRegister(type, providersSettings);
         }
         EnsureEveryActionHasHandler(providersSettings);
+        _logger.LogDebug("{count} action handlers have been registered", _handlers.Count);
     }
 
     private void RegisterHandler(Type hostingClass, MethodInfo method)
@@ -48,11 +55,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
             throw new InvalidOperationException($"Method '{method.Name}' has no valid ActionHandlerAttribute");
         }
 
-        _handlers[actionFullIdentifier] = new ActionHandlerDefinition
-        {
-            HostingClass = hostingClass,
-            Method = method
-        };
+        _handlers[actionFullIdentifier] = new ActionHandlerDefinition { HostingClass = hostingClass, Method = method };
     }
 
 
@@ -67,25 +70,20 @@ public class ActionHandlersProvider : IActionHandlersProvider
         }
     }
 
-    public ActionHandler GetHandlerTarget(string actionIdentifier)
+    public ActionHandler GetHandler(string actionIdentifier)
     {
         if (_handlers.TryGetValue(actionIdentifier, out var handlerDefinition))
         {
-            return new ActionHandler
-            {
-                Method = handlerDefinition.Method,
-                Target = _serviceProvider.GetRequiredService(handlerDefinition.HostingClass)
-            };
-            
+            return new ActionHandler { Method = handlerDefinition.Method, Target = _serviceProvider.GetRequiredService(handlerDefinition.HostingClass) };
         }
-        throw new InvalidOperationException($"action handler with identifier '{actionIdentifier}' not found");
+        throw new InvalidOperationException($"Action handler with identifier '{actionIdentifier}' not found");
     }
 
     private void CheckHandlerDeclarationsAndRegister(Type hostingClass, ProvidersSettings providersSettings)
     {
         var methods = hostingClass
             .GetMethods()
-            .Where(m => m.IsActionHandlerMethod())
+            .Where(m => m.HasAttribute<ActionHandlerAttribute>())
             .ToList();
 
         foreach (var method in methods)
@@ -98,11 +96,8 @@ public class ActionHandlersProvider : IActionHandlersProvider
     private static void CheckHandlerDeclaration(MethodInfo method, ProvidersSettings providersSettings)
     {
         var actionFullIdentifier = method.GetCustomAttribute<ActionHandlerAttribute>()?.Identifier;
-        var parameters = method
-            .GetParameters()
-            .Where(p => p.IsValidActionHandlerParameter())
-            .ToList();
-        
+        var parameters = method.GetParameters().ToList();
+
         if (string.IsNullOrEmpty(actionFullIdentifier))
         {
             throw new InvalidOperationException($"Method '{method.Name}' has no valid ActionHandlerAttribute");
@@ -112,12 +107,12 @@ public class ActionHandlersProvider : IActionHandlersProvider
         CheckParameters(parameters, actionFullIdentifier, actionSchema);
         CheckReturnType(method);
     }
-    
+
     private static ActionSchema GetActionSchema(string actionFullIdentifier, ProvidersSettings providersSettings)
     {
         var provider = actionFullIdentifier.Split('.').FirstOrDefault();
         var action = actionFullIdentifier.Split('.').LastOrDefault();
-        
+
         if (string.IsNullOrEmpty(provider) || string.IsNullOrEmpty(action))
         {
             throw new InvalidOperationException($"Action '{actionFullIdentifier}' has invalid format");
@@ -141,17 +136,22 @@ public class ActionHandlersProvider : IActionHandlersProvider
     {
         foreach (var parameter in parameters)
         {
-            if (parameter.HasFromParameterAttribute())
+            if (!parameter.IsValidActionHandlerParameter())
+            {
+                throw new InvalidOperationException($"Parameter '{parameter.Name}' is not a valid action handler parameter, in action '{actionFullIdentifier}'");
+            }
+
+            if (parameter.HasAttribute<FromParametersAttribute>())
             {
                 CheckTypedParameter(parameter, actionFullIdentifier, actionSchema);
             }
         }
     }
-    
+
     private static void CheckTypedParameter(ParameterInfo parameter, string actionFullIdentifier, ActionSchema actionSchema)
     {
-        var identifier = parameter.GetFromParameterIdentifier();
-        
+        var identifier = parameter.GetParameterIdentifierFromAttribute();
+
         if (identifier is null || !actionSchema.Parameters.TryGetValue(identifier, out var parameterSchema))
         {
             throw new InvalidOperationException($"Parameter '{identifier}' not found in action '{actionFullIdentifier}'");
@@ -173,12 +173,12 @@ public class ActionHandlersProvider : IActionHandlersProvider
             throw new InvalidOperationException($"Parameter '{parameter.Name}' is not assignable to type '{parameterSchema.Type}'");
         }
     }
-    
+
     private static void CheckReturnType(MethodInfo method)
     {
         if (method.ReturnType != typeof(Task<FactsDictionary>))
         {
-            throw new InvalidOperationException($"Method '{method.Name}' has invalid return type");
+            throw new InvalidOperationException($"Method '{method.Name}' has invalid return type on '{method.DeclaringType?.Name}'");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Application.Automations;
+using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Application.Interfaces.Registries;
@@ -7,7 +7,7 @@ using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services;
 
-public class AutomationsRunner : IAutomationsRunner
+public sealed class AutomationsRunner : IAutomationsRunner
 {
     private readonly IAutomationsRegistry _automationsRegistry;
     private readonly IActionHandlersProvider _actionHandlersProvider;

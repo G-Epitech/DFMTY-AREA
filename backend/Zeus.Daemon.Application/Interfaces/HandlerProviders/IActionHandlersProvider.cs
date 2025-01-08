@@ -1,14 +1,10 @@
-﻿using System.Reflection;
+﻿using Zeus.Common.Extensions.DependencyInjection;
+using Zeus.Daemon.Application.Execution;
 
 namespace Zeus.Daemon.Application.Interfaces.HandlerProviders;
 
-public struct ActionHandler
-{
-    public object Target { get; init; }
-    public MethodInfo Method { get; init; }
-}
-
+[AutoStarted]
 public interface IActionHandlersProvider
 {
-    public ActionHandler GetHandlerTarget(string actionIdentifier);
+    public ActionHandler GetHandler(string actionIdentifier);
 }

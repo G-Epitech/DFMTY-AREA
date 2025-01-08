@@ -1,39 +1,45 @@
-using Zeus.Common.Domain.AutomationAggregate;
-using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Daemon.Application.Abstracts;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
-using Zeus.Daemon.Application.Discord.Services;
+using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Discord.TriggerHandlers;
 
-[TriggerIdentifier("Discord.MessageReceivedInChannel")]
-public class DiscordMessageReceivedTriggerHandler : TriggerHandler
+[TriggerHandler("Discord.MessageReceivedInChannel")]
+public class DiscordMessageReceivedTriggerHandler
 {
-    public DiscordMessageReceivedTriggerHandler(IDiscordWebSocketService discordWebSocketService, IServiceProvider serviceProvider)
-        : base(serviceProvider)
+    private readonly IAutomationsLauncher _automationsLauncher;
+
+    public DiscordMessageReceivedTriggerHandler(IAutomationsLauncher automationsLauncher)
     {
+        _automationsLauncher = automationsLauncher;
     }
 
-    protected override Task<bool> OnRegisterAsync(Automation automation, CancellationToken cancellationToken = default)
+    [OnTriggerRegister]
+    public Task<bool> OnRegisterAsync(
+        AutomationId automationId,
+        [FromParameters] string channelId,
+        [FromParameters] string guildId,
+        [FromIntegrations] DiscordIntegration integration,
+        CancellationToken cancellationToken = default)
     {
-        Console.WriteLine("DiscordMessageReceivedTriggerHandler.OnRegisterAsync");
-        Task.Run(async () => await RunAfter2S(automation.Id, cancellationToken), cancellationToken);
-        return base.OnRegisterAsync(automation, cancellationToken);
+        Console.WriteLine($"DiscordMessageReceivedTriggerHandler.OnRegisterAsync with channelId: {channelId} and guildId: {guildId}");
+        Task.Run(async () => await RunAfter2S(automationId, cancellationToken), cancellationToken);
+        return Task.FromResult(true);
     }
 
-    protected override Task<bool> OnRemoveAsync(AutomationTrigger trigger, CancellationToken cancellationToken = default)
+    [OnTriggerRemove]
+    public Task<bool> OnRemoveAsync(AutomationId automationId, CancellationToken cancellationToken = default)
     {
         Console.WriteLine("DiscordMessageReceivedTriggerHandler.OnRemoveAsync");
-        return base.OnRemoveAsync(trigger, cancellationToken);
+        return Task.FromResult(true);
     }
-    
-    [OnTriggerRegister]
-    protected async Task RunAfter2S(AutomationId id, CancellationToken cancellationToken = default)
+
+    private async Task RunAfter2S(AutomationId id, CancellationToken cancellationToken)
     {
         Console.WriteLine("DiscordMessageReceivedTriggerHandler.RunAfter2s");
         await Task.Delay(2000, cancellationToken);
-        await RunAutomationAsync(id, new FactsDictionary());
+        await _automationsLauncher.LaunchAutomationAsync(id, new FactsDictionary());
     }
 }

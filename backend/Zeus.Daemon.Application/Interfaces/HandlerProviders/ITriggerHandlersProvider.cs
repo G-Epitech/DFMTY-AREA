@@ -1,6 +1,10 @@
-﻿namespace Zeus.Daemon.Application.Interfaces.HandlerProviders;
+﻿using Zeus.Common.Extensions.DependencyInjection;
+using Zeus.Daemon.Application.Execution;
 
+namespace Zeus.Daemon.Application.Interfaces.HandlerProviders;
+
+[AutoStarted]
 public interface ITriggerHandlersProvider
 {
-    public ITriggerHandler GetHandler(string triggerIdentifier);
+    public TriggerHandler GetHandler(string triggerIdentifier);
 }
