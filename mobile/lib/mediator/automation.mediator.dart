@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/models/automation.model.dart';
+import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/automation/dtos/automation.dtos.dart';
 
@@ -66,6 +68,30 @@ class AutomationMediator with ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception(res.message);
+    }
+  }
+
+  List<AvailableIntegration> getAvailableIntegrations() {
+    List<AvailableIntegration> integrations = [];
+
+    for (var key in _automationSchemas!.schemas.keys) {
+      var schema = _automationSchemas!.schemas[key];
+      integrations.add(AvailableIntegration(
+        name: schema!.name,
+        iconUri: schema.iconUri,
+        color: Color(int.parse(schema.color)),
+        url: key,
+      ));
+    }
+    return integrations;
+  }
+
+  List<AutomationSchemaTriggerAction> getTriggersOrAction(
+      String integration, AutomationChoiceEnum type) {
+    if (type == AutomationChoiceEnum.trigger) {
+      return _automationSchemas!.schemas[integration]!.triggers.values.toList();
+    } else {
+      return _automationSchemas!.schemas[integration]!.actions.values.toList();
     }
   }
 }

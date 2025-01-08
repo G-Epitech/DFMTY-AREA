@@ -51,6 +51,8 @@ flutter:
     - assets/icons/plus.svg
     - assets/icons/chevron-right.svg
     - assets/icons/discord.svg
+    - assets/icons/inbox-arrow-down.svg
+    - assets/icons/chat-bubble-oval-right-ellipsis.svg
 
   uses-material-design: true
 

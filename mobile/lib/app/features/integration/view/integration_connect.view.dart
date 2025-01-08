@@ -8,10 +8,12 @@ import 'package:triggo/models/integration.model.dart';
 
 class IntegrationAvailableView extends StatefulWidget {
   final AutomationChoiceEnum? type;
+  final List<AvailableIntegration>? integrationsNames;
 
   const IntegrationAvailableView({
     super.key,
     this.type,
+    this.integrationsNames,
   });
 
   @override
@@ -25,7 +27,9 @@ class _IntegrationAvailableViewState extends State<IntegrationAvailableView> {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
     final Future<List<AvailableIntegration>> integrationsNames =
-        integrationMediator.getIntegrations();
+        widget.integrationsNames != null
+            ? Future.value(widget.integrationsNames)
+            : integrationMediator.getIntegrations();
     return BaseScaffold(
       title:
           widget.type != null ? 'Select an Integration' : 'Connect Integration',
@@ -167,6 +171,6 @@ class _IntegrationListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntegrationListItemWidget(integration: integration);
+    return IntegrationListItemWidget(integration: integration, type: type);
   }
 }

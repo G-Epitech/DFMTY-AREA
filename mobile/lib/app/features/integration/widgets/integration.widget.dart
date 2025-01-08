@@ -11,12 +11,12 @@ import 'package:triggo/models/integration.model.dart';
 
 class IntegrationListItemWidget extends StatelessWidget {
   final AvailableIntegration integration;
-  final AutomationChoiceEnum? choice;
+  final AutomationChoiceEnum? type;
 
   const IntegrationListItemWidget({
     super.key,
     required this.integration,
-    this.choice,
+    this.type,
   });
 
   @override
@@ -24,7 +24,7 @@ class IntegrationListItemWidget extends StatelessWidget {
     return TriggoCard(
       customWidget: _CustomWidget(
         integration: integration,
-        choice: choice,
+        type: type,
       ),
     );
   }
@@ -32,11 +32,11 @@ class IntegrationListItemWidget extends StatelessWidget {
 
 class _CustomWidget extends StatelessWidget {
   final AvailableIntegration integration;
-  final AutomationChoiceEnum? choice;
+  final AutomationChoiceEnum? type;
 
   const _CustomWidget({
     required this.integration,
-    this.choice,
+    this.type,
   });
 
   @override
@@ -45,12 +45,12 @@ class _CustomWidget extends StatelessWidget {
         RepositoryProvider.of<IntegrationMediator>(context);
     return GestureDetector(
       onTap: () {
-        if (choice != null) {
+        if (type != null) {
           Navigator.push(
               context,
               customScreenBuilder(AutomationCreationAddView(
-                type: choice!,
-                integrationName: integration.name,
+                type: type!,
+                integrationName: integration.url,
               )));
         } else {
           integrationMediator.launchURLFromIntegration(integration.url);
