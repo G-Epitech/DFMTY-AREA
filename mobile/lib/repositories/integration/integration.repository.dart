@@ -34,7 +34,7 @@ class IntegrationRepository {
       message: response.message,
       headers: response.headers,
       data: response.data != null
-          ? OutGetUserIntegrationDTO.fromJson({'page': response.data!})
+          ? OutGetUserIntegrationDTO.fromJson(response.data!)
           : null,
       errors: response.errors,
     );
@@ -85,11 +85,15 @@ class IntegrationRepository {
         "totalPages": 1,
         "totalRecords": 3,
         "data": [
-          {"name": "Discord"},
+          {
+            "name": "Discord",
+            "iconUri": 'assets/icons/discord.svg',
+            "color": "#7289da",
+            "url": "discord"
+          }
         ]
       },
     };
-
     return Response<OutGetIntegrationNamesDTO>(
       statusCode: Codes.ok,
       message: "Ok",

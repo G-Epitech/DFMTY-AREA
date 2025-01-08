@@ -119,54 +119,54 @@ void automationRepositoryTests() {
       final response = await repository.getAutomationSchema();
 
       expect(response.statusCode, equals(Codes.ok));
-      expect(response.data?.schemas.length, equals(1));
-      expect(response.data?.schemas['discord-app']?.name, equals('Discord'));
-      expect(response.data?.schemas['discord-app']?.iconUri,
+      expect(response.data?.schema.length, equals(1));
+      expect(response.data?.schema['discord-app']?.name, equals('Discord'));
+      expect(response.data?.schema['discord-app']?.iconUri,
           equals('https://example.com/discord.png'));
-      expect(response.data?.schemas['discord-app']?.color, equals('#7289da'));
-      expect(response.data?.schemas['discord-app']?.triggers.length, equals(1));
+      expect(response.data?.schema['discord-app']?.color, equals('#7289da'));
+      expect(response.data?.schema['discord-app']?.triggers.length, equals(1));
       expect(
           response
-              .data?.schemas['discord-app']?.triggers['message-received']?.name,
+              .data?.schema['discord-app']?.triggers['message-received']?.name,
           equals('Message Received'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.description,
           equals('Triggered when a message is received.'));
       expect(
           response
-              .data?.schemas['discord-app']?.triggers['message-received']?.icon,
+              .data?.schema['discord-app']?.triggers['message-received']?.icon,
           equals('https://example.com/message.png'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.parameters.length,
           equals(1));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.parameters['user']?.name,
           equals('User'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.parameters['user']?.description,
           equals('The user who sent the message.'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.parameters['user']?.type,
           equals('string'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.facts.length,
           equals(1));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.facts['message-content']?.name,
           equals('Message Content'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.facts['message-content']?.description,
           equals('The content of the message.'));
       expect(
-          response.data?.schemas['discord-app']?.triggers['message-received']
+          response.data?.schema['discord-app']?.triggers['message-received']
               ?.facts['message-content']?.type,
           equals('string'));
     });

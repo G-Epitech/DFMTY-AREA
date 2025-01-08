@@ -19,15 +19,15 @@ class InGetAutomationSchemaDTO implements Json {
 }
 
 class OutGetAutomationSchemaDTO {
-  final Map<String, AutomationSchemaDTO> schemas;
+  final Map<String, AutomationSchemaDTO> schema;
 
   OutGetAutomationSchemaDTO({
-    required this.schemas,
+    required this.schema,
   });
 
   factory OutGetAutomationSchemaDTO.fromJson(Map<String, dynamic> json) {
     return OutGetAutomationSchemaDTO(
-      schemas: json.map(
+      schema: json.map(
         (key, value) => MapEntry(
           key,
           AutomationSchemaDTO.fromJson(value as Map<String, dynamic>),
@@ -37,7 +37,7 @@ class OutGetAutomationSchemaDTO {
   }
 
   Map<String, dynamic> toJson() {
-    return schemas.map(
+    return schema.map(
       (key, value) => MapEntry(key, value.toJson()),
     );
   }
@@ -66,12 +66,10 @@ class OutGetAutomationsDTO implements Json {
   @JsonKey(fromJson: pageAutomationsFromJson, toJson: pageToJson)
   final Page<AutomationDTO> page;
 
-  OutGetAutomationsDTO({
-    required this.page,
-  });
+  OutGetAutomationsDTO({required this.page});
 
   factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetAutomationsDTOFromJson({'page': json});
+      _$OutGetAutomationsDTOFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);

@@ -61,8 +61,8 @@ class AutomationMediator with ChangeNotifier {
   Future<void> _getAutomationSchema() async {
     final res = await _automationRepository.getAutomationSchema();
     if (res.statusCode == Codes.ok && res.data != null) {
-      print('AutomationSchemas: ${res.data!.schemas}');
-      _automationSchemas = AutomationSchemas.fromDTO(res.data!.schemas);
+      print('AutomationSchemas: ${res.data!.schema}');
+      _automationSchemas = AutomationSchemas.fromDTO(res.data!.schema);
       notifyListeners();
     } else {
       throw Exception(res.message);

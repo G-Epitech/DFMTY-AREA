@@ -1,5 +1,5 @@
 @use 'typography';
-@use "colors";
+@use 'colors';
 
 .toast-container .ngx-toastr {
   box-shadow: 0 4px 12px hsla(var(--primary), 0.15) !important;
@@ -63,9 +63,8 @@
   height: 2px;
   opacity: 0.7;
   background: linear-gradient(
-      to right,
-      hsla(var(--white), 0.3),
-      hsla(var(--white), 0.1)
+    to right,
+    hsla(var(--white), 0.3),
+    hsla(var(--white), 0.1)
   );
 }
-

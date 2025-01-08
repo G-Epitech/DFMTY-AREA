@@ -50,6 +50,7 @@ flutter:
     - assets/icons/check.svg
     - assets/icons/plus.svg
     - assets/icons/chevron-right.svg
+    - assets/icons/discord.svg
 
   uses-material-design: true
 
