@@ -1,4 +1,4 @@
-enum AutomationInputType {
+enum AutomationInputEnum {
   text,
   textArea,
   number,

@@ -4,7 +4,7 @@ import 'package:triggo/app/widgets/input.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
 class AutomationCreationInputView extends StatefulWidget {
-  final AutomationInputType type;
+  final AutomationInputEnum type;
   final String label;
   final String? placeholder;
   final List<String>? options;
@@ -46,21 +46,21 @@ class _AutomationCreationInputViewState
 
   Widget _buildInput() {
     switch (widget.type) {
-      case AutomationInputType.text:
+      case AutomationInputEnum.text:
         return _TextInput(
           label: widget.label,
           placeholder: widget.placeholder,
           onValueChanged: widget.onValueChanged,
           defaultValue: widget.value,
         );
-      case AutomationInputType.textArea:
+      case AutomationInputEnum.textArea:
         return _TextAreaInput(
           label: widget.label,
           placeholder: widget.placeholder,
           onValueChanged: widget.onValueChanged,
           defaultValue: widget.value,
         );
-      case AutomationInputType.select:
+      case AutomationInputEnum.select:
         return _SelectInput(
           label: widget.label,
           options: widget.options!,

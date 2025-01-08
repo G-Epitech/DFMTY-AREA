@@ -26,7 +26,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                   description: state.automation.label,
                   svgPath: 'assets/icons/chevron-right.svg',
                   input: AutomationCreationInputView(
-                    type: AutomationInputType.text,
+                    type: AutomationInputEnum.text,
                     label: 'Label',
                     placeholder: 'Enter a label',
                     onValueChanged: (value) {
@@ -43,7 +43,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                   description: state.automation.description,
                   svgPath: 'assets/icons/chevron-right.svg',
                   input: AutomationCreationInputView(
-                    type: AutomationInputType.textArea,
+                    type: AutomationInputEnum.textArea,
                     label: 'Description',
                     placeholder: 'Enter a description',
                     onValueChanged: (value) {
