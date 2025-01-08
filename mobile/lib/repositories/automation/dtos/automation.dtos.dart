@@ -66,12 +66,10 @@ class OutGetAutomationsDTO implements Json {
   @JsonKey(fromJson: pageAutomationsFromJson, toJson: pageToJson)
   final Page<AutomationDTO> page;
 
-  OutGetAutomationsDTO({
-    required this.page,
-  });
+  OutGetAutomationsDTO({required this.page});
 
   factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetAutomationsDTOFromJson({'page': json});
+      _$OutGetAutomationsDTOFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
