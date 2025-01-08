@@ -78,3 +78,28 @@ class DiscordGuildDTO implements Json {
     );
   }
 }
+
+class DiscordChannelDTO implements Json {
+  final String id;
+  final String name;
+
+  DiscordChannelDTO({
+    required this.id,
+    required this.name,
+  });
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
+  factory DiscordChannelDTO.fromJson(Map<String, dynamic> json) {
+    return DiscordChannelDTO(
+      id: json['id'] as String,
+      name: json['name'] as String,
+    );
+  }
+}
