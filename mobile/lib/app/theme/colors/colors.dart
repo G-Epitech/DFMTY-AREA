@@ -19,3 +19,15 @@ const ColorScheme triggoColorScheme = ColorScheme(
 const Color textPrimaryColor = Color(0xFF3E244A);
 const Color textSecondaryColor = Color(0xFF625169);
 const Color lightContainer = Color(0xFFF4EBFD);
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor";
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
