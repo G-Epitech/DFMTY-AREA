@@ -24,6 +24,7 @@ Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
 
 @JsonSerializable()
 class OutGetUserIntegrationDTO implements PageJson<IntegrationDTO> {
+  @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
   @override
   final Page<IntegrationDTO> page;
 
@@ -78,16 +79,18 @@ Page<IntegrationNamesDTO> pageIntegrationsNameFromJson(
 }
 
 @JsonSerializable()
-class OutGetIntegrationNamesDTO implements Json {
+class OutGetIntegrationNamesDTO implements PageJson<IntegrationNamesDTO> {
   @JsonKey(fromJson: pageIntegrationsNameFromJson, toJson: pageToJson)
+  @override
   final Page<IntegrationNamesDTO> page;
 
-  OutGetIntegrationNamesDTO({
-    required this.page,
-  });
+  OutGetIntegrationNamesDTO({required this.page});
 
-  factory OutGetIntegrationNamesDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetIntegrationNamesDTOFromJson(json);
+  factory OutGetIntegrationNamesDTO.fromJson(Map<String, dynamic> json) {
+    return OutGetIntegrationNamesDTO(
+      page: PageJson.fromJson(json, IntegrationNamesDTO.fromJson).page,
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() => _$OutGetIntegrationNamesDTOToJson(this);
