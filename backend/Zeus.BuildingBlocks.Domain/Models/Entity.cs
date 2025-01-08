@@ -3,7 +3,11 @@ namespace Zeus.BuildingBlocks.Domain.Models;
 public abstract class Entity<TId> : IEquatable<Entity<TId>>
     where TId : notnull
 {
+    private readonly List<IDomainEvent> _domainEvents = [];
+
     public TId Id { get; }
+
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     protected Entity(TId id)
     {
@@ -39,5 +43,15 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public override int GetHashCode()
     {
         return Id.GetHashCode();
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
+
+    protected void AddDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
     }
 }
