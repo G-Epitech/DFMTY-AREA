@@ -169,7 +169,7 @@ class _AutomationListItem extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: automation.iconColor,
+                    color: Color(automation.iconColor),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Center(
@@ -187,7 +187,7 @@ class _AutomationListItem extends StatelessWidget {
                 Positioned(
                   bottom: -5,
                   right: -5,
-                  child: _ActivityIcon(state: automation.isActive),
+                  child: _ActivityIcon(state: automation.enabled),
                 )
               ],
             ),
@@ -200,7 +200,7 @@ class _AutomationListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          automation.name,
+                          automation.label,
                           style: Theme.of(context).textTheme.labelLarge,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

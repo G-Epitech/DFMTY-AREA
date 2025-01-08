@@ -5,6 +5,7 @@ import 'package:triggo/app/features/automation/bloc/automation_trigger_bloc.dart
 import 'package:triggo/app/features/automation/models/trigger_properties_fields.dart';
 import 'package:triggo/app/features/automation/widgets/fields.widget.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
+import 'package:triggo/mediator/automation.mediator.dart';
 
 class AutomationParameterView extends StatelessWidget {
   final List<TriggerPropertiesFields> initialFields = [
@@ -44,6 +45,14 @@ class AutomationParameterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+
+    print("automationMediator.automationSchemas");
+    if (automationMediator.automationSchemas != null &&
+        automationMediator.automationSchemas!.schemas["discord"] != null) {
+      print(automationMediator.automationSchemas!.schemas["discord"]!.name);
+    }
     return BlocProvider(
       create: (_) => AutomationTriggerBloc(
         triggerPropertiesFields: initialFields,
