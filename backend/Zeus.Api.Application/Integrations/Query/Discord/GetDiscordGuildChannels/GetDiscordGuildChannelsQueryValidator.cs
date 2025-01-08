@@ -11,6 +11,6 @@ public class GetDiscordGuildChannelsQueryValidator : AbstractValidator<GetDiscor
         RuleFor(x => x.IntegrationId)
             .NotEmpty();
         RuleFor(x => x.GuildId)
-            .NotEmpty().MinimumLength(18);
+            .NotEmpty().MinimumLength(16);
     }
 }
