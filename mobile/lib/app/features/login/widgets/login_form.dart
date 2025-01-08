@@ -56,6 +56,7 @@ class _EmailInput extends StatelessWidget {
       onChanged: (email) {
         context.read<LoginBloc>().add(LoginEmailChanged(email));
       },
+      maxLines: 1,
     );
   }
 }
@@ -73,6 +74,7 @@ class _PasswordInput extends StatelessWidget {
       onChanged: (password) {
         context.read<LoginBloc>().add(LoginPasswordChanged(password));
       },
+      maxLines: 1,
     );
   }
 }

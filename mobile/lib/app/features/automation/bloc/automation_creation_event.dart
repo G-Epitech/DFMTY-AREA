@@ -105,3 +105,7 @@ final class AutomationCreationActionParameterChanged
 final class AutomationCreationSubmitted extends AutomationCreationEvent {
   const AutomationCreationSubmitted();
 }
+
+final class AutomationCreationReset extends AutomationCreationEvent {
+  const AutomationCreationReset();
+}

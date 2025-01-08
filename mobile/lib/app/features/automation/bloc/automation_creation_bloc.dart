@@ -19,6 +19,7 @@ class AutomationCreationBloc
     on<AutomationCreationActionProviderAdded>(_onActionProviderAdded);
     on<AutomationCreationActionParameterChanged>(_onActionParameterChanged);
     on<AutomationCreationSubmitted>(_onSubmitted);
+    on<AutomationCreationReset>(_onReset);
   }
 
   void _onLabelChanged(AutomationCreationLabelChanged event,
@@ -119,6 +120,11 @@ class AutomationCreationBloc
       log('Invalid automation');
       emit(AutomationCreationState(state.automation, false));
     }
+  }
+
+  void _onReset(
+      AutomationCreationReset event, Emitter<AutomationCreationState> emit) {
+    emit(AutomationCreationInitial());
   }
 
   bool _isValid(Automation automation) {

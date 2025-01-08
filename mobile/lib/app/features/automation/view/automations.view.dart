@@ -62,8 +62,8 @@ class _AutomationCreationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
+    /*final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);*/
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {

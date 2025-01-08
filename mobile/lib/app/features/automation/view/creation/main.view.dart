@@ -26,6 +26,8 @@ class _AutomationCreationMainViewState
     extends State<AutomationCreationMainView> {
   @override
   Widget build(BuildContext context) {
+    context.read<AutomationCreationBloc>().add(AutomationCreationReset());
+
     return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
       builder: (context, state) {
         return BaseScaffold(
