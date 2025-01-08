@@ -24,6 +24,8 @@ using Zeus.Api.Infrastructure.Services.Settings.OAuth2;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings.OAuth2;
+using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
@@ -44,6 +46,8 @@ public static class DependencyInjection
         services.AddScoped<IIntegrationLinkRequestWriteRepository, IntegrationLinkRequestWriteRepository>();
         services.AddScoped<IAutomationReadRepository, AutomationReadRepository>();
         services.AddScoped<IAutomationWriteRepository, AutomationWriteRepository>();
+        services.AddScoped<IAuthenticationMethodReadRepository, AuthenticationMethodReadRepository>();
+        services.AddScoped<IAuthenticationMethodWriteRepository, AuthenticationMethodWriteRepository>();
 
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 
@@ -107,6 +111,7 @@ public static class DependencyInjection
                 o.MapEnum<IntegrationType>(nameof(IntegrationType));
                 o.MapEnum<IntegrationTokenUsage>(nameof(IntegrationTokenUsage));
                 o.MapEnum<AutomationActionParameterType>(nameof(AutomationActionParameterType));
+                o.MapEnum<AuthenticationMethodType>(nameof(AuthenticationMethodType));
             });
         });
 

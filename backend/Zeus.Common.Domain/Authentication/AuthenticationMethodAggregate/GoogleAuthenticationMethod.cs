@@ -24,6 +24,17 @@ public sealed class GoogleAuthenticationMethod : AuthenticationMethod
         AccessToken = accessToken;
         RefreshToken = refreshToken;
     }
+    
+    public static GoogleAuthenticationMethod Create(UserId userId, AccessToken accessToken, RefreshToken refreshToken)
+    {
+        return new GoogleAuthenticationMethod(
+            AuthenticationMethodId.CreateUnique(),
+            userId,
+            accessToken,
+            refreshToken,
+            DateTime.UtcNow,
+            DateTime.UtcNow);
+    }
 
 #pragma warning disable CS8618
     private GoogleAuthenticationMethod() { }

@@ -21,6 +21,16 @@ public sealed class PasswordAuthenticationMethod : AuthenticationMethod
     {
         Password = password;
     }
+    
+    public static PasswordAuthenticationMethod Create(UserId userId, Password password)
+    {
+        return new PasswordAuthenticationMethod(
+            AuthenticationMethodId.CreateUnique(),
+            userId,
+            password,
+            DateTime.UtcNow,
+            DateTime.UtcNow);
+    }
 
 #pragma warning disable CS8618
     private PasswordAuthenticationMethod() { }

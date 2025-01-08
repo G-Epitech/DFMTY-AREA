@@ -5,6 +5,7 @@ using MediatR;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Errors;
+using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Application.Authentication.Queries.Login;
 
@@ -12,11 +13,14 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryR
 {
     private readonly IUserReadRepository _userReadRepository;
     private readonly IJwtGenerator _jwtGenerator;
+    private readonly IAuthenticationMethodReadRepository _authenticationMethodReadRepository;
 
-    public LoginQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator)
+    public LoginQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator,
+        IAuthenticationMethodReadRepository authenticationMethodReadRepository)
     {
         _userReadRepository = userReadRepository;
         _jwtGenerator = jwtGenerator;
+        _authenticationMethodReadRepository = authenticationMethodReadRepository;
     }
 
     public async Task<ErrorOr<LoginQueryResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
@@ -26,7 +30,20 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginQueryR
             return Errors.Authentication.InvalidCredentials;
         }
 
-        if (user.Password != query.Password)
+        if (await _authenticationMethodReadRepository.GetAuthenticationMethodsByUserIdAsync(user.Id, cancellationToken)
+            is not { } methods)
+        {
+            return Errors.Authentication.InvalidCredentials;
+        }
+        
+        var passwordMethod = methods.OfType<PasswordAuthenticationMethod>().FirstOrDefault();
+        
+        if (passwordMethod is null)
+        {
+            return Errors.Authentication.InvalidCredentials;
+        }
+
+        if (!passwordMethod.Password.Verify(query.Password))
         {
             return Errors.Authentication.InvalidCredentials;
         }
