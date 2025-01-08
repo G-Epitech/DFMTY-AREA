@@ -36,7 +36,7 @@ class Automation {
       enabled: json.enabled,
       updatedAt: json.updatedAt,
       iconUri: "assets/icons/chat.svg",
-      iconColor: 0xFFFFA00,
+      iconColor: 0xFFEE883A,
     );
   }
 

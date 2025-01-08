@@ -29,7 +29,7 @@ final class AutomationCreationInitial extends AutomationCreationState {
               ownerId: '',
               enabled: true,
               updatedAt: DateTime(0),
-              iconColor: 0xFFFFFFF,
+              iconColor: 0,
               iconUri: '',
             ),
             false);

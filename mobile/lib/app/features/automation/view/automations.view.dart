@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/view/automation.view.dart';
 import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
@@ -66,7 +67,8 @@ class _AutomationCreationButton extends StatelessWidget {
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
-        automationMediator.createAutomation();
+        // automationMediator.createAutomation();
+        Navigator.pushNamed(context, RoutesNames.automationCreation);
       },
     );
   }
