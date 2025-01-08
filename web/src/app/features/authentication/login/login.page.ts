@@ -10,10 +10,18 @@ import { AppRouter } from '@app/app.router';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LoginFormComponent } from '@features/authentication/login/components/login-form/login-form.component';
+import { NgOptimizedImage } from '@angular/common';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-login',
-  imports: [FormsModule, RouterLink, LoginFormComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    LoginFormComponent,
+    NgOptimizedImage,
+    TrButtonDirective,
+  ],
   templateUrl: './login.page.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

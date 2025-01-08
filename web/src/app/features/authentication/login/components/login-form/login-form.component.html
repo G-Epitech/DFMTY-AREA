@@ -1,13 +1,12 @@
-<form class="space-y-6" (ngSubmit)="onLogin()" [formGroup]="loginForm">
+<form class="space-y-6 w-full" (ngSubmit)="onLogin()" [formGroup]="loginForm">
   <div>
-    <label for="email" trLabel
-      >Email
+    <label for="email" trLabel>
+      Email
       <input
         id="email"
         type="email"
         trInput
         class="w-full"
-        required
         placeholder="example@email.com"
         [formControl]="loginForm.controls.email" />
     </label>
@@ -20,11 +19,12 @@
       [formControl]="loginForm.controls.password"
       errorMessage="" />
   </div>
+
   <button type="submit" trBtn class="w-full" [disabled]="loginLoading()">
     @if (loginLoading()) {
       <tr-spinner />
     } @else {
-      Login
+      Log In
     }
   </button>
 </form>
