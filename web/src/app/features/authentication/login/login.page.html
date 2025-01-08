@@ -20,40 +20,8 @@
         </p>
       </div>
 
-      <div class="relative my-6 w-full">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-muted"></div>
-        </div>
-        <div class="relative flex justify-center text-xs uppercase">
-          <span class="bg-white px-2 text-muted-foreground"
-            >Or continue with</span
-          >
-        </div>
-      </div>
-
-      <button
-        trBtn
-        variant="outline"
-        class="w-2/3 flex items-center justify-center gap-2">
-        <img
-          ngSrc="icons/google.svg"
-          alt="Google Logo"
-          width="20"
-          height="20"
-          class="w-5 h-5" />
-        <span>Continue with Google</span>
-      </button>
+      <tr-oauth-section class="w-full" />
     </div>
   </div>
-
-  <footer class="py-6 w-full">
-    <div class="flex justify-center gap-6 text-sm text-muted-foreground">
-      <a routerLink="/privacy" class="hover:text-primary hover:underline">
-        Privacy & Terms
-      </a>
-      <a routerLink="/contact" class="hover:text-primary hover:underline">
-        Contact Us
-      </a>
-    </div>
-  </footer>
+  <tr-auth-footer />
 </div>
