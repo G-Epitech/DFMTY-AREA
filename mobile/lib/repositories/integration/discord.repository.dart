@@ -29,4 +29,24 @@ class DiscordRepository {
       errors: null,
     );
   }
+
+  Future<Response<OutGetUserIntegrationDiscordChannelsDTO>> getChannels(
+      String id, String guildId) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final res = await call(
+      method: 'GET',
+      endpoint: '/integrations/$id/discord/guilds/$guildId/channels',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+
+    return Response<OutGetUserIntegrationDiscordChannelsDTO>(
+      statusCode: res.statusCode,
+      message: res.message,
+      data: res.data != null
+          ? OutGetUserIntegrationDiscordChannelsDTO.fromJson({'list': res.data})
+          : null,
+      errors: null,
+    );
+  }
 }
