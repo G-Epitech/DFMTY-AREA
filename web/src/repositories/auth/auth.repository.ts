@@ -5,8 +5,7 @@ import {
   AuthRegisterRequestDTO,
   AuthRegisterResponseDTO,
 } from './dto';
-import { map, Observable } from 'rxjs';
-import { TokensModel } from '@models/tokens.model';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

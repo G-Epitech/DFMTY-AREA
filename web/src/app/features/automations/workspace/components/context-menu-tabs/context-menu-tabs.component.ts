@@ -3,7 +3,6 @@ import {
   Component,
   input,
   output,
-  signal,
 } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';

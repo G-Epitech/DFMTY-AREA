@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/integration/widgets/integrations/discord_connect.integrations.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integrations/integration.widget.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integration.mediator.dart';
+import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/models/integration.model.dart';
 
 class IntegrationConnectView extends StatefulWidget {
   const IntegrationConnectView({super.key});
@@ -16,9 +17,8 @@ class _IntegrationConnectViewState extends State<IntegrationConnectView> {
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
-    final Future<List<String>> integrationsNames =
+    final Future<List<AvailableIntegration>> integrationsNames =
         integrationMediator.getIntegrationNames();
-
     return BaseScaffold(
       title: 'Connect Integration',
       body: _IntegrationNamesContainer(integrations: integrationsNames),
@@ -32,12 +32,11 @@ class _IntegrationNamesContainer extends StatelessWidget {
     required this.integrations,
   });
 
-  final Future<List<String>> integrations;
+  final Future<List<AvailableIntegration>> integrations;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: Colors.grey[200],
@@ -54,11 +53,11 @@ class _IntegrationNamesContainer extends StatelessWidget {
 class _IntegrationList extends StatelessWidget {
   const _IntegrationList({required this.integrations});
 
-  final Future<List<String>> integrations;
+  final Future<List<AvailableIntegration>> integrations;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<List<AvailableIntegration>>(
       future: integrations,
       builder: (context, snapshot) {
         return IntegrationListView(snapshot: snapshot);
@@ -68,7 +67,7 @@ class _IntegrationList extends StatelessWidget {
 }
 
 class IntegrationListView extends StatelessWidget {
-  final AsyncSnapshot<List<String>> snapshot;
+  final AsyncSnapshot<List<AvailableIntegration>> snapshot;
 
   const IntegrationListView({required this.snapshot, super.key});
 
@@ -110,7 +109,7 @@ class _NoDataView extends StatelessWidget {
 }
 
 class _IntegrationListViewContent extends StatelessWidget {
-  final List<String> integrations;
+  final List<AvailableIntegration> integrations;
 
   const _IntegrationListViewContent({required this.integrations});
 
@@ -129,17 +128,12 @@ class _IntegrationListViewContent extends StatelessWidget {
 }
 
 class _IntegrationListItem extends StatelessWidget {
-  final String integration;
+  final AvailableIntegration integration;
 
   const _IntegrationListItem({required this.integration});
 
   @override
   Widget build(BuildContext context) {
-    switch (integration) {
-      case "Discord":
-        return DiscordConnectIntegrationListItemWidget();
-      default:
-        return Text('Integration not found: $integration');
-    }
+    return IntegrationListItemWidget(integration: integration);
   }
 }

@@ -6,12 +6,12 @@ part of 'automation.dtos.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-InGetAutomationManifestDTO _$InGetAutomationManifestDTOFromJson(
+InGetAutomationSchemaDTO _$InGetAutomationSchemaDTOFromJson(
         Map<String, dynamic> json) =>
-    InGetAutomationManifestDTO();
+    InGetAutomationSchemaDTO();
 
-Map<String, dynamic> _$InGetAutomationManifestDTOToJson(
-        InGetAutomationManifestDTO instance) =>
+Map<String, dynamic> _$InGetAutomationSchemaDTOToJson(
+        InGetAutomationSchemaDTO instance) =>
     <String, dynamic>{};
 
 OutGetAutomationIDDTO _$OutGetAutomationIDDTOFromJson(
