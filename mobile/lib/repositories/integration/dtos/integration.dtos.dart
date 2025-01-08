@@ -40,21 +40,33 @@ class OutGetUserIntegrationDTO implements Json {
 
 class IntegrationNamesDTO implements Json {
   late final String name;
+  late final String iconUri;
+  late final String color;
+  late final String url;
 
   IntegrationNamesDTO({
     required this.name,
+    required this.iconUri,
+    required this.color,
+    required this.url,
   });
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'iconUri': iconUri,
+      'color': color,
+      'url': url,
     };
   }
 
   factory IntegrationNamesDTO.fromJson(Map<String, dynamic> json) {
     return IntegrationNamesDTO(
       name: json['name'] as String,
+      iconUri: json['iconUri'] as String,
+      color: json['color'] as String,
+      url: json['url'] as String,
     );
   }
 }

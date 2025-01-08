@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/models/integration.model.dart';
 
-class DiscordConnectIntegrationListItemWidget extends StatelessWidget {
-  const DiscordConnectIntegrationListItemWidget({super.key});
+class IntegrationListItemWidget extends StatelessWidget {
+  final AvailableIntegration integration;
+
+  const IntegrationListItemWidget({
+    super.key,
+    required this.integration,
+  });
 
   @override
   Widget build(BuildContext context) {
     return IntegrationCard(
-      customWidget: _DiscordCustomWidget(),
+      customWidget: _CustomWidget(
+        integration: integration,
+      ),
     );
   }
 }
 
-class _DiscordCustomWidget extends StatelessWidget {
-  const _DiscordCustomWidget();
+class _CustomWidget extends StatelessWidget {
+  final AvailableIntegration integration;
+
+  const _CustomWidget({
+    required this.integration,
+  });
 
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
-
     return GestureDetector(
       onTap: () {
-        integrationMediator.launchURLFromIntegration("discord");
+        integrationMediator.launchURLFromIntegration(integration.url);
       },
       child: Row(
         children: [
@@ -32,14 +44,18 @@ class _DiscordCustomWidget extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Color(0xFF5865F2),
+              color: integration.color,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Center(
-              child: Icon(
-                Icons.discord,
-                size: 30,
-                color: Colors.white,
+              child: SvgPicture.asset(
+                integration.iconUri,
+                width: 30,
+                height: 30,
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
@@ -51,7 +67,7 @@ class _DiscordCustomWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Discord",
+                      integration.name,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ],

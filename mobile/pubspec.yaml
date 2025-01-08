@@ -48,6 +48,7 @@ flutter:
     - assets/icons/cog-6-tooth.svg
     - assets/icons/check.svg
     - assets/icons/plus.svg
+    - assets/icons/discord.svg
 
   uses-material-design: true
 
