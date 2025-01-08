@@ -1,4 +1,4 @@
-using Zeus.Common.Domain.Authentication.ValueObjects;
+using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Interfaces.Authentication;

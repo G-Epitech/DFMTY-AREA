@@ -1,7 +1,7 @@
 
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Common.Domain.Authentication.ValueObjects;
+namespace Zeus.Common.Domain.Authentication.Common;
 
 public abstract class Token : ValueObject
 {

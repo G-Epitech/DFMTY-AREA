@@ -1,4 +1,4 @@
-namespace Zeus.Common.Domain.Authentication.ValueObjects;
+namespace Zeus.Common.Domain.Authentication.Common;
 
 public sealed class AccessToken : Token
 {
