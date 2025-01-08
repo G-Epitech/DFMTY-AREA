@@ -11,7 +11,6 @@ import { AutomationsMediator } from '@mediators/automations.mediator';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, take, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { TokenMediator } from '@mediators/token.mediator';
 
 export interface SchemaState {
   automationSchema: AutomationSchemaModel | undefined | null;
@@ -26,7 +25,7 @@ const initialState: SchemaState = {
 export const SchemaStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed((store) => ({
+  withComputed(store => ({
     getSchema: computed(() => {
       return store.automationSchema();
     }),

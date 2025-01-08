@@ -4,7 +4,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Zeus.Api.Application.Integrations.Query.GetIntegration;
+using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegration;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations;
 using Zeus.Api.Presentation.Web.Mapping;

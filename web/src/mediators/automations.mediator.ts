@@ -48,7 +48,9 @@ export class AutomationsMediator {
         const services: Record<string, AutomationSchemaService> = {};
         for (const serviceName in dto) {
           const service = dto[serviceName];
-          const schemaTriggers = this._mapSchemaServiceTriggers(service.triggers);
+          const schemaTriggers = this._mapSchemaServiceTriggers(
+            service.triggers
+          );
           const schemaActions = this._mapSchemaServiceActions(service.actions);
           services[serviceName] = {
             name: service.name,

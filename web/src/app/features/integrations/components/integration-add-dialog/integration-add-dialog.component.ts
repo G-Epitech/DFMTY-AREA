@@ -12,7 +12,6 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { IntegrationAvailableCardComponent } from '@features/integrations/components/integration-available-card/integration-available-card.component';
 import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
-import { NgIcon } from '@ng-icons/core';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
 import {
@@ -29,7 +28,6 @@ import {
     IntegrationAvailableCardComponent,
     TrInputDirective,
     NgOptimizedImage,
-    NgIcon,
     NgStyle,
   ],
   templateUrl: './integration-add-dialog.component.html',
