@@ -7,37 +7,37 @@ import 'package:triggo/utils/json.dart';
 part 'automation.dtos.g.dart';
 
 @JsonSerializable()
-class InGetAutomationManifestDTO implements Json {
-  InGetAutomationManifestDTO();
+class InGetAutomationSchemaDTO implements Json {
+  InGetAutomationSchemaDTO();
 
   @override
-  factory InGetAutomationManifestDTO.fromJson(Map<String, dynamic> json) =>
-      _$InGetAutomationManifestDTOFromJson(json);
+  factory InGetAutomationSchemaDTO.fromJson(Map<String, dynamic> json) =>
+      _$InGetAutomationSchemaDTOFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$InGetAutomationManifestDTOToJson(this);
+  Map<String, dynamic> toJson() => _$InGetAutomationSchemaDTOToJson(this);
 }
 
-class OutGetAutomationManifestDTO {
-  final Map<String, AutomationManifestDTO> manifests;
+class OutGetAutomationSchemaDTO {
+  final Map<String, AutomationSchemaDTO> schema;
 
-  OutGetAutomationManifestDTO({
-    required this.manifests,
+  OutGetAutomationSchemaDTO({
+    required this.schema,
   });
 
-  factory OutGetAutomationManifestDTO.fromJson(Map<String, dynamic> json) {
-    return OutGetAutomationManifestDTO(
-      manifests: json.map(
+  factory OutGetAutomationSchemaDTO.fromJson(Map<String, dynamic> json) {
+    return OutGetAutomationSchemaDTO(
+      schema: json.map(
         (key, value) => MapEntry(
           key,
-          AutomationManifestDTO.fromJson(value as Map<String, dynamic>),
+          AutomationSchemaDTO.fromJson(value as Map<String, dynamic>),
         ),
       ),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return manifests.map(
+    return schema.map(
       (key, value) => MapEntry(key, value.toJson()),
     );
   }
@@ -66,12 +66,10 @@ class OutGetAutomationsDTO implements Json {
   @JsonKey(fromJson: pageAutomationsFromJson, toJson: pageToJson)
   final Page<AutomationDTO> page;
 
-  OutGetAutomationsDTO({
-    required this.page,
-  });
+  OutGetAutomationsDTO({required this.page});
 
   factory OutGetAutomationsDTO.fromJson(Map<String, dynamic> json) =>
-      _$OutGetAutomationsDTOFromJson({'page': json});
+      _$OutGetAutomationsDTOFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
