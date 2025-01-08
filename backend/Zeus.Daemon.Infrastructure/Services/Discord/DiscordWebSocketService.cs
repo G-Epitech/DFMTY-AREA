@@ -2,6 +2,8 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.Enums;
@@ -10,21 +12,23 @@ namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
 public class DiscordWebSocketService : IDiscordWebSocketService
 {
+    private readonly ILogger _logger;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
     private readonly ClientWebSocket _webSocket;
     private CancellationToken? _cancellationToken;
-
-    private int _heartbeatInterval;
+    private int _heartbeatInterval = 0;
 
     private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
-        _eventHandlers;
+        _eventHandlers = [];
 
-    public DiscordWebSocketService(IIntegrationsSettingsProvider integrationsSettingsProvider)
+
+    public DiscordWebSocketService(
+        IIntegrationsSettingsProvider integrationsSettingsProvider,
+        ILogger<DiscordWebSocketService> logger)
     {
         _integrationsSettingsProvider = integrationsSettingsProvider;
         _webSocket = new ClientWebSocket();
-        _heartbeatInterval = 0;
-        _eventHandlers = new List<(DiscordGatewayEventType, Func<JsonNode, CancellationToken, Task>)>();
+        _logger = logger;
     }
 
     public async Task ConnectAsync(CancellationToken cancellationToken)
@@ -33,7 +37,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService
 
         _cancellationToken = cancellationToken;
         await _webSocket.ConnectAsync(uri, _cancellationToken ?? CancellationToken.None);
-        Console.WriteLine("WebSocket connected to Discord.");
+        _logger.LogInformation("Discord WebSocket connected.");
 
         await ListenAsync(_cancellationToken ?? CancellationToken.None);
     }
@@ -47,7 +51,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService
 
             if (result.MessageType == WebSocketMessageType.Close)
             {
-                Console.WriteLine("WebSocket disconnected.");
+                _logger.LogCritical("Discord WebSocket disconnected.");
                 await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken);
                 break;
             }
@@ -56,6 +60,10 @@ public class DiscordWebSocketService : IDiscordWebSocketService
             {
                 var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 _ = OnMessage(message);
+            }
+            else
+            {
+                _logger.LogInformation("Received message of type {type}", result.MessageType.ToString());
             }
         }
     }
@@ -105,10 +113,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService
             {
                 ["token"] = _integrationsSettingsProvider.Discord.BotToken,
                 ["intents"] = 33281,
-                ["properties"] = new JsonObject
-                {
-                    ["os"] = "linux", ["browser"] = "native-websocket", ["device"] = "native-websocket"
-                }
+                ["properties"] = new JsonObject { ["os"] = "linux", ["browser"] = "native-websocket", ["device"] = "native-websocket" }
             }
         };
 

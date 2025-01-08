@@ -27,7 +27,6 @@ public class DiscordSendMessageActionHandler
     )
     {
         // TODO: Check permissions
-        Console.WriteLine($"[{automationId.Value.ToString()}] We are here with channelId: {channelId} and content: {content}");
         await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
         return new FactsDictionary();
     }

@@ -33,7 +33,7 @@ public sealed class AutomationExecutionContext
         _handlersProvider = actionHandlersProvider;
         _actions = automation.Actions;
         _integrations = integrations;
-        _facts = facts;
+        _facts = FillFactsFromTrigger(automation.Trigger, facts);
 
         AutomationId = automation.Id;
     }
@@ -46,6 +46,25 @@ public sealed class AutomationExecutionContext
     public void Run()
     {
         _mainTask = RunDetachedAsync();
+    }
+
+    private static FactsDictionary FillFactsFromTrigger(AutomationTrigger trigger, FactsDictionary triggerFacts)
+    {
+        var facts = new FactsDictionary();
+
+        foreach (var fact in triggerFacts)
+        {
+            facts[$"{trigger.Identifier}.{fact.Key}"] = fact.Value;
+        }
+        return facts;
+    }
+
+    private void AddActionFacts(AutomationAction action, FactsDictionary facts)
+    {
+        foreach (var fact in facts)
+        {
+            _facts[$"{action.Identifier}.{fact.Key}"] = fact.Value;
+        }
     }
 
     private async Task RunDetachedAsync()
@@ -79,7 +98,10 @@ public sealed class AutomationExecutionContext
         }
 
         var facts = await _currentTask;
-        return false;
+
+        AddActionFacts(action, facts);
+        _currentTask = null;
+        return true;
     }
 
     private object[] GetHandlerParameters(MethodInfo method, AutomationAction action)
@@ -115,11 +137,11 @@ public sealed class AutomationExecutionContext
         }
         return result;
     }
-    
+
     private object GetParameterValue(string identifier, Type destType, AutomationAction action)
     {
         var parameter = action.Parameters.FirstOrDefault(p => p.Identifier == identifier);
-        
+
         if (parameter is null)
         {
             throw new InvalidOperationException($"Parameter with identifier '{identifier}' not found");
@@ -140,9 +162,9 @@ public sealed class AutomationExecutionContext
                     _ => throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value")
                 };
             }
-            
+
             _facts.TryGetValue(parameter.Value, out var value);
-            
+
             if (value is null)
             {
                 throw new InvalidOperationException($"Unable to find value for parameter with identifier '{identifier}'");
@@ -157,16 +179,17 @@ public sealed class AutomationExecutionContext
                 Fact<object> fact => Convert.ChangeType(fact.Value, destType),
                 _ => throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value")
             };
-        } catch
+        }
+        catch
         {
             throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value");
         }
     }
-    
+
     private Integration GetIntegrationValue(Type destType)
     {
         var integration = _integrations.FirstOrDefault(i => i.GetType().IsAssignableTo(destType));
-        
+
         if (integration is null)
         {
             throw new InvalidOperationException($"Integration of type '{destType.Name}' not found");

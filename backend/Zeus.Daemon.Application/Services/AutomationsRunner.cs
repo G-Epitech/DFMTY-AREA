@@ -30,11 +30,10 @@ public sealed class AutomationsRunner : IAutomationsRunner
             return Task.FromResult(false);
         }
 
-        var ctx = new AutomationExecutionContext(_actionHandlersProvider, automation, [], new FactsDictionary());
+        var ctx = new AutomationExecutionContext(_actionHandlersProvider, automation, [], facts);
         
         _executions.Add(ctx);
         ctx.Run();
-        Console.WriteLine($"Running automation {automation.Id.Value.ToString()} that have {automation.Actions.Count} actions");
         return Task.FromResult(true);
     }
 }

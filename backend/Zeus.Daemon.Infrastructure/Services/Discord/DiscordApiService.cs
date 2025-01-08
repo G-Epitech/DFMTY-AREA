@@ -1,20 +1,22 @@
 using System.Net.Http.Headers;
 
-using ErrorOr;
+using Microsoft.Extensions.Logging;
 
 using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
-using Zeus.Daemon.Domain.Errors.Services;
 
 namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
 public class DiscordApiService : IDiscordApiService
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger _logger;
 
-    public DiscordApiService(IIntegrationsSettingsProvider integrationsSettingsProvider)
+    public DiscordApiService(IIntegrationsSettingsProvider integrationsSettingsProvider, ILogger<DiscordApiService> logger)
     {
+        _logger = logger;
+
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(integrationsSettingsProvider.Discord.ApiEndpoint);
 
@@ -25,7 +27,7 @@ public class DiscordApiService : IDiscordApiService
             "Bot", integrationsSettingsProvider.Discord.BotToken);
     }
 
-    public async Task<ErrorOr<Dictionary<string, string>>> SendChannelMessageAsync(DiscordChannelId channelId,
+    public async Task<bool> SendChannelMessageAsync(DiscordChannelId channelId,
         string message,
         CancellationToken cancellationToken)
     {
@@ -38,10 +40,8 @@ public class DiscordApiService : IDiscordApiService
 
         if (!response.IsSuccessStatusCode)
         {
-            Console.WriteLine("Failed to send message to Discord.");
-            return Errors.Services.Discord.FailureDuringRequest;
+            _logger.LogError("Failed to send message to Discord channel {ChannelId}.", channelId.Value);
         }
-
-        return new Dictionary<string, string>();
+        return response.IsSuccessStatusCode;
     }
 }
