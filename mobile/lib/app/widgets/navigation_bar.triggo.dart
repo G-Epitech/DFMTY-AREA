@@ -28,6 +28,10 @@ class TriggoNavigationBar extends StatelessWidget {
               routeName: RoutesNames.automations,
               iconAsset: 'assets/icons/bolt.svg',
             ).build(context),
+            _TriggoNavigationBarItem(
+              routeName: RoutesNames.profile,
+              iconAsset: 'assets/icons/user.svg',
+            ).build(context),
           ],
         ),
       ),
