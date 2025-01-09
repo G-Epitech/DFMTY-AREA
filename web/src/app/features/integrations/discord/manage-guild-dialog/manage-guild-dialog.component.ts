@@ -4,20 +4,22 @@ import {
   inject,
   input,
   OnInit,
+  signal,
 } from '@angular/core';
 import {
   BrnDialogImports,
   BrnDialogRef,
   injectBrnDialogContext,
 } from '@spartan-ng/ui-dialog-brain';
-import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';
+import { TrSkeletonComponent } from '@triggo-ui/skeleton';
 
 @Component({
   selector: 'tr-manage-guild-dialog',
@@ -30,6 +32,8 @@ import { DiscordGuildModel } from '@models/integration';
     TrButtonDirective,
     TrInputSearchComponent,
     AsyncPipe,
+    NgIf,
+    TrSkeletonComponent,
   ],
   templateUrl: './manage-guild-dialog.component.html',
   standalone: true,
@@ -47,8 +51,8 @@ export class ManageGuildDialogComponent implements OnInit {
   guilds$: Observable<DiscordGuildModel[]> | undefined;
 
   ngOnInit() {
-    if (this.integrationId) {
-      this.guilds$ = this.#integrationMediator.getDiscordGuilds(this.integrationId);
-    }
+    this.guilds$ = this.#integrationMediator.getDiscordGuilds(
+      this.integrationId
+    );
   }
 }
