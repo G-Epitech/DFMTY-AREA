@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -90,39 +89,37 @@ class _ProfileViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    width: 2,
-                  ),
-                ),
-                child: ClipOval(
-                  child: SvgPicture.asset(
-                    snapshot.data!.picture,
-                    width: 120,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 2,
                 ),
               ),
-              SizedBox(height: 16),
-              Text('${snapshot.data!.firstName} ${snapshot.data!.lastName}',
-                  style: Theme.of(context).textTheme.titleMedium),
-              Text(
-                snapshot.data!.email,
-                style: Theme.of(context).textTheme.labelLarge,
+              child: ClipOval(
+                child: Image.network(
+                  snapshot.data!.picture,
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(height: 16),
-            ],
-          ),
+            ),
+            SizedBox(height: 16),
+            Text('${snapshot.data!.firstName} ${snapshot.data!.lastName}',
+                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              snapshot.data!.email,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            SizedBox(height: 16),
+          ],
         ),
       ),
     );
