@@ -21,10 +21,9 @@ class AutomationCreationSettingsView extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: ListView(
               children: [
-                CustomLabelWidget(
+                AutomationLabelParameterWidget(
                   title: 'Label',
-                  description: state.automation.label,
-                  svgPath: 'assets/icons/chevron-right.svg',
+                  previewData: state.automation.label,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.text,
                     label: 'Label',
@@ -38,10 +37,9 @@ class AutomationCreationSettingsView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                CustomLabelWidget(
+                AutomationLabelParameterWidget(
                   title: 'Description',
-                  description: state.automation.description,
-                  svgPath: 'assets/icons/chevron-right.svg',
+                  previewData: state.automation.description,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
@@ -63,17 +61,15 @@ class AutomationCreationSettingsView extends StatelessWidget {
   }
 }
 
-class CustomLabelWidget extends StatelessWidget {
+class AutomationLabelParameterWidget extends StatelessWidget {
   final String title;
-  final String description;
-  final String svgPath;
+  final String previewData;
   final StatefulWidget input;
 
-  const CustomLabelWidget({
+  const AutomationLabelParameterWidget({
     super.key,
     required this.title,
-    required this.description,
-    required this.svgPath,
+    required this.previewData,
     required this.input,
   });
 
@@ -102,14 +98,14 @@ class CustomLabelWidget extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    description.isEmpty ? 'No $title' : description,
+                    previewData.isEmpty ? 'No $title' : previewData,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ],
               ),
             ),
             SvgPicture.asset(
-              svgPath,
+              "assets/icons/chevron-right.svg",
               width: 24.0,
               height: 24.0,
             ),

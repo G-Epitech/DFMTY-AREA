@@ -42,7 +42,7 @@ class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
 class _List extends StatelessWidget {
   final List<AutomationSchemaTriggerAction> triggersOrActions;
 
-  const _List({super.key, required this.triggersOrActions});
+  const _List({required this.triggersOrActions});
 
   @override
   Widget build(BuildContext context) {

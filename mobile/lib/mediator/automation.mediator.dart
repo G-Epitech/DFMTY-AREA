@@ -94,4 +94,17 @@ class AutomationMediator with ChangeNotifier {
       return _automationSchemas!.schemas[integration]!.actions.values.toList();
     }
   }
+
+  List<AutomationSchemaTriggerActionProperty> getParameters(
+      String integration, AutomationChoiceEnum type, String identifier) {
+    if (type == AutomationChoiceEnum.trigger) {
+      return _automationSchemas!
+          .schemas[integration]!.triggers[identifier]!.parameters.values
+          .toList();
+    } else {
+      return _automationSchemas!
+          .schemas[integration]!.actions[identifier]!.parameters.values
+          .toList();
+    }
+  }
 }
