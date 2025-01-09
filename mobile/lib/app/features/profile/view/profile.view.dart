@@ -30,6 +30,13 @@ class _ProfileViewState extends State<ProfileView> {
           Row(
             children: [
               Expanded(
+                child: _UserProfileWidget(user: user),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 4.0),
@@ -42,13 +49,6 @@ class _ProfileViewState extends State<ProfileView> {
                     },
                   ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: _UserProfileWidget(user: user),
               ),
             ],
           )
