@@ -11,13 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LoginFormComponent } from '@features/authentication/login/components/login-form/login-form.component';
 import { NgOptimizedImage } from '@angular/common';
-import { TrButtonDirective } from '@triggo-ui/button';
-import {
-  AuthFooterComponent
-} from '@features/authentication/components/auth-footer/auth-footer.component';
-import {
-  OauthSectionComponent
-} from '@features/authentication/components/oauth-section/oauth-section.component';
+import { AuthFooterComponent } from '@features/authentication/components/auth-footer/auth-footer.component';
+import { OauthSectionComponent } from '@features/authentication/components/oauth-section/oauth-section.component';
 
 @Component({
   selector: 'tr-login',
@@ -26,7 +21,6 @@ import {
     RouterLink,
     LoginFormComponent,
     NgOptimizedImage,
-    TrButtonDirective,
     AuthFooterComponent,
     OauthSectionComponent,
   ],

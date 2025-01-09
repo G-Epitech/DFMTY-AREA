@@ -13,11 +13,11 @@
   </div>
 
   <div>
+    <label for="password" trLabel>Password</label>
     <tr-form-password
       label="Password"
       id="password"
-      [formControl]="loginForm.controls.password"
-      errorMessage="" />
+      [formControl]="loginForm.controls.password" />
   </div>
 
   <button type="submit" trBtn class="w-full" [disabled]="loginLoading()">

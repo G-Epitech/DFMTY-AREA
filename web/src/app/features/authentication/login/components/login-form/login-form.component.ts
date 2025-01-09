@@ -52,7 +52,10 @@ export class LoginFormComponent implements OnDestroy {
   });
 
   onLogin() {
-    if (this.loginForm.controls.email.value?.trim() === '' || this.loginForm.controls.password.value?.trim() === '') {
+    if (
+      this.loginForm.controls.email.value?.trim() === '' ||
+      this.loginForm.controls.password.value?.trim() === ''
+    ) {
       this.#toastr.error('Email and password are required', 'Login failed');
       return;
     }

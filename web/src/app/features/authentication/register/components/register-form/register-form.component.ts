@@ -5,7 +5,6 @@ import {
   OnDestroy,
   signal,
 } from '@angular/core';
-import { isControlInvalid } from '@utils/forms';
 import {
   AbstractControl,
   FormControl,
@@ -14,7 +13,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrFormPasswordComponent } from '@triggo-ui/form';
 import { TrInputDirective } from '@triggo-ui/input';
@@ -23,17 +21,18 @@ import { AuthMediator } from '@mediators/auth.mediator';
 import { AuthStore } from '@app/store';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
 import { ToastrService } from 'ngx-toastr';
+import { RegisterFormLabelComponent } from '@features/authentication/register/components/register-form-label/register-form-label.component';
 
 @Component({
   selector: 'tr-register-form',
   imports: [
     FormsModule,
-    LabelDirective,
     TrButtonDirective,
     TrFormPasswordComponent,
     TrInputDirective,
     ReactiveFormsModule,
     TrSpinnerComponent,
+    RegisterFormLabelComponent,
   ],
   templateUrl: './register-form.component.html',
   styles: [],
@@ -47,7 +46,6 @@ export class RegisterFormComponent implements OnDestroy {
   readonly #toastr = inject(ToastrService);
 
   registerLoading = signal<boolean>(false);
-  formSubmitted = signal<boolean>(false);
 
   confirmPasswordValidator = (
     control: AbstractControl
@@ -65,45 +63,28 @@ export class RegisterFormComponent implements OnDestroy {
     return null;
   };
 
-  registerForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-    confirmPassword: new FormControl('', [this.confirmPasswordValidator]),
-  });
+  registerForm = new FormGroup(
+    {
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl('', [this.confirmPasswordValidator]),
+    },
+    { updateOn: 'submit' }
+  );
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  getEmailErrorMessage() {
-    const emailControl = this.registerForm.controls.email;
-    if (emailControl.errors?.['required']) {
-      return 'Required';
-    }
-    if (emailControl.errors?.['email']) {
-      return 'Invalid email';
-    }
-    return 'Email is invalid';
-  }
-
-  getPasswordErrorMessage() {
-    const passwordControl = this.registerForm.controls.password;
-    if (passwordControl.errors?.['required']) {
-      return 'Password is required';
-    }
-    if (passwordControl.errors?.['minlength']) {
-      return 'Password must be at least 8 characters';
-    }
-    return 'Password is invalid';
-  }
-
   onSubmit(): void {
+    this.registerForm.markAllAsTouched();
+    this.registerForm.updateValueAndValidity();
     if (this.registerForm.invalid) {
       return;
     }
@@ -134,6 +115,4 @@ export class RegisterFormComponent implements OnDestroy {
         this.#toastr.success('Registration successful');
       });
   }
-
-  protected readonly isControlInvalid = isControlInvalid;
 }
