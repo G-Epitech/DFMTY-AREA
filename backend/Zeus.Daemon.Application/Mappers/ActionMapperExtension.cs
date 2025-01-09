@@ -1,5 +1,5 @@
 using Zeus.Common.Domain.AutomationAggregate.Entities;
-using Zeus.Daemon.Application.Discord.Actions;
+using Zeus.Daemon.Application.Discord.ActionsHandlers;
 
 namespace Zeus.Daemon.Application.Mappers;
 

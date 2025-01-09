@@ -1,12 +1,14 @@
-﻿namespace Zeus.Common.Domain.ProvidersSettings;
+﻿using Zeus.Common.Domain.Common.Enums;
+
+namespace Zeus.Common.Domain.ProvidersSettings;
 
 public class FactSchema
 {
     public string Name { get; }
     public string Description { get; }
-    public VarType Type { get; }
+    public VariableType Type { get; }
 
-    public FactSchema(string name, string description, VarType type)
+    public FactSchema(string name, string description, VariableType type)
     {
         Name = name;
         Description = description;
