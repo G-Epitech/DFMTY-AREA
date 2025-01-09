@@ -7,7 +7,7 @@
   </tr-dialog-header>
   <div class="flex flex-row items-center space-x-3">
     <tr-input-search placeholder="Search a guild" class="w-full" />
-    <button trBtn class="w-1/4">Link Guild</button>
+    <button trBtn class="w-1/4" (click)="linkGuild()">Link Guild</button>
   </div>
   <div
     class="flex flex-col bg-secondary p-4 flex-grow rounded-md space-y-2 overflow-y-auto max-h-[400px]">
@@ -23,24 +23,26 @@
           <div class="flex flex-col mr-auto">
             <span class="tr-large">{{ guild.name }}</span>
           </div>
-          <div
+          <button
             [ngClass]="{
               'bg-green-500 hover:bg-green-400': guild.linked,
               'bg-primary hover:bg-primary/90': !guild.linked,
             }"
-            class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer">
+            class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer"
+            (click)="linkGuildById(guild.id)">
             <ng-icon
               [name]="guild.linked ? 'heroCheck' : 'heroPlus'"
               strokeWidth="0.13rem"
               class="text-white"
               size="1.1rem" />
-          </div>
+          </button>
         </div>
       }
     } @else {
       @for (_ of [].constructor(5); track $index) {
         <div class="flex flex-row bg-white p-4 rounded-md items-center">
-          <tr-skeleton class="w-[35px] h-[35px] rounded-full bg-secondary mr-4" />
+          <tr-skeleton
+            class="w-[35px] h-[35px] rounded-full bg-secondary mr-4" />
           <tr-skeleton class="h-4 w-[200px] bg-secondary" />
         </div>
       }

@@ -4,21 +4,15 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { IntegrationDiscordProps, IntegrationModel } from '@models/integration';
+import { IntegrationModel } from '@models/integration';
 import { NgOptimizedImage } from '@angular/common';
 import { ManageGuildDialogComponent } from '@features/integrations/discord/manage-guild-dialog/manage-guild-dialog.component';
-import { BrnDialogTriggerDirective } from '@spartan-ng/ui-dialog-brain';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrDialogService } from '@triggo-ui/dialog';
 
 @Component({
   selector: 'tr-integration-linked-discord',
-  imports: [
-    NgOptimizedImage,
-    ManageGuildDialogComponent,
-    BrnDialogTriggerDirective,
-    TrButtonDirective,
-  ],
+  imports: [NgOptimizedImage, TrButtonDirective],
   templateUrl: './integration-linked-discord.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
