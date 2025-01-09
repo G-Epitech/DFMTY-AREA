@@ -105,5 +105,6 @@ public static class DependencyInjection
         });
 
         services.AddScoped<AuditableEntitiesInterceptor>();
+        services.AddScoped<PublishDomainEventsInterceptor>();
     }
 }
