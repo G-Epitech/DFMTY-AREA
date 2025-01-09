@@ -10,7 +10,7 @@ using Zeus.Api.Application.Authentication.Queries.Login;
 using Zeus.Api.Presentation.Web.Contracts.Authentication;
 using Zeus.Api.Presentation.Web.Controllers.Users;
 
-namespace Zeus.Api.Presentation.Web.Controllers;
+namespace Zeus.Api.Presentation.Web.Controllers.Authentication;
 
 [AllowAnonymous]
 [Route("auth")]

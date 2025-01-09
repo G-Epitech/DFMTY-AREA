@@ -10,6 +10,7 @@ public class OAuth2GoogleSettingsProvider : IOAuth2GoogleSettingsProvider
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
+    public List<string> Scopes { get; }
     
     public OAuth2GoogleSettingsProvider(OAuth2GoogleSettings settings)
     {
@@ -18,5 +19,6 @@ public class OAuth2GoogleSettingsProvider : IOAuth2GoogleSettingsProvider
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
+        Scopes = settings.Scopes;
     }
 }
