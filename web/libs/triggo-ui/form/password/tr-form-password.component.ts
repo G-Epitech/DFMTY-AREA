@@ -14,11 +14,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { TrInputDirective } from '@triggo-ui/input';
-import { LabelDirective } from '@triggo-ui/label';
 
 @Component({
   selector: 'tr-form-password',
-  imports: [ReactiveFormsModule, TrInputDirective, LabelDirective],
+  imports: [ReactiveFormsModule, TrInputDirective],
   templateUrl: './tr-form-password.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,8 +34,7 @@ export class TrFormPasswordComponent implements ControlValueAccessor {
   formControl = input.required<FormControl>();
   label = input.required<string>();
   id = input.required<string>();
-  errorMessage = input.required<string>();
-  placeholder = input('••••••••');
+  placeholder = input('');
   isPasswordVisible = signal(false);
   isDisabled = signal(false);
 
