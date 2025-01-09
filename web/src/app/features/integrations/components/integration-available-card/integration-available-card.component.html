@@ -1,11 +1,15 @@
 <div
   class="rounded-md shadow-sm p-5 hover:cursor-pointer hover:bg-accent border border-gray-300">
   <div class="flex flex-col items-center space-y-1">
-    <img
-      [ngSrc]="props().logoAssetName"
-      alt="Integration Logo"
-      [width]="50"
-      [height]="50" />
-    <h1 class="tr-container-title">{{ props().name }}</h1>
+    <div
+      class="w-14 h-14 rounded-md flex flex-col items-center justify-center"
+      [ngStyle]="{ 'background-color': color() }">
+      <img
+        [ngSrc]="iconUri()"
+        alt="Integration Logo"
+        [width]="35"
+        [height]="35" />
+    </div>
+    <h1 class="tr-container-title">{{ name() }}</h1>
   </div>
 </div>

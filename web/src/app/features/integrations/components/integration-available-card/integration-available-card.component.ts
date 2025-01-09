@@ -1,22 +1,16 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-
-export interface IntegrationAvailableCardProps {
-  logoAssetName: string;
-  name: string;
-  description: string;
-  features: string[];
-  linkFn: () => void;
-}
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'tr-integration-available-card',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, NgStyle],
   templateUrl: './integration-available-card.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class IntegrationAvailableCardComponent {
-  props = input.required<IntegrationAvailableCardProps>();
+  iconUri = input.required<string>();
+  name = input.required<string>();
+  color = input.required<string>();
 }

@@ -1,20 +1,23 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { BrnDialogImports } from '@spartan-ng/ui-dialog-brain';
 import { TrButtonDirective } from '@triggo-ui/button';
-import {
-  IntegrationAvailableCardComponent,
-  IntegrationAvailableCardProps,
-} from '@features/integrations/components/integration-available-card/integration-available-card.component';
+import { IntegrationAvailableCardComponent } from '@features/integrations/components/integration-available-card/integration-available-card.component';
 import { TrInputDirective } from '@triggo-ui/input';
-import { NgOptimizedImage } from '@angular/common';
-import { NgIcon } from '@ng-icons/core';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { IntegrationsMediator } from '@mediators/integrations.mediator';
+import { SchemaStore } from '@app/store/schema-store';
+import {
+  IntegrationAvailableProps,
+  LinkFunction,
+} from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -25,7 +28,7 @@ import { IntegrationsMediator } from '@mediators/integrations.mediator';
     IntegrationAvailableCardComponent,
     TrInputDirective,
     NgOptimizedImage,
-    NgIcon,
+    NgStyle,
   ],
   templateUrl: './integration-add-dialog.component.html',
   styles: [],
@@ -33,40 +36,94 @@ import { IntegrationsMediator } from '@mediators/integrations.mediator';
   standalone: true,
 })
 export class IntegrationAddDialogComponent {
-  selectedIntegration = signal<IntegrationAvailableCardProps | null>(null);
   readonly #integrationsMediator = inject(IntegrationsMediator);
+  readonly #schemaStore = inject(SchemaStore);
 
-  readonly availableIntegrations: IntegrationAvailableCardProps[] = [
-    {
-      logoAssetName: 'icons/discord_logo.svg',
-      name: 'Discord',
-      description:
-        'Connect your Discord server to Triggo and receive notifications about your projects.',
-      features: [
-        'Receive notifications about your projects',
-        'Customize your notifications',
-      ],
-      linkFn: () => {
-        this.#integrationsMediator.discordRepository.getUri().subscribe({
-          next: uri => {
-            if (!uri) {
-              return;
-            }
-            const newWindow = window.open(`${uri}`, '_blank');
-            if (newWindow) {
-              newWindow.opener = window;
-            }
-          },
-        });
-      },
+  readonly #linkFunctions: Record<string, LinkFunction> = {
+    discord: () => {
+      this.#integrationsMediator.discordRepository.getUri().subscribe({
+        next: uri => {
+          if (!uri) {
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+      });
     },
-  ];
+  };
 
-  selectIntegration(integration: IntegrationAvailableCardProps): void {
-    this.selectedIntegration.set(integration);
+  #searchTerm = signal('');
+
+  selectedIntegration = signal<IntegrationAvailableProps | null>(null);
+  availableIntegrations = signal<IntegrationAvailableProps[]>([]);
+
+  linkFn = computed(() => {
+    const selected = this.selectedIntegration();
+    return selected ? (this.#linkFunctions[selected.identifier] ?? null) : null;
+  });
+
+  filteredIntegrations = computed(() => {
+    const searchTerm = this.#searchTerm().toLowerCase();
+    const integrations = this.availableIntegrations();
+
+    if (!searchTerm) return integrations;
+
+    return integrations.filter(
+      integration =>
+        integration.name.toLowerCase().includes(searchTerm) ||
+        integration.triggers.some(trigger =>
+          trigger.toLowerCase().includes(searchTerm)
+        ) ||
+        integration.actions.some(action =>
+          action.toLowerCase().includes(searchTerm)
+        )
+    );
+  });
+
+  constructor() {
+    effect(() => {
+      const schema = this.#schemaStore.getSchema();
+      if (!schema) {
+        return;
+      }
+
+      const integrations = Object.entries(schema.automationServices).map(
+        ([name, integration]) => ({
+          color: integration.color,
+          name: integration.name,
+          iconUri: integration.iconUri,
+          identifier: name,
+          triggers: Object.entries(integration.triggers).map(
+            ([, trigger]) => trigger.name
+          ),
+          actions: Object.entries(integration.actions).map(
+            ([, action]) => action.name
+          ),
+        })
+      );
+
+      this.availableIntegrations.set(integrations);
+    });
+  }
+
+  onSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.#searchTerm.set(input.value);
+  }
+
+  selectIntegration(integrationProps: IntegrationAvailableProps): void {
+    this.selectedIntegration.set(integrationProps);
   }
 
   backToAvailableIntegrations(): void {
     this.selectedIntegration.set(null);
+  }
+
+  linkIntegration(): void {
+    const fn = this.linkFn();
+    if (fn) fn();
   }
 }

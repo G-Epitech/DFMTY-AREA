@@ -1,0 +1,13 @@
+<label [for]="for()" trLabel
+  ><span
+    [ngClass]="{
+      'text-destructive': error(),
+    }"
+    >{{ name() }}</span
+  >
+  @if (error()) {
+    <span class="tr-small text-destructive italic">
+      - {{ errors() | validationErrors }}
+    </span>
+  }
+</label>

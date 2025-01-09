@@ -13,11 +13,11 @@
       [width]="22"
       [height]="22" />
   </div>
-  <div class="flex flex-col ml-4">
+  <div class="flex flex-col ml-4 mr-auto">
     <h1 class="tr-large">{{ props().displayName }}</h1>
     <span class="text-gray-500 text-sm"
       >{{ props().username }} - {{ props().email }}</span
     >
   </div>
-  <button trBtn variant="outline" class="ml-auto">Manage guilds</button>
+  <tr-manage-guild-dialog />
 </div>

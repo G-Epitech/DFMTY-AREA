@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { IntegrationModel, IntegrationTypeEnum } from '@models/integration';
-import { IntegrationLinkedDiscordComponent } from '@features/integrations/components/integration-linked-discord/integration-linked-discord.component';
+import { IntegrationLinkedDiscordComponent } from '@features/integrations/discord/integration-linked-discord/integration-linked-discord.component';
 
 @Component({
   selector: 'tr-integration-linked-card',
