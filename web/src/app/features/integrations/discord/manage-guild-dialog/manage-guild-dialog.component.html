@@ -1,48 +1,40 @@
-<tr-dialog>
-  <button brnDialogTrigger trBtn variant="outline">Manage guilds</button>
-  <tr-dialog-content
-    class="min-w-[800px] min-h-[600px]"
-    *brnDialogContent="let ctx">
-    <tr-dialog-header>
-      <h3 trDialogTitle>Manage your Discord guilds</h3>
-      <p trDialogDescription>
-        Easily add our bot to your server and get started in just a few clicks.
-      </p>
-    </tr-dialog-header>
-    <div class="flex flex-row items-center space-x-3">
-      <tr-input-search placeholder="Search a guild" class="w-full" />
-      <button trBtn class="w-1/4">Link Guild</button>
-    </div>
-    <div
-      class="flex flex-col bg-secondary p-4 flex-grow rounded-md space-y-2 overflow-y-auto max-h-[400px]">
-      @for (guild of guilds; track guild.id) {
-        <div class="flex flex-row bg-white p-4 rounded-md items-center">
-          <img
-            [ngSrc]="guild.iconUri"
-            alt="Discord Logo"
-            class="rounded-full mr-4"
-            [width]="35"
-            [height]="35" />
-          <div class="flex flex-col mr-auto">
-            <span class="tr-large">{{ guild.name }}</span>
-            <span class="text-muted tr-medium"
-              >{{ guild.approximateMemberCount }} Members</span
-            >
-          </div>
-          <div
-            [ngClass]="{
-              'bg-green-500 hover:bg-green-400': guild.linked,
-              'bg-primary hover:bg-primary/90': !guild.linked,
-            }"
-            class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer">
-            <ng-icon
-              [name]="guild.linked ? 'heroCheck' : 'heroPlus'"
-              strokeWidth="0.13rem"
-              class="text-white"
-              size="1.1rem" />
-          </div>
+<div class="space-y-3">
+  <tr-dialog-header>
+    <h3 trDialogTitle>Manage your Discord guilds</h3>
+    <p trDialogDescription>
+      Easily add our bot to your server and get started in just a few clicks.
+    </p>
+  </tr-dialog-header>
+  <div class="flex flex-row items-center space-x-3">
+    <tr-input-search placeholder="Search a guild" class="w-full" />
+    <button trBtn class="w-1/4">Link Guild</button>
+  </div>
+  <div
+    class="flex flex-col bg-secondary p-4 flex-grow rounded-md space-y-2 overflow-y-auto max-h-[400px]">
+    @for (guild of guilds$ | async; track guild.id) {
+      <div class="flex flex-row bg-white p-4 rounded-md items-center">
+        <img
+          [ngSrc]="guild.iconUri"
+          alt="Discord Logo"
+          class="rounded-full mr-4"
+          [width]="35"
+          [height]="35" />
+        <div class="flex flex-col mr-auto">
+          <span class="tr-large">{{ guild.name }}</span>
         </div>
-      }
-    </div>
-  </tr-dialog-content>
-</tr-dialog>
+        <div
+          [ngClass]="{
+            'bg-green-500 hover:bg-green-400': guild.linked,
+            'bg-primary hover:bg-primary/90': !guild.linked,
+          }"
+          class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer">
+          <ng-icon
+            [name]="guild.linked ? 'heroCheck' : 'heroPlus'"
+            strokeWidth="0.13rem"
+            class="text-white"
+            size="1.1rem" />
+        </div>
+      </div>
+    }
+  </div>
+</div>
