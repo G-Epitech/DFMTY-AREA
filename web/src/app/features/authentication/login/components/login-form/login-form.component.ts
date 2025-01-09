@@ -10,7 +10,6 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -48,11 +47,18 @@ export class LoginFormComponent implements OnDestroy {
   loginLoading = signal<boolean>(false);
 
   loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
+    email: new FormControl(''),
+    password: new FormControl(''),
   });
 
   onLogin() {
+    if (
+      this.loginForm.controls.email.value?.trim() === '' ||
+      this.loginForm.controls.password.value?.trim() === ''
+    ) {
+      this.#toastr.error('Email and password are required', 'Login failed');
+      return;
+    }
     if (this.loginForm.invalid) {
       return;
     }
