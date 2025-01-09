@@ -7,7 +7,7 @@ using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Errors;
 using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 
-namespace Zeus.Api.Application.Authentication.Queries.Login;
+namespace Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 
 public class PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQuery, ErrorOr<PasswordAuthLoginQueryResult>>
 {

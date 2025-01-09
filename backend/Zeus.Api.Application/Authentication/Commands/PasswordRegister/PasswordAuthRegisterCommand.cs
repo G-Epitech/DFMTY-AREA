@@ -2,7 +2,7 @@ using ErrorOr;
 
 using MediatR;
 
-namespace Zeus.Api.Application.Authentication.Commands.Register;
+namespace Zeus.Api.Application.Authentication.Commands.PasswordRegister;
 
 public record PasswordAuthRegisterCommand(
     string Email,

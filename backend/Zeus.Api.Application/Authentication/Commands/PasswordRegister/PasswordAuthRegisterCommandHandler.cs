@@ -9,7 +9,7 @@ using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 
-namespace Zeus.Api.Application.Authentication.Commands.Register;
+namespace Zeus.Api.Application.Authentication.Commands.PasswordRegister;
 
 public class PasswordAuthRegisterCommandHandler : IRequestHandler<PasswordAuthRegisterCommand, ErrorOr<PasswordAuthRegisterCommandResult>>
 {

@@ -7,6 +7,7 @@ public class OAuth2GoogleSettingsProvider : IOAuth2GoogleSettingsProvider
 {
     public string TokenEndpoint { get; }
     public string OAuth2Endpoint { get; }
+    public string ApiEndpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
@@ -16,6 +17,7 @@ public class OAuth2GoogleSettingsProvider : IOAuth2GoogleSettingsProvider
     {
         TokenEndpoint = settings.TokenEndpoint;
         OAuth2Endpoint = settings.OAuth2Endpoint;
+        ApiEndpoint = settings.ApiEndpoint;
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;

@@ -2,7 +2,7 @@ using ErrorOr;
 
 using MediatR;
 
-namespace Zeus.Api.Application.Authentication.Queries.Login;
+namespace Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 
 public record PasswordAuthLoginQuery(
     string Email,

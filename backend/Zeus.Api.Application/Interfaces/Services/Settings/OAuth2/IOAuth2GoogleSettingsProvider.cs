@@ -4,6 +4,7 @@ public interface IOAuth2GoogleSettingsProvider
 {
     public string TokenEndpoint { get; }
     public string OAuth2Endpoint { get; }
+    public string ApiEndpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }

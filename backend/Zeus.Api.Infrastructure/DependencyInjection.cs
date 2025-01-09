@@ -8,6 +8,7 @@ using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.OAuth2;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.OAuth2;
@@ -18,6 +19,7 @@ using Zeus.Api.Infrastructure.Persistence.Interceptors;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
+using Zeus.Api.Infrastructure.Services.OAuth2.Google;
 using Zeus.Api.Infrastructure.Services.Settings;
 using Zeus.Api.Infrastructure.Services.Settings.Integrations;
 using Zeus.Api.Infrastructure.Services.Settings.OAuth2;
@@ -52,6 +54,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 
         services.AddScoped<IDiscordService, DiscordService>();
+        services.AddScoped<IGoogleOAuth2Service, GoogleOAuth2Service>();
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

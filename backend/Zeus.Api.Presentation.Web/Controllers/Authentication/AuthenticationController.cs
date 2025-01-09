@@ -5,8 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Zeus.Api.Application.Authentication.Commands.Register;
-using Zeus.Api.Application.Authentication.Queries.Login;
+using Zeus.Api.Application.Authentication.Commands.PasswordRegister;
+using Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 using Zeus.Api.Presentation.Web.Contracts.Authentication;
 using Zeus.Api.Presentation.Web.Controllers.Users;
 

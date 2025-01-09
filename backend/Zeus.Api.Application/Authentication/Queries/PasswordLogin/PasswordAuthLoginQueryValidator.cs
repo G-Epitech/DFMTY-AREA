@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Zeus.Api.Application.Authentication.Queries.Login;
+namespace Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 
 public class PasswordAuthLoginQueryValidator : AbstractValidator<PasswordAuthLoginQuery>
 {

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Zeus.Api.Application.Authentication.Commands.Register;
+namespace Zeus.Api.Application.Authentication.Commands.PasswordRegister;
 
 public class PasswordAuthRegisterCommandValidator: AbstractValidator<PasswordAuthRegisterCommand>
 {
