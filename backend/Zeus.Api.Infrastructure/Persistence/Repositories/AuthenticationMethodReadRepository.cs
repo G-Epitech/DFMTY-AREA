@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
@@ -37,5 +38,13 @@ public class AuthenticationMethodReadRepository : IAuthenticationMethodReadRepos
         return await AuthenticationMethods
             .Where(authenticationMethod => authenticationMethod.UserId == userId)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<AuthenticationMethod?> GetGoogleAuthenticationMethod(string googleId,
+        CancellationToken cancellationToken = default)
+    {
+        return await AuthenticationMethods.OfType<GoogleAuthenticationMethod>().FirstOrDefaultAsync(
+            authenticationMethod => authenticationMethod.ProviderUserId == googleId,
+            cancellationToken: cancellationToken);
     }
 }

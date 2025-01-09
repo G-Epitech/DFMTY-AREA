@@ -47,6 +47,9 @@ public class GoogleAuthenticationMethodsConfiguration : IEntityTypeConfiguration
         builder.Property(i => i.RefreshToken)
             .ValueGeneratedNever()
             .HasConversion(token => token.Value, v => new RefreshToken(v));
+        builder.Property(i => i.ProviderUserId)
+            .ValueGeneratedNever()
+            .IsRequired();
     }
 }
 

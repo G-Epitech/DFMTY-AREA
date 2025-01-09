@@ -12,26 +12,30 @@ public sealed class GoogleAuthenticationMethod : AuthenticationMethod
 {
     public AccessToken AccessToken { get; }
     public RefreshToken RefreshToken { get; }
+    public string ProviderUserId { get; }
 
     private GoogleAuthenticationMethod(
         AuthenticationMethodId id,
         UserId userId,
         AccessToken accessToken,
         RefreshToken refreshToken,
+        string providerUserId,
         DateTime updatedAt,
         DateTime createdAt) : base(id, userId, AuthenticationMethodType.Google, updatedAt, createdAt)
     {
         AccessToken = accessToken;
         RefreshToken = refreshToken;
+        ProviderUserId = providerUserId;
     }
     
-    public static GoogleAuthenticationMethod Create(UserId userId, AccessToken accessToken, RefreshToken refreshToken)
+    public static GoogleAuthenticationMethod Create(UserId userId, AccessToken accessToken, RefreshToken refreshToken, string providerUserId)
     {
         return new GoogleAuthenticationMethod(
             AuthenticationMethodId.CreateUnique(),
             userId,
             accessToken,
             refreshToken,
+            providerUserId,
             DateTime.UtcNow,
             DateTime.UtcNow);
     }
