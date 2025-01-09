@@ -1,35 +1,37 @@
 <form class="space-y-4" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
-  <div>
-    <tr-register-form-label
-      for="firstName"
-      name="First Name"
-      [untouched]="registerForm.controls.firstName.untouched"
-      [invalid]="registerForm.controls.firstName.invalid"
-      [errors]="registerForm.controls.firstName.errors" />
-    <input
-      id="firstName"
-      type="text"
-      trInput
-      placeholder="Jon"
-      class="w-full"
-      [formControl]="registerForm.controls.firstName" />
-  </div>
+  <div class="flex flex-row gap-3">
+    <div>
+      <tr-register-form-label
+        for="firstName"
+        name="First Name"
+        [untouched]="registerForm.controls.firstName.untouched"
+        [invalid]="registerForm.controls.firstName.invalid"
+        [errors]="registerForm.controls.firstName.errors" />
+      <input
+        id="firstName"
+        type="text"
+        trInput
+        placeholder="Jon"
+        class="w-full"
+        [formControl]="registerForm.controls.firstName" />
+    </div>
 
-  <div>
-    <tr-register-form-label
-      for="lastName"
-      name="Last Name"
-      [untouched]="registerForm.controls.lastName.untouched"
-      [invalid]="registerForm.controls.lastName.invalid"
-      [errors]="registerForm.controls.lastName.errors" />
-    <input
-      id="lastName"
-      type="text"
-      trInput
-      placeholder="Doe"
-      [error]="false"
-      class="w-full"
-      [formControl]="registerForm.controls.lastName" />
+    <div>
+      <tr-register-form-label
+        for="lastName"
+        name="Last Name"
+        [untouched]="registerForm.controls.lastName.untouched"
+        [invalid]="registerForm.controls.lastName.invalid"
+        [errors]="registerForm.controls.lastName.errors" />
+      <input
+        id="lastName"
+        type="text"
+        trInput
+        placeholder="Doe"
+        [error]="false"
+        class="w-full"
+        [formControl]="registerForm.controls.lastName" />
+    </div>
   </div>
 
   <div>

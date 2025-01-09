@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/mediator/integrations/discord.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
@@ -32,13 +33,18 @@ class IntegrationMediator with ChangeNotifier {
     }
   }
 
-  Future<List<String>> getIntegrationNames() async {
-    List<String> integrations = [];
+  Future<List<AvailableIntegration>> getIntegrationNames() async {
+    List<AvailableIntegration> integrations = [];
     try {
       final res = await _integrationRepository.getIntegrationNames();
       if (res.statusCode == Codes.ok && res.data != null) {
         for (var integration in res.data!.page.data) {
-          integrations.add(integration.name);
+          integrations.add(AvailableIntegration(
+            name: integration.name,
+            iconUri: integration.iconUri,
+            color: HexColor(integration.color),
+            url: integration.url,
+          ));
         }
         return integrations;
       } else {

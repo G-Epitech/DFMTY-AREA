@@ -3,34 +3,34 @@ import 'package:json_annotation/json_annotation.dart';
 part 'automation.repository.model.g.dart';
 
 @JsonSerializable()
-class AutomationManifestTriggerActionPropertyDTO {
+class AutomationSchemaTriggerActionPropertyDTO {
   final String name;
   final String description;
   final String type;
 
-  AutomationManifestTriggerActionPropertyDTO({
+  AutomationSchemaTriggerActionPropertyDTO({
     required this.name,
     required this.description,
     required this.type,
   });
 
-  factory AutomationManifestTriggerActionPropertyDTO.fromJson(
+  factory AutomationSchemaTriggerActionPropertyDTO.fromJson(
           Map<String, dynamic> json) =>
-      _$AutomationManifestTriggerActionPropertyDTOFromJson(json);
+      _$AutomationSchemaTriggerActionPropertyDTOFromJson(json);
 
   Map<String, dynamic> toJson() =>
-      _$AutomationManifestTriggerActionPropertyDTOToJson(this);
+      _$AutomationSchemaTriggerActionPropertyDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationManifestTriggerActionDTO {
+class AutomationSchemaTriggerActionDTO {
   final String name;
   final String description;
   final String icon;
-  final Map<String, AutomationManifestTriggerActionPropertyDTO> parameters;
-  final Map<String, AutomationManifestTriggerActionPropertyDTO> facts;
+  final Map<String, AutomationSchemaTriggerActionPropertyDTO> parameters;
+  final Map<String, AutomationSchemaTriggerActionPropertyDTO> facts;
 
-  AutomationManifestTriggerActionDTO({
+  AutomationSchemaTriggerActionDTO({
     required this.name,
     required this.description,
     required this.icon,
@@ -38,23 +38,23 @@ class AutomationManifestTriggerActionDTO {
     required this.facts,
   });
 
-  factory AutomationManifestTriggerActionDTO.fromJson(
+  factory AutomationSchemaTriggerActionDTO.fromJson(
           Map<String, dynamic> json) =>
-      _$AutomationManifestTriggerActionDTOFromJson(json);
+      _$AutomationSchemaTriggerActionDTOFromJson(json);
 
   Map<String, dynamic> toJson() =>
-      _$AutomationManifestTriggerActionDTOToJson(this);
+      _$AutomationSchemaTriggerActionDTOToJson(this);
 }
 
 @JsonSerializable()
-class AutomationManifestDTO {
+class AutomationSchemaDTO {
   final String name;
   final String iconUri;
   final String color;
-  final Map<String, AutomationManifestTriggerActionDTO> triggers;
-  final Map<String, AutomationManifestTriggerActionDTO> actions;
+  final Map<String, AutomationSchemaTriggerActionDTO> triggers;
+  final Map<String, AutomationSchemaTriggerActionDTO> actions;
 
-  AutomationManifestDTO({
+  AutomationSchemaDTO({
     required this.name,
     required this.iconUri,
     required this.color,
@@ -62,10 +62,10 @@ class AutomationManifestDTO {
     required this.actions,
   });
 
-  factory AutomationManifestDTO.fromJson(Map<String, dynamic> json) =>
-      _$AutomationManifestDTOFromJson(json);
+  factory AutomationSchemaDTO.fromJson(Map<String, dynamic> json) =>
+      _$AutomationSchemaDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AutomationManifestDTOToJson(this);
+  Map<String, dynamic> toJson() => _$AutomationSchemaDTOToJson(this);
 }
 
 @JsonSerializable()
