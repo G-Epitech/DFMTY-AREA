@@ -5,12 +5,16 @@ namespace Zeus.Api.Infrastructure.Services.Settings.OAuth2;
 
 public class OAuth2GoogleSettingsProvider : IOAuth2GoogleSettingsProvider
 {
+    public string TokenEndpoint { get; }
+    public string OAuth2Endpoint { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
     
     public OAuth2GoogleSettingsProvider(OAuth2GoogleSettings settings)
     {
+        TokenEndpoint = settings.TokenEndpoint;
+        OAuth2Endpoint = settings.OAuth2Endpoint;
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
