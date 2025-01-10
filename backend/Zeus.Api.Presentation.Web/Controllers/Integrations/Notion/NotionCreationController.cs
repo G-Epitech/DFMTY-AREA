@@ -1,7 +1,9 @@
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Zeus.Api.Application.Integrations.Commands.CreateNotionIntegration;
 using Zeus.Api.Application.Integrations.Commands.GenerateNotionOauth2Uri;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Notion;
@@ -35,6 +37,20 @@ public class NotionCreationController : ApiController
 
         return generateUriResult.Match(
             result => Ok(new GenerateNotionUriResponse(result.Uri.ToString())),
+            Problem);
+    }
+
+    [AllowAnonymous]
+    [HttpPost(Name = "CreateNotionIntegration")]
+    [ProducesResponseType<CreateNotionIntegrationResponse>(StatusCodes.Status201Created)]
+    public async Task<IActionResult> CreateNotionIntegration(CreateNotionIntegrationRequest request)
+    {
+        var createIntegrationResult =
+            await _sender.Send(new CreateNotionIntegrationCommand(request.Code, request.State));
+
+        return createIntegrationResult.Match(
+            result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),
+                new { id = result.IntegrationId }, new CreateNotionIntegrationResponse()),
             Problem);
     }
 }
