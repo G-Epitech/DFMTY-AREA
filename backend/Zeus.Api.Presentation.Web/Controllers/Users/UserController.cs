@@ -15,16 +15,15 @@ using Zeus.Api.Presentation.Web.Contracts.Integrations;
 using Zeus.Api.Presentation.Web.Contracts.Users;
 using Zeus.Api.Presentation.Web.Mapping;
 using Zeus.Common.Domain.AutomationAggregate;
-using Zeus.Common.Domain.ProvidersSettings;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Users;
 
 [Route("user", Name = "User")]
 public class UserController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public UserController(ISender sender, IMapper mapper, IAuthUserContext authUserContext)
     {
@@ -35,7 +34,7 @@ public class UserController : ApiController
 
     [HttpGet(Name = "GetAuthUser")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthUser([FromServices] ProvidersSettings settings)
+    public async Task<IActionResult> GetAuthUser()
     {
         var authUser = _authUserContext.User;
         if (authUser is null)
