@@ -4,6 +4,10 @@ import { AuthStore } from '@app/store';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import {
+  AuthFooterComponent
+} from '@features/authentication/components/auth-footer/auth-footer.component';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'tr-settings',
@@ -12,6 +16,8 @@ import { TrSkeletonComponent } from '@triggo-ui/skeleton';
     NgOptimizedImage,
     TitleCasePipe,
     TrSkeletonComponent,
+    AuthFooterComponent,
+    NgIcon,
   ],
   templateUrl: './settings.page.html',
   styles: [],
