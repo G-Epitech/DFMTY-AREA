@@ -120,20 +120,9 @@ class _IntegrationListViewContent extends StatelessWidget {
         itemCount: integrations.length,
         itemBuilder: (context, index) {
           final integration = integrations[index];
-          return _IntegrationListItem(integration: integration);
+          return IntegrationListItemWidget(integration: integration);
         },
       ),
     );
-  }
-}
-
-class _IntegrationListItem extends StatelessWidget {
-  final AvailableIntegration integration;
-
-  const _IntegrationListItem({required this.integration});
-
-  @override
-  Widget build(BuildContext context) {
-    return IntegrationListItemWidget(integration: integration);
   }
 }
