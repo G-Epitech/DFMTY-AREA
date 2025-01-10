@@ -52,7 +52,7 @@ class _Header extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: automation.iconColor,
+              color: Color(automation.iconColor),
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Center(
@@ -69,7 +69,7 @@ class _Header extends StatelessWidget {
           ),
           SizedBox(width: 10.0),
           Text(
-            automation.name,
+            automation.label,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20.0,
                 ),

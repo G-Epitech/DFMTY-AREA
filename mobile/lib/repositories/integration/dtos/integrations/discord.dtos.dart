@@ -34,3 +34,37 @@ class OutGetUserIntegrationDiscordGuildsDTO implements Json {
   Map<String, dynamic> toJson() =>
       _$OutGetUserIntegrationDiscordGuildsDTOToJson(this);
 }
+
+@JsonSerializable()
+class InGetUserIntegrationDiscordChannelsDTO implements Json {
+  final String guildId;
+
+  InGetUserIntegrationDiscordChannelsDTO({
+    required this.guildId,
+  });
+
+  factory InGetUserIntegrationDiscordChannelsDTO.fromJson(
+          Map<String, dynamic> json) =>
+      _$InGetUserIntegrationDiscordChannelsDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$InGetUserIntegrationDiscordChannelsDTOToJson(this);
+}
+
+@JsonSerializable()
+class OutGetUserIntegrationDiscordChannelsDTO implements Json {
+  final List<DiscordChannelDTO> list;
+
+  OutGetUserIntegrationDiscordChannelsDTO({
+    required this.list,
+  });
+
+  factory OutGetUserIntegrationDiscordChannelsDTO.fromJson(
+          Map<String, dynamic> json) =>
+      _$OutGetUserIntegrationDiscordChannelsDTOFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$OutGetUserIntegrationDiscordChannelsDTOToJson(this);
+}

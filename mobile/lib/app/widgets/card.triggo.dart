@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class IntegrationCard extends StatelessWidget {
+class TriggoCard extends StatelessWidget {
   final Widget? customWidget;
 
-  const IntegrationCard({
+  const TriggoCard({
     super.key,
     this.customWidget,
   });

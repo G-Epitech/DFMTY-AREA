@@ -5,12 +5,14 @@ class TriggoButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final EdgeInsets padding;
+  final TextStyle? style;
 
   const TriggoButton({
     super.key,
     required this.text,
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+    this.style,
   });
 
   @override
@@ -26,13 +28,14 @@ class TriggoButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
-          fontFamily: containerTitle.fontFamily,
-          fontSize: subTitle.fontSize,
-          fontWeight: containerTitle.fontWeight,
-          letterSpacing: containerTitle.letterSpacing,
-        ),
+        style: style ??
+            TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontFamily: containerTitle.fontFamily,
+              fontSize: subTitle.fontSize,
+              fontWeight: containerTitle.fontWeight,
+              letterSpacing: containerTitle.letterSpacing,
+            ),
       ),
     );
   }

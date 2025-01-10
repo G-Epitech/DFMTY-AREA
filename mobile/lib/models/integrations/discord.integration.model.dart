@@ -58,3 +58,20 @@ class DiscordGuild {
     );
   }
 }
+
+class DiscordChannel {
+  final String id;
+  final String name;
+
+  DiscordChannel({
+    required this.id,
+    required this.name,
+  });
+
+  static DiscordChannel fromDTO(DiscordChannelDTO dto) {
+    return DiscordChannel(
+      id: dto.id,
+      name: dto.name,
+    );
+  }
+}

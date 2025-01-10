@@ -35,4 +35,23 @@ class DiscordMediator with ChangeNotifier {
       return [];
     }
   }
+
+  Future<List<DiscordChannel>> getChannels(String id, String guildId) async {
+    List<DiscordChannel> channels = [];
+    try {
+      final res = await _discordRepository.getChannels(id, guildId);
+      if (res.statusCode == Codes.ok && res.data != null) {
+        for (var integration in res.data!.list) {
+          channels.add(DiscordChannel.fromDTO(integration));
+        }
+
+        return channels;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      // Display error message with a snackbar or dialog (something like that)
+      return [];
+    }
+  }
 }

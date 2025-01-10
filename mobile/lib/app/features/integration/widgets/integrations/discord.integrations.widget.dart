@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/integration/view/integrations/discord.view.dart';
-import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
+import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 
 class DiscordIntegrationListItemWidget extends StatelessWidget {
@@ -14,7 +14,7 @@ class DiscordIntegrationListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntegrationCard(
+    return TriggoCard(
       customWidget: DiscordCustomWidget(integration: integration),
     );
   }

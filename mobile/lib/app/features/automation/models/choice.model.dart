@@ -1,0 +1,4 @@
+enum AutomationChoiceEnum {
+  action,
+  trigger,
+}

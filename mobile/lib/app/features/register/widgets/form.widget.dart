@@ -109,6 +109,7 @@ class _PasswordInput extends StatelessWidget {
       onChanged: (password) {
         context.read<RegisterBloc>().add(RegisterPasswordChanged(password));
       },
+      maxLines: 1,
     );
   }
 }
