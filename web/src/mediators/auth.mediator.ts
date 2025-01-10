@@ -3,7 +3,6 @@ import { AuthRepository, TokenRepository } from '@repositories/auth';
 import { map, Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AppRouter } from '@app/app.router';
-import { GoogleAuthConfigurationModel } from '@models/google-auth-configuration.model';
 
 @Injectable({
   providedIn: 'root',

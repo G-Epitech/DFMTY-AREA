@@ -1,6 +1,5 @@
 import { inject, Inject, Injectable } from '@angular/core';
 import {
-  AuthGoogleConfigurationDTO,
   AuthLoginRequestDTO,
   AuthLoginResponseDTO,
   AuthRegisterRequestDTO,
