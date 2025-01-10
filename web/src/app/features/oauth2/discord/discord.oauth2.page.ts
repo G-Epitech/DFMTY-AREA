@@ -6,15 +6,10 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { delay, finalize } from 'rxjs/operators';
 import { DiscordRepository } from '@repositories/integrations';
-import { TrSpinnerComponent } from '@triggo-ui/spinner';
-import { NgOptimizedImage } from '@angular/common';
-import { NgIcon } from '@ng-icons/core';
+import { Oauth2BaseComponent } from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
 import { TrButtonDirective } from '@triggo-ui/button';
-import {
-  Oauth2BaseComponent
-} from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
 
 @Component({
   selector: 'tr-oauth2-discord',
@@ -22,13 +17,7 @@ import {
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    TrSpinnerComponent,
-    NgOptimizedImage,
-    NgIcon,
-    TrButtonDirective,
-    Oauth2BaseComponent,
-  ],
+  imports: [Oauth2BaseComponent, TrButtonDirective],
 })
 export class DiscordOAuth2PageComponent implements OnInit {
   readonly #discordRepository = inject(DiscordRepository);
@@ -56,7 +45,10 @@ export class DiscordOAuth2PageComponent implements OnInit {
   #linkDiscordAccount(code: string, state: string): void {
     this.#discordRepository
       .link({ code, state })
-      .pipe(finalize(() => this.loading.set(false)))
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        delay(1000)
+      )
       .subscribe({
         next: () => {
           this.success.set(true);

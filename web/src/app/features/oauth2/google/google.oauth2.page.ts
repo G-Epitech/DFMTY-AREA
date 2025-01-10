@@ -15,10 +15,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { AppRouter } from '@app/app.router';
 import { ToastrService } from 'ngx-toastr';
 import { Oauth2BaseComponent } from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-google.oauth2.page',
-  imports: [Oauth2BaseComponent],
+  imports: [Oauth2BaseComponent, TrButtonDirective],
   templateUrl: './google.oauth2.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -83,5 +84,9 @@ export class GoogleOauth2PageComponent implements OnInit, OnDestroy {
           this.#toastr.error('Google account link failed', 'Login Failed');
         },
       });
+  }
+
+  goToLogin(): void {
+    this.#appRouter.redirectToLogin();
   }
 }

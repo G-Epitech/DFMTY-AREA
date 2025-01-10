@@ -1,4 +1,12 @@
-<tr-oauth2-base-page
-  [loading]="loading()"
-  [success]="success()"
-  name="Discord" />
+<tr-oauth2-base-page [loading]="loading()" [success]="success()" name="Discord">
+  @if (!loading()) {
+    @if (success()) {
+      <p class="mt-4 mb-4 text-sm">
+        Closing page in {{ countdown() }}...
+      </p>
+    }
+    <button (click)="handleCloseWindow()" trBtn class="w-full py-3 px-4 mt-3">
+      Close Window
+    </button>
+  }
+</tr-oauth2-base-page>

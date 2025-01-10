@@ -1,4 +1,5 @@
-<tr-oauth2-base-page
-  name="Google"
-  [loading]="loading()"
-  [success]="success()" />
+<tr-oauth2-base-page [loading]="loading()" [success]="success()" name="Google">
+  <button trBtn class="w-full py-3 px-4 mt-3" (click)="goToLogin()">
+    Go back to Log In
+  </button>
+</tr-oauth2-base-page>
