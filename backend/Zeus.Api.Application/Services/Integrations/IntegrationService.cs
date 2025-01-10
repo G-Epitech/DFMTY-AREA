@@ -4,6 +4,7 @@ using MapsterMapper;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Properties;
 using Zeus.Common.Domain.Authentication.Common;
@@ -16,11 +17,13 @@ namespace Zeus.Api.Application.Services.Integrations;
 public class IntegrationService : IIntegrationService
 {
     private readonly IDiscordService _discordService;
+    private readonly INotionService _notionService;
     private readonly IMapper _mapper;
 
-    public IntegrationService(IDiscordService discordService, IMapper mapper)
+    public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper)
     {
         _discordService = discordService;
+        _notionService = notionService;
         _mapper = mapper;
     }
 
@@ -29,6 +32,7 @@ public class IntegrationService : IIntegrationService
         return integration.Type switch
         {
             IntegrationType.Discord => await GetIntegrationDiscordProperties(integration),
+            IntegrationType.Notion => await GetIntegrationNotionProperties(integration),
             _ => Errors.Integrations.PropertiesHandlerNotFound
         };
     }
@@ -47,5 +51,21 @@ public class IntegrationService : IIntegrationService
         }
 
         return _mapper.Map<IntegrationDiscordProperties>(discordUser.Value);
+    }
+
+    private async Task<ErrorOr<IntegrationProperties>> GetIntegrationNotionProperties(
+        Integration integration)
+    {
+        var notionIntegration = (NotionIntegration)integration;
+
+        var accessToken = notionIntegration.Tokens.First(x => x.Usage == IntegrationTokenUsage.Access);
+        var notionBot = await _notionService.GetBotAsync(new AccessToken(accessToken.Value));
+        
+        if (notionBot.IsError)
+        {
+            return notionBot.Errors;
+        }
+        
+        return _mapper.Map<IntegrationNotionProperties>(notionBot.Value);
     }
 }

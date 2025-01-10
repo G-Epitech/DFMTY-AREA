@@ -8,6 +8,7 @@ using ErrorOr;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
+using Zeus.Api.Domain.Integrations.Notion;
 using Zeus.Api.Domain.Integrations.Notion.ValueObjects;
 using Zeus.Api.Infrastructure.Services.Integrations.Notion.Contracts;
 using Zeus.Common.Domain.Authentication.Common;
@@ -37,6 +38,9 @@ public class NotionService : INotionService
         Convert.ToBase64String(Encoding.UTF8.GetBytes(
             $"{_integrationsSettingsProvider.Notion.ClientId}:{_integrationsSettingsProvider.Notion.ClientSecret}")));
 
+    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue("Bearer", accessToken.Value);
+
     public async Task<ErrorOr<NotionWorkspaceTokens>> GetTokensFromOauth2Async(string code)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderClientValue;
@@ -51,8 +55,6 @@ public class NotionService : INotionService
 
         if (!response.IsSuccessStatusCode)
         {
-            Console.WriteLine($"Error during token request: {response.Content.ReadAsStringAsync().Result}");
-            
             return Errors.Integrations.Notion.ErrorDuringTokenRequest;
         }
 
@@ -65,5 +67,33 @@ public class NotionService : INotionService
             new AccessToken(responseContent.AccessToken),
             new NotionWorkspaceId(responseContent.WorkspaceId),
             responseContent.BotId);
+    }
+
+    public async Task<ErrorOr<NotionBot>> GetBotAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+        _httpClient.DefaultRequestHeaders.Add("Notion-Version", "2022-02-22");
+
+        HttpResponseMessage response = await _httpClient.GetAsync("users/me");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+            return Errors.Integrations.Notion.ErrorDuringBotRequest;
+        }
+
+        var responseContent = await response.Content.ReadFromJsonAsync<GetNotionBotResponse>(_jsonSerializerOptions);
+        if (responseContent is null)
+            return Errors.Integrations.Notion.InvalidBody;
+
+        return NotionBot.Create(
+            new NotionIntegrationId(responseContent.Id),
+            responseContent.Name,
+            responseContent.Bot.WorkspaceName,
+            NotionUser.Create(
+                new NotionUserId(responseContent.Bot.Owner.User.Id),
+                responseContent.Bot.Owner.User.Name,
+                new Uri(responseContent.Bot.Owner.User.AvatarUrl),
+                responseContent.Bot.Owner.User.Person.Email));
     }
 }
