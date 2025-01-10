@@ -6,7 +6,7 @@ using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Properties;
-using Zeus.Common.Domain.Authentication.ValueObjects;
+using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
