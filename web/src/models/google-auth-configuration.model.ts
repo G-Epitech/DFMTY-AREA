@@ -18,7 +18,7 @@ export class GoogleAuthConfigurationModel {
     return `${window.location.origin}/${this.#callbackUrl}`;
   }
 
-  constructAuthUrl(): string {
+  constructAuthUrl(state: string): string {
     const params = new URLSearchParams({
       redirect_uri: this.#redirectUri,
       prompt: this.#prompt,
@@ -26,6 +26,7 @@ export class GoogleAuthConfigurationModel {
       client_id: this.clientId,
       scope: this.scopes.join(' '),
       access_type: this.#accessType,
+      state,
     });
 
     return `${this.endpoint}?${params.toString()}`;

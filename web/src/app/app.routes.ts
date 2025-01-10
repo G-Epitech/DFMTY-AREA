@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '@app/guards';
+import { authGuard, stateGuard } from '@app/guards';
 import { MainLayoutComponent } from '@features/layout/main.layout.component';
+import { GOOGLE_STATE_CODE_KEY } from '@common/constants';
 
 export const routes: Routes = [
   {
@@ -83,5 +84,7 @@ export const routes: Routes = [
         m => m.GoogleOauth2PageComponent
       ),
     pathMatch: 'full',
+    canActivate: [stateGuard],
+    data: { stateKey: GOOGLE_STATE_CODE_KEY, redirectUrl: '/login' },
   },
 ];

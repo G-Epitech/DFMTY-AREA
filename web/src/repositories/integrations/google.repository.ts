@@ -6,6 +6,7 @@ import {
   GoogleCodeDTOResponse,
   GoogleConfigurationDTO,
 } from '@repositories/integrations/dto/google';
+import { GOOGLE_STATE_CODE_KEY } from '@common/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,17 @@ export class GoogleRepository {
   sendCode(dto: GoogleCodeDTORequest): Observable<GoogleCodeDTOResponse> {
     const url = `${this.baseUrl}/auth/oauth2/google/`;
     return this.#httpClient.post<GoogleCodeDTOResponse>(url, dto);
+  }
+
+  storeStateCode(state: string): void {
+    localStorage.setItem(GOOGLE_STATE_CODE_KEY, state);
+  }
+
+  getStateCode(): string | null {
+    return localStorage.getItem(GOOGLE_STATE_CODE_KEY);
+  }
+
+  removeStateCode(): void {
+    localStorage.removeItem(GOOGLE_STATE_CODE_KEY);
   }
 }

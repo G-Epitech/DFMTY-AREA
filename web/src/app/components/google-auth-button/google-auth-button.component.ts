@@ -27,7 +27,9 @@ export class GoogleAuthButtonComponent implements OnDestroy {
       .getGoogleConfiguration()
       .pipe(takeUntil(this.#destroyRef))
       .subscribe(googleConfiguration => {
-        const authUrl = googleConfiguration.constructAuthUrl();
+        const state = this.#googleMediator.generateRandomString(8);
+        const authUrl = googleConfiguration.constructAuthUrl(state);
+        this.#googleMediator.storeStateCode(state);
         window.open(authUrl, '_self');
       });
   }
