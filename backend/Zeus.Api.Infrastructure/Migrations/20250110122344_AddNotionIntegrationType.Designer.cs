@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zeus.Api.Infrastructure.Persistence;
@@ -15,9 +16,11 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 namespace Zeus.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ZeusDbContext))]
-    partial class ZeusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250110122344_AddNotionIntegrationType")]
+    partial class AddNotionIntegrationType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
