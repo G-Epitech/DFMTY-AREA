@@ -49,6 +49,7 @@ flutter:
     - assets/icons/check.svg
     - assets/icons/plus.svg
     - assets/icons/discord.svg
+    - assets/icons/user.svg
 
   uses-material-design: true
 
