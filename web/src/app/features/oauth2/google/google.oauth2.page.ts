@@ -9,14 +9,16 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GoogleMediator } from '@mediators/google.mediator';
-import { finalize } from 'rxjs/operators';
+import { delay, finalize } from 'rxjs/operators';
 import { AuthStore } from '@app/store';
 import { Subject, takeUntil } from 'rxjs';
 import { AppRouter } from '@app/app.router';
+import { ToastrService } from 'ngx-toastr';
+import { Oauth2BaseComponent } from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
 
 @Component({
   selector: 'tr-google.oauth2.page',
-  imports: [],
+  imports: [Oauth2BaseComponent],
   templateUrl: './google.oauth2.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +28,7 @@ export class GoogleOauth2PageComponent implements OnInit, OnDestroy {
   readonly #googleMediator = inject(GoogleMediator);
   readonly #store = inject(AuthStore);
   readonly #appRouter = inject(AppRouter);
+  readonly #toastr = inject(ToastrService);
 
   readonly #destroyRef = new Subject<void>();
 
@@ -62,6 +65,7 @@ export class GoogleOauth2PageComponent implements OnInit, OnDestroy {
     this.#googleMediator
       .sendCode(code)
       .pipe(
+        delay(1000),
         finalize(() => this.loading.set(false)),
         takeUntil(this.#destroyRef)
       )
@@ -69,9 +73,14 @@ export class GoogleOauth2PageComponent implements OnInit, OnDestroy {
         next: () => {
           this.success.set(true);
           this.#store.me();
+          this.#toastr.success(
+            'Google account linked successfully',
+            'Login Success'
+          );
         },
         error: () => {
           this.success.set(false);
+          this.#toastr.error('Google account link failed', 'Login Failed');
         },
       });
   }

@@ -12,6 +12,9 @@ import { TrSpinnerComponent } from '@triggo-ui/spinner';
 import { NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
+import {
+  Oauth2BaseComponent
+} from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
 
 @Component({
   selector: 'tr-oauth2-discord',
@@ -19,7 +22,13 @@ import { TrButtonDirective } from '@triggo-ui/button';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TrSpinnerComponent, NgOptimizedImage, NgIcon, TrButtonDirective],
+  imports: [
+    TrSpinnerComponent,
+    NgOptimizedImage,
+    NgIcon,
+    TrButtonDirective,
+    Oauth2BaseComponent,
+  ],
 })
 export class DiscordOAuth2PageComponent implements OnInit {
   readonly #discordRepository = inject(DiscordRepository);
