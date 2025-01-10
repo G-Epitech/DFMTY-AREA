@@ -8,5 +8,5 @@ public interface IDiscordSettingsProvider
     public string ClientSecret { get; }
     public string BotToken { get; }
     public string RedirectUrl { get; }
-    public List<string> Scope { get; }
+    public List<string> Scopes { get; }
 }

@@ -24,8 +24,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
     {
         var triggerParams = new List<AutomationTriggerParameter>
         {
-            new() { Identifier = "GuildId", Value = "1316046870178697267" },
-            new() { Identifier = "ChannelId", Value = "1316046972733620244" }
+            new() { Identifier = "GuildId", Value = "1316046870178697267" }, new() { Identifier = "ChannelId", Value = "1316046972733620244" }
         };
 
         var trigger =
@@ -34,13 +33,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
         var actionParams = new List<AutomationActionParameter>
         {
             new() { Identifier = "ChannelId", Value = "1316046972733620244", Type = AutomationActionParameterType.Raw },
-            new()
-            {
-                Identifier = "Content",
-                Value =
-                    ":man_facepalming: Ma tête en voyant ce message\nhttps://media.discordapp.net/attachments/1298924031394971739/1298928041988198420/IMG_4880_1.gif",
-                Type = AutomationActionParameterType.Raw
-            }
+            new() { Identifier = "Content", Value = "Discord.MessageReceivedInChannel.Content", Type = AutomationActionParameterType.Var }
         };
 
         var action = AutomationAction.Create("Discord.SendMessageToChannel", 0, actionParams, []);

@@ -12,7 +12,7 @@ using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Discord;
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord.Contracts;
-using Zeus.Common.Domain.Authentication.ValueObjects;
+using Zeus.Common.Domain.Authentication.Common;
 
 namespace Zeus.Api.Infrastructure.Services.Integrations.Discord;
 

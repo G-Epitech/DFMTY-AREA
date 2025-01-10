@@ -8,5 +8,5 @@ public class DiscordSettings
     public string ClientSecret { get; init; } = null!;
     public string BotToken { get; init; } = null!;
     public string RedirectUrl { get; init; } = null!;
-    public List<string> Scope { get; init; } = null!;
+    public List<string> Scopes { get; init; } = null!;
 }
