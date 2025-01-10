@@ -9,7 +9,8 @@ using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 
-public class PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQuery, ErrorOr<PasswordAuthLoginQueryResult>>
+public class
+    PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQuery, ErrorOr<PasswordAuthLoginQueryResult>>
 {
     private readonly IUserReadRepository _userReadRepository;
     private readonly IJwtGenerator _jwtGenerator;
@@ -23,22 +24,16 @@ public class PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQu
         _authenticationMethodReadRepository = authenticationMethodReadRepository;
     }
 
-    public async Task<ErrorOr<PasswordAuthLoginQueryResult>> Handle(PasswordAuthLoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PasswordAuthLoginQueryResult>> Handle(PasswordAuthLoginQuery query,
+        CancellationToken cancellationToken)
     {
         if (await _userReadRepository.GetUserByEmailAsync(query.Email, cancellationToken) is not { } user)
         {
             return Errors.Authentication.InvalidCredentials;
         }
 
-        if (await _authenticationMethodReadRepository.GetAuthenticationMethodsByUserIdAsync(user.Id, cancellationToken)
-            is not { } methods)
-        {
-            return Errors.Authentication.InvalidCredentials;
-        }
-        
-        var passwordMethod = methods.OfType<PasswordAuthenticationMethod>().FirstOrDefault();
-        
-        if (passwordMethod is null)
+        if (await _authenticationMethodReadRepository.GetPasswordAuthenticationMethodAsync(user.Id, cancellationToken)
+            is not { } passwordMethod)
         {
             return Errors.Authentication.InvalidCredentials;
         }

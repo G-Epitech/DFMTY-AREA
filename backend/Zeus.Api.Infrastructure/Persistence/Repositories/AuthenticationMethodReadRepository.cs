@@ -39,8 +39,16 @@ public class AuthenticationMethodReadRepository : IAuthenticationMethodReadRepos
             .Where(authenticationMethod => authenticationMethod.UserId == userId)
             .ToListAsync(cancellationToken);
     }
+    
+    public async Task<PasswordAuthenticationMethod?> GetPasswordAuthenticationMethodAsync(UserId userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await AuthenticationMethods.OfType<PasswordAuthenticationMethod>().FirstOrDefaultAsync(
+            authenticationMethod => authenticationMethod.UserId == userId,
+            cancellationToken: cancellationToken);
+    }
 
-    public async Task<AuthenticationMethod?> GetGoogleAuthenticationMethod(string googleId,
+    public async Task<GoogleAuthenticationMethod?> GetGoogleAuthenticationMethodAsync(string googleId,
         CancellationToken cancellationToken = default)
     {
         return await AuthenticationMethods.OfType<GoogleAuthenticationMethod>().FirstOrDefaultAsync(

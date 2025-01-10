@@ -45,7 +45,7 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, Error
         }
 
         var authenticationMethod =
-            await _authenticationMethodReadRepository.GetGoogleAuthenticationMethod(googleUser.Value.Id.Value,
+            await _authenticationMethodReadRepository.GetGoogleAuthenticationMethodAsync(googleUser.Value.Id.Value,
                 cancellationToken);
 
         if (authenticationMethod is null)

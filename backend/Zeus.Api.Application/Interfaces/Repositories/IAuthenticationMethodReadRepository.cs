@@ -12,7 +12,10 @@ public interface IAuthenticationMethodReadRepository
 
     public Task<List<AuthenticationMethod>> GetAuthenticationMethodsByUserIdAsync(UserId userId,
         CancellationToken cancellationToken = default);
+    
+    public Task<PasswordAuthenticationMethod?> GetPasswordAuthenticationMethodAsync(UserId userId,
+        CancellationToken cancellationToken = default);
 
-    public Task<AuthenticationMethod?> GetGoogleAuthenticationMethod(string googleId,
+    public Task<GoogleAuthenticationMethod?> GetGoogleAuthenticationMethodAsync(string googleId,
         CancellationToken cancellationToken = default);
 }
