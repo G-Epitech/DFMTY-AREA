@@ -3,6 +3,7 @@ import { AuthRepository, TokenRepository } from '@repositories/auth';
 import { map, Observable, tap } from 'rxjs';
 import { TokensModel } from '@models/tokens.model';
 import { AppRouter } from '@app/app.router';
+import { GoogleAuthConfigurationModel } from '@models/google-auth-configuration.model';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +47,20 @@ export class AuthMediator {
   logout(): void {
     this.#tokenRepository.clearTokens();
     void this.#appRouter.redirectToLogin();
+  }
+
+  getGoogleConfiguration(): Observable<GoogleAuthConfigurationModel> {
+    return this.#authRepository
+      .getGoogleConfiguration()
+      .pipe(
+        map(
+          res =>
+            new GoogleAuthConfigurationModel(
+              res.scopes,
+              res.clientId,
+              res.endpoint
+            )
+        )
+      );
   }
 }

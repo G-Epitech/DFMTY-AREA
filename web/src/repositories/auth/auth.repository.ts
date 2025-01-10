@@ -1,5 +1,6 @@
 import { inject, Inject, Injectable } from '@angular/core';
 import {
+  AuthGoogleConfigurationDTO,
   AuthLoginRequestDTO,
   AuthLoginResponseDTO,
   AuthRegisterRequestDTO,
@@ -24,5 +25,10 @@ export class AuthRepository {
   login(dto: AuthLoginRequestDTO): Observable<AuthLoginResponseDTO> {
     const url = `${this.baseUrl}/auth/login`;
     return this.#httpClient.post<AuthLoginResponseDTO>(url, dto);
+  }
+
+  getGoogleConfiguration(): Observable<AuthGoogleConfigurationDTO> {
+    const url = `${this.baseUrl}/auth/oauth2/google/configuration`;
+    return this.#httpClient.get<AuthGoogleConfigurationDTO>(url);
   }
 }
