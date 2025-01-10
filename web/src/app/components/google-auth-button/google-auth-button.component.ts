@@ -8,6 +8,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { Subject, takeUntil } from 'rxjs';
+import { GoogleMediator } from '@mediators/google.mediator';
 
 @Component({
   selector: 'tr-google-auth-button',
@@ -18,15 +19,16 @@ import { Subject, takeUntil } from 'rxjs';
   standalone: true,
 })
 export class GoogleAuthButtonComponent implements OnDestroy {
-  readonly #authMediator = inject(AuthMediator);
+  readonly #googleMediator = inject(GoogleMediator);
   readonly #destroyRef = new Subject<void>();
 
   googleAuth() {
-    this.#authMediator
+    this.#googleMediator
       .getGoogleConfiguration()
       .pipe(takeUntil(this.#destroyRef))
       .subscribe(googleConfiguration => {
-        console.log(googleConfiguration);
+        const authUrl = googleConfiguration.constructAuthUrl();
+        window.open(authUrl, '_self');
       });
   }
 

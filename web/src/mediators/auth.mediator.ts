@@ -48,19 +48,4 @@ export class AuthMediator {
     this.#tokenRepository.clearTokens();
     void this.#appRouter.redirectToLogin();
   }
-
-  getGoogleConfiguration(): Observable<GoogleAuthConfigurationModel> {
-    return this.#authRepository
-      .getGoogleConfiguration()
-      .pipe(
-        map(
-          res =>
-            new GoogleAuthConfigurationModel(
-              res.scopes,
-              res.clientId,
-              res.endpoint
-            )
-        )
-      );
-  }
 }

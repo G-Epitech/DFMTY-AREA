@@ -1,4 +1,9 @@
 export class GoogleAuthConfigurationModel {
+  readonly #callbackUrl = 'oauth2/google';
+  readonly #accessType = 'offline';
+  readonly #responseType = 'code';
+  readonly #prompt = 'consent';
+
   readonly scopes: string[];
   readonly clientId: string;
   readonly endpoint: string;
@@ -7,5 +12,22 @@ export class GoogleAuthConfigurationModel {
     this.scopes = scopes;
     this.clientId = clientId;
     this.endpoint = endpoint;
+  }
+
+  get #redirectUri(): string {
+    return `${window.location.origin}/${this.#callbackUrl}`;
+  }
+
+  constructAuthUrl(): string {
+    const params = new URLSearchParams({
+      redirect_uri: this.#redirectUri,
+      prompt: this.#prompt,
+      response_type: this.#responseType,
+      client_id: this.clientId,
+      scope: this.scopes.join(' '),
+      access_type: this.#accessType,
+    });
+
+    return `${this.endpoint}?${params.toString()}`;
   }
 }

@@ -4,7 +4,7 @@ import { NgClass, NgOptimizedImage } from '@angular/common';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { TrInputDirective, TrInputSearchComponent } from '@triggo-ui/input';
+import { TrInputSearchComponent } from '@triggo-ui/input';
 
 interface GuildProps {
   id: string;
@@ -23,7 +23,6 @@ interface GuildProps {
     NgIcon,
     NgClass,
     TrButtonDirective,
-    TrInputDirective,
     TrInputSearchComponent,
   ],
   templateUrl: './manage-guild-dialog.component.html',

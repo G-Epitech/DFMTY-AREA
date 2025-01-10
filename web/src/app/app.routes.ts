@@ -76,4 +76,12 @@ export const routes: Routes = [
       ),
     pathMatch: 'full',
   },
+  {
+    path: 'oauth2/google',
+    loadComponent: () =>
+      import('@features/oauth2/google/google.oauth2.page').then(
+        m => m.GoogleOauth2PageComponent
+      ),
+    pathMatch: 'full',
+  },
 ];
