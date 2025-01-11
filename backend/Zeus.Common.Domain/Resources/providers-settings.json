@@ -75,5 +75,173 @@
         }
       }
     }
+  },
+  "Notion": {
+    "Name": "Notion",
+    "IconUri": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/200px-Notion-logo.svg.png",
+    "Color": "#373530",
+    "Triggers": {
+      "DatabaseCreated": {
+        "Name": "Database created",
+        "Description": "Trigger when a new database is created in any page.",
+        "Icon": "circle-stack",
+        "Parameters" : {},
+        "Facts": {
+          "Id": {
+            "Name": "Database id",
+            "Description": "The ID of the created database.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Database title",
+            "Description": "The title of the created database.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Database description",
+            "Description": "The description of the created database.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Database icon",
+            "Description": "The icon of the created database (can be url or emoji).",
+            "Type": "string"
+          },
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent page of the created database (page id).",
+            "Type": "string"
+          }
+        }
+      },
+      "PageCreated": {
+        "Name": "Page created",
+        "Description": "Trigger when a new page is created in any database.",
+        "Icon": "document",
+        "Parameters": {
+          "DatabaseId": {
+            "Name": "Database id",
+            "Description": "The ID of the database to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Page id",
+            "Description": "The ID of the created page.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Page title",
+            "Description": "The title of the created page.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Page description",
+            "Description": "The description of the created page.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Page icon",
+            "Description": "The icon of the created page (can be url or emoji).",
+            "Type": "string"
+          },
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent database of the created page (database or  id).",
+            "Type": "string"
+          }
+        }
+      },
+      "DatabaseRowCreated": {
+        "Name": "Database row created",
+        "Description": "Trigger when a new row is created in specific database.",
+        "Icon": "arrow-right-end-on-rectangle",
+        "Parameters": {
+          "DatabaseId": {
+            "Name": "Database id",
+            "Description": "The ID of the database to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Row id",
+            "Description": "The ID of the created row.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Row title",
+            "Description": "The title of the created row.",
+            "Type": "string"
+          },
+          "Type": {
+            "Name": "Row type",
+            "Description": "The type of the created row (page or database).",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Row description",
+            "Description": "The description of the created row.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Row icon",
+            "Description": "The icon of the created row (can be url or emoji).",
+            "Type": "string"
+          },
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent database of the created row (database id).",
+            "Type": "string"
+          }
+        }
+      },
+      "DatabaseRowDeleted": {
+        "Name": "Database row deleted",
+        "Description": "Trigger when a row is deleted in specific database.",
+        "Icon": "arrow-right-end-on-rectangle",
+        "Parameters": {
+          "DatabaseId": {
+            "Name": "Database id",
+            "Description": "The ID of the database to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Row id",
+            "Description": "The ID of the deleted row.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Row title",
+            "Description": "The title of the deleted row.",
+            "Type": "string"
+          },
+          "Type": {
+            "Name": "Row type",
+            "Description": "The type of the deleted row (page or database).",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Row description",
+            "Description": "The description of the deleted row.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Row icon",
+            "Description": "The icon of the deleted row (can be url or emoji).",
+            "Type": "string"
+          },
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent database of the deleted row (database id).",
+            "Type": "string"
+          }
+        }
+      }
+    },
+    "Actions": {}
   }
 }

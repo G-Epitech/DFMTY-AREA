@@ -28,6 +28,7 @@ public class NotionService : INotionService
 
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(_integrationsSettingsProvider.Notion.ApiEndpoint);
+        _httpClient.DefaultRequestHeaders.Add("Notion-Version", "2022-06-28");
         _httpClient.DefaultRequestHeaders.Accept.Clear();
         _httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
@@ -72,7 +73,6 @@ public class NotionService : INotionService
     public async Task<ErrorOr<NotionBot>> GetBotAsync(AccessToken accessToken)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
-        _httpClient.DefaultRequestHeaders.Add("Notion-Version", "2022-02-22");
 
         HttpResponseMessage response = await _httpClient.GetAsync("users/me");
 
