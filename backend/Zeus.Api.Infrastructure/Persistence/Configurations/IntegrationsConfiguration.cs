@@ -25,6 +25,7 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         builder.ToTable("Integrations");
         builder.HasDiscriminator(i => i.Type)
             .HasValue<DiscordIntegration>(IntegrationType.Discord)
+            .HasValue<NotionIntegration>(IntegrationType.Notion)
             .HasValue<GmailIntegration>(IntegrationType.Gmail);
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id)

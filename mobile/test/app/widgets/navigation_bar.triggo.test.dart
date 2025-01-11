@@ -15,12 +15,12 @@ void triggoNavigationBarTest() {
     expect(navigationBar, findsOneWidget);
 
     final card = find.byType(Card);
-    expect(card, findsNWidgets(3));
+    expect(card, findsNWidgets(4));
 
     final gesture = find.byType(GestureDetector);
-    expect(gesture, findsNWidgets(3));
+    expect(gesture, findsNWidgets(4));
 
     final svg = find.byType(SvgPicture);
-    expect(svg, findsNWidgets(3));
+    expect(svg, findsNWidgets(4));
   });
 }

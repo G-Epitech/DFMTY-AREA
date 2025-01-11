@@ -8,6 +8,7 @@ import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/user.mediator.dart';
 import 'package:triggo/repositories/authentification/authentication.repository.dart';
 import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
@@ -30,6 +31,7 @@ class _TriggoAppState extends State<TriggoApp> {
   late final IntegrationMediator _integrationMediator;
   late final AutomationMediator _automationMediator;
   late final AutomationRepository _automationRepository;
+  late final UserMediator _userMediator;
 
   @override
   void initState() {
@@ -50,6 +52,7 @@ class _TriggoAppState extends State<TriggoApp> {
     );
     _integrationMediator = IntegrationMediator(_integrationRepository);
     _automationMediator = AutomationMediator(_automationRepository);
+    _userMediator = UserMediator(_userRepository);
   }
 
   @override
@@ -62,7 +65,8 @@ class _TriggoAppState extends State<TriggoApp> {
         RepositoryProvider.value(value: _integrationRepository),
         ChangeNotifierProvider.value(value: _authenticationMediator),
         ChangeNotifierProvider.value(value: _integrationMediator),
-        ChangeNotifierProvider.value(value: _automationMediator)
+        ChangeNotifierProvider.value(value: _automationMediator),
+        ChangeNotifierProvider.value(value: _userMediator),
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(
