@@ -1,20 +1,17 @@
-<tr-dialog>
-  <button brnDialogTrigger trBtn variant="outline">Manage guilds</button>
-  <tr-dialog-content
-    class="min-w-[800px] min-h-[600px]"
-    *brnDialogContent="let ctx">
-    <tr-dialog-header>
-      <h3 trDialogTitle>Manage your Discord guilds</h3>
-      <p trDialogDescription>
-        Easily add our bot to your server and get started in just a few clicks.
-      </p>
-    </tr-dialog-header>
-    <div class="flex flex-row items-center space-x-3">
-      <tr-input-search placeholder="Search a guild" class="w-full" />
-      <button trBtn class="w-1/4">Link Guild</button>
-    </div>
-    <div
-      class="flex flex-col bg-secondary p-4 flex-grow rounded-md space-y-2 overflow-y-auto max-h-[400px]">
+<div class="space-y-3">
+  <tr-dialog-header>
+    <h3 trDialogTitle>Manage your Discord guilds</h3>
+    <p trDialogDescription>
+      Easily add our bot to your server and get started in just a few clicks.
+    </p>
+  </tr-dialog-header>
+  <div class="flex flex-row items-center space-x-3">
+    <tr-input-search placeholder="Search a guild" class="w-full" />
+    <button trBtn class="w-1/4" (click)="linkGuild()">Link Guild</button>
+  </div>
+  <div
+    class="flex flex-col bg-secondary p-4 flex-grow rounded-md space-y-2 overflow-y-auto max-h-[400px]">
+    @if (guilds$ | async; as guilds) {
       @for (guild of guilds; track guild.id) {
         <div class="flex flex-row bg-white p-4 rounded-md items-center">
           <img
@@ -25,24 +22,30 @@
             [height]="35" />
           <div class="flex flex-col mr-auto">
             <span class="tr-large">{{ guild.name }}</span>
-            <span class="text-muted tr-medium"
-              >{{ guild.approximateMemberCount }} Members</span
-            >
           </div>
-          <div
+          <button
             [ngClass]="{
               'bg-green-500 hover:bg-green-400': guild.linked,
               'bg-primary hover:bg-primary/90': !guild.linked,
             }"
-            class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer">
+            class="h-8 w-8 flex flex-col justify-center items-center rounded-md transition-colors hover:cursor-pointer"
+            (click)="linkGuildById(guild.id)">
             <ng-icon
               [name]="guild.linked ? 'heroCheck' : 'heroPlus'"
               strokeWidth="0.13rem"
               class="text-white"
               size="1.1rem" />
-          </div>
+          </button>
         </div>
       }
-    </div>
-  </tr-dialog-content>
-</tr-dialog>
+    } @else {
+      @for (_ of [].constructor(5); track $index) {
+        <div class="flex flex-row bg-white p-4 rounded-md items-center">
+          <tr-skeleton
+            class="w-[35px] h-[35px] rounded-full bg-secondary mr-4" />
+          <tr-skeleton class="h-4 w-[200px] bg-secondary" />
+        </div>
+      }
+    }
+  </div>
+</div>

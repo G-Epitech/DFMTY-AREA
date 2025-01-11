@@ -27,7 +27,7 @@ namespace Zeus.Api.Infrastructure.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AuthenticationMethodType", new[] { "google", "password" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AutomationActionParameterType", new[] { "raw", "var" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationTokenUsage", new[] { "access", "refresh" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail", "notion" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
