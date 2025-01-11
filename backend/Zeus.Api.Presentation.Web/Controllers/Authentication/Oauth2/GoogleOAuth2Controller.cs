@@ -33,8 +33,16 @@ public class GoogleOAuth2Controller : ApiController
     public Task<IActionResult> GetConfiguration()
     {
         var settings = _oAuth2SettingsProvider.Google;
+
+        var clientIds = new List<GoogleOAuth2ClientIdConfigurationResponse>
+        {
+            new(GoogleOAuth2ClientIdProvider.Web, settings.Clients.Web.ClientId),
+            new(GoogleOAuth2ClientIdProvider.Android, settings.Clients.Android.ClientId),
+            new(GoogleOAuth2ClientIdProvider.Ios, settings.Clients.Ios.ClientId)
+        };
+
         var response =
-            new GoogleOAuth2ConfigurationResponse(settings.Scopes, settings.ClientId, new Uri(settings.OAuth2Endpoint));
+            new GoogleOAuth2ConfigurationResponse(settings.Scopes, clientIds, new Uri(settings.OAuth2Endpoint));
 
         return Task.FromResult<IActionResult>(Ok(response));
     }

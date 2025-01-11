@@ -41,11 +41,11 @@ public class GoogleOAuth2Service : IGoogleOAuth2Service
         _httpClient.DefaultRequestHeaders.Authorization = null;
         
         var requestContent = new FormUrlEncodedContent([
-            new KeyValuePair<string, string>("client_id", _googleSettings.ClientId),
-            new KeyValuePair<string, string>("client_secret", _googleSettings.ClientSecret),
+            new KeyValuePair<string, string>("client_id", _googleSettings.Clients.Web.ClientId),
+            new KeyValuePair<string, string>("client_secret", _googleSettings.Clients.Web.ClientSecret),
             new KeyValuePair<string, string>("code", code),
             new KeyValuePair<string, string>("grant_type", "authorization_code"),
-            new KeyValuePair<string, string>("redirect_uri", _googleSettings.RedirectUrl)
+            new KeyValuePair<string, string>("redirect_uri", _googleSettings.Clients.Web.RedirectUrl)
         ]);
 
         HttpResponseMessage response = await _httpClient.PostAsync(_googleSettings.TokenEndpoint, requestContent);
