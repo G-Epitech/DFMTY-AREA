@@ -8,9 +8,10 @@ using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.OAuth2;
 using Zeus.Api.Domain.Errors;
 
-namespace Zeus.Api.Application.Authentication.Commands.GoogleAuth;
+namespace Zeus.Api.Application.Authentication.Commands.GoogleAuthFromCredentials;
 
-public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, ErrorOr<GoogleAuthCommandResult>>
+public class GoogleAuthFromCredentialsCommandHandler : IRequestHandler<GoogleAuthFromCredentialsCommand,
+    ErrorOr<GoogleAuthFromCredentialsCommandResult>>
 {
     private readonly IGoogleOAuth2Service _googleOAuth2Service;
     private readonly IAuthenticationMethodReadRepository _authenticationMethodReadRepository;
@@ -18,7 +19,7 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, Error
     private readonly IJwtGenerator _jwtGenerator;
     private readonly ISender _sender;
 
-    public GoogleAuthCommandHandler(IGoogleOAuth2Service googleOAuth2Service,
+    public GoogleAuthFromCredentialsCommandHandler(IGoogleOAuth2Service googleOAuth2Service,
         IAuthenticationMethodReadRepository authenticationMethodReadRepository, IUserReadRepository userReadRepository,
         IJwtGenerator jwtGenerator, ISender sender)
     {
@@ -29,16 +30,10 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, Error
         _sender = sender;
     }
 
-    public async Task<ErrorOr<GoogleAuthCommandResult>> Handle(GoogleAuthCommand command,
+    public async Task<ErrorOr<GoogleAuthFromCredentialsCommandResult>> Handle(GoogleAuthFromCredentialsCommand command,
         CancellationToken cancellationToken)
     {
-        var googleTokens = await _googleOAuth2Service.GetTokensFromOauth2Async(command.Code);
-        if (googleTokens.IsError)
-        {
-            return googleTokens.Errors;
-        }
-
-        var googleUser = await _googleOAuth2Service.GetUserAsync(googleTokens.Value.AccessToken);
+        var googleUser = await _googleOAuth2Service.GetUserAsync(command.AccessToken);
         if (googleUser.IsError)
         {
             return googleUser.Errors;
@@ -50,15 +45,15 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, Error
 
         if (authenticationMethod is null)
         {
-            var registrationResult = await _sender.Send(new GoogleAuthRegisterCommand(googleTokens.Value.AccessToken,
-                googleTokens.Value.RefreshToken, googleUser.Value), cancellationToken);
+            var registrationResult = await _sender.Send(new GoogleAuthRegisterCommand(command.AccessToken,
+                command.RefreshToken, googleUser.Value), cancellationToken);
 
             if (registrationResult.IsError)
             {
                 return registrationResult.Errors;
             }
 
-            return new GoogleAuthCommandResult(true, registrationResult.Value.AccessToken,
+            return new GoogleAuthFromCredentialsCommandResult(true, registrationResult.Value.AccessToken,
                 registrationResult.Value.RefreshToken,
                 registrationResult.Value.UserId);
         }
@@ -72,6 +67,6 @@ public class GoogleAuthCommandHandler : IRequestHandler<GoogleAuthCommand, Error
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
 
-        return new GoogleAuthCommandResult(false, accessToken, refreshToken, user.Id.Value);
+        return new GoogleAuthFromCredentialsCommandResult(false, accessToken, refreshToken, user.Id.Value);
     }
 }
