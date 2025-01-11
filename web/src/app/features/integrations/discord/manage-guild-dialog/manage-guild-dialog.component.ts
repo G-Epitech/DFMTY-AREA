@@ -1,101 +1,63 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BrnDialogImports } from '@spartan-ng/ui-dialog-brain';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { injectBrnDialogContext } from '@spartan-ng/ui-dialog-brain';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { TrDialogImports } from '@triggo-ui/dialog';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { TrInputDirective, TrInputSearchComponent } from '@triggo-ui/input';
-
-interface GuildProps {
-  id: string;
-  name: string;
-  iconUri: string;
-  approximateMemberCount: number;
-  linked: boolean;
-}
+import { TrInputSearchComponent } from '@triggo-ui/input';
+import { IntegrationsMediator } from '@mediators/integrations.mediator';
+import { Observable } from 'rxjs';
+import { DiscordGuildModel } from '@models/integration';
+import { TrSkeletonComponent } from '@triggo-ui/skeleton';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'tr-manage-guild-dialog',
   imports: [
     NgOptimizedImage,
     TrDialogImports,
-    BrnDialogImports,
     NgIcon,
     NgClass,
     TrButtonDirective,
-    TrInputDirective,
     TrInputSearchComponent,
+    AsyncPipe,
+    TrSkeletonComponent,
   ],
   templateUrl: './manage-guild-dialog.component.html',
   standalone: true,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageGuildDialogComponent {
-  readonly guilds: GuildProps[] = [
-    {
-      id: '1',
-      name: "Programmer's Hangout",
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 500,
-      linked: true,
-    },
-    {
-      id: '2',
-      name: 'Angular Devs',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 21300,
-      linked: false,
-    },
-    {
-      id: '3',
-      name: 'Triggo Lovers',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 1232100,
-      linked: false,
-    },
-    {
-      id: '4',
-      name: 'Mario Kart Fans',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 100,
-      linked: false,
-    },
-    {
-      id: '5',
-      name: 'Mario Kart Fans',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 100,
-      linked: false,
-    },
-    {
-      id: '6',
-      name: 'Mario Kart Fans',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 100,
-      linked: false,
-    },
-    {
-      id: '7',
-      name: 'Mario Kart Fans',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 100,
-      linked: false,
-    },
-    {
-      id: '8',
-      name: 'Mario Kart Fans',
-      iconUri:
-        'https://play.nintendo.com/images/profile-mk-kamek.7bf2a8f2.aead314d58b63e27.png',
-      approximateMemberCount: 100,
-      linked: false,
-    },
-  ];
+export class ManageGuildDialogComponent implements OnInit {
+  readonly #integrationMediator = inject(IntegrationsMediator);
+  readonly #dialogContext = injectBrnDialogContext<{
+    integrationId: string;
+  }>();
+
+  protected readonly integrationId = this.#dialogContext.integrationId;
+
+  guilds$: Observable<DiscordGuildModel[]> | undefined;
+
+  ngOnInit() {
+    this.guilds$ = this.#integrationMediator.getDiscordGuilds(
+      this.integrationId
+    );
+  }
+
+  linkGuild() {
+    const clientId = environment.integrationSettingsClientId;
+    const uri = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=8&integration_type=0&scope=bot`;
+    window.open(uri, '_blank');
+  }
+
+  linkGuildById(guildId: string) {
+    const clientId = environment.integrationSettingsClientId;
+    const uri = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=8&integration_type=0&scope=bot&guild_id=${guildId}`;
+    window.open(uri, '_blank');
+  }
 }

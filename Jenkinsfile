@@ -49,7 +49,7 @@ podTemplate(containers: [
 
         stage('Web Build') {
             container('docker') {
-                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run build')
+                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run build --configuration=test')
             }
         }
 
