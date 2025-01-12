@@ -13,11 +13,7 @@ import { OauthSectionComponent } from '@features/authentication/components/oauth
 
 @Component({
   selector: 'tr-register',
-  imports: [
-    RouterLink,
-    RegisterFormComponent,
-    OauthSectionComponent,
-  ],
+  imports: [RouterLink, RegisterFormComponent, OauthSectionComponent],
   templateUrl: './register.page.html',
   standalone: true,
   styles: [],

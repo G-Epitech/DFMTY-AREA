@@ -6,6 +6,7 @@ public enum CreateIntegrationLinkRequestCommandType
 {
     Discord,
     Gmail,
+    Notion,
 }
 
 public static class CreateIntegrationLinkRequestCommandTypeExtensions
@@ -15,6 +16,7 @@ public static class CreateIntegrationLinkRequestCommandTypeExtensions
         {
             CreateIntegrationLinkRequestCommandType.Discord => IntegrationType.Discord,
             CreateIntegrationLinkRequestCommandType.Gmail => IntegrationType.Gmail,
+            CreateIntegrationLinkRequestCommandType.Notion => IntegrationType.Notion,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 }

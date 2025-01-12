@@ -21,7 +21,7 @@ void triggoScaffoldTest() {
     expect(find.text('Triggo Scaffold Body'), findsOneWidget);
     expect(find.byType(TriggoBanner), findsOneWidget);
     expect(find.byType(TriggoNavigationBar), findsOneWidget);
-    expect(find.byType(GestureDetector), findsNWidgets(3));
+    expect(find.byType(GestureDetector), findsNWidgets(4));
   });
 
   testWidgets(
@@ -41,6 +41,6 @@ void triggoScaffoldTest() {
     expect(find.text('Triggo Scaffold Body'), findsOneWidget);
     expect(find.byType(TriggoBanner), findsOneWidget);
     expect(find.byType(TriggoNavigationBar), findsOneWidget);
-    expect(find.byType(GestureDetector), findsNWidgets(4));
+    expect(find.byType(GestureDetector), findsNWidgets(5));
   });
 }
