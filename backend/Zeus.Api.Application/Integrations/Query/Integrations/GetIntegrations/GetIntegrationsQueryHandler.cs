@@ -2,6 +2,8 @@ using ErrorOr;
 
 using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations;
@@ -16,12 +18,16 @@ public class
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationService _integrationService;
+    private readonly ILogger _logger;
 
-    public GetIntegrationsQueryHandler(IIntegrationReadRepository integrationReadRepository,
-        IIntegrationService integrationService)
+    public GetIntegrationsQueryHandler(
+        IIntegrationReadRepository integrationReadRepository,
+        IIntegrationService integrationService,
+        ILogger<GetIntegrationsQueryHandler> logger)
     {
         _integrationReadRepository = integrationReadRepository;
         _integrationService = integrationService;
+        _logger = logger;
     }
 
     public async Task<ErrorOr<Page<GetIntegrationQueryResult>>> Handle(GetIntegrationsQuery query,
@@ -43,7 +49,7 @@ public class
 
             if (propertiesResult.IsError)
             {
-                await Console.Error.WriteLineAsync($"Error with integration {integration.Id.Value}");
+                _logger.LogError("Unable to get integration properties: {IntegrationId}", integration.Id.Value);
                 continue;
             }
 

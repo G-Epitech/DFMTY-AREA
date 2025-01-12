@@ -101,6 +101,7 @@ public static class DependencyInjection
                 o.MapEnum<IntegrationType>(nameof(IntegrationType));
                 o.MapEnum<IntegrationTokenUsage>(nameof(IntegrationTokenUsage));
                 o.MapEnum<AutomationActionParameterType>(nameof(AutomationActionParameterType));
+                o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
         });
 
