@@ -22,6 +22,7 @@
       "@mediators/*": ["src/mediators/*"],
       "@utils/*": ["src/utils/*"],
       "@common/*": ["src/common/*"],
+      "@environments/*": ["src/environments/*"],
       "@components/*": ["src/app/components/*"],
       "@features/*": ["src/app/features/*"],
       "@app/*": ["src/app/*"],

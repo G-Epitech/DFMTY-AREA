@@ -11,7 +11,7 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
     public string ClientSecret { get; }
     public string BotToken { get; }
     public string RedirectUrl { get; }
-    public List<string> Scope { get; }
+    public List<string> Scopes { get; }
 
     public DiscordSettingsProvider(DiscordSettings settings)
     {
@@ -21,6 +21,6 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
         ClientSecret = settings.ClientSecret;
         BotToken = settings.BotToken;
         RedirectUrl = settings.RedirectUrl;
-        Scope = settings.Scope;
+        Scopes = settings.Scopes;
     }
 }

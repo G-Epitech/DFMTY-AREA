@@ -1,28 +1,54 @@
-﻿using FluentValidation;
-
-using MediatR;
+﻿using System.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Zeus.BuildingBlocks.Application.Behaviors;
-using Zeus.Daemon.Application.Discord.Actions;
-using Zeus.Daemon.Application.Discord.Services.Api;
-using Zeus.Daemon.Application.Discord.Services.Websocket;
+using Zeus.Daemon.Application.Extensions;
+using Zeus.Daemon.Application.Interfaces;
+using Zeus.Daemon.Application.Interfaces.HandlerProviders;
+using Zeus.Daemon.Application.Interfaces.Registries;
+using Zeus.Daemon.Application.Services;
+using Zeus.Daemon.Application.Services.HandlerProviders;
+using Zeus.Daemon.Application.Services.Registries;
 
 namespace Zeus.Daemon.Application;
 
 public static class DependencyInjection
 {
+    private static readonly Assembly Assembly = typeof(DependencyInjection).Assembly;
+
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMediatR(c => c.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
-        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, ServiceLifetime.Singleton);
-        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
+        services.AddTriggerHandlersFromAssembly();
+        services.AddActionHandlersFromAssembly();
+        services.AddSingleton<IActionHandlersProvider, ActionHandlersProvider>();
+        services.AddSingleton<ITriggerHandlersProvider, TriggerHandlersProvider>();
 
-        services.AddSingleton<IDiscordWebSocketService, DiscordWebSocketService>();
-        services.AddSingleton<IDiscordApiService, DiscordApiService>();
+        services.AddSingleton<ITriggersRegistry, TriggersRegistry>();
+        services.AddSingleton<IAutomationsRegistry, AutomationsRegistry>();
+        services.AddSingleton<IAutomationsRunner, AutomationsRunner>();
+        services.AddSingleton<IAutomationsLauncher, AutomationLauncher>();
+        return services;
+    }
 
-        services.AddTransient<DiscordSendMessageActionHandler>();
+    private static IServiceCollection AddTriggerHandlersFromAssembly(this IServiceCollection services)
+    {
+        var types = Assembly.GetTriggerHandlersTypes();
+
+        foreach (var type in types)
+        {
+            services.AddSingleton(type);
+        }
+        return services;
+    }
+
+    private static IServiceCollection AddActionHandlersFromAssembly(this IServiceCollection services)
+    {
+        var types = Assembly.GetActionHandlersHostingTypes();
+
+        foreach (var type in types)
+        {
+            services.AddTransient(type);
+        }
         return services;
     }
 }

@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <PackageReference Include="ErrorOr" Version="2.0.1" />
-      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
     </ItemGroup>
 
     <ItemGroup>

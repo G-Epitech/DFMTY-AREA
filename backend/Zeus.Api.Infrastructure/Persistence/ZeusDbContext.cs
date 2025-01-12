@@ -2,6 +2,7 @@
 
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 using Zeus.Api.Infrastructure.Persistence.Interceptors;
+using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.UserAggregate;
@@ -17,6 +18,7 @@ public sealed class ZeusDbContext : DbContext
     public DbSet<Integration> Integrations { get; init; }
     public DbSet<IntegrationLinkRequest> IntegrationLinkRequests { get; init; }
     public DbSet<Automation> Automations { get; init; }
+    public DbSet<AuthenticationMethod> AuthenticationMethods { get; init; }
 
     public ZeusDbContext(
         DbContextOptions<ZeusDbContext> options,
