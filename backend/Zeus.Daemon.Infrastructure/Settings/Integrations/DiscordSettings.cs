@@ -1,4 +1,4 @@
-namespace Zeus.Daemon.Infrastructure.Integrations;
+namespace Zeus.Daemon.Infrastructure.Settings.Integrations;
 
 public class DiscordSettings
 {

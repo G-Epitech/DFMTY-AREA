@@ -16,8 +16,8 @@ namespace Zeus.Api.Presentation.Web.Controllers.Authentication;
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly ISender _sender;
     private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public AuthenticationController(ISender sender, IMapper mapper)
     {

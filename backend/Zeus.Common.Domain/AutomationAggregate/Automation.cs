@@ -14,6 +14,32 @@ public sealed class Automation : AggregateRoot<AutomationId>
     private readonly List<AutomationAction> _actions;
     private bool _enabled;
 
+    public Automation(
+        AutomationId id,
+        string label,
+        string description,
+        UserId ownerId,
+        AutomationTrigger trigger,
+        List<AutomationAction> actions,
+        DateTime updatedAt,
+        DateTime createdAt,
+        bool enabled = true)
+        : base(id, updatedAt, createdAt)
+    {
+        _actions = actions;
+        Label = label;
+        Description = description;
+        Trigger = trigger;
+        OwnerId = ownerId;
+        _enabled = enabled;
+    }
+
+#pragma warning disable CS8618
+    private Automation()
+    {
+    }
+#pragma warning restore CS8618
+
     public string Label { get; private set; }
     public string Description { get; private set; }
     public AutomationTrigger Trigger { get; private set; }
@@ -32,26 +58,6 @@ public sealed class Automation : AggregateRoot<AutomationId>
             _enabled = value;
             AddDomainEvent(new AutomationEnabledStateChangedEvent(this));
         }
-    }
-
-    public Automation(
-        AutomationId id,
-        string label,
-        string description,
-        UserId ownerId,
-        AutomationTrigger trigger,
-        List<AutomationAction> actions,
-        DateTime updatedAt,
-        DateTime createdAt,
-        bool enabled = true)
-        : base(id, updatedAt, createdAt)
-    {
-        _actions = actions;
-        Label = label;
-        Description = description;
-        Trigger = trigger;
-        OwnerId = ownerId;
-        Enabled = enabled;
     }
 
     public static Automation Create(
@@ -75,10 +81,4 @@ public sealed class Automation : AggregateRoot<AutomationId>
         automation.AddDomainEvent(new AutomationCreatedEvent(automation));
         return automation;
     }
-
-#pragma warning disable CS8618
-    private Automation()
-    {
-    }
-#pragma warning restore CS8618
 }

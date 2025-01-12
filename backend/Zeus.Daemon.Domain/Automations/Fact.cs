@@ -4,21 +4,22 @@ namespace Zeus.Daemon.Domain.Automations;
 
 public abstract partial class Fact
 {
-    public VariableType Type { get; init; }
-    
     protected Fact(VariableType type)
     {
         Type = type;
     }
+
+    public VariableType Type { get; init; }
 }
 
 public class Fact<T> : Fact
 {
-    public T Value { get; }
     internal Fact(T value, VariableType type): base(type)
     {
         Value = value;
     }
+
+    public T Value { get; }
 }
 
 public abstract partial class Fact

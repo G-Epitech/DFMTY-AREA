@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
@@ -35,7 +35,7 @@ public class AuthenticationMethodReadRepository : IAuthenticationMethodReadRepos
             .Where(authenticationMethod => authenticationMethod.UserId == userId)
             .ToListAsync(cancellationToken);
     }
-    
+
     public async Task<PasswordAuthenticationMethod?> GetPasswordAuthenticationMethodAsync(UserId userId,
         CancellationToken cancellationToken = default)
     {

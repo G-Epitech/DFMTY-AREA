@@ -1,19 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+namespace Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class GoogleAuthenticationMethod : AuthenticationMethod
 {
-    public AccessToken AccessToken { get; }
-    public RefreshToken RefreshToken { get; }
-    public string ProviderUserId { get; }
-
     private GoogleAuthenticationMethod(
         AuthenticationMethodId id,
         UserId userId,
@@ -27,7 +23,14 @@ public sealed class GoogleAuthenticationMethod : AuthenticationMethod
         RefreshToken = refreshToken;
         ProviderUserId = providerUserId;
     }
-    
+
+#pragma warning disable CS8618
+    private GoogleAuthenticationMethod() { }
+#pragma warning restore CS8618
+    public AccessToken AccessToken { get; }
+    public RefreshToken RefreshToken { get; }
+    public string ProviderUserId { get; }
+
     public static GoogleAuthenticationMethod Create(UserId userId, AccessToken accessToken, RefreshToken refreshToken, string providerUserId)
     {
         return new GoogleAuthenticationMethod(
@@ -39,8 +42,4 @@ public sealed class GoogleAuthenticationMethod : AuthenticationMethod
             DateTime.UtcNow,
             DateTime.UtcNow);
     }
-
-#pragma warning disable CS8618
-    private GoogleAuthenticationMethod() { }
-#pragma warning restore CS8618
 }

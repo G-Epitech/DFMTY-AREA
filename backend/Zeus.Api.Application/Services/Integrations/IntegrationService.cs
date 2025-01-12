@@ -14,11 +14,13 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 namespace Zeus.Api.Application.Services.Integrations;
 
+using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+
 public class IntegrationService : IIntegrationService
 {
     private readonly IDiscordService _discordService;
-    private readonly INotionService _notionService;
     private readonly IMapper _mapper;
+    private readonly INotionService _notionService;
 
     public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper)
     {

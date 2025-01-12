@@ -5,10 +5,6 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
-    public TId Id { get; }
-
-    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-
     protected Entity(TId id)
     {
         Id = id;
@@ -20,9 +16,18 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
     }
 #pragma warning restore CS8618
 
+    public TId Id { get; }
+
     public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
+    }
+
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 
     public override bool Equals(object? obj)
@@ -43,11 +48,6 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
     public override int GetHashCode()
     {
         return Id.GetHashCode();
-    }
-
-    public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
     }
 
     protected void AddDomainEvent(IDomainEvent domainEvent)

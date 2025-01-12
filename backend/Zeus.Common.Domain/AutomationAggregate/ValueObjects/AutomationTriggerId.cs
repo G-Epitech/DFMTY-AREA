@@ -4,12 +4,12 @@ namespace Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 
 public sealed class AutomationTriggerId : ValueObject
 {
-    public Guid Value { get; }
-
     public AutomationTriggerId(Guid value)
     {
         Value = value;
     }
+
+    public Guid Value { get; }
 
     public static AutomationTriggerId CreateUnique()
     {

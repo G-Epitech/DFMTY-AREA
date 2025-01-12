@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Services.Integrations;
+using Zeus.Api.Integration.Mapping;
 using Zeus.BuildingBlocks.Application.Behaviors;
 
 namespace Zeus.Api.Application;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, ServiceLifetime.Singleton);
         services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
 
+        services.AddIntegrationMappings();
         services.AddScoped<IIntegrationService, IntegrationService>();
         return services;
     }

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -39,11 +38,11 @@ public class
         var userId = new UserId(query.UserId);
         var pageQuery = new PageQuery { Index = index, Limit = limit };
 
-        var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery);
+        var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery, cancellationToken);
 
         var integrationResultItems = new List<GetIntegrationQueryResult>();
 
-        foreach (Integration integration in integrations.Items)
+        foreach (var integration in integrations.Items)
         {
             var propertiesResult = await _integrationService.GetProperties(integration);
 

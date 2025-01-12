@@ -8,6 +8,8 @@ using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
+using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+
 public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
 {
     private const int ClientIdMaxLength = 255;

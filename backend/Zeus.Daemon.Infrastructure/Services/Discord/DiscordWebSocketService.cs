@@ -12,14 +12,14 @@ namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
 public class DiscordWebSocketService : IDiscordWebSocketService
 {
-    private readonly ILogger _logger;
+    private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
+        _eventHandlers = [];
+
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
+    private readonly ILogger _logger;
     private readonly ClientWebSocket _webSocket;
     private CancellationToken? _cancellationToken;
     private int _heartbeatInterval = 0;
-
-    private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
-        _eventHandlers = [];
 
 
     public DiscordWebSocketService(
@@ -40,6 +40,11 @@ public class DiscordWebSocketService : IDiscordWebSocketService
         _logger.LogInformation("Discord WebSocket connected.");
 
         await ListenAsync(_cancellationToken ?? CancellationToken.None);
+    }
+
+    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
+    {
+        _eventHandlers.Add((eventType, handler));
     }
 
     private async Task ListenAsync(CancellationToken cancellationToken)
@@ -136,11 +141,6 @@ public class DiscordWebSocketService : IDiscordWebSocketService
                 }
                 break;
         }
-    }
-
-    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
-    {
-        _eventHandlers.Add((eventType, handler));
     }
 
     private async Task SendAsync(string message)

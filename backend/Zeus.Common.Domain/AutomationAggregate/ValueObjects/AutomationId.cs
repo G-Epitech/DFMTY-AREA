@@ -8,12 +8,17 @@ namespace Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 
 public sealed class AutomationId : ValueObject
 {
-    public Guid Value { get; }
-
     public AutomationId(Guid value)
     {
         Value = value;
     }
+
+#pragma warning disable CS8618
+    private AutomationId()
+    {
+    }
+#pragma warning restore CS8618
+    public Guid Value { get; }
 
     public static AutomationId CreateUnique()
     {
@@ -25,10 +30,4 @@ public sealed class AutomationId : ValueObject
     {
         yield return Value;
     }
-
-#pragma warning disable CS8618
-    private AutomationId()
-    {
-    }
-#pragma warning restore CS8618
 }

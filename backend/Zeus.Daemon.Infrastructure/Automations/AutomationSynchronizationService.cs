@@ -8,11 +8,11 @@ namespace Zeus.Daemon.Infrastructure.Automations;
 
 public class AutomationSynchronizationService
 {
-    private readonly SynchronizationGrpcService _synchronizationGrpcService;
-    private readonly IAutomationsRegistry _automationsRegistry;
-    private DateTime _lastUpdate = DateTime.UnixEpoch;
     private const int RefreshIntervalMilliseconds = 1000;
+    private readonly IAutomationsRegistry _automationsRegistry;
     private readonly ILogger _logger;
+    private readonly SynchronizationGrpcService _synchronizationGrpcService;
+    private DateTime _lastUpdate = DateTime.UnixEpoch;
 
     public AutomationSynchronizationService(SynchronizationGrpcService synchronizationGrpcService,
         IAutomationsRegistry automationsRegistry, ILogger<AutomationSynchronizationService> logger)

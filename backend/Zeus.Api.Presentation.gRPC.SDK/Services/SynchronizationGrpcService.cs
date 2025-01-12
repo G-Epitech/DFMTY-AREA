@@ -26,7 +26,7 @@ public class SynchronizationGrpcService
         {
             return true;
         }
-    } 
+    }
 
     public async Task<IList<Automation>> SyncDeltaAsync(DateTime lastUpdate, CancellationToken cancellationToken = default)
     {

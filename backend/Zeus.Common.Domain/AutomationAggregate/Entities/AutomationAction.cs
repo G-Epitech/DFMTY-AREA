@@ -12,11 +12,6 @@ public sealed class AutomationAction : Entity<AutomationActionId>
     private readonly List<AutomationActionParameter> _parameters;
     private readonly List<IntegrationId> _providers;
 
-    public string Identifier { get; private set; }
-    public IReadOnlyList<AutomationActionParameter> Parameters => _parameters.AsReadOnly();
-    public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
-    public int Rank { get; private set; }
-
     public AutomationAction(
         AutomationActionId id,
         string identifier,
@@ -31,6 +26,17 @@ public sealed class AutomationAction : Entity<AutomationActionId>
         Rank = rank;
     }
 
+#pragma warning disable CS8618
+    private AutomationAction()
+    {
+    }
+#pragma warning restore CS8618
+
+    public string Identifier { get; private set; }
+    public IReadOnlyList<AutomationActionParameter> Parameters => _parameters.AsReadOnly();
+    public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
+    public int Rank { get; private set; }
+
     public static AutomationAction Create(string identifier, int rank, List<AutomationActionParameter> parameters, List<IntegrationId> providers)
     {
         return new AutomationAction(
@@ -40,10 +46,4 @@ public sealed class AutomationAction : Entity<AutomationActionId>
             parameters,
             providers);
     }
-
-#pragma warning disable CS8618
-    private AutomationAction()
-    {
-    }
-#pragma warning restore CS8618
 }

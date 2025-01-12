@@ -3,7 +3,9 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
-public sealed class IntegrationWriteRepository: IIntegrationWriteRepository
+using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+
+public sealed class IntegrationWriteRepository : IIntegrationWriteRepository
 {
     private readonly ZeusDbContext _dbContext;
 

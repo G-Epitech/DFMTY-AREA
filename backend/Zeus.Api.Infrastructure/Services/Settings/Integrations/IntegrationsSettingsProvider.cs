@@ -7,12 +7,12 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 
 public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
 {
-    public IDiscordSettingsProvider Discord { get; }
-    public INotionSettingsProvider Notion { get; }
-
     public IntegrationsSettingsProvider(IOptions<IntegrationsSettings> settings)
     {
         Discord = new DiscordSettingsProvider(settings.Value.Discord);
         Notion = new NotionSettingsProvider(settings.Value.Notion);
     }
+
+    public IDiscordSettingsProvider Discord { get; }
+    public INotionSettingsProvider Notion { get; }
 }

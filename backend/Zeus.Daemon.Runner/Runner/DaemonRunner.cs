@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MassTransit;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -11,10 +13,10 @@ namespace Zeus.Daemon.Runner.Runner;
 
 public class DaemonRunner
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly IConfigurationRoot _configuration;
-    private readonly ILogger<DaemonRunner> _logger;
     private readonly IEnvironmentProvider _environmentProvider;
+    private readonly ILogger<DaemonRunner> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     public DaemonRunner(IServiceProvider serviceProvider, IConfigurationRoot configuration)
     {
@@ -45,8 +47,7 @@ public class DaemonRunner
     {
         _logger.LogInformation("DaemonRunner running. Environment is {environment}.", _environmentProvider.EnvironmentName);
         await Task.WhenAll(
-            ListenDiscordAsync(cancellationToken),
-            ListenUpdatesAsync(cancellationToken)
+            ListenDiscordAsync(cancellationToken)
         );
     }
 }

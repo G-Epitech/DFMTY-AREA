@@ -16,8 +16,8 @@ namespace Zeus.Api.Infrastructure.Services.OAuth2.Google;
 
 public class GoogleOAuth2Service : IGoogleOAuth2Service
 {
-    private readonly HttpClient _httpClient;
     private readonly IOAuth2GoogleSettingsProvider _googleSettings;
+    private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public GoogleOAuth2Service(IOAuth2SettingsProvider settingsProvider)
@@ -30,11 +30,6 @@ public class GoogleOAuth2Service : IGoogleOAuth2Service
         _httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
     }
-    
-    private static AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
-        new AuthenticationHeaderValue(
-            "Bearer",
-            accessToken.Value);
 
     public async Task<ErrorOr<GoogleUserTokens>> GetTokensFromOauth2Async(string code)
     {
@@ -86,4 +81,9 @@ public class GoogleOAuth2Service : IGoogleOAuth2Service
             responseContent.FamilyName,
             new Uri(responseContent.Picture));
     }
+
+    private static AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue(
+            "Bearer",
+            accessToken.Value);
 }

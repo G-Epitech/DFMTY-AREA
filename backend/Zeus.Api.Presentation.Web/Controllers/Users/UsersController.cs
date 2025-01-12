@@ -21,9 +21,9 @@ namespace Zeus.Api.Presentation.Web.Controllers.Users;
 [Route("users", Name = "Users")]
 public class UsersController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public UsersController(ISender sender, IMapper mapper, IAuthUserContext authUserContext)
     {

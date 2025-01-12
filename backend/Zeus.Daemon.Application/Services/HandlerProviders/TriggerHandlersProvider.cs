@@ -15,9 +15,9 @@ namespace Zeus.Daemon.Application.Services.HandlerProviders;
 public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
 {
     private static readonly Assembly Assembly = typeof(TriggerHandlersProvider).Assembly;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger _logger;
     private readonly Dictionary<string, TriggerHandler> _handlers = new();
+    private readonly ILogger _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     public TriggerHandlersProvider(
         IServiceProvider serviceProvider,
@@ -37,6 +37,15 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
         _logger.LogDebug("{count} trigger handlers have been registered", _handlers.Count);
     }
 
+    public TriggerHandler GetHandler(string triggerIdentifier)
+    {
+        if (_handlers.TryGetValue(triggerIdentifier, out var triggerHandlerTarget))
+        {
+            return triggerHandlerTarget;
+        }
+        throw new InvalidOperationException($"Trigger handler with identifier '{triggerIdentifier}' not found");
+    }
+
     private void RegisterHandler(string triggerFullIdentifier, Type hostingClass, MethodInfo onRegisterMethod, MethodInfo onRemoveMethod)
     {
         _handlers[triggerFullIdentifier] = new TriggerHandler
@@ -54,15 +63,6 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
                 throw new InvalidOperationException($"Trigger '{triggerIdentifier}' has no handler registered");
             }
         }
-    }
-
-    public TriggerHandler GetHandler(string triggerIdentifier)
-    {
-        if (_handlers.TryGetValue(triggerIdentifier, out var triggerHandlerTarget))
-        {
-            return triggerHandlerTarget;
-        }
-        throw new InvalidOperationException($"Trigger handler with identifier '{triggerIdentifier}' not found");
     }
 
     private void CheckHandlerDeclarationsAndRegister(Type hostingClass, ProvidersSettings providersSettings)

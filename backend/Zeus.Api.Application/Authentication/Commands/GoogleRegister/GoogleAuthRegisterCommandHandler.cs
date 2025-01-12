@@ -4,7 +4,7 @@ using MediatR;
 
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.GoogleRegister;
@@ -13,9 +13,9 @@ public class
     GoogleAuthRegisterCommandHandler : IRequestHandler<GoogleAuthRegisterCommand,
     ErrorOr<GoogleAuthRegisterCommandResult>>
 {
+    private readonly IAuthenticationMethodWriteRepository _authenticationMethodWriteRepository;
     private readonly IJwtGenerator _jwtGenerator;
     private readonly IUserWriteRepository _userWriteRepository;
-    private readonly IAuthenticationMethodWriteRepository _authenticationMethodWriteRepository;
 
     public GoogleAuthRegisterCommandHandler(IJwtGenerator jwtGenerator, IUserWriteRepository userWriteRepository,
         IAuthenticationMethodWriteRepository authenticationMethodWriteRepository)

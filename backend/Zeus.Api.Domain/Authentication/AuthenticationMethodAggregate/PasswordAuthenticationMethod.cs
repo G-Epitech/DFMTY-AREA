@@ -1,17 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
 
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
-namespace Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+namespace Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class PasswordAuthenticationMethod : AuthenticationMethod
 {
-    public Password Password { get; }
-
     private PasswordAuthenticationMethod(
         AuthenticationMethodId id,
         UserId userId,
@@ -21,7 +20,12 @@ public sealed class PasswordAuthenticationMethod : AuthenticationMethod
     {
         Password = password;
     }
-    
+
+#pragma warning disable CS8618
+    private PasswordAuthenticationMethod() { }
+#pragma warning restore CS8618
+    public Password Password { get; }
+
     public static PasswordAuthenticationMethod Create(UserId userId, Password password)
     {
         return new PasswordAuthenticationMethod(
@@ -31,8 +35,4 @@ public sealed class PasswordAuthenticationMethod : AuthenticationMethod
             DateTime.UtcNow,
             DateTime.UtcNow);
     }
-
-#pragma warning disable CS8618
-    private PasswordAuthenticationMethod() { }
-#pragma warning restore CS8618
 }
