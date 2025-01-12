@@ -50,7 +50,8 @@ class _TriggoAppState extends State<TriggoApp> {
       _authenticationRepository,
       _credentialsRepository,
     );
-    _integrationMediator = IntegrationMediator(_integrationRepository);
+    _integrationMediator =
+        IntegrationMediator(_integrationRepository, _credentialsRepository);
     _automationMediator = AutomationMediator(_automationRepository);
     _userMediator = UserMediator(_userRepository);
   }

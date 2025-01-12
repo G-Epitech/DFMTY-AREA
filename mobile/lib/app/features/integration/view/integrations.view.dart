@@ -7,6 +7,7 @@ import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
+import 'package:triggo/mediator/integrations/google.mediator.dart';
 import 'package:triggo/mediator/integrations/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
@@ -23,6 +24,8 @@ class _IntegrationsViewState extends State<IntegrationsView> {
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
+    final GoogleMediator googleMediator = integrationMediator.google;
+    googleMediator.authenticateWithGoogle();
     return BlocProvider(
       create: (context) => IntegrationsBloc(
         integrationMediator,

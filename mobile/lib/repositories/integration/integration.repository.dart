@@ -5,19 +5,26 @@ import 'package:triggo/api/response.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
+import 'package:triggo/repositories/integration/google.repository.dart';
 
 class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository credentialsRepository;
   final DiscordRepository discordRepository;
+  final GoogleRepository googleRepository;
 
   IntegrationRepository({this.client, required this.credentialsRepository})
       : discordRepository = DiscordRepository(
           client: client,
           credentialsRepository: credentialsRepository,
+        ),
+        googleRepository = GoogleRepository(
+          client: client,
+          credentialsRepository: credentialsRepository,
         );
 
   get discord => discordRepository;
+  get google => googleRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
       {int page = 0, int size = 10}) async {
