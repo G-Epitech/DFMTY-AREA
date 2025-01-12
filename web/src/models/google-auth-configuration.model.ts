@@ -1,5 +1,5 @@
 export class GoogleAuthConfigurationModel {
-  readonly #callbackUrl = 'oauth2/google';
+  readonly #callbackUrl = 'oauth2/google/';
   readonly #accessType = 'offline';
   readonly #responseType = 'code';
   readonly #prompt = 'consent';
@@ -24,11 +24,10 @@ export class GoogleAuthConfigurationModel {
       prompt: this.#prompt,
       response_type: this.#responseType,
       client_id: this.clientId,
+      state,
       scope: this.scopes.join(' '),
       access_type: this.#accessType,
-      state,
     });
-
     return `${this.endpoint}?${params.toString()}`;
   }
 }

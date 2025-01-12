@@ -13,18 +13,21 @@ export class GoogleMediator {
   readonly #tokenRepository = inject(TokenRepository);
 
   getGoogleConfiguration(): Observable<GoogleAuthConfigurationModel> {
-    return this.#googleRepository
-      .getGoogleConfiguration()
-      .pipe(
-        map(
-          res =>
-            new GoogleAuthConfigurationModel(
-              res.scopes,
-              res.clientId,
-              res.endpoint
-            )
-        )
-      );
+    return this.#googleRepository.getGoogleConfiguration().pipe(
+      map(res => {
+        const provider = res.clientIds.find(
+          ({ provider }) => provider === 'Web'
+        );
+        if (!provider) {
+          throw new Error('Google provider not found');
+        }
+        return new GoogleAuthConfigurationModel(
+          res.scopes,
+          provider.clientId,
+          res.endpoint
+        );
+      })
+    );
   }
 
   sendCode(code: string): Observable<TokensModel> {

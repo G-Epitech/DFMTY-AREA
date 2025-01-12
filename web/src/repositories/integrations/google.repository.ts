@@ -22,7 +22,7 @@ export class GoogleRepository {
   }
 
   sendCode(dto: GoogleCodeDTORequest): Observable<GoogleCodeDTOResponse> {
-    const url = `${this.baseUrl}/auth/oauth2/google/`;
+    const url = `${this.baseUrl}/auth/oauth2/google/from-code`;
     return this.#httpClient.post<GoogleCodeDTOResponse>(url, dto);
   }
 

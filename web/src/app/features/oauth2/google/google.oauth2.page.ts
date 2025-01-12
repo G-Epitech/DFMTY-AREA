@@ -66,7 +66,6 @@ export class GoogleOauth2PageComponent implements OnInit, OnDestroy {
     this.#googleMediator
       .sendCode(code)
       .pipe(
-        delay(1000),
         finalize(() => this.loading.set(false)),
         takeUntil(this.#destroyRef)
       )
