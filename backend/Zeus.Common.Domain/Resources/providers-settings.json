@@ -85,7 +85,7 @@
         "Name": "Database created",
         "Description": "Trigger when a new database is created in any page.",
         "Icon": "circle-stack",
-        "Parameters" : {},
+        "Parameters": {},
         "Facts": {
           "Id": {
             "Name": "Database id",
@@ -118,13 +118,7 @@
         "Name": "Page created",
         "Description": "Trigger when a new page is created in any database.",
         "Icon": "document",
-        "Parameters": {
-          "DatabaseId": {
-            "Name": "Database id",
-            "Description": "The ID of the database to monitor.",
-            "Type": "string"
-          }
-        },
+        "Parameters": {},
         "Facts": {
           "Id": {
             "Name": "Page id",
@@ -242,6 +236,141 @@
         }
       }
     },
-    "Actions": {}
+    "Actions": {
+      "CreateDatabase": {
+        "Name": "Create database",
+        "Description": "Creates a new database in a specific page.",
+        "Icon": "plus-circle",
+        "Parameters": {
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent page to create the database in.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Database title",
+            "Description": "The title of the database to create.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Database description",
+            "Description": "The description of the database to create.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Database icon",
+            "Description": "The icon of the database to create (can be url or emoji).",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Database id",
+            "Description": "The ID of the created database.",
+            "Type": "string"
+          }
+        }
+      },
+      "CreatePage": {
+        "Name": "Create page",
+        "Description": "Creates a new page.",
+        "Icon": "plus-circle",
+        "Parameters": {
+          "ParentId": {
+            "Name": "Parent id",
+            "Description": "The ID of the parent where you want to create the page.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Page title",
+            "Description": "The title of the page to create.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Page description",
+            "Description": "The description of the page to create.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Page icon",
+            "Description": "The icon of the page to create (can be url or emoji).",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Page id",
+            "Description": "The ID of the created page.",
+            "Type": "string"
+          }
+        }
+      },
+      "CreateDatabaseRow": {
+        "Name": "Create database row",
+        "Description": "Creates a new row in a specific database.",
+        "Icon": "plus-circle",
+        "Parameters": {
+          "DatabaseId": {
+            "Name": "Database id",
+            "Description": "The ID of the database to create the row in.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Row title",
+            "Description": "The title of the row to create.",
+            "Type": "string"
+          },
+          "Type": {
+            "Name": "Row type",
+            "Description": "The type of the row to create (page or database).",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Row description",
+            "Description": "The description of the row to create.",
+            "Type": "string"
+          },
+          "Icon": {
+            "Name": "Row icon",
+            "Description": "The icon of the row to create (can be url or emoji).",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Id": {
+            "Name": "Row id",
+            "Description": "The ID of the created row.",
+            "Type": "string"
+          }
+        }
+      },
+      "ArchiveDatabase": {
+        "Name": "Archive database",
+        "Description": "Archives a database.",
+        "Icon": "archive-box",
+        "Parameters": {
+          "DatabaseId": {
+            "Name": "Database id",
+            "Description": "The ID of the database to archive.",
+            "Type": "string"
+          }
+        },
+        "Facts": {}
+      },
+      "ArchivePage": {
+        "Name": "Archive page",
+        "Description": "Archives a page.",
+        "Icon": "archive-box",
+        "Parameters": {
+          "PageId": {
+            "Name": "Page id",
+            "Description": "The ID of the page to archive.",
+            "Type": "string"
+          }
+        },
+        "Facts": {}
+      }
+    }
   }
 }
+ 
