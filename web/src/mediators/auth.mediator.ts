@@ -45,6 +45,6 @@ export class AuthMediator {
 
   logout(): void {
     this.#tokenRepository.clearTokens();
-    void this.#appRouter.redirectToLogin();
+    void this.#appRouter.redirectToLanding();
   }
 }

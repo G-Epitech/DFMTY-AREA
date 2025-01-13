@@ -21,7 +21,7 @@ export const authGuard: CanActivateFn = () => {
         map(isAuthenticated => {
           if (!isAuthenticated) {
             authMediator.logout();
-            appRouter.redirectToLogin();
+            appRouter.redirectToLanding();
             return false;
           }
           return true;
