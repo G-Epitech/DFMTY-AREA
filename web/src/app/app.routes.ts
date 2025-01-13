@@ -21,6 +21,20 @@ export const routes: Routes = [
             m => m.LandingPageComponent
           ),
       },
+      {
+        path: 'downloads',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/downloads/downloads.page').then(
+            m => m.DownloadsPageComponent
+          ),
+      },
+      {
+        path: 'faq',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/faq/faq.page').then(m => m.FaqPageComponent),
+      },
     ],
   },
   {

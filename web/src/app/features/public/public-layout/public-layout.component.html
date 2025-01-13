@@ -1,49 +1,46 @@
-<nav class="bg-white border-b border-gray-200 fixed w-full top-0 z-50">
-  <div class="max-w-full px-4 sm:px-6">
-    <div class="flex justify-between items-center h-16">
-      <div
-        class="flex items-center flex-row hover:cursor-pointer"
-        routerLink="/landing">
-        <img
-          ngSrc="icons/triggo_logo.svg"
-          alt="Triggo Logo"
-          [width]="120"
-          [height]="120" />
-      </div>
+<div class="flex flex-col">
+  <nav class="bg-white border-b border-gray-200 w-full top-0 z-50">
+    <div class="max-w-full px-4 sm:px-6">
+      <div class="flex justify-between items-center h-16">
+        <div
+          class="flex items-center flex-row hover:cursor-pointer"
+          routerLink="/landing">
+          <img
+            ngSrc="icons/triggo_logo.svg"
+            alt="Triggo Logo"
+            [width]="120"
+            [height]="120"
+            priority />
+        </div>
 
-      <div class="hidden lg:flex lg:items-center lg:space-x-6">
-        <a
-          routerLink="/landing"
-          routerLinkActive="text-primary"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
-          Home
-        </a>
-        <a
-          routerLink="/features"
-          routerLinkActive="text-primary"
-          class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
-          Features
-        </a>
-        <a
-          routerLink="/faq"
-          routerLinkActive="text-primary"
-          class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
-          FAQ
-        </a>
-        <a
-          routerLink="/downloads"
-          routerLinkActive="text-primary"
-          class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
-          Downloads
-        </a>
-      </div>
+        <div class="hidden lg:flex lg:items-center lg:space-x-6">
+          <a
+            routerLink="/landing"
+            routerLinkActive="text-primary"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
+            Home
+          </a>
+          <a
+            routerLink="/faq"
+            routerLinkActive="text-primary"
+            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
+            FAQ
+          </a>
+          <a
+            routerLink="/downloads"
+            routerLinkActive="text-primary"
+            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
+            Downloads
+          </a>
+        </div>
 
-      <div class="flex items-center space-x-4">
-        <button trBtn routerLink="/signup" variant="outline">Sign Up</button>
-        <button trBtn routerLink="/login">Log In</button>
+        <div class="flex items-center space-x-4">
+          <button trBtn routerLink="/signup" variant="outline">Sign Up</button>
+          <button trBtn routerLink="/login">Log In</button>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
-<router-outlet></router-outlet>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

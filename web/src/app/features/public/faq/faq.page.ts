@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'tr-downloads',
+  selector: 'tr-faq',
   imports: [],
-  templateUrl: './downloads.page.html',
+  templateUrl: './faq.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class DownloadsPageComponent {}
+export class FaqPageComponent {}
