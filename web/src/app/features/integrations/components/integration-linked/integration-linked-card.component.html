@@ -1,7 +1,10 @@
 <div class="bg-white rounded-md p-4">
   @switch (integration().type) {
     @case (IntegrationTypeEnum.DISCORD) {
-      <tr-integration-linked-discord [integration]="integration()" />
+      <tr-integration-linked-discord
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
     }
   }
 </div>
