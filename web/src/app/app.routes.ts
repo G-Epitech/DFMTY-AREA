@@ -1,12 +1,27 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@app/guards';
 import { MainLayoutComponent } from '@features/layout/main.layout.component';
+import { PublicLayoutComponent } from '@features/public/public-layout/public-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      {
+        path: 'landing',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/landing/landing.page').then(
+            m => m.LandingPageComponent
+          ),
+      },
+    ],
   },
   {
     path: '',
