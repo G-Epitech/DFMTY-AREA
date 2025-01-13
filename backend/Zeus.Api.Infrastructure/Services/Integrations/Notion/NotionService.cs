@@ -7,7 +7,7 @@ using ErrorOr;
 
 using MapsterMapper;
 
-using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Notion;

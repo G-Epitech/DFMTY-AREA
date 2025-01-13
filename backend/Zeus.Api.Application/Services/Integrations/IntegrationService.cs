@@ -3,8 +3,6 @@ using ErrorOr;
 using MapsterMapper;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Properties;
 using Zeus.Common.Domain.Authentication.Common;

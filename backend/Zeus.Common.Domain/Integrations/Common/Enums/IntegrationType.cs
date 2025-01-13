@@ -5,4 +5,5 @@ public enum IntegrationType
     Discord,
     Gmail,
     Notion,
+    OpenAi
 }
