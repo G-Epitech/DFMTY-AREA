@@ -130,8 +130,32 @@ public class NotionService : INotionService
         return responseContent.Results.Select(database => _mapper.Map<NotionDatabase>(database)).ToList();
     }
 
-    public Task<ErrorOr<List<NotionPage>>> GetWorkspacePagesAsync(AccessToken accessToken)
+    public async Task<ErrorOr<List<NotionPage>>> GetWorkspacePagesAsync(AccessToken accessToken)
     {
-        throw new NotImplementedException();
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        var filter = new { property = "object", value = "page" };
+
+        var requestContent = new StringContent(
+            JsonSerializer.Serialize(new { filter }),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        HttpResponseMessage response = await _httpClient.PostAsync("search", requestContent);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Integrations.Notion.ErrorDuringSearchRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<SearchNotionPagesResponse>(_jsonSerializerOptions);
+        if (responseContent is null)
+        {
+            return Errors.Integrations.Notion.InvalidBody;
+        }
+
+        return responseContent.Results.Select(database => _mapper.Map<NotionPage>(database)).ToList();
     }
 }

@@ -7,7 +7,7 @@ using Zeus.Api.Infrastructure.Services.Integrations.Notion.Contracts.Utils;
 
 namespace Zeus.Api.Infrastructure.Services.Integrations.Notion.Mapping;
 
-public class NotionDatabaseResponseMappingConfig : IRegister
+public class NotionResponsesMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
@@ -26,6 +26,32 @@ public class NotionDatabaseResponseMappingConfig : IRegister
             .Map(dest => dest.Uri, src => new Uri(src.Url))
             .Map(dest => dest.Archived, src => src.Archived)
             .Map(dest => dest.InTrash, src => src.InTrash);
+
+        config.NewConfig<GetNotionPageResponse, NotionPage>()
+            .Map(dest => dest.Id, src => new NotionDatabaseId(src.Id))
+            .Map(dest => dest.Title, src => ExtractTitleFromPageProperties(src.Properties))
+            .Map(dest => dest.Icon, src => GetNotionIconString(src.Icon))
+            .Map(dest => dest.CreatedAt, src => DateTime.Parse(src.CreatedTime))
+            .Map(dest => dest.CreatedBy, src => new NotionUserId(src.CreatedBy.Id))
+            .Map(dest => dest.LastEditedAt, src => DateTime.Parse(src.LastEditedTime))
+            .Map(dest => dest.LastEditedBy, src => new NotionUserId(src.LastEditedBy.Id))
+            .Map(dest => dest.Parent, src => GetNotionParent(src.Parent))
+            .Map(dest => dest.Uri, src => new Uri(src.Url))
+            .Map(dest => dest.Archived, src => src.Archived)
+            .Map(dest => dest.InTrash, src => src.InTrash);
+    }
+
+    private string ExtractTitleFromPageProperties(Dictionary<string, NotionPropertyContract> properties)
+    {
+        var title = properties.Where(prop => prop.Value.Type == "title")
+            .Select(prop => prop.Value.Title).FirstOrDefault();
+
+        if (title is null)
+        {
+            return "No title";
+        }
+
+        return GetNotionTextString(title, "No title");
     }
 
     private string GetNotionTextString(List<NotionTextContract> text, string defaultValue)
