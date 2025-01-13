@@ -172,7 +172,22 @@ class AutomationCreationBloc
       Emitter<AutomationCreationState> emit) {
     final updatedPreviews = Map<String, String>.from(state.previews)
       ..[event.key] = event.value;
+    final updatedPreviewsSpecialCases =
+        _manageSpecialCases(updatedPreviews, event.key);
     emit(AutomationCreationState(
-        state.automation, updatedPreviews, state.isValid));
+        state.automation, updatedPreviewsSpecialCases, state.isValid));
+  }
+
+  Map<String, String> _manageSpecialCases(
+      Map<String, String> newPreviews, String key) {
+    final previews = Map<String, String>.from(newPreviews);
+    print(
+        'previews[trigger.0.discord.MessageReceivedInChannel.ChannelId]: ${previews['trigger.0.discord.MessageReceivedInChannel.ChannelId']}');
+    if (key == 'trigger.0.discord.MessageReceivedInChannel.GuildId') {
+      previews.remove('trigger.0.discord.MessageReceivedInChannel.ChannelId');
+    }
+    print(
+        'previews[trigger.0.discord.MessageReceivedInChannel.ChannelId]: ${previews['trigger.0.discord.MessageReceivedInChannel.ChannelId']}');
+    return previews;
   }
 }

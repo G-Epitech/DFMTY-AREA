@@ -66,70 +66,78 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: triggersOrActions.length,
-      itemBuilder: (context, index) {
-        final key = triggersOrActions.keys.elementAt(index);
-        final triggerOrAction = triggersOrActions[key]!;
-        return GestureDetector(
-          onTap: () {
-            // Navigate to the next screen
-            log("Go to parameters screen");
-            if (type == AutomationChoiceEnum.trigger) {
-              context.read<AutomationCreationBloc>().add(
-                  AutomationCreationTriggerIdentifierChanged(identifier: key));
-            }
-            Navigator.push(
-                context,
-                customScreenBuilder(AutomationCreationParametersView(
-                  type: AutomationChoiceEnum.trigger,
-                  integrationIdentifier: integrationName,
-                  triggerOrActionIdentifier: key,
-                )));
-          },
-          child: TriggoCard(
-            customWidget: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8),
+    return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+        builder: (context, state) {
+      return ListView.builder(
+        itemCount: triggersOrActions.length,
+        itemBuilder: (context, index) {
+          final key = triggersOrActions.keys.elementAt(index);
+          final triggerOrAction = triggersOrActions[key]!;
+          return GestureDetector(
+            onTap: () {
+              // Navigate to the next screen
+              log("Go to parameters screen");
+              final index = type == AutomationChoiceEnum.trigger
+                  ? 0
+                  : state.automation.actions.length;
+              if (type == AutomationChoiceEnum.trigger) {
+                context.read<AutomationCreationBloc>().add(
+                    AutomationCreationTriggerIdentifierChanged(
+                        identifier: key));
+              }
+              Navigator.push(
+                  context,
+                  customScreenBuilder(AutomationCreationParametersView(
+                    type: type,
+                    integrationIdentifier: integrationName,
+                    triggerOrActionIdentifier: key,
+                    indexOfTheTriggerOrAction: index,
+                  )));
+            },
+            child: TriggoCard(
+              customWidget: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: SvgPicture.asset(
+                      "assets/icons/${triggerOrAction.icon}.svg",
+                      width: 24,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(
+                          Theme.of(context).colorScheme.onPrimary,
+                          BlendMode.srcIn),
+                    ),
                   ),
-                  child: SvgPicture.asset(
-                    "assets/icons/${triggerOrAction.icon}.svg",
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                        Theme.of(context).colorScheme.onPrimary,
-                        BlendMode.srcIn),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          triggerOrAction.name,
+                          style: Theme.of(context).textTheme.labelLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          triggerOrAction.description,
+                          style: Theme.of(context).textTheme.labelMedium,
+                          overflow: TextOverflow.clip,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        triggerOrAction.name,
-                        style: Theme.of(context).textTheme.labelLarge,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        triggerOrAction.description,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        overflow: TextOverflow.clip,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    });
   }
 }

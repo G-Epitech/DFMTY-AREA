@@ -71,24 +71,27 @@ class AutomationLabelParameterWidget extends StatelessWidget {
   final String title;
   final String previewData;
   final StatefulWidget input;
+  final bool disabled;
 
   const AutomationLabelParameterWidget({
     super.key,
     required this.title,
     required this.previewData,
     required this.input,
+    this.disabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (disabled) return;
         Navigator.push(context, customScreenBuilder(input));
       },
       child: Container(
         padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: disabled ? Colors.grey.shade300 : Colors.white,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(

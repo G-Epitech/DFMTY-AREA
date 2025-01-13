@@ -287,28 +287,33 @@ class _RadioInputState extends State<_RadioInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              widget.label,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+        Flexible(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final option in widget.options)
+                  Row(
+                    children: [
+                      Radio<String>(
+                        value: option.value,
+                        groupValue: localValue,
+                        onChanged: (value) {
+                          setState(() {
+                            localValue = value!;
+                            widget.onChanged(value);
+                          });
+                        },
+                      ),
+                      Text(
+                        option.title,
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                    ],
                   ),
+              ],
             ),
           ),
-        for (final option in widget.options)
-          RadioListTile<String>(
-            title: Text(option.title),
-            value: option.value,
-            groupValue: localValue,
-            onChanged: (value) {
-              setState(() {
-                localValue = value!;
-                widget.onChanged(value);
-              });
-            },
-          ),
+        ),
       ],
     );
   }

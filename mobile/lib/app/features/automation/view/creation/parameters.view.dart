@@ -17,12 +17,14 @@ class AutomationCreationParametersView extends StatefulWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
+  final int indexOfTheTriggerOrAction;
 
   const AutomationCreationParametersView({
     super.key,
     required this.type,
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -50,6 +52,7 @@ class _AutomationCreationParametersViewState
         integrationIdentifier: widget.integrationIdentifier,
         triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
         properties: properties,
+        indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
       ),
     );
   }
@@ -60,21 +63,23 @@ class _List extends StatelessWidget {
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final Map<String, AutomationSchemaTriggerActionProperty> properties;
+  final int indexOfTheTriggerOrAction;
 
   const _List({
     required this.type,
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
     required this.properties,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: properties.length,
       itemBuilder: (context, index) {
-        final key = properties.keys.elementAt(index);
-        final property = properties[key]!;
+        final parameterIdentifier = properties.keys.elementAt(index);
+        final property = properties[parameterIdentifier]!;
         return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
           builder: (context, state) {
             final title = property.name;
@@ -82,12 +87,16 @@ class _List extends StatelessWidget {
                 state.automation,
                 type,
                 integrationIdentifier,
-                index,
+                indexOfTheTriggerOrAction,
                 triggerOrActionIdentifier,
+                parameterIdentifier,
                 state.previews);
             print("Preview data: $previewData");
             final String selectedValue = getSelectedValue(
-                    state.automation, type, triggerOrActionIdentifier, index) ??
+                    state.automation,
+                    type,
+                    triggerOrActionIdentifier,
+                    indexOfTheTriggerOrAction) ??
                 "";
             print("Selected value: $selectedValue");
             final List<AutomationRadioModel>? options = getOptions(
@@ -95,11 +104,11 @@ class _List extends StatelessWidget {
                 type,
                 integrationIdentifier,
                 triggerOrActionIdentifier,
-                key);
-            print("Options: $options");
+                parameterIdentifier);
             return AutomationLabelParameterWidget(
               title: title,
               previewData: previewData,
+              disabled: options == null,
               input: AutomationCreationInputView(
                 type: options != null
                     ? AutomationInputEnum.radio
@@ -118,15 +127,17 @@ class _List extends StatelessWidget {
                             .firstWhere((element) => element.value == value)
                             .title
                         : value;
+
                     context.read<AutomationCreationBloc>().add(
                         AutomationCreationPreviewUpdated(
                             key:
-                                "trigger.$index.$integrationIdentifier.$triggerOrActionIdentifier.$key",
+                                "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                             value: humanReadableValue));
+
                     context
                         .read<AutomationCreationBloc>()
                         .add(AutomationCreationTriggerParameterChanged(
-                          parameterIdentifier: key,
+                          parameterIdentifier: parameterIdentifier,
                           parameterValue: value,
                         ));
                   } else {
@@ -147,6 +158,9 @@ class _List extends StatelessWidget {
           },
         );
       },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 8.0);
+      },
     );
   }
 }
@@ -155,36 +169,47 @@ String getPreviewData(
     Automation automation,
     AutomationChoiceEnum type,
     String integrationIdentifier,
-    int index,
+    int indexOfTheTriggerOrAction,
     String triggerOrActionIdentifier,
+    String parameterIdentifier,
     Map<String, String> previews) {
   String value = '';
-  String parameterIdentifier = '';
   bool isNotHumanReadable = true;
   switch (type) {
     case AutomationChoiceEnum.trigger:
       if (automation.trigger.identifier != triggerOrActionIdentifier) {
         break;
       }
-      if (automation.trigger.parameters.length > index) {
-        value = automation.trigger.parameters[index].value;
-        parameterIdentifier = automation.trigger.parameters[index].identifier;
+      for (final parameter in automation.trigger.parameters) {
+        print("Parameter: ${parameter.identifier} - $parameterIdentifier");
+        if (parameter.identifier == parameterIdentifier) {
+          value = parameter.value;
+          break;
+        }
       }
       break;
     case AutomationChoiceEnum.action:
       for (final action in automation.actions) {
         if (action.identifier == triggerOrActionIdentifier) {
-          value = action.parameters[index].value;
-          parameterIdentifier = action.parameters[index].identifier;
-          isNotHumanReadable = action.parameters[index].type != 'raw';
-          break;
+          for (final parameter in action.parameters) {
+            if (parameter.identifier == parameterIdentifier) {
+              value = parameter.value;
+              isNotHumanReadable = parameter.type != 'raw';
+              break;
+            }
+          }
         }
       }
       break;
   }
   if (isNotHumanReadable) {
-    return replaceByHumanReadable(type, integrationIdentifier, index,
-        triggerOrActionIdentifier, parameterIdentifier, previews);
+    return replaceByHumanReadable(
+        type,
+        integrationIdentifier,
+        indexOfTheTriggerOrAction,
+        triggerOrActionIdentifier,
+        parameterIdentifier,
+        previews);
   }
   return value;
 }
@@ -192,7 +217,7 @@ String getPreviewData(
 String replaceByHumanReadable(
     AutomationChoiceEnum type,
     String integrationIdentifier,
-    int index,
+    int indexOfTheTriggerOrAction,
     String triggerOrActionIdentifier,
     String parameterIdentifier,
     Map<String, String> previews) {
@@ -202,25 +227,26 @@ String replaceByHumanReadable(
     key = 'action';
   }
   key = 'trigger';
-  key += '.$index';
+  key += '.$indexOfTheTriggerOrAction';
   key += '.$integrationIdentifier';
   key += '.$triggerOrActionIdentifier';
   key += '.$parameterIdentifier';
+  print("replaceByHumanReadable key: $key");
   return previews[key] ?? '';
 }
 
 String? getSelectedValue(Automation automation, AutomationChoiceEnum type,
-    String propertyIdentifier, int index) {
+    String propertyIdentifier, int parameterIndex) {
   print("Property identifier: $propertyIdentifier");
   switch (type) {
     case AutomationChoiceEnum.trigger:
-      print("Index: ${index}");
+      print("Index: ${parameterIndex}");
       print("Automation: ${automation.trigger.identifier}");
       if (automation.trigger.identifier == propertyIdentifier) {
-        print("Parameters Length: ${automation.trigger.parameters.length}");
-        if (automation.trigger.parameters.length > index) {
-          print("Value: ${automation.trigger.parameters[index].value}");
-          return automation.trigger.parameters[index].value;
+        for (final parameter in automation.trigger.parameters) {
+          if (parameter.identifier == propertyIdentifier) {
+            return parameter.value;
+          }
         }
       }
       break;
@@ -228,7 +254,7 @@ String? getSelectedValue(Automation automation, AutomationChoiceEnum type,
       for (final action in automation.actions) {
         if (action.identifier == propertyIdentifier) {
           if (action.parameters.isNotEmpty) {
-            return action.parameters[index].value;
+            return action.parameters[parameterIndex].value;
           }
           break;
         }
@@ -251,18 +277,28 @@ List<AutomationRadioModel>? getOptions(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'MessageReceivedInChannel') {
           if (parameterIdentifier == 'GuildId') {
-            options = [
-              AutomationRadioModel(
-                title: 'Guild 1',
-                description: 'Guild 1 description',
-                value: '1',
-              ),
-              AutomationRadioModel(
-                title: 'Guild 2',
-                description: 'Guild 2 description',
-                value: '2',
-              ),
-            ];
+            options = List.generate(
+                30,
+                (index) => AutomationRadioModel(
+                      title: 'Guild ${index + 1}',
+                      description: 'Guild ${index + 1} description',
+                      value: '${index + 1}',
+                    ));
+
+            return options;
+          }
+          if (parameterIdentifier == 'ChannelId') {
+            if (automation.trigger.parameters.isEmpty) {
+              return null;
+            }
+            final guildId = automation.trigger.parameters[0].value;
+            options = List.generate(
+                30,
+                (index) => AutomationRadioModel(
+                      title: 'Channel ${index + 1}',
+                      description: 'Channel ${index + 1} description',
+                      value: '${index + 1}',
+                    ));
 
             return options;
           }
