@@ -50,7 +50,9 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
     {
         _handlers[triggerFullIdentifier] = new TriggerHandler
         {
-            OnRegisterMethod = onRegisterMethod, OnRemoveMethod = onRemoveMethod, Target = _serviceProvider.GetRequiredService(hostingClass)
+            OnRegisterMethod = onRegisterMethod,
+            OnRemoveMethod = onRemoveMethod,
+            Target = _serviceProvider.GetRequiredService(hostingClass)
         };
     }
 

@@ -1,4 +1,3 @@
-
 using Mapster;
 
 using MapsterMapper;
@@ -14,7 +13,7 @@ public static class DependencyInjection
 
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
-        
+
         return services;
     }
 }

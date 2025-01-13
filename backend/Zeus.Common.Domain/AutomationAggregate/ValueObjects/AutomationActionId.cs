@@ -9,11 +9,21 @@ public sealed class AutomationActionId : ValueObject
         Value = value;
     }
 
-    public Guid Value { get;}
+    public Guid Value { get; }
 
     public static AutomationActionId CreateUnique()
     {
         return new AutomationActionId(Guid.NewGuid());
+    }
+
+    public static AutomationActionId? TryParse(string? value)
+    {
+        return Guid.TryParse(value, out var guid) ? new AutomationActionId(guid) : null;
+    }
+
+    public static AutomationActionId Parse(string value)
+    {
+        return new AutomationActionId(Guid.Parse(value));
     }
 
     protected override IEnumerable<object?> GetEqualityComponents()

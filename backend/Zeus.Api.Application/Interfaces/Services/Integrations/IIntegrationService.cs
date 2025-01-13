@@ -4,7 +4,7 @@ using Zeus.Api.Domain.Integrations.Properties;
 
 namespace Zeus.Api.Application.Interfaces.Services.Integrations;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public interface IIntegrationService
 {

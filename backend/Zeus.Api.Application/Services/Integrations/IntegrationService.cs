@@ -14,7 +14,7 @@ using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 
 namespace Zeus.Api.Application.Services.Integrations;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public class IntegrationService : IIntegrationService
 {
@@ -62,12 +62,12 @@ public class IntegrationService : IIntegrationService
 
         var accessToken = notionIntegration.Tokens.First(x => x.Usage == IntegrationTokenUsage.Access);
         var notionBot = await _notionService.GetBotAsync(new AccessToken(accessToken.Value));
-        
+
         if (notionBot.IsError)
         {
             return notionBot.Errors;
         }
-        
+
         return _mapper.Map<IntegrationNotionProperties>(notionBot.Value);
     }
 }

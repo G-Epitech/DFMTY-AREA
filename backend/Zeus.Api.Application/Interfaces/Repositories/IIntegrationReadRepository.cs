@@ -4,7 +4,7 @@ using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public interface IIntegrationReadRepository
 {

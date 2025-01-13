@@ -1,13 +1,10 @@
-﻿using MassTransit;
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Zeus.Common.Extensions.DependencyInjection;
 using Zeus.Common.Extensions.Environment;
-using Zeus.Daemon.Application.Discord.Services;
-using Zeus.Daemon.Infrastructure.Automations;
+using Zeus.Daemon.Application.Interfaces;
 
 namespace Zeus.Daemon.Runner.Runner;
 
@@ -17,6 +14,7 @@ public class DaemonRunner
     private readonly IEnvironmentProvider _environmentProvider;
     private readonly ILogger<DaemonRunner> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private const int ThreadSleepTimeMilliseconds = 1000;
 
     public DaemonRunner(IServiceProvider serviceProvider, IConfigurationRoot configuration)
     {
@@ -24,30 +22,35 @@ public class DaemonRunner
         _configuration = configuration;
         _logger = serviceProvider.GetRequiredService<ILogger<DaemonRunner>>();
         _environmentProvider = serviceProvider.GetRequiredService<IEnvironmentProvider>();
-        
+
         _logger.LogInformation("Daemon runner initialized");
         _serviceProvider.StartAutoServices();
         _logger.LogInformation("Daemon runner auto-started services started");
     }
 
-    private Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
+    private IReadOnlyList<IDaemonService> DaemonServices => _serviceProvider.GetServices<IDaemonService>().ToList();
+
+    private Task StartDaemonServicesAsync(CancellationToken cancellationToken = default)
     {
-        var automationsListener = _serviceProvider.GetRequiredService<AutomationSynchronizationService>();
-        return automationsListener.ListenUpdatesAsync(cancellationToken);
+        return Task.WhenAll(DaemonServices.Select(s => s.StartAsync(cancellationToken)));
     }
 
-    private Task ListenDiscordAsync(CancellationToken cancellationToken = default)
+    private Task StopDaemonServicesAsync()
     {
-        var discord = _serviceProvider.GetRequiredService<IDiscordWebSocketService>();
-
-        return discord.ConnectAsync(cancellationToken);
+        return Task.WhenAll(DaemonServices.Select(s => s.StopAsync()));
     }
 
     public async Task Run(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("DaemonRunner running. Environment is {environment}.", _environmentProvider.EnvironmentName);
-        await Task.WhenAll(
-            ListenDiscordAsync(cancellationToken)
-        );
+        await StartDaemonServicesAsync(cancellationToken);
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            Thread.Sleep(ThreadSleepTimeMilliseconds);
+        }
+        _logger.LogInformation("DaemonRunner stopping.");
+        await StopDaemonServicesAsync();
+        _logger.LogInformation("DaemonRunner stopped.");
     }
 }

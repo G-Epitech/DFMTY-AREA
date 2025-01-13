@@ -1,58 +1,103 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using Zeus.Api.Presentation.gRPC.SDK.Services;
+using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Infrastructure.Mapping;
 
 namespace Zeus.Daemon.Infrastructure.Automations;
 
-public class AutomationSynchronizationService
+public class AutomationSynchronizationService : IDaemonService
 {
-    private const int RefreshIntervalMilliseconds = 1000;
     private readonly IAutomationsRegistry _automationsRegistry;
     private readonly ILogger _logger;
-    private readonly SynchronizationGrpcService _synchronizationGrpcService;
-    private DateTime _lastUpdate = DateTime.UnixEpoch;
+    private readonly AutomationService _automationService;
+    private CancellationTokenSource? _currentSyncingToken;
+    private const int MaxRetries = 3;
+    private const int RetryDelayMilliseconds = 5000;
 
-    public AutomationSynchronizationService(SynchronizationGrpcService synchronizationGrpcService,
+    public AutomationSynchronizationService(AutomationService automationService,
         IAutomationsRegistry automationsRegistry, ILogger<AutomationSynchronizationService> logger)
     {
-        _synchronizationGrpcService = synchronizationGrpcService;
+        _automationService = automationService;
         _automationsRegistry = automationsRegistry;
         _logger = logger;
     }
 
-    public async Task ListenUpdatesAsync(CancellationToken cancellationToken = default)
+    public async Task CancelPendingSyncAsync()
     {
-        while (!cancellationToken.IsCancellationRequested)
+        if (_currentSyncingToken is not null)
         {
-            await WaitForChangesAsync(cancellationToken);
-            _logger.LogDebug("New automations to pull");
-            await RefreshAutomationsAsync(cancellationToken);
+            await _currentSyncingToken.CancelAsync();
         }
+        _currentSyncingToken = null;
     }
 
-    private async Task WaitForChangesAsync(CancellationToken cancellationToken = default)
+    private async Task SyncAutomationsAsync()
     {
-        bool hasChanges = false;
+        var retryCount = 0;
 
-        while (!cancellationToken.IsCancellationRequested && !hasChanges)
+        if (_currentSyncingToken is not null)
         {
-            hasChanges = await _synchronizationGrpcService.HasChangesAsync(_lastUpdate, cancellationToken);
-            await Task.Delay(RefreshIntervalMilliseconds, cancellationToken);
+            await _currentSyncingToken.CancelAsync();
         }
+
+        _currentSyncingToken = new CancellationTokenSource();
+
+        while (retryCount++ < MaxRetries && !_currentSyncingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var automations = _automationService.GetAutomationsAsync();
+                var enumerator = automations.GetAsyncEnumerator();
+                var loadedAutomationsCount = 0;
+
+                while (await enumerator.MoveNextAsync())
+                {
+                    try
+                    {
+                        if (await _automationsRegistry.RegisterAsync(enumerator.Current.MapToAutomation()))
+                        {
+                            loadedAutomationsCount++;
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Automation {id} has not correctly been registered", enumerator.Current.Id);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e, "Failed to register automation {id}", enumerator.Current.Id);
+                    }
+                }
+                if (loadedAutomationsCount > 0)
+                {
+                    _logger.LogInformation("Loaded {count} automations", loadedAutomationsCount);
+                }
+                break;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to sync automations");
+            }
+            if (retryCount >= MaxRetries)
+            {
+                _logger.LogCritical("Max retries reached, aborting");
+                break;
+            }
+            _logger.LogInformation("Retrying in {delay}ms", RetryDelayMilliseconds);
+            await Task.Delay(RetryDelayMilliseconds, _currentSyncingToken.Token);
+        }
+        _currentSyncingToken = null;
     }
 
-    private async Task RefreshAutomationsAsync(CancellationToken cancellationToken = default)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        var delta = await _synchronizationGrpcService.SyncDeltaAsync(_lastUpdate, cancellationToken);
+        return SyncAutomationsAsync();
+    }
 
-        _lastUpdate = DateTime.UtcNow;
-
-        var automations = delta.Select(d => d.MapToAutomation()).ToList();
-
-        _logger.LogInformation("Syncing {count} automations", automations.Count);
-        Task.WaitAll(
-            automations.Select(a => _automationsRegistry.RegisterAsync(a, cancellationToken)).ToList(), cancellationToken);
+    public Task StopAsync()
+    {
+        return Task.CompletedTask;
     }
 }

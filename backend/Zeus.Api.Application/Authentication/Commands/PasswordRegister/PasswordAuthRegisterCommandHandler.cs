@@ -7,7 +7,6 @@ using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.Errors;
-using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.PasswordRegister;

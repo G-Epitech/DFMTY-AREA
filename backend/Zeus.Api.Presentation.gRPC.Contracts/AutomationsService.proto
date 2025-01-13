@@ -2,23 +2,26 @@ syntax = "proto3";
 
 option csharp_namespace = "Zeus.Api.Presentation.gRPC.Contracts";
 
-package synchronization;
+package automations;
 
-service Synchronization {
-  rpc GetSyncState (SyncStateRequest) returns (SyncStateResponse);
-  rpc SyncDelta (SyncDeltaRequest) returns (SyncDeltaResponse);
+service AutomationsService {
+  rpc GetAutomations(GetAutomationsRequest) returns (stream Automation);
+  rpc GetAutomation(GetAutomationRequest) returns (Automation);
 }
 
-message SyncStateRequest {
-  int64 lastSyncTimestamp = 1;
+enum AutomationEnabledState {
+  Enabled = 0;
+  Disabled = 1;
+  Any = 2;
 }
 
-message SyncStateResponse {
-  bool hasChanges = 1;
+message GetAutomationsRequest {
+  optional string ownerId = 1;
+  optional AutomationEnabledState state = 2;
 }
 
-message SyncDeltaRequest {
-  int64 lastSyncTimestamp = 1;
+message GetAutomationRequest {
+  string id = 1;
 }
 
 message AutomationTriggerParameter {
@@ -57,8 +60,4 @@ message Automation {
   repeated AutomationAction actions = 7;
   int64 updatedAt = 8;
   int64 createdAt = 9;
-}
-
-message SyncDeltaResponse {
-  repeated Automation automations = 1;
 }

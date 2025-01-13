@@ -1,9 +1,8 @@
 ﻿using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public sealed class IntegrationWriteRepository : IIntegrationWriteRepository
 {

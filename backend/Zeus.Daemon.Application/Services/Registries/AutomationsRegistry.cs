@@ -16,12 +16,18 @@ public class AutomationsRegistry : IAutomationsRegistry
 
     public async Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
     {
-        var valid = !_automations.ContainsKey(automation.Id)
-                    && await _triggersRegistry.RegisterAsync(automation, cancellationToken);
+        var exists = _automations.ContainsKey(automation.Id);
+
+        if (exists && !await RemoveAsync(automation.Id, cancellationToken))
+        {
+            return false;
+        }
+
+        var valid = await _triggersRegistry.RegisterAsync(automation, cancellationToken);
 
         if (valid)
         {
-            _automations.Add(automation.Id, automation);
+            _automations[automation.Id] = automation;
         }
         return valid;
     }
@@ -30,7 +36,7 @@ public class AutomationsRegistry : IAutomationsRegistry
     {
         var valid = _automations.TryGetValue(automationId, out var automation)
                     && await _triggersRegistry.RemoveAsync(automation, cancellationToken);
-        
+
         if (valid)
         {
             _automations.Remove(automationId);

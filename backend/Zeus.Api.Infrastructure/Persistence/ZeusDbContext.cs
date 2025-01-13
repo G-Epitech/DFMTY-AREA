@@ -8,7 +8,7 @@ using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public sealed class ZeusDbContext : DbContext
 {

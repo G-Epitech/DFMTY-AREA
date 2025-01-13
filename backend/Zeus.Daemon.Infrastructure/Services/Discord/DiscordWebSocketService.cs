@@ -5,12 +5,13 @@ using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 
 using Zeus.Daemon.Application.Discord.Services;
+using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.Enums;
 
 namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
-public class DiscordWebSocketService : IDiscordWebSocketService
+public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
 {
     private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
         _eventHandlers = [];
@@ -148,5 +149,15 @@ public class DiscordWebSocketService : IDiscordWebSocketService
         var messageBytes = Encoding.UTF8.GetBytes(message);
         await _webSocket.SendAsync(new ArraySegment<byte>(messageBytes), WebSocketMessageType.Text, true,
             _cancellationToken ?? CancellationToken.None);
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        return ConnectAsync(cancellationToken);
+    }
+
+    public Task StopAsync()
+    {
+        return _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
     }
 }

@@ -41,8 +41,8 @@ public sealed class GmailIntegration : Integration
         return new GmailIntegration(
             IntegrationId.CreateUnique(),
             ownerId,
-            clientId, 
-            DateTime.UtcNow, 
+            clientId,
+            DateTime.UtcNow,
             DateTime.UtcNow);
     }
 }

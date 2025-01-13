@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
 using Zeus.Api.Domain.Authentication.ValueObjects;
-using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;

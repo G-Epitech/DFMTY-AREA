@@ -4,10 +4,6 @@ using MassTransit;
 
 using Zeus.Api.Integration.Contracts;
 using Zeus.Common.Domain.AutomationAggregate;
-using Zeus.Common.Domain.AutomationAggregate.Entities;
-using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
-using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Daemon.Application.Interfaces.Registries;
 
 namespace Zeus.Daemon.Infrastructure.Integrations.Api.EventHandlers;

@@ -14,7 +14,7 @@ public abstract partial class Fact
 
 public class Fact<T> : Fact
 {
-    internal Fact(T value, VariableType type): base(type)
+    internal Fact(T value, VariableType type) : base(type)
     {
         Value = value;
     }

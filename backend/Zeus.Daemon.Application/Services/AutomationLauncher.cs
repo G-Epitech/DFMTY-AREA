@@ -6,7 +6,7 @@ using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services;
 
-public sealed class AutomationLauncher: IAutomationsLauncher
+public sealed class AutomationLauncher : IAutomationsLauncher
 {
     private readonly IServiceProvider _serviceProvider;
     private IAutomationsRunner? _automationsRunner;

@@ -16,6 +16,16 @@ public sealed class AutomationTriggerId : ValueObject
         return new AutomationTriggerId(Guid.NewGuid());
     }
 
+    public static AutomationTriggerId? TryParse(string? value)
+    {
+        return Guid.TryParse(value, out var guid) ? new AutomationTriggerId(guid) : null;
+    }
+
+    public static AutomationTriggerId Parse(string value)
+    {
+        return new AutomationTriggerId(Guid.Parse(value));
+    }
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

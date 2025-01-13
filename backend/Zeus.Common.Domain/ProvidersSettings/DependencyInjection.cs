@@ -44,7 +44,7 @@ public static class DependencyInjection
             {
                 LogErrorsDetails(results);
             }
-            
+
             var deserializedSettings = settings.Deserialize<ProvidersSettings>(JsonSerializerOptions);
 
             if (deserializedSettings is null)

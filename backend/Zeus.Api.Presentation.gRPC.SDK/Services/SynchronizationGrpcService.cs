@@ -1,40 +1,45 @@
-﻿using Grpc.Core;
+﻿using System.Runtime.CompilerServices;
+
+using Grpc.Core;
 
 using Zeus.Api.Presentation.gRPC.Contracts;
 
 namespace Zeus.Api.Presentation.gRPC.SDK.Services;
 
-public class SynchronizationGrpcService
+public class AutomationService
 {
-    private readonly Synchronization.SynchronizationClient _client;
+    private readonly AutomationsService.AutomationsServiceClient _client;
 
-    public SynchronizationGrpcService(Synchronization.SynchronizationClient client)
+    public AutomationService(AutomationsService.AutomationsServiceClient client)
     {
         _client = client;
     }
 
-    public async Task<bool> HasChangesAsync(DateTime lastUpdate, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<Automation> GetAutomationsAsync(AutomationEnabledState? state = null, Guid? ownerId = null,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        try
+        var request = new GetAutomationsRequest();
+
+        if (state is not null)
         {
-            var timestamp = new DateTimeOffset(lastUpdate.ToUniversalTime()).ToUnixTimeSeconds();
-            var request = new SyncStateRequest { LastSyncTimestamp = timestamp };
-            var response = await _client.GetSyncStateAsync(request, cancellationToken: cancellationToken);
-            return response.HasChanges;
+            request.State = state.Value;
         }
-        catch (RpcException)
+
+        if (ownerId is not null)
         {
-            return true;
+            request.OwnerId = ownerId.Value.ToString();
         }
-    }
 
-    public async Task<IList<Automation>> SyncDeltaAsync(DateTime lastUpdate, CancellationToken cancellationToken = default)
-    {
-        var timestamp = new DateTimeOffset(lastUpdate.ToUniversalTime()).ToUnixTimeSeconds();
+        var stream = _client.GetAutomations(request, cancellationToken: cancellationToken);
 
-        var request = new SyncDeltaRequest { LastSyncTimestamp = timestamp };
-        var response = await _client.SyncDeltaAsync(request, cancellationToken: cancellationToken);
+        if (stream is null)
+        {
+            yield break;
+        }
 
-        return response.Automations;
+        while (await stream.ResponseStream.MoveNext() && !cancellationToken.IsCancellationRequested)
+        {
+            yield return stream.ResponseStream.Current;
+        }
     }
 }

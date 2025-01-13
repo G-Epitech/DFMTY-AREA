@@ -51,7 +51,7 @@ public class
         }
 
         var botGuilds = await _discordService.GetBotGuildsAsync(_integrationsSettingsProvider.Discord.BotToken);
-        
+
         if (botGuilds.IsError)
         {
             return botGuilds.Errors;

@@ -32,7 +32,7 @@ public class
         var user = User.Create(googleUser.GivenName, googleUser.FamilyName, googleUser.Email);
         var googleAuthMethod =
             GoogleAuthenticationMethod.Create(user.Id, command.AccessToken, command.RefreshToken, googleUser.Id.Value);
-        
+
         await _userWriteRepository.AddUserAsync(user, cancellationToken);
 
         try
@@ -48,7 +48,7 @@ public class
 
         var accessToken = _jwtGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtGenerator.GenerateRefreshToken(user);
-        
+
         return new GoogleAuthRegisterCommandResult(accessToken, refreshToken, user.Id.Value);
     }
 }

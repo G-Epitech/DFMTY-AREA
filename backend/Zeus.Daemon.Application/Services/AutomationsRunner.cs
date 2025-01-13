@@ -31,7 +31,7 @@ public sealed class AutomationsRunner : IAutomationsRunner
         }
 
         var ctx = new AutomationExecutionContext(_actionHandlersProvider, automation, [], facts);
-        
+
         _executions.Add(ctx);
         ctx.Run();
         return Task.FromResult(true);

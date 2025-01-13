@@ -34,7 +34,7 @@ public class GoogleOAuth2Service : IGoogleOAuth2Service
     public async Task<ErrorOr<GoogleUserTokens>> GetTokensFromOauth2Async(string code)
     {
         _httpClient.DefaultRequestHeaders.Authorization = null;
-        
+
         var requestContent = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("client_id", _googleSettings.Clients.Web.ClientId),
             new KeyValuePair<string, string>("client_secret", _googleSettings.Clients.Web.ClientSecret),
@@ -63,12 +63,12 @@ public class GoogleOAuth2Service : IGoogleOAuth2Service
     public async Task<ErrorOr<GoogleUser>> GetUserAsync(AccessToken accessToken)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
-        
+
         HttpResponseMessage response = await _httpClient.GetAsync($"{_googleSettings.ApiEndpoint}/oauth2/v2/userinfo");
-        
+
         if (!response.IsSuccessStatusCode)
             return Errors.OAuth2.Google.ErrorDuringUserRequest;
-        
+
         var responseContent = await response.Content.ReadFromJsonAsync<GetGoogleUserResponse>(_jsonSerializerOptions);
         if (responseContent is null)
             return Errors.OAuth2.Google.InvalidBody;

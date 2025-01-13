@@ -24,6 +24,16 @@ public sealed class UserId : ValueObject
         return new UserId(Guid.NewGuid());
     }
 
+    public static UserId? TryParse(string? value)
+    {
+        return Guid.TryParse(value, out var guid) ? new UserId(guid) : null;
+    }
+
+    public static UserId Parse(string value)
+    {
+        return new UserId(Guid.Parse(value));
+    }
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

@@ -54,7 +54,9 @@ public static class SynchronizationAutomationMapper
             action.Rank,
             action.Parameters.Select(p => new AutomationActionParameter
             {
-                Identifier = p.Identifier, Value = p.Value, Type = Enum.Parse<AutomationActionParameterType>(p.Type)
+                Identifier = p.Identifier,
+                Value = p.Value,
+                Type = Enum.Parse<AutomationActionParameterType>(p.Type)
             }).ToList(),
             action.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );

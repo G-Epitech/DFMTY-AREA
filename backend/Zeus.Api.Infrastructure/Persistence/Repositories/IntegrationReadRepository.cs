@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
-using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public sealed class IntegrationReadRepository : IIntegrationReadRepository
 {

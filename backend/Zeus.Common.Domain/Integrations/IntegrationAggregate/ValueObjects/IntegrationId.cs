@@ -28,4 +28,14 @@ public sealed class IntegrationId : ValueObject
     {
         yield return Value;
     }
+
+    public static IntegrationId? TryParse(string? value)
+    {
+        return Guid.TryParse(value, out var guid) ? new IntegrationId(guid) : null;
+    }
+
+    public static IntegrationId Parse(string value)
+    {
+        return new IntegrationId(Guid.Parse(value));
+    }
 }

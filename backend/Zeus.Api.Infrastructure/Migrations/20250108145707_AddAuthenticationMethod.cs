@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
 using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
