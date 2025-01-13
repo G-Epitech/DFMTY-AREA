@@ -1,4 +1,8 @@
-using FluentValidation;
+using System.Reflection;
+
+using Mapster;
+
+using MapsterMapper;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +13,7 @@ using Microsoft.Extensions.Options;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.OAuth2;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
@@ -23,6 +26,7 @@ using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
 using Zeus.Api.Infrastructure.Services.Integrations.Notion;
+using Zeus.Api.Infrastructure.Services.Integrations.OpenAi;
 using Zeus.Api.Infrastructure.Services.OAuth2.Google;
 using Zeus.Api.Infrastructure.Services.Settings;
 using Zeus.Api.Infrastructure.Services.Settings.Integrations;
@@ -30,7 +34,6 @@ using Zeus.Api.Infrastructure.Services.Settings.OAuth2;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings.OAuth2;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.Common.Enums;
@@ -60,13 +63,15 @@ public static class DependencyInjection
         services.AddScoped<IDiscordService, DiscordService>();
         services.AddScoped<INotionService, NotionService>();
         services.AddScoped<IGoogleOAuth2Service, GoogleOAuth2Service>();
+        services.AddScoped<IOpenAiService, OpenAiService>();
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddDatabase(configuration);
         services.AddConfiguration(configuration);
-
+        services.AddMapper();
+        
         return services;
     }
 
@@ -124,5 +129,15 @@ public static class DependencyInjection
         });
 
         services.AddScoped<AuditableEntitiesInterceptor>();
+    }
+    
+    private static void AddMapper(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
+        config.Scan(AppDomain.CurrentDomain.GetAssemblies());
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
     }
 }

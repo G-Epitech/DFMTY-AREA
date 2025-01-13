@@ -4,4 +4,5 @@ public interface IIntegrationsSettingsProvider
 {
     public IDiscordSettingsProvider Discord { get; }
     public INotionSettingsProvider Notion { get; }
+    public IOpenAiSettingsProvider OpenAi { get; }
 }

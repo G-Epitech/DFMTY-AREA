@@ -7,12 +7,16 @@
     },
     "Notion": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "OpenAi": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
   "required": [
     "Discord",
-    "Notion"
+    "Notion",
+    "OpenAi"
   ],
   "$defs": {
     "varType": {
