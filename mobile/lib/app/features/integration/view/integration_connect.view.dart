@@ -9,11 +9,13 @@ import 'package:triggo/models/integration.model.dart';
 class IntegrationAvailableView extends StatefulWidget {
   final AutomationChoiceEnum? type;
   final List<AvailableIntegration>? integrationsNames;
+  final int? indexOfTheTriggerOrAction;
 
   const IntegrationAvailableView({
     super.key,
     this.type,
     this.integrationsNames,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -34,7 +36,10 @@ class _IntegrationAvailableViewState extends State<IntegrationAvailableView> {
       title:
           widget.type != null ? 'Select an Integration' : 'Connect Integration',
       body: _IntegrationNamesContainer(
-          integrations: integrationsNames, type: widget.type),
+        integrations: integrationsNames,
+        type: widget.type,
+        indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
+      ),
       getBack: true,
     );
   }
@@ -43,10 +48,12 @@ class _IntegrationAvailableViewState extends State<IntegrationAvailableView> {
 class _IntegrationNamesContainer extends StatelessWidget {
   final Future<List<AvailableIntegration>> integrations;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const _IntegrationNamesContainer({
     required this.integrations,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -58,7 +65,11 @@ class _IntegrationNamesContainer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _IntegrationList(integrations: integrations, type: type),
+          _IntegrationList(
+            integrations: integrations,
+            type: type,
+            indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+          ),
         ],
       ),
     );
@@ -68,10 +79,12 @@ class _IntegrationNamesContainer extends StatelessWidget {
 class _IntegrationList extends StatelessWidget {
   final Future<List<AvailableIntegration>> integrations;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const _IntegrationList({
     required this.integrations,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -79,7 +92,11 @@ class _IntegrationList extends StatelessWidget {
     return FutureBuilder<List<AvailableIntegration>>(
       future: integrations,
       builder: (context, snapshot) {
-        return IntegrationListView(snapshot: snapshot, type: type);
+        return IntegrationListView(
+          snapshot: snapshot,
+          type: type,
+          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        );
       },
     );
   }
@@ -88,11 +105,13 @@ class _IntegrationList extends StatelessWidget {
 class IntegrationListView extends StatelessWidget {
   final AsyncSnapshot<List<AvailableIntegration>> snapshot;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const IntegrationListView({
     super.key,
     required this.snapshot,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -105,7 +124,10 @@ class IntegrationListView extends StatelessWidget {
       return const _NoDataView();
     } else {
       return _IntegrationListViewContent(
-          integrations: snapshot.data!, type: type);
+        integrations: snapshot.data!,
+        type: type,
+        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+      );
     }
   }
 }
@@ -143,10 +165,12 @@ class _NoDataView extends StatelessWidget {
 class _IntegrationListViewContent extends StatelessWidget {
   final List<AvailableIntegration> integrations;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const _IntegrationListViewContent({
     required this.integrations,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -156,7 +180,11 @@ class _IntegrationListViewContent extends StatelessWidget {
         itemCount: integrations.length,
         itemBuilder: (context, index) {
           final integration = integrations[index];
-          return _IntegrationListItem(integration: integration, type: type);
+          return _IntegrationListItem(
+            integration: integration,
+            type: type,
+            indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+          );
         },
       ),
     );
@@ -166,11 +194,20 @@ class _IntegrationListViewContent extends StatelessWidget {
 class _IntegrationListItem extends StatelessWidget {
   final AvailableIntegration integration;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
-  const _IntegrationListItem({required this.integration, this.type});
+  const _IntegrationListItem({
+    required this.integration,
+    this.type,
+    this.indexOfTheTriggerOrAction,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return IntegrationListItemWidget(integration: integration, type: type);
+    return IntegrationListItemWidget(
+      integration: integration,
+      type: type,
+      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+    );
   }
 }

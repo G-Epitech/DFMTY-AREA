@@ -47,7 +47,7 @@ class _AutomationCreationInputViewState
       title: 'Edit ${widget.label}',
       getBack: true,
       body: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(0.0),
         child: Column(
           children: [
             Expanded(child: _buildInput()),
@@ -234,11 +234,9 @@ class _OKButton extends StatelessWidget {
             text: "OK",
             onPressed: () {
               onSave(value);
-              if (routeToGoWhenSave ==
-                  RoutesNames.automationTriggerActionRestricted) {
+              if (routeToGoWhenSave == RoutesNames.popOneTime) {
                 Navigator.of(context).pop();
-              } else if (routeToGoWhenSave ==
-                  RoutesNames.automationTriggerActionCustom) {
+              } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
                 Navigator.of(context)
                   ..pop()
                   ..pop();
@@ -292,23 +290,19 @@ class _RadioInputState extends State<_RadioInput> {
             child: Column(
               children: [
                 for (final option in widget.options)
-                  Row(
-                    children: [
-                      Radio<String>(
-                        value: option.value,
-                        groupValue: localValue,
-                        onChanged: (value) {
-                          setState(() {
-                            localValue = value!;
-                            widget.onChanged(value);
-                          });
-                        },
-                      ),
-                      Text(
-                        option.title,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ],
+                  RadioListTile<String>(
+                    title: Text(
+                      option.title,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    value: option.value,
+                    groupValue: localValue,
+                    onChanged: (value) {
+                      setState(() {
+                        localValue = value!;
+                        widget.onChanged(value);
+                      });
+                    },
                   ),
               ],
             ),

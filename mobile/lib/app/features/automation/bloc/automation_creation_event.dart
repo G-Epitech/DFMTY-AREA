@@ -43,6 +43,19 @@ final class AutomationCreationTriggerProviderChanged
   List<Object> get props => [triggerName];
 }
 
+final class AutomationCreationResetPending extends AutomationCreationEvent {
+  final AutomationChoiceEnum type;
+  final int index;
+
+  const AutomationCreationResetPending({
+    required this.type,
+    required this.index,
+  });
+
+  @override
+  List<Object> get props => [type, index];
+}
+
 final class AutomationCreationTriggerProviderAdded
     extends AutomationCreationEvent {
   final String provider;

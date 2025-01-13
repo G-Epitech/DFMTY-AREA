@@ -9,8 +9,6 @@ class RoutesNames {
   static const String automations = "automations_view";
   static const String automationCreation = "automation_creation_view";
   static const String automationSettings = "automation_settings_view";
-  static const String automationTriggerActionRestricted =
-      "automation_trigger_action_restricted_view";
-  static const String automationTriggerActionCustom =
-      "automation_trigger_action_custom_view";
+  static const String popOneTime = "pop_one_time";
+  static const String popTwoTimes = "pop_two_times";
 }

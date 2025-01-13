@@ -184,6 +184,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
             context,
             customScreenBuilder(AutomationCreationSelectIntegrationView(
               type: AutomationChoiceEnum.trigger,
+              indexOfTheTriggerOrAction: 0,
             )));
       },
       child: Row(

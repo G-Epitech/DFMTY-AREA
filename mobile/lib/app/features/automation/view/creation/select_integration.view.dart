@@ -4,14 +4,19 @@ import 'package:triggo/app/features/integration/view/integration_connect.view.da
 
 class AutomationCreationSelectIntegrationView extends StatelessWidget {
   final AutomationChoiceEnum type;
+  final int indexOfTheTriggerOrAction;
 
   const AutomationCreationSelectIntegrationView({
     super.key,
     required this.type,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
   Widget build(BuildContext context) {
-    return IntegrationAvailableView(type: type);
+    return IntegrationAvailableView(
+      type: type,
+      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+    );
   }
 }

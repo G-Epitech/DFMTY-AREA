@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/add.view.dart';
+import 'package:triggo/app/features/automation/view/creation/select_integration_account.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
@@ -12,11 +12,13 @@ import 'package:triggo/models/integration.model.dart';
 class IntegrationListItemWidget extends StatelessWidget {
   final AvailableIntegration integration;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const IntegrationListItemWidget({
     super.key,
     required this.integration,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -25,6 +27,7 @@ class IntegrationListItemWidget extends StatelessWidget {
       customWidget: _CustomWidget(
         integration: integration,
         type: type,
+        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
       ),
     );
   }
@@ -33,10 +36,12 @@ class IntegrationListItemWidget extends StatelessWidget {
 class _CustomWidget extends StatelessWidget {
   final AvailableIntegration integration;
   final AutomationChoiceEnum? type;
+  final int? indexOfTheTriggerOrAction;
 
   const _CustomWidget({
     required this.integration,
     this.type,
+    this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -48,9 +53,11 @@ class _CustomWidget extends StatelessWidget {
         if (type != null) {
           Navigator.push(
               context,
-              customScreenBuilder(AutomationCreationAddView(
+              customScreenBuilder(
+                  AutomationCreationSelectIntegrationsAccountView(
                 type: type!,
-                integrationName: integration.url,
+                integrationIdentifier: integration.url,
+                indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,
               )));
         } else {
           integrationMediator.launchURLFromIntegration(integration.url);

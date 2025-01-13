@@ -14,12 +14,14 @@ import 'package:triggo/models/automation.model.dart';
 
 class AutomationCreationAddView extends StatefulWidget {
   final AutomationChoiceEnum type;
-  final String integrationName;
+  final String integrationIdentifier;
+  final int indexOfTheTriggerOrAction;
 
   const AutomationCreationAddView({
     super.key,
     required this.type,
-    required this.integrationName,
+    required this.integrationIdentifier,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -33,21 +35,19 @@ class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
     final Map<String, AutomationSchemaTriggerAction> triggersOrActions =
-        automationMediator.getTriggersOrAction(
-            widget.integrationName, widget.type);
+        automationMediator.getTriggersOrActions(
+            widget.integrationIdentifier, widget.type);
     log("Triggers or actions: $triggersOrActions");
-    log("Integration name: ${widget.integrationName}");
-    context.read<AutomationCreationBloc>().add(
-        AutomationCreationTriggerProviderChanged(
-            triggerName: widget.integrationName));
+    log("Integration name: ${widget.integrationIdentifier}");
     return BaseScaffold(
       title:
           'Add a${widget.type == AutomationChoiceEnum.trigger ? ' Trigger' : 'n Action'}',
       getBack: true,
       body: _List(
         triggersOrActions: triggersOrActions,
-        integrationName: widget.integrationName,
+        integrationIdentifier: widget.integrationIdentifier,
         type: widget.type,
+        indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
       ),
     );
   }
@@ -55,13 +55,15 @@ class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
 
 class _List extends StatelessWidget {
   final Map<String, AutomationSchemaTriggerAction> triggersOrActions;
-  final String integrationName;
+  final String integrationIdentifier;
   final AutomationChoiceEnum type;
+  final int indexOfTheTriggerOrAction;
 
   const _List({
     required this.triggersOrActions,
-    required this.integrationName,
+    required this.integrationIdentifier,
     required this.type,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -71,27 +73,26 @@ class _List extends StatelessWidget {
       return ListView.builder(
         itemCount: triggersOrActions.length,
         itemBuilder: (context, index) {
-          final key = triggersOrActions.keys.elementAt(index);
-          final triggerOrAction = triggersOrActions[key]!;
+          final triggerOrActionIdentifier =
+              triggersOrActions.keys.elementAt(index);
+          final triggerOrAction = triggersOrActions[triggerOrActionIdentifier]!;
           return GestureDetector(
             onTap: () {
               // Navigate to the next screen
               log("Go to parameters screen");
-              final index = type == AutomationChoiceEnum.trigger
-                  ? 0
-                  : state.automation.actions.length;
               if (type == AutomationChoiceEnum.trigger) {
                 context.read<AutomationCreationBloc>().add(
                     AutomationCreationTriggerIdentifierChanged(
-                        identifier: key));
+                        identifier:
+                            "$integrationIdentifier.$triggerOrActionIdentifier"));
               }
               Navigator.push(
                   context,
                   customScreenBuilder(AutomationCreationParametersView(
                     type: type,
-                    integrationIdentifier: integrationName,
-                    triggerOrActionIdentifier: key,
-                    indexOfTheTriggerOrAction: index,
+                    integrationIdentifier: integrationIdentifier,
+                    triggerOrActionIdentifier: triggerOrActionIdentifier,
+                    indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
                   )));
             },
             child: TriggoCard(

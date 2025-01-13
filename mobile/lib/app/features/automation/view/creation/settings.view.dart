@@ -30,14 +30,12 @@ class AutomationCreationSettingsView extends StatelessWidget {
                     label: 'Label',
                     placeholder: 'Enter a label',
                     onSave: (value) {
-                      print("Going to save label: $value");
                       context
                           .read<AutomationCreationBloc>()
                           .add(AutomationCreationLabelChanged(label: value));
                     },
                     value: state.automation.label,
-                    routeToGoWhenSave:
-                        RoutesNames.automationTriggerActionRestricted,
+                    routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),
                 SizedBox(height: 12.0),
@@ -54,8 +52,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                               description: value));
                     },
                     value: state.automation.description,
-                    routeToGoWhenSave:
-                        RoutesNames.automationTriggerActionRestricted,
+                    routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),
               ],

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/models/automation.model.dart';
 
 part 'automation_creation_event.dart';
@@ -20,6 +21,7 @@ class AutomationCreationBloc
     on<AutomationCreationActionProviderAdded>(_onActionProviderAdded);
     on<AutomationCreationActionParameterChanged>(_onActionParameterChanged);
     on<AutomationCreationActionDeleted>(_onActionDeleted);
+    on<AutomationCreationResetPending>(_onResetPending);
     on<AutomationCreationSubmitted>(_onSubmitted);
     on<AutomationCreationReset>(_onReset);
     on<AutomationCreationPreviewUpdated>(_onPreviewUpdated);
@@ -73,6 +75,7 @@ class AutomationCreationBloc
     );
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
+    log('Trigger identifier changed: ${updatedAutomation.trigger.identifier}');
     emit(AutomationCreationState(
         updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
@@ -137,6 +140,32 @@ class AutomationCreationBloc
         updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
+  void _onResetPending(AutomationCreationResetPending event,
+      Emitter<AutomationCreationState> emit) {
+    switch (event.type) {
+      case AutomationChoiceEnum.trigger:
+        log('Resetting trigger');
+        final updatedAutomation = state.automation.copyWith(
+            trigger: AutomationTrigger(
+          identifier: '',
+          providers: [],
+          parameters: [],
+        ));
+        emit(AutomationCreationState(updatedAutomation, state.previews, false));
+        break;
+      case AutomationChoiceEnum.action:
+        final updatedActions =
+            List<AutomationAction>.from(state.automation.actions);
+        if (updatedActions.length > event.index) {
+          updatedActions.removeAt(event.index);
+        }
+        final updatedAutomation =
+            state.automation.copyWith(actions: updatedActions);
+        emit(AutomationCreationState(updatedAutomation, state.previews, false));
+        break;
+    }
+  }
+
   void _onSubmitted(AutomationCreationSubmitted event,
       Emitter<AutomationCreationState> emit) {
     if (state.isValid) {
@@ -173,21 +202,28 @@ class AutomationCreationBloc
     final updatedPreviews = Map<String, String>.from(state.previews)
       ..[event.key] = event.value;
     final updatedPreviewsSpecialCases =
-        _manageSpecialCases(updatedPreviews, event.key);
+        _manageSpecialCasesPreviews(updatedPreviews, event.key);
+    final updatedAutomation =
+        _manageSpecialCasesAutomation(state.automation, event.key);
     emit(AutomationCreationState(
-        state.automation, updatedPreviewsSpecialCases, state.isValid));
+        updatedAutomation, updatedPreviewsSpecialCases, state.isValid));
   }
 
-  Map<String, String> _manageSpecialCases(
+  Map<String, String> _manageSpecialCasesPreviews(
       Map<String, String> newPreviews, String key) {
     final previews = Map<String, String>.from(newPreviews);
-    print(
-        'previews[trigger.0.discord.MessageReceivedInChannel.ChannelId]: ${previews['trigger.0.discord.MessageReceivedInChannel.ChannelId']}');
     if (key == 'trigger.0.discord.MessageReceivedInChannel.GuildId') {
       previews.remove('trigger.0.discord.MessageReceivedInChannel.ChannelId');
     }
-    print(
-        'previews[trigger.0.discord.MessageReceivedInChannel.ChannelId]: ${previews['trigger.0.discord.MessageReceivedInChannel.ChannelId']}');
     return previews;
+  }
+
+  Automation _manageSpecialCasesAutomation(Automation automation, String key) {
+    final updatedAutomation = automation;
+    if (key == 'trigger.0.discord.MessageReceivedInChannel.GuildId') {
+      updatedAutomation.trigger.parameters
+          .removeWhere((param) => param.identifier == 'ChannelId');
+    }
+    return updatedAutomation;
   }
 }

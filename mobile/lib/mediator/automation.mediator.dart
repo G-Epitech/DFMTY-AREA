@@ -86,7 +86,7 @@ class AutomationMediator with ChangeNotifier {
     return integrations;
   }
 
-  Map<String, AutomationSchemaTriggerAction> getTriggersOrAction(
+  Map<String, AutomationSchemaTriggerAction> getTriggersOrActions(
       String integration, AutomationChoiceEnum type) {
     if (type == AutomationChoiceEnum.trigger) {
       return _automationSchemas!.schemas[integration]!.triggers;
