@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
+import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
@@ -27,32 +32,60 @@ class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
-    final List<AutomationSchemaTriggerAction> triggersOrActions =
+    final Map<String, AutomationSchemaTriggerAction> triggersOrActions =
         automationMediator.getTriggersOrAction(
             widget.integrationName, widget.type);
+    log("Triggers or actions: $triggersOrActions");
+    log("Integration name: ${widget.integrationName}");
+    context.read<AutomationCreationBloc>().add(
+        AutomationCreationTriggerProviderChanged(
+            triggerName: widget.integrationName));
     return BaseScaffold(
       title:
           'Add a${widget.type == AutomationChoiceEnum.trigger ? ' Trigger' : 'n Action'}',
       getBack: true,
-      body: _List(triggersOrActions: triggersOrActions),
+      body: _List(
+        triggersOrActions: triggersOrActions,
+        integrationName: widget.integrationName,
+        type: widget.type,
+      ),
     );
   }
 }
 
 class _List extends StatelessWidget {
-  final List<AutomationSchemaTriggerAction> triggersOrActions;
+  final Map<String, AutomationSchemaTriggerAction> triggersOrActions;
+  final String integrationName;
+  final AutomationChoiceEnum type;
 
-  const _List({required this.triggersOrActions});
+  const _List({
+    required this.triggersOrActions,
+    required this.integrationName,
+    required this.type,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: triggersOrActions.length,
       itemBuilder: (context, index) {
-        final triggerOrAction = triggersOrActions[index];
+        final key = triggersOrActions.keys.elementAt(index);
+        final triggerOrAction = triggersOrActions[key]!;
         return GestureDetector(
           onTap: () {
             // Navigate to the next screen
+            log("Go to parameters screen");
+            if (type == AutomationChoiceEnum.trigger) {
+              context.read<AutomationCreationBloc>().add(
+                  AutomationCreationTriggerIdentifierChanged(identifier: key));
+            }
+            Navigator.push(
+                context,
+                customScreenBuilder(AutomationCreationParametersView(
+                  type: AutomationChoiceEnum.trigger,
+                  integrationName: integrationName,
+                  parameterIdentifier: key,
+                )));
           },
           child: TriggoCard(
             customWidget: Row(

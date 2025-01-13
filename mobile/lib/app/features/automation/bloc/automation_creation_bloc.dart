@@ -13,11 +13,13 @@ class AutomationCreationBloc
   AutomationCreationBloc() : super(AutomationCreationInitial()) {
     on<AutomationCreationLabelChanged>(_onLabelChanged);
     on<AutomationCreationDescriptionChanged>(_onDescriptionChanged);
-    on<AutomationCreationTriggerNameChanged>(_onTriggerNameChanged);
+    on<AutomationCreationTriggerProviderChanged>(_onTriggerProviderChanged);
     on<AutomationCreationTriggerProviderAdded>(_onTriggerProviderAdded);
+    on<AutomationCreationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
     on<AutomationCreationTriggerParameterChanged>(_onTriggerParameterChanged);
     on<AutomationCreationActionProviderAdded>(_onActionProviderAdded);
     on<AutomationCreationActionParameterChanged>(_onActionParameterChanged);
+    on<AutomationCreationActionDeleted>(_onActionDeleted);
     on<AutomationCreationSubmitted>(_onSubmitted);
     on<AutomationCreationReset>(_onReset);
   }
@@ -37,8 +39,9 @@ class AutomationCreationBloc
         updatedAutomation, _isValid(updatedAutomation)));
   }
 
-  void _onTriggerNameChanged(AutomationCreationTriggerNameChanged event,
+  void _onTriggerProviderChanged(AutomationCreationTriggerProviderChanged event,
       Emitter<AutomationCreationState> emit) {
+    log("Trigger name changed: ${event.triggerName}");
     final updatedTrigger = state.automation.trigger.copyWith(
       identifier: event.triggerName,
     );
@@ -56,6 +59,19 @@ class AutomationCreationBloc
     );
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
+    log('Trigger provider added: ${updatedAutomation.trigger.providers.length}');
+    emit(AutomationCreationState(
+        updatedAutomation, _isValid(updatedAutomation)));
+  }
+
+  void _onTriggerIdentifierChanged(
+      AutomationCreationTriggerIdentifierChanged event,
+      Emitter<AutomationCreationState> emit) {
+    final updatedTrigger = state.automation.trigger.copyWith(
+      identifier: event.identifier,
+    );
+    final updatedAutomation =
+        state.automation.copyWith(trigger: updatedTrigger);
     emit(AutomationCreationState(
         updatedAutomation, _isValid(updatedAutomation)));
   }
@@ -63,14 +79,22 @@ class AutomationCreationBloc
   void _onTriggerParameterChanged(
       AutomationCreationTriggerParameterChanged event,
       Emitter<AutomationCreationState> emit) {
+    bool updated = false;
     final updatedTrigger = state.automation.trigger.copyWith(
       parameters: state.automation.trigger.parameters.map((param) {
         if (param.identifier == event.parameterIdentifier) {
+          updated = true;
           return param.copyWith(value: event.parameterValue);
         }
         return param;
       }).toList(),
     );
+    if (!updated) {
+      updatedTrigger.parameters.add(AutomationTriggerParameter(
+        identifier: event.parameterIdentifier,
+        value: event.parameterValue,
+      ));
+    }
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
     emit(AutomationCreationState(
@@ -120,6 +144,17 @@ class AutomationCreationBloc
       log('Invalid automation');
       emit(AutomationCreationState(state.automation, false));
     }
+  }
+
+  void _onActionDeleted(AutomationCreationActionDeleted event,
+      Emitter<AutomationCreationState> emit) {
+    final List<AutomationAction> updatedActions =
+        List.from(state.automation.actions);
+    updatedActions.removeAt(event.index);
+    final updatedAutomation =
+        state.automation.copyWith(actions: updatedActions);
+    emit(AutomationCreationState(
+        updatedAutomation, _isValid(updatedAutomation)));
   }
 
   void _onReset(

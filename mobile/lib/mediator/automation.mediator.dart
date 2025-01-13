@@ -86,25 +86,23 @@ class AutomationMediator with ChangeNotifier {
     return integrations;
   }
 
-  List<AutomationSchemaTriggerAction> getTriggersOrAction(
+  Map<String, AutomationSchemaTriggerAction> getTriggersOrAction(
       String integration, AutomationChoiceEnum type) {
     if (type == AutomationChoiceEnum.trigger) {
-      return _automationSchemas!.schemas[integration]!.triggers.values.toList();
+      return _automationSchemas!.schemas[integration]!.triggers;
     } else {
-      return _automationSchemas!.schemas[integration]!.actions.values.toList();
+      return _automationSchemas!.schemas[integration]!.actions;
     }
   }
 
-  List<AutomationSchemaTriggerActionProperty> getParameters(
+  Map<String, AutomationSchemaTriggerActionProperty> getParameters(
       String integration, AutomationChoiceEnum type, String identifier) {
     if (type == AutomationChoiceEnum.trigger) {
       return _automationSchemas!
-          .schemas[integration]!.triggers[identifier]!.parameters.values
-          .toList();
+          .schemas[integration]!.triggers[identifier]!.parameters;
     } else {
       return _automationSchemas!
-          .schemas[integration]!.actions[identifier]!.parameters.values
-          .toList();
+          .schemas[integration]!.actions[identifier]!.parameters;
     }
   }
 }

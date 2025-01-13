@@ -18,7 +18,7 @@ class _AutomationViewState extends State<AutomationView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Create Automation',
+      title: 'Automation',
       header: _Header(automation: widget.automation),
       body: _AutomationTriggerContainer(automation: widget.automation),
       getBack: true,

@@ -5,6 +5,7 @@ import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dar
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/view/creation/input.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
 class AutomationCreationSettingsView extends StatelessWidget {
@@ -28,12 +29,15 @@ class AutomationCreationSettingsView extends StatelessWidget {
                     type: AutomationInputEnum.text,
                     label: 'Label',
                     placeholder: 'Enter a label',
-                    onValueChanged: (value) {
+                    onSave: (value) {
+                      print("Going to save label: $value");
                       context
                           .read<AutomationCreationBloc>()
                           .add(AutomationCreationLabelChanged(label: value));
                     },
                     value: state.automation.label,
+                    routeToGoWhenSave:
+                        RoutesNames.automationTriggerActionRestricted,
                   ),
                 ),
                 SizedBox(height: 12.0),
@@ -44,12 +48,14 @@ class AutomationCreationSettingsView extends StatelessWidget {
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
                     placeholder: 'Enter a description',
-                    onValueChanged: (value) {
+                    onSave: (value) {
                       context.read<AutomationCreationBloc>().add(
                           AutomationCreationDescriptionChanged(
                               description: value));
                     },
                     value: state.automation.description,
+                    routeToGoWhenSave:
+                        RoutesNames.automationTriggerActionRestricted,
                   ),
                 ),
               ],

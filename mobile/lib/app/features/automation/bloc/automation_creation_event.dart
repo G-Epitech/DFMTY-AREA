@@ -31,11 +31,11 @@ final class AutomationCreationDescriptionChanged
   List<Object> get props => [description];
 }
 
-final class AutomationCreationTriggerNameChanged
+final class AutomationCreationTriggerProviderChanged
     extends AutomationCreationEvent {
   final String triggerName;
 
-  const AutomationCreationTriggerNameChanged({
+  const AutomationCreationTriggerProviderChanged({
     required this.triggerName,
   });
 
@@ -53,6 +53,18 @@ final class AutomationCreationTriggerProviderAdded
 
   @override
   List<Object> get props => [provider];
+}
+
+final class AutomationCreationTriggerIdentifierChanged
+    extends AutomationCreationEvent {
+  final String identifier;
+
+  const AutomationCreationTriggerIdentifierChanged({
+    required this.identifier,
+  });
+
+  @override
+  List<Object> get props => [identifier];
 }
 
 final class AutomationCreationTriggerParameterChanged
@@ -100,6 +112,17 @@ final class AutomationCreationActionParameterChanged
   @override
   List<Object> get props =>
       [index, parameterIdentifier, parameterValue, parameterType];
+}
+
+final class AutomationCreationActionDeleted extends AutomationCreationEvent {
+  final int index;
+
+  const AutomationCreationActionDeleted({
+    required this.index,
+  });
+
+  @override
+  List<Object> get props => [index];
 }
 
 final class AutomationCreationSubmitted extends AutomationCreationEvent {

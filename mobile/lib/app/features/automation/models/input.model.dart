@@ -2,6 +2,6 @@ enum AutomationInputEnum {
   text,
   textArea,
   number,
-  select,
+  radio,
   date,
 }
