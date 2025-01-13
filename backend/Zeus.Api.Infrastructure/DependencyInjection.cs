@@ -1,3 +1,9 @@
+using System.Reflection;
+
+using Mapster;
+
+using MapsterMapper;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -64,7 +70,8 @@ public static class DependencyInjection
 
         services.AddDatabase(configuration);
         services.AddConfiguration(configuration);
-
+        services.AddMapper();
+        
         return services;
     }
 
@@ -122,5 +129,15 @@ public static class DependencyInjection
         });
 
         services.AddScoped<AuditableEntitiesInterceptor>();
+    }
+    
+    private static void AddMapper(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
+        config.Scan(AppDomain.CurrentDomain.GetAssemblies());
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
     }
 }

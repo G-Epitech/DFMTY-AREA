@@ -7,5 +7,5 @@ public record GetOpenAiModels(
 public record GetOpenAiModel(
     string Id,
     string Object,
-    string Created,
+    long Created,
     string OwnedBy);

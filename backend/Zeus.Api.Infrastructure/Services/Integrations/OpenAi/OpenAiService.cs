@@ -50,7 +50,7 @@ public class OpenAiService : IOpenAiService
         return responseContent.Data.Select(model => new OpenAiModel(
             new OpenAiModelId(model.Id),
             model.Object,
-            DateTime.Parse(model.Created),
+            DateTimeOffset.FromUnixTimeSeconds(model.Created).DateTime,
             model.OwnedBy)).ToList();
     }
 }
