@@ -4,11 +4,15 @@
   "properties": {
     "Discord": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "Notion": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
   "required": [
-    "Discord"
+    "Discord",
+    "Notion"
   ],
   "$defs": {
     "varType": {
