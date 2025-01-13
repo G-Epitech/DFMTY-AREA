@@ -132,3 +132,16 @@ final class AutomationCreationSubmitted extends AutomationCreationEvent {
 final class AutomationCreationReset extends AutomationCreationEvent {
   const AutomationCreationReset();
 }
+
+final class AutomationCreationPreviewUpdated extends AutomationCreationEvent {
+  final String key;
+  final String value;
+
+  const AutomationCreationPreviewUpdated({
+    required this.key,
+    required this.value,
+  });
+
+  @override
+  List<Object> get props => [key, value];
+}

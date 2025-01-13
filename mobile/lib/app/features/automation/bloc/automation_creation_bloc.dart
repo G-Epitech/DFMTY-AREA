@@ -22,13 +22,14 @@ class AutomationCreationBloc
     on<AutomationCreationActionDeleted>(_onActionDeleted);
     on<AutomationCreationSubmitted>(_onSubmitted);
     on<AutomationCreationReset>(_onReset);
+    on<AutomationCreationPreviewUpdated>(_onPreviewUpdated);
   }
 
   void _onLabelChanged(AutomationCreationLabelChanged event,
       Emitter<AutomationCreationState> emit) {
     final updatedAutomation = state.automation.copyWith(label: event.label);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onDescriptionChanged(AutomationCreationDescriptionChanged event,
@@ -36,7 +37,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(description: event.description);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onTriggerProviderChanged(AutomationCreationTriggerProviderChanged event,
@@ -48,7 +49,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onTriggerProviderAdded(AutomationCreationTriggerProviderAdded event,
@@ -61,7 +62,7 @@ class AutomationCreationBloc
         state.automation.copyWith(trigger: updatedTrigger);
     log('Trigger provider added: ${updatedAutomation.trigger.providers.length}');
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onTriggerIdentifierChanged(
@@ -73,7 +74,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onTriggerParameterChanged(
@@ -98,7 +99,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(trigger: updatedTrigger);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onActionProviderAdded(AutomationCreationActionProviderAdded event,
@@ -112,7 +113,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(actions: updatedActions);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onActionParameterChanged(AutomationCreationActionParameterChanged event,
@@ -133,7 +134,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(actions: updatedActions);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onSubmitted(AutomationCreationSubmitted event,
@@ -142,7 +143,7 @@ class AutomationCreationBloc
       log('Automation submitted');
     } else {
       log('Invalid automation');
-      emit(AutomationCreationState(state.automation, false));
+      emit(AutomationCreationState(state.automation, state.previews, false));
     }
   }
 
@@ -154,7 +155,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.automation.copyWith(actions: updatedActions);
     emit(AutomationCreationState(
-        updatedAutomation, _isValid(updatedAutomation)));
+        updatedAutomation, state.previews, _isValid(updatedAutomation)));
   }
 
   void _onReset(
@@ -165,5 +166,13 @@ class AutomationCreationBloc
   bool _isValid(Automation automation) {
     return automation.label.isNotEmpty &&
         automation.trigger.identifier.isNotEmpty;
+  }
+
+  void _onPreviewUpdated(AutomationCreationPreviewUpdated event,
+      Emitter<AutomationCreationState> emit) {
+    final updatedPreviews = Map<String, String>.from(state.previews)
+      ..[event.key] = event.value;
+    emit(AutomationCreationState(
+        state.automation, updatedPreviews, state.isValid));
   }
 }

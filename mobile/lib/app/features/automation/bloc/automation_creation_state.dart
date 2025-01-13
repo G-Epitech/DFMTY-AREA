@@ -2,15 +2,17 @@ part of 'automation_creation_bloc.dart';
 
 class AutomationCreationState extends Equatable {
   final Automation automation;
+  final Map<String, String> previews;
   final bool isValid;
 
   const AutomationCreationState(
     this.automation,
+    this.previews,
     this.isValid,
   );
 
   @override
-  List<Object> get props => [automation];
+  List<Object> get props => [automation, previews, isValid];
 }
 
 final class AutomationCreationInitial extends AutomationCreationState {
@@ -32,5 +34,6 @@ final class AutomationCreationInitial extends AutomationCreationState {
               iconColor: 0,
               iconUri: '',
             ),
+            {},
             false);
 }

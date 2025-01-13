@@ -15,14 +15,14 @@ import 'package:triggo/models/automation.model.dart';
 
 class AutomationCreationParametersView extends StatefulWidget {
   final AutomationChoiceEnum type;
-  final String integrationName;
-  final String parameterIdentifier;
+  final String integrationIdentifier;
+  final String triggerOrActionIdentifier;
 
   const AutomationCreationParametersView({
     super.key,
     required this.type,
-    required this.integrationName,
-    required this.parameterIdentifier,
+    required this.integrationIdentifier,
+    required this.triggerOrActionIdentifier,
   });
 
   @override
@@ -37,8 +37,8 @@ class _AutomationCreationParametersViewState
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
     final Map<String, AutomationSchemaTriggerActionProperty> properties =
-        automationMediator.getParameters(
-            widget.integrationName, widget.type, widget.parameterIdentifier);
+        automationMediator.getParameters(widget.integrationIdentifier,
+            widget.type, widget.triggerOrActionIdentifier);
 
     log("Properties Length: ${properties.length}");
     return BaseScaffold(
@@ -47,8 +47,8 @@ class _AutomationCreationParametersViewState
       getBack: true,
       body: _List(
         type: widget.type,
-        integrationName: widget.integrationName,
-        parameterIdentifier: widget.parameterIdentifier,
+        integrationIdentifier: widget.integrationIdentifier,
+        triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
         properties: properties,
       ),
     );
@@ -57,14 +57,14 @@ class _AutomationCreationParametersViewState
 
 class _List extends StatelessWidget {
   final AutomationChoiceEnum type;
-  final String integrationName;
-  final String parameterIdentifier;
+  final String integrationIdentifier;
+  final String triggerOrActionIdentifier;
   final Map<String, AutomationSchemaTriggerActionProperty> properties;
 
   const _List({
     required this.type,
-    required this.integrationName,
-    required this.parameterIdentifier,
+    required this.integrationIdentifier,
+    required this.triggerOrActionIdentifier,
     required this.properties,
   });
 
@@ -78,19 +78,23 @@ class _List extends StatelessWidget {
         return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
           builder: (context, state) {
             final title = property.name;
-            /*final previewData = getPreviewData(
-                state.automation, type, parameterIdentifier, index);*/
-            final previewData = '';
+            final previewData = getPreviewData(
+                state.automation,
+                type,
+                integrationIdentifier,
+                index,
+                triggerOrActionIdentifier,
+                state.previews);
             print("Preview data: $previewData");
             final String selectedValue = getSelectedValue(
-                    state.automation, type, parameterIdentifier, index) ??
+                    state.automation, type, triggerOrActionIdentifier, index) ??
                 "";
             print("Selected value: $selectedValue");
             final List<AutomationRadioModel>? options = getOptions(
                 state.automation,
                 type,
-                integrationName,
-                parameterIdentifier,
+                integrationIdentifier,
+                triggerOrActionIdentifier,
                 key);
             print("Options: $options");
             return AutomationLabelParameterWidget(
@@ -109,6 +113,16 @@ class _List extends StatelessWidget {
                   print(value);
                   if (type == AutomationChoiceEnum.trigger) {
                     print("Trigger parameter changed to $value");
+                    final humanReadableValue = options != null
+                        ? options
+                            .firstWhere((element) => element.value == value)
+                            .title
+                        : value;
+                    context.read<AutomationCreationBloc>().add(
+                        AutomationCreationPreviewUpdated(
+                            key:
+                                "trigger.$index.$integrationIdentifier.$triggerOrActionIdentifier.$key",
+                            value: humanReadableValue));
                     context
                         .read<AutomationCreationBloc>()
                         .add(AutomationCreationTriggerParameterChanged(
@@ -137,42 +151,62 @@ class _List extends StatelessWidget {
   }
 }
 
-String getPreviewData(Automation automation, AutomationChoiceEnum type,
-    String propertyIdentifier, int index) {
+String getPreviewData(
+    Automation automation,
+    AutomationChoiceEnum type,
+    String integrationIdentifier,
+    int index,
+    String triggerOrActionIdentifier,
+    Map<String, String> previews) {
   String value = '';
-  String identifier = '';
-  bool isHumanReadable = false;
+  String parameterIdentifier = '';
+  bool isNotHumanReadable = true;
   switch (type) {
     case AutomationChoiceEnum.trigger:
-      value = automation.trigger.parameters[index].value;
-      identifier = automation.trigger.identifier;
+      if (automation.trigger.identifier != triggerOrActionIdentifier) {
+        break;
+      }
+      if (automation.trigger.parameters.length > index) {
+        value = automation.trigger.parameters[index].value;
+        parameterIdentifier = automation.trigger.parameters[index].identifier;
+      }
       break;
     case AutomationChoiceEnum.action:
       for (final action in automation.actions) {
-        if (action.identifier == propertyIdentifier) {
+        if (action.identifier == triggerOrActionIdentifier) {
           value = action.parameters[index].value;
-          identifier = action.identifier;
-          isHumanReadable = action.parameters[index].type == 'raw';
+          parameterIdentifier = action.parameters[index].identifier;
+          isNotHumanReadable = action.parameters[index].type != 'raw';
           break;
         }
       }
       break;
   }
-  if (isHumanReadable) {
-    return replaceByHumanReadable(identifier, value);
+  if (isNotHumanReadable) {
+    return replaceByHumanReadable(type, integrationIdentifier, index,
+        triggerOrActionIdentifier, parameterIdentifier, previews);
   }
   return value;
 }
 
-String replaceByHumanReadable(String identifier, String value) {
-  String humanReadable = value;
-  switch (identifier) {
-    case 'discord.triggers.MessageReceivedInChannel.GuildId':
-      humanReadable =
-          "AutomationBloc.data['discord']['guilds'][${value}]"; // Something like this. OR no. Don't know yet.
-      break;
+String replaceByHumanReadable(
+    AutomationChoiceEnum type,
+    String integrationIdentifier,
+    int index,
+    String triggerOrActionIdentifier,
+    String parameterIdentifier,
+    Map<String, String> previews) {
+  String key = '';
+  if (type == AutomationChoiceEnum.trigger) {
+  } else {
+    key = 'action';
   }
-  return humanReadable;
+  key = 'trigger';
+  key += '.$index';
+  key += '.$integrationIdentifier';
+  key += '.$triggerOrActionIdentifier';
+  key += '.$parameterIdentifier';
+  return previews[key] ?? '';
 }
 
 String? getSelectedValue(Automation automation, AutomationChoiceEnum type,

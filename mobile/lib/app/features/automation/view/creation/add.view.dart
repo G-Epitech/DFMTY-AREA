@@ -83,8 +83,8 @@ class _List extends StatelessWidget {
                 context,
                 customScreenBuilder(AutomationCreationParametersView(
                   type: AutomationChoiceEnum.trigger,
-                  integrationName: integrationName,
-                  parameterIdentifier: key,
+                  integrationIdentifier: integrationName,
+                  triggerOrActionIdentifier: key,
                 )));
           },
           child: TriggoCard(
