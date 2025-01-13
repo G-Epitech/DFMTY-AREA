@@ -41,6 +41,15 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file('shared_debug.keystore')
+            storePassword 'yannmasson'
+            keyAlias 'androiddebugkey'
+            keyPassword 'yannmasson'
+        }
+    }
 }
 
 flutter {
