@@ -4,7 +4,7 @@ using Zeus.Api.Domain.Integrations.Discord;
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 using Zeus.Common.Domain.Authentication.Common;
 
-namespace Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+namespace Zeus.Api.Application.Interfaces.Services.Integrations;
 
 public interface IDiscordService
 {

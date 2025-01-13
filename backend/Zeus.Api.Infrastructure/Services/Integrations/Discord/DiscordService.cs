@@ -6,7 +6,7 @@ using System.Text.Json;
 
 using ErrorOr;
 
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Discord;
