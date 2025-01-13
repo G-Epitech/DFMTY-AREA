@@ -22,7 +22,7 @@ Page<IntegrationDTO> pageIntegrationFromJson(Map<String, dynamic> json) {
   return pageFromJson<IntegrationDTO>(json, IntegrationDTO.fromJson);
 }
 
-@JsonSerializable()
+@JsonSerializable(createFactory: false)
 class OutGetUserIntegrationDTO implements PageJson<IntegrationDTO> {
   @JsonKey(fromJson: pageIntegrationFromJson, toJson: pageToJson)
   @override
@@ -78,7 +78,7 @@ Page<IntegrationNamesDTO> pageIntegrationsNameFromJson(
   return pageFromJson<IntegrationNamesDTO>(json, IntegrationNamesDTO.fromJson);
 }
 
-@JsonSerializable()
+@JsonSerializable(createFactory: false)
 class OutGetIntegrationNamesDTO implements PageJson<IntegrationNamesDTO> {
   @JsonKey(fromJson: pageIntegrationsNameFromJson, toJson: pageToJson)
   @override

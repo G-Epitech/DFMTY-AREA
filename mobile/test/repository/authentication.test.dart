@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/authentification/authentication.repository.dart';
+import 'package:triggo/repositories/authentication/authentication.repository.dart';
 
 import '../api/call.test.mocks.dart';
 import '../api/mock/init.mock.dart';
