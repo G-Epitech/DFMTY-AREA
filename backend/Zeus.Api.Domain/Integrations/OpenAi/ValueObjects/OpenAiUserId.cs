@@ -2,11 +2,11 @@ using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.OpenAi.ValueObjects;
 
-public class OpenAiModelId : ValueObject
+public class OpenAiUserId : ValueObject
 {
     public string Value { get; }
     
-    public OpenAiModelId(string value)
+    public OpenAiUserId(string value)
     {
         Value = value;
     }

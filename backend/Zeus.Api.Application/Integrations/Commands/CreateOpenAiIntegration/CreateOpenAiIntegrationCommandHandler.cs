@@ -34,10 +34,18 @@ public class CreateOpenAiIntegrationCommandHandler : IRequestHandler<CreateOpenA
             return openAiModels.Errors;
         }
 
+        var openAiUsers = await _openAiService.GetUsersAsync(new AccessToken(command.AdminApiToken));
+        if (openAiUsers.IsError)
+        {
+            return openAiUsers.Errors;
+        }
+
         var userId = new UserId(command.UserId);
         var integration = OpenAiIntegration.Create(userId, "");
 
         integration.AddToken(new IntegrationToken(command.ApiToken, "Bearer",
+            IntegrationTokenUsage.Access));
+        integration.AddToken(new IntegrationToken(command.AdminApiToken, "Admin",
             IntegrationTokenUsage.Access));
 
         await _integrationWriteRepository.AddIntegrationAsync(integration, cancellationToken);

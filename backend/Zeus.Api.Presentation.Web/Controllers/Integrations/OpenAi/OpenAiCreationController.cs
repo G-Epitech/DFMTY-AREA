@@ -19,7 +19,7 @@ public class OpenAiCreationController : ApiController
         _sender = sender;
         _authUserContext = authUserContext;
     }
-    
+
     [HttpPost(Name = "CreateOpenAiIntegration")]
     [ProducesResponseType<CreateOpenAiIntegrationResponse>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateOpenAiIntegration(CreateOpenAiIntegrationRequest request)
@@ -29,9 +29,10 @@ public class OpenAiCreationController : ApiController
         {
             return Unauthorized();
         }
-        
+
         var createIntegrationResult =
-            await _sender.Send(new CreateOpenAiIntegrationCommand(authUser.Id, request.ApiToken));
+            await _sender.Send(
+                new CreateOpenAiIntegrationCommand(authUser.Id, request.ApiToken, request.AdminApiToken));
 
         return createIntegrationResult.Match(
             result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),

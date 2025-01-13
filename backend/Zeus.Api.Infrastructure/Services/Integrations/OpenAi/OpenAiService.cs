@@ -53,4 +53,30 @@ public class OpenAiService : IOpenAiService
             DateTimeOffset.FromUnixTimeSeconds(model.Created).DateTime,
             model.OwnedBy)).ToList();
     }
+
+    public async Task<ErrorOr<List<OpenAiUser>>> GetUsersAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        HttpResponseMessage response = await _httpClient.GetAsync("organization/users");
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Integrations.OpenAi.ErrorDuringUsersRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetOpenAiUsers>(_jsonSerializerOptions);
+        if (responseContent is null)
+        {
+            return Errors.Integrations.OpenAi.InvalidBody;
+        }
+
+        return responseContent.Data.Select(user => new OpenAiUser(
+            new OpenAiUserId(user.Id),
+            user.Object,
+            user.Name,
+            user.Email,
+            user.Role,
+            DateTimeOffset.FromUnixTimeSeconds(user.AddedAt).DateTime)).ToList();
+    }
 }
