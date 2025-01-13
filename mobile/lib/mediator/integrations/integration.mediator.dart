@@ -2,25 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/mediator/integrations/discord.mediator.dart';
-import 'package:triggo/mediator/integrations/google.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
-import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:triggo/utils/launch_url.dart';
 
 class IntegrationMediator with ChangeNotifier {
   final IntegrationRepository _integrationRepository;
   final DiscordMediator _discordMediator;
-  final GoogleMediator _googleMediator;
-  final CredentialsRepository _credentialsRepository;
 
-  IntegrationMediator(this._integrationRepository, this._credentialsRepository)
-      : _discordMediator = DiscordMediator(_integrationRepository.discord),
-        _googleMediator = GoogleMediator(
-            _integrationRepository.google, _credentialsRepository);
+  IntegrationMediator(this._integrationRepository)
+      : _discordMediator = DiscordMediator(_integrationRepository.discord);
 
-  get discord => _discordMediator;
-  get google => _googleMediator;
+  DiscordMediator get discord => _discordMediator;
 
   Future<List<Integration>> getUserIntegrations() async {
     List<Integration> integrations = [];

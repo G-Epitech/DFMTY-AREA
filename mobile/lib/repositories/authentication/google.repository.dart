@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/response.dart';
+import 'package:triggo/repositories/authentication/dtos/google_oauth2.dtos.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
-import 'package:triggo/repositories/integration/dtos/integrations/google.dtos.dart';
 
 class GoogleRepository {
   final http.Client? client;
@@ -31,17 +31,18 @@ class GoogleRepository {
 
   Future<Response<OutGetGoogleOAuth2Credentials>> getGoogleOAuth2Credentials(
       String accessToken, String refreshToken, String tokenType) async {
+    final callAccessToken = await credentialsRepository.getAccessToken();
     final res = await call(
       method: 'POST',
       endpoint: '/auth/oauth2/google/from-credentials',
-      headers: {'Authorization': 'Bearer $accessToken'},
+      headers: {'Authorization': 'Bearer $callAccessToken'},
       body: InGetGoogleOAuth2Credentials(
+        accessToken: accessToken,
         refreshToken: refreshToken,
         tokenType: tokenType,
       ),
       client: client,
     );
-
     return Response<OutGetGoogleOAuth2Credentials>(
       statusCode: res.statusCode,
       message: res.message,

@@ -30,7 +30,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="${appAuthRedirectScheme}" android:host="oauth2callback" />
+                <data android:scheme="com.triggo.oauth2" android:host="oauth2callback" />
             </intent-filter>
 
         </activity>

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'google.dtos.dart';
+part of 'google_oauth2.dtos.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -58,7 +58,6 @@ OutGetGoogleOAuth2Credentials _$OutGetGoogleOAuth2CredentialsFromJson(
     OutGetGoogleOAuth2Credentials(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
-      tokenType: json['tokenType'] as String,
     );
 
 Map<String, dynamic> _$OutGetGoogleOAuth2CredentialsToJson(
@@ -66,7 +65,6 @@ Map<String, dynamic> _$OutGetGoogleOAuth2CredentialsToJson(
     <String, dynamic>{
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
-      'tokenType': instance.tokenType,
     };
 
 InGetGoogleOAuth2Credentials _$InGetGoogleOAuth2CredentialsFromJson(
@@ -74,6 +72,7 @@ InGetGoogleOAuth2Credentials _$InGetGoogleOAuth2CredentialsFromJson(
     InGetGoogleOAuth2Credentials(
       refreshToken: json['refreshToken'] as String,
       tokenType: json['tokenType'] as String,
+      accessToken: json['accessToken'] as String,
     );
 
 Map<String, dynamic> _$InGetGoogleOAuth2CredentialsToJson(
@@ -81,4 +80,5 @@ Map<String, dynamic> _$InGetGoogleOAuth2CredentialsToJson(
     <String, dynamic>{
       'refreshToken': instance.refreshToken,
       'tokenType': instance.tokenType,
+      'accessToken': instance.accessToken,
     };

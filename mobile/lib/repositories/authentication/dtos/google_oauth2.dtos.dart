@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triggo/utils/json.dart';
 
-part 'google.dtos.g.dart';
+part 'google_oauth2.dtos.g.dart';
 
 @JsonSerializable()
 class OutGetGoogleOAuth2Configuration implements Json {
@@ -61,12 +61,10 @@ class InGetTokensFromGoogleOAuth2DTO implements Json {
 class OutGetGoogleOAuth2Credentials implements Json {
   final String accessToken;
   final String refreshToken;
-  final String tokenType;
 
   OutGetGoogleOAuth2Credentials({
     required this.accessToken,
     required this.refreshToken,
-    required this.tokenType,
   });
 
   factory OutGetGoogleOAuth2Credentials.fromJson(Map<String, dynamic> json) =>
@@ -80,10 +78,12 @@ class OutGetGoogleOAuth2Credentials implements Json {
 class InGetGoogleOAuth2Credentials implements Json {
   final String refreshToken;
   final String tokenType;
+  final String accessToken;
 
   InGetGoogleOAuth2Credentials({
     required this.refreshToken,
     required this.tokenType,
+    required this.accessToken,
   });
 
   factory InGetGoogleOAuth2Credentials.fromJson(Map<String, dynamic> json) =>
