@@ -8,7 +8,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AuthMediator } from '@mediators/auth.mediator';
 import { Subject, takeUntil } from 'rxjs';
-import { GoogleMediator } from '@mediators/google.mediator';
+import { GoogleMediator } from '@mediators/integrations/google.mediator';
 
 @Component({
   selector: 'tr-google-auth-button',

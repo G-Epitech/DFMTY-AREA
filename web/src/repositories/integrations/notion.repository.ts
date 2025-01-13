@@ -13,6 +13,6 @@ export class NotionRepository {
 
   getUri(): Observable<NotionUriResponseDTO> {
     const url = `${this.baseUrl}/integrations/notion/uri`;
-    return this.#httpClient.get<NotionUriResponseDTO>(url);
+    return this.#httpClient.post<NotionUriResponseDTO>(url, {});
   }
 }

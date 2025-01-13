@@ -11,14 +11,9 @@ import { DiscordGuildModel } from '@models/integration';
 })
 export class IntegrationsMediator {
   readonly #discordRepository = inject(DiscordRepository);
-  readonly #notionRepository = inject(NotionRepository);
 
   get discordRepository(): DiscordRepository {
     return this.#discordRepository;
-  }
-
-  get notionRepository(): NotionRepository {
-    return this.#notionRepository;
   }
 
   getDiscordGuilds(integrationId: string): Observable<DiscordGuildModel[]> {

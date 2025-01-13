@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GoogleMediator } from '@mediators/google.mediator';
+import { GoogleMediator } from '@mediators/integrations/google.mediator';
 import { delay, finalize } from 'rxjs/operators';
 import { AuthStore } from '@app/store';
 import { Subject, takeUntil } from 'rxjs';
