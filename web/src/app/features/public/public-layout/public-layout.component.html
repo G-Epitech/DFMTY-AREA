@@ -18,25 +18,27 @@
             routerLink="/landing"
             routerLinkActive="text-primary"
             [routerLinkActiveOptions]="{ exact: true }"
-            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
+            class="px-3 py-2 rounded-md tr-container-title">
             Home
-          </a>
-          <a
-            routerLink="/faq"
-            routerLinkActive="text-primary"
-            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
-            FAQ
           </a>
           <a
             routerLink="/downloads"
             routerLinkActive="text-primary"
-            class="hover:text-gray-600 px-3 py-2 rounded-md tr-container-title">
+            class="px-3 py-2 rounded-md tr-container-title">
             Downloads
+          </a>
+          <a
+            routerLink="/faq"
+            routerLinkActive="text-primary"
+            class="px-3 py-2 rounded-md tr-container-title">
+            FAQ
           </a>
         </div>
 
         <div class="flex items-center space-x-4">
-          <button trBtn routerLink="/signup" variant="outline">Sign Up</button>
+          <button trBtn routerLink="/register" variant="outline">
+            Sign Up
+          </button>
           <button trBtn routerLink="/login">Log In</button>
         </div>
       </div>
