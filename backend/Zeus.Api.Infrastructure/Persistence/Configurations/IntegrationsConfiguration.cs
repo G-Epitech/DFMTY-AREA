@@ -26,6 +26,7 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         builder.HasDiscriminator(i => i.Type)
             .HasValue<DiscordIntegration>(IntegrationType.Discord)
             .HasValue<NotionIntegration>(IntegrationType.Notion)
+            .HasValue<OpenAiIntegration>(IntegrationType.OpenAi)
             .HasValue<GmailIntegration>(IntegrationType.Gmail);
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id)

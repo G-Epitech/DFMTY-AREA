@@ -27,7 +27,7 @@ namespace Zeus.Api.Infrastructure.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AuthenticationMethodType", new[] { "google", "password" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AutomationActionParameterType", new[] { "raw", "var" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationTokenUsage", new[] { "access", "refresh" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail", "notion" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail", "notion", "open_ai" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
@@ -222,6 +222,20 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
 
                     b.HasDiscriminator().HasValue(IntegrationType.Gmail);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.NotionIntegration", b =>
+                {
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
+
+                    b.HasDiscriminator().HasValue(IntegrationType.Notion);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.OpenAiIntegration", b =>
+                {
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
+
+                    b.HasDiscriminator().HasValue(IntegrationType.OpenAi);
                 });
 
             modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
