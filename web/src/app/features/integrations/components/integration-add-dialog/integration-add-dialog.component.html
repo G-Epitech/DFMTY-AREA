@@ -49,7 +49,10 @@
                 alt="Integration Logo"
                 width="35"
                 height="35"
-                class="object-contain" />
+                class="object-contain"
+                [style.filter]="
+                  forceWhite(selectedIntegration()!) ? 'brightness(0) invert(1)' : 'none'
+                " />
             </div>
             <h1 class="tr-title-3">
               {{ selectedIntegration()?.name }} Integration
@@ -99,6 +102,9 @@
             <button trBtn class="w-full" (click)="linkIntegration()">
               Link Integration
             </button>
+          }
+          @if (selectedIntegration()?.name === IntegrationTypeEnum.OPENAI) {
+            <tr-openai-link-form />
           }
         </div>
       </div>
