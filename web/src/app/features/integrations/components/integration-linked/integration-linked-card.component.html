@@ -6,5 +6,11 @@
         [iconUri]="iconUri()"
         [color]="color()" />
     }
+    @case (IntegrationTypeEnum.NOTION) {
+      <tr-integration-linked-notion
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
+    }
   }
 </div>

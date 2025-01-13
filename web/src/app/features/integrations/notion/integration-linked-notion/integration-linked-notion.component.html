@@ -1,1 +1,30 @@
-<p>integration-linked-notion works!</p>
+<div class="flex flex-row items-center">
+  <div class="relative">
+    @if (notionProps()?.avatarUri) {
+      <img
+        [ngSrc]="notionProps()!.avatarUri"
+        alt="Notion User Avatar"
+        [width]="47"
+        [height]="47"
+        class="rounded-full" />
+    }
+    <div
+      class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center"
+      [ngStyle]="{ 'background-color': color() }">
+      <img
+        [ngSrc]="iconUri()"
+        alt="Notion Logo"
+        class="rounded-full"
+        [width]="12"
+        [height]="12" />
+    </div>
+  </div>
+  <div class="flex flex-col ml-4 mr-auto">
+    <h1 class="tr-large">
+      {{ notionProps()?.workspaceName }}
+    </h1>
+    <span class="text-gray-500 text-sm"
+      >{{ notionProps()?.name }} - {{ notionProps()?.email }}</span
+    >
+  </div>
+</div>

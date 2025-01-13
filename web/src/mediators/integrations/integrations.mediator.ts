@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  DiscordRepository,
-} from '@repositories/integrations';
+import { DiscordRepository } from '@repositories/integrations';
 import { map, Observable } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';
 

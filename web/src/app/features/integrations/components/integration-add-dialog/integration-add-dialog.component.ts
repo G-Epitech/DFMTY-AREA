@@ -61,7 +61,6 @@ export class IntegrationAddDialogComponent {
           if (!uri) {
             return;
           }
-          console.log(uri);
           const newWindow = window.open(`${uri}`, '_blank');
           if (newWindow) {
             newWindow.opener = window;

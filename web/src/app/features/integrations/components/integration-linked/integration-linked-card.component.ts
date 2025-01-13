@@ -9,10 +9,14 @@ import {
 import { IntegrationModel, IntegrationTypeEnum } from '@models/integration';
 import { IntegrationLinkedDiscordComponent } from '@features/integrations/discord/integration-linked-discord/integration-linked-discord.component';
 import { SchemaStore } from '@app/store/schema-store';
+import { IntegrationLinkedNotionComponent } from '@features/integrations/notion/integration-linked-notion/integration-linked-notion.component';
 
 @Component({
   selector: 'tr-integration-linked-card',
-  imports: [IntegrationLinkedDiscordComponent],
+  imports: [
+    IntegrationLinkedDiscordComponent,
+    IntegrationLinkedNotionComponent,
+  ],
   templateUrl: './integration-linked-card.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

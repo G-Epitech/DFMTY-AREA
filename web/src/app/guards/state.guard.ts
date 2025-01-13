@@ -14,7 +14,6 @@ export const stateGuard: CanActivateFn = route => {
   }
   localStorage.removeItem(stateKey);
   const stateCodeParam = route.queryParams['state'];
-  console.log(stateCodeParam);
   if (!stateCodeParam) {
     void router.navigate([redirectUrl]);
     return false;

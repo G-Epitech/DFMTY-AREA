@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { NgOptimizedImage } from '@angular/common';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
