@@ -7,11 +7,10 @@ import {
 } from '@angular/core';
 import { IntegrationModel, IntegrationNotionProps } from '@models/integration';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
-import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-integration-linked-notion',
-  imports: [NgOptimizedImage, TrButtonDirective, NgStyle],
+  imports: [NgOptimizedImage, NgStyle],
   templateUrl: './integration-linked-notion.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

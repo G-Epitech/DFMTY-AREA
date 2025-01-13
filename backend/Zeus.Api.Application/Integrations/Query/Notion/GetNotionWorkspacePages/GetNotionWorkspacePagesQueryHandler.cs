@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
