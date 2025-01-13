@@ -45,10 +45,7 @@ export class DiscordOAuth2PageComponent implements OnInit {
   #linkDiscordAccount(code: string, state: string): void {
     this.#discordRepository
       .link({ code, state })
-      .pipe(
-        finalize(() => this.loading.set(false)),
-        delay(1000)
-      )
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: () => {
           this.success.set(true);

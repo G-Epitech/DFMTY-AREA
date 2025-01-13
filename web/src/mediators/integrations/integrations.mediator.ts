@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
   DiscordRepository,
-  NotionRepository,
 } from '@repositories/integrations';
 import { map, Observable } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';

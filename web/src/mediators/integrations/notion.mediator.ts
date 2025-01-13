@@ -11,4 +11,11 @@ export class NotionMediator {
   getUri(): Observable<string> {
     return this.#notionRepository.getUri().pipe(map(res => res.uri));
   }
+
+  link(state: string, code: string): Observable<void> {
+    return this.#notionRepository.link({
+      state: state,
+      code: code,
+    });
+  }
 }
