@@ -5,14 +5,6 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 
 public class DiscordSettingsProvider : IDiscordSettingsProvider
 {
-    public string ApiEndpoint { get; }
-    public string OAuth2Endpoint { get; }
-    public string ClientId { get; }
-    public string ClientSecret { get; }
-    public string BotToken { get; }
-    public string RedirectUrl { get; }
-    public List<string> Scopes { get; }
-
     public DiscordSettingsProvider(DiscordSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
@@ -23,4 +15,12 @@ public class DiscordSettingsProvider : IDiscordSettingsProvider
         RedirectUrl = settings.RedirectUrl;
         Scopes = settings.Scopes;
     }
+
+    public string ApiEndpoint { get; }
+    public string OAuth2Endpoint { get; }
+    public string ClientId { get; }
+    public string ClientSecret { get; }
+    public string BotToken { get; }
+    public string RedirectUrl { get; }
+    public List<string> Scopes { get; }
 }

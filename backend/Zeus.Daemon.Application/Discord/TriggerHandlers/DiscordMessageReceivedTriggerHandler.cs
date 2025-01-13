@@ -17,12 +17,6 @@ namespace Zeus.Daemon.Application.Discord.TriggerHandlers;
 [TriggerHandler("Discord.MessageReceivedInChannel")]
 public class DiscordMessageReceivedTriggerHandler
 {
-    private struct TriggerParameters
-    {
-        public string GuildId { get; set; }
-        public string ChannelId { get; set; }
-    }
-
     private readonly IAutomationsLauncher _automationsLauncher;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly ILogger _logger;
@@ -107,5 +101,11 @@ public class DiscordMessageReceivedTriggerHandler
                 _logger.LogError("Failed to launch automation {id}", automationId.Value.ToString());
             }
         }
+    }
+
+    private struct TriggerParameters
+    {
+        public string GuildId { get; set; }
+        public string ChannelId { get; set; }
     }
 }

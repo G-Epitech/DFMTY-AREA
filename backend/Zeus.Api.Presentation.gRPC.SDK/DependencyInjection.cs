@@ -7,12 +7,13 @@ namespace Zeus.Api.Presentation.gRPC.SDK;
 
 public static class DependencyInjection
 {
-    public static void AddZeusApiGrpc(this IServiceCollection services, string serverUri) {
-        services.AddGrpcClient<Synchronization.SynchronizationClient>(o =>
+    public static void AddZeusApiGrpc(this IServiceCollection services, string serverUri)
+    {
+        services.AddGrpcClient<AutomationsService.AutomationsServiceClient>(o =>
         {
             o.Address = new Uri(serverUri);
         });
 
-        services.AddScoped<SynchronizationGrpcService>();
+        services.AddScoped<AutomationService>();
     }
 }

@@ -12,10 +12,6 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
     private readonly List<AutomationTriggerParameter> _parameters;
     private readonly List<IntegrationId> _providers;
 
-    public string Identifier { get; private set; }
-    public IReadOnlyList<AutomationTriggerParameter> Parameters => _parameters.AsReadOnly();
-    public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
-
     public AutomationTrigger(
         AutomationTriggerId id,
         string identifier,
@@ -28,6 +24,16 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
         _providers = providers;
     }
 
+#pragma warning disable CS8618
+    private AutomationTrigger()
+    {
+    }
+#pragma warning restore CS8618
+
+    public string Identifier { get; private set; }
+    public IReadOnlyList<AutomationTriggerParameter> Parameters => _parameters.AsReadOnly();
+    public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
+
     public static AutomationTrigger Create(string identifier, List<AutomationTriggerParameter> parameters, List<IntegrationId> providers)
     {
         return new AutomationTrigger(
@@ -36,10 +42,4 @@ public sealed class AutomationTrigger : Entity<AutomationTriggerId>
             parameters,
             providers);
     }
-
-#pragma warning disable CS8618
-    private AutomationTrigger()
-    {
-    }
-#pragma warning restore CS8618
 }

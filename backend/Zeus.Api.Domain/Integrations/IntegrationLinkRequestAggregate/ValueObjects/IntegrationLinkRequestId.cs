@@ -4,12 +4,12 @@ namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObje
 
 public sealed class IntegrationLinkRequestId : ValueObject
 {
-    public Guid Value { get; }
-
     public IntegrationLinkRequestId(Guid value)
     {
         Value = value;
     }
+
+    public Guid Value { get; }
 
     public static IntegrationLinkRequestId CreateUnique()
     {

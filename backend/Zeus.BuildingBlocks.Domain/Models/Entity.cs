@@ -1,9 +1,9 @@
 namespace Zeus.BuildingBlocks.Domain.Models;
 
-public abstract class Entity<TId> : IEquatable<Entity<TId>>
+public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
     where TId : notnull
 {
-    public TId Id { get; }
+    private readonly List<IDomainEvent> _domainEvents = [];
 
     protected Entity(TId id)
     {
@@ -16,9 +16,18 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     }
 #pragma warning restore CS8618
 
+    public TId Id { get; }
+
     public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
+    }
+
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 
     public override bool Equals(object? obj)
@@ -39,5 +48,10 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public override int GetHashCode()
     {
         return Id.GetHashCode();
+    }
+
+    protected void AddDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
     }
 }

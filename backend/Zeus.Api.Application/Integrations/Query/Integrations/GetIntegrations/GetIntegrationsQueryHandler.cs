@@ -2,10 +2,11 @@ using ErrorOr;
 
 using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Application.Interfaces.Services.Integrations;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -16,12 +17,16 @@ public class
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationService _integrationService;
+    private readonly ILogger _logger;
 
-    public GetIntegrationsQueryHandler(IIntegrationReadRepository integrationReadRepository,
-        IIntegrationService integrationService)
+    public GetIntegrationsQueryHandler(
+        IIntegrationReadRepository integrationReadRepository,
+        IIntegrationService integrationService,
+        ILogger<GetIntegrationsQueryHandler> logger)
     {
         _integrationReadRepository = integrationReadRepository;
         _integrationService = integrationService;
+        _logger = logger;
     }
 
     public async Task<ErrorOr<Page<GetIntegrationQueryResult>>> Handle(GetIntegrationsQuery query,
@@ -33,17 +38,17 @@ public class
         var userId = new UserId(query.UserId);
         var pageQuery = new PageQuery { Index = index, Limit = limit };
 
-        var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery);
+        var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery, cancellationToken);
 
         var integrationResultItems = new List<GetIntegrationQueryResult>();
 
-        foreach (Integration integration in integrations.Items)
+        foreach (var integration in integrations.Items)
         {
             var propertiesResult = await _integrationService.GetProperties(integration);
 
             if (propertiesResult.IsError)
             {
-                await Console.Error.WriteLineAsync($"Error with integration {integration.Id.Value}");
+                _logger.LogError("Unable to get integration properties: {IntegrationId}", integration.Id.Value);
                 continue;
             }
 

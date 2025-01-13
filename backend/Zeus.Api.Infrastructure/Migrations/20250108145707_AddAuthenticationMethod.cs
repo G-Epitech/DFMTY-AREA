@@ -1,6 +1,8 @@
 ﻿using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
+
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 
 #nullable disable
 

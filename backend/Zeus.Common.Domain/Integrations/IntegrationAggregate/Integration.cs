@@ -12,6 +12,26 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     /// </summary>
     protected List<IntegrationToken> _tokens = [];
 
+    protected Integration(
+        IntegrationId id,
+        IntegrationType type,
+        UserId ownerId,
+        string clientId,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
+    {
+        Type = type;
+        OwnerId = ownerId;
+        ClientId = clientId;
+    }
+
+#pragma warning disable CS8618
+    protected Integration()
+    {
+    }
+#pragma warning restore CS8618
+
     /// <summary>
     /// Type of the integration.
     /// </summary>
@@ -36,6 +56,11 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     public IReadOnlyList<IntegrationToken> Tokens => _tokens.AsReadOnly();
 
     /// <summary>
+    /// Determines if the integration is valid and has at least one token.
+    /// </summary>
+    public abstract bool IsValid { get; }
+
+    /// <summary>
     /// Adds a token to the integration.
     /// </summary>
     /// <param name="token">
@@ -56,29 +81,4 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     {
         _tokens.Remove(token);
     }
-
-    /// <summary>
-    /// Determines if the integration is valid and has at least one token.
-    /// </summary>
-    public abstract bool IsValid { get; }
-
-    protected Integration(
-        IntegrationId id,
-        IntegrationType type,
-        UserId ownerId,
-        string clientId,
-        DateTime updatedAt,
-        DateTime createdAt)
-        : base(id, updatedAt, createdAt)
-    {
-        Type = type;
-        OwnerId = ownerId;
-        ClientId = clientId;
-    }
-
-#pragma warning disable CS8618
-    protected Integration()
-    {
-    }
-#pragma warning restore CS8618
 }

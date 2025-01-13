@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Api.Infrastructure.Persistence;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;

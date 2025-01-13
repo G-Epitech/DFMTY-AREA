@@ -14,9 +14,9 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations;
 [Route("integrations")]
 public class IntegrationsController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public IntegrationsController(ISender sender, IAuthUserContext authUserContext, IMapper mapper)
     {

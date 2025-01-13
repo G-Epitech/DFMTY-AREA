@@ -17,7 +17,7 @@ public class TriggersRegistry : ITriggersRegistry
     public async Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
     {
         var handler = _handlersProvider.GetHandler(automation.Trigger.Identifier);
-        
+
         return await handler.RegisterAsync(automation, cancellationToken);
     }
 

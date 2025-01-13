@@ -5,16 +5,15 @@ using MediatR;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Api.Domain.Errors;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Application.Authentication.Queries.PasswordLogin;
 
 public class
     PasswordAuthLoginQueryHandler : IRequestHandler<PasswordAuthLoginQuery, ErrorOr<PasswordAuthLoginQueryResult>>
 {
-    private readonly IUserReadRepository _userReadRepository;
-    private readonly IJwtGenerator _jwtGenerator;
     private readonly IAuthenticationMethodReadRepository _authenticationMethodReadRepository;
+    private readonly IJwtGenerator _jwtGenerator;
+    private readonly IUserReadRepository _userReadRepository;
 
     public PasswordAuthLoginQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator,
         IAuthenticationMethodReadRepository authenticationMethodReadRepository)

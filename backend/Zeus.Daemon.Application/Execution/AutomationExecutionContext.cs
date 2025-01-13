@@ -14,15 +14,13 @@ namespace Zeus.Daemon.Application.Execution;
 
 public sealed class AutomationExecutionContext
 {
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly IActionHandlersProvider _handlersProvider;
-    private readonly FactsDictionary _facts;
-    private readonly IReadOnlyList<Integration> _integrations;
     private readonly IReadOnlyList<AutomationAction> _actions;
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly FactsDictionary _facts;
+    private readonly IActionHandlersProvider _handlersProvider;
+    private readonly IReadOnlyList<Integration> _integrations;
     private Task<FactsDictionary>? _currentTask;
     private Task? _mainTask;
-
-    private AutomationId AutomationId { get; set; }
 
     public AutomationExecutionContext(
         IActionHandlersProvider actionHandlersProvider,
@@ -37,6 +35,8 @@ public sealed class AutomationExecutionContext
 
         AutomationId = automation.Id;
     }
+
+    private AutomationId AutomationId { get; set; }
 
     public void Cancel()
     {

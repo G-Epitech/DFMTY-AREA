@@ -2,12 +2,6 @@
 
 public class TriggerSchema
 {
-    public string Name { get; }
-    public string Description { get; }
-    public string Icon { get; }
-    public Dictionary<string, ParameterSchema> Parameters { get; }
-    public Dictionary<string, FactSchema> Facts { get; }
-    
     public TriggerSchema(
         string name,
         string description,
@@ -22,4 +16,10 @@ public class TriggerSchema
         Parameters = parameters;
         Facts = facts;
     }
+
+    public string Name { get; }
+    public string Description { get; }
+    public string Icon { get; }
+    public Dictionary<string, ParameterSchema> Parameters { get; }
+    public Dictionary<string, FactSchema> Facts { get; }
 }

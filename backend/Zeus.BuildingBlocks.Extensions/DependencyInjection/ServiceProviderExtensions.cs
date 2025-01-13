@@ -14,7 +14,7 @@ public static class ServiceProviderExtensions
         }
         return serviceProvider;
     }
-    
+
     public static IServiceProvider StartAutoServices(this IServiceProvider serviceProvider, Assembly[] assemblies)
     {
         foreach (var assembly in assemblies)
@@ -23,7 +23,7 @@ public static class ServiceProviderExtensions
         }
         return serviceProvider;
     }
-    
+
     public static IServiceProvider StartAutoServices(this IServiceProvider serviceProvider)
     {
         return serviceProvider.StartAutoServices(AppDomain.CurrentDomain.GetAssemblies());

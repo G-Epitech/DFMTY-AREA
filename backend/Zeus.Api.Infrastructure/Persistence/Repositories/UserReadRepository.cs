@@ -6,7 +6,7 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
-public sealed class UserReadRepository: IUserReadRepository
+public sealed class UserReadRepository : IUserReadRepository
 {
     private readonly ZeusDbContext _dbContext;
 

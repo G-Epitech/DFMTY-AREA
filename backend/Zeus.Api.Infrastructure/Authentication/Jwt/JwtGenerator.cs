@@ -24,6 +24,16 @@ public class JwtGenerator : IJwtGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
+    public AccessToken GenerateAccessToken(User user)
+    {
+        return new AccessToken(GenerateToken(user, AccessToken.Type, _jwtSettings.AccessTokenExpiryMinutes));
+    }
+
+    public RefreshToken GenerateRefreshToken(User user)
+    {
+        return new RefreshToken(GenerateToken(user, RefreshToken.Type, _jwtSettings.RefreshTokenExpiryMinutes));
+    }
+
     private string GenerateToken(User user, string type, int expireMinutes)
     {
         var signingCredentials = new SigningCredentials(
@@ -47,15 +57,5 @@ public class JwtGenerator : IJwtGenerator
             signingCredentials: signingCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
-    }
-
-    public AccessToken GenerateAccessToken(User user)
-    {
-        return new AccessToken(GenerateToken(user, AccessToken.Type, _jwtSettings.AccessTokenExpiryMinutes));
-    }
-
-    public RefreshToken GenerateRefreshToken(User user)
-    {
-        return new RefreshToken(GenerateToken(user, RefreshToken.Type, _jwtSettings.RefreshTokenExpiryMinutes));
     }
 }

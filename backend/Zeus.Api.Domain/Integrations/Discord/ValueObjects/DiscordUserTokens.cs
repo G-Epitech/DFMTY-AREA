@@ -5,11 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 
 public class DiscordUserTokens : ValueObject
 {
-    public AccessToken AccessToken { get; }
-    public RefreshToken RefreshToken { get; }
-    public string TokenType { get; }
-    public uint ExpiresIn { get; }
-
     public DiscordUserTokens(AccessToken accessToken, RefreshToken refreshToken, string tokenType,
         uint expiresIn)
     {
@@ -18,6 +13,11 @@ public class DiscordUserTokens : ValueObject
         TokenType = tokenType;
         ExpiresIn = expiresIn;
     }
+
+    public AccessToken AccessToken { get; }
+    public RefreshToken RefreshToken { get; }
+    public string TokenType { get; }
+    public uint ExpiresIn { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

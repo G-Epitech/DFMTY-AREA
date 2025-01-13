@@ -2,8 +2,6 @@ namespace Zeus.Daemon.Domain.Discord.Events;
 
 public class MessageCreate : Message
 {
-    public string? GuildId { get; init; }
-
     public MessageCreate(string id,
         string channelId,
         User author,
@@ -13,4 +11,6 @@ public class MessageCreate : Message
     {
         GuildId = guildId;
     }
+
+    public string? GuildId { get; init; }
 }

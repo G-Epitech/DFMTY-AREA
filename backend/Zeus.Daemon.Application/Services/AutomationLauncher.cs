@@ -6,16 +6,17 @@ using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services;
 
-public sealed class AutomationLauncher: IAutomationsLauncher
+public sealed class AutomationLauncher : IAutomationsLauncher
 {
-    private IAutomationsRunner? _automationsRunner;
     private readonly IServiceProvider _serviceProvider;
-    private IAutomationsRunner AutomationsRunner => _automationsRunner ??= _serviceProvider.GetRequiredService<IAutomationsRunner>();
+    private IAutomationsRunner? _automationsRunner;
 
     public AutomationLauncher(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
+
+    private IAutomationsRunner AutomationsRunner => _automationsRunner ??= _serviceProvider.GetRequiredService<IAutomationsRunner>();
 
     public Task<bool> LaunchAutomationAsync(AutomationId automationId, FactsDictionary facts)
     {

@@ -5,11 +5,6 @@ namespace Zeus.Api.Domain.OAuth2.Google.ValueObjects;
 
 public sealed class GoogleUserTokens : ValueObject
 {
-    public AccessToken AccessToken { get; }
-    public RefreshToken RefreshToken { get; }
-    public string TokenType { get; }
-    public uint ExpiresIn { get; }
-
     public GoogleUserTokens(AccessToken accessToken, RefreshToken refreshToken, string tokenType, uint expiresIn)
     {
         AccessToken = accessToken;
@@ -17,6 +12,11 @@ public sealed class GoogleUserTokens : ValueObject
         TokenType = tokenType;
         ExpiresIn = expiresIn;
     }
+
+    public AccessToken AccessToken { get; }
+    public RefreshToken RefreshToken { get; }
+    public string TokenType { get; }
+    public uint ExpiresIn { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

@@ -16,8 +16,8 @@ namespace Zeus.Api.Application.Integrations.Query.Discord.GetDiscordUserGuilds;
 public class
     GetDiscordUserGuildsQueryHandler : IRequestHandler<GetDiscordUserGuildsQuery, ErrorOr<List<GetDiscordUserGuildQueryResult>>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IDiscordService _discordService;
+    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
 
     public GetDiscordUserGuildsQueryHandler(IDiscordService discordService,
@@ -51,7 +51,7 @@ public class
         }
 
         var botGuilds = await _discordService.GetBotGuildsAsync(_integrationsSettingsProvider.Discord.BotToken);
-        
+
         if (botGuilds.IsError)
         {
             return botGuilds.Errors;

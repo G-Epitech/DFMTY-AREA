@@ -1,15 +1,15 @@
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Common.Domain.Authentication.Common;
+namespace Zeus.Api.Domain.Authentication.ValueObjects;
 
 public sealed class Password : ValueObject
 {
-    public string Hash { get; }
-
     public Password(string hash)
     {
         Hash = hash;
     }
+
+    public string Hash { get; }
 
     public static Password Create(string password)
     {

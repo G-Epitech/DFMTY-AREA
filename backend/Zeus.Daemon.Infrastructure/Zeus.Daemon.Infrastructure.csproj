@@ -7,10 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.3.4" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.4" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+      <PackageReference Include="NetCore.AutoRegisterDi" Version="2.2.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Zeus.Api.Integration\Zeus.Api.Integration.csproj" />
       <ProjectReference Include="..\Zeus.Api.Presentation.gRPC.SDK\Zeus.Api.Presentation.gRPC.SDK.csproj" />
       <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj" />
     </ItemGroup>

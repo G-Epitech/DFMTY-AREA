@@ -7,6 +7,7 @@ public interface IUserReadRepository
 {
     public Task<User?> GetUserByIdAsync(UserId userId,
         CancellationToken cancellationToken = default);
+
     public Task<User?> GetUserByEmailAsync(string email,
         CancellationToken cancellationToken = default);
 }

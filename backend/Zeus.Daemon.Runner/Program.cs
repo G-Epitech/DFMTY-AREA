@@ -24,5 +24,13 @@ var builder = DaemonRunnerBuilder.CreateBuilder(args);
 
 var runner = builder.Build();
 {
-    await runner.Run();
+    var cts = new CancellationTokenSource();
+
+    Console.CancelKeyPress += (_, eventArgs) =>
+    {
+        eventArgs.Cancel = true;
+        cts.Cancel();
+    };
+
+    await runner.Run(cts.Token);
 }

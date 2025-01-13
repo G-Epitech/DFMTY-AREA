@@ -9,10 +9,10 @@ namespace Zeus.Daemon.Application.Services;
 
 public sealed class AutomationsRunner : IAutomationsRunner
 {
-    private readonly IAutomationsRegistry _automationsRegistry;
     private readonly IActionHandlersProvider _actionHandlersProvider;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IAutomationsRegistry _automationsRegistry;
     private readonly List<AutomationExecutionContext> _executions = [];
+    private readonly IServiceProvider _serviceProvider;
 
     public AutomationsRunner(IAutomationsRegistry automationsRegistry, IServiceProvider serviceProvider, IActionHandlersProvider actionHandlersProvider)
     {
@@ -31,7 +31,7 @@ public sealed class AutomationsRunner : IAutomationsRunner
         }
 
         var ctx = new AutomationExecutionContext(_actionHandlersProvider, automation, [], facts);
-        
+
         _executions.Add(ctx);
         ctx.Run();
         return Task.FromResult(true);

@@ -13,8 +13,8 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Notion;
 [Route("integrations/notion")]
 public class NotionCreationController : ApiController
 {
-    private readonly ISender _sender;
     private readonly IAuthUserContext _authUserContext;
+    private readonly ISender _sender;
 
     public NotionCreationController(ISender sender, IAuthUserContext authUserContext)
     {

@@ -5,9 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Discord;
 
 public class DiscordChannel : Entity<DiscordChannelId>
 {
-    public string Name { get; private set; }
-    public DiscordChannelType Type { get; private set; }
-
     private DiscordChannel(
         DiscordChannelId id,
         string name,
@@ -16,6 +13,9 @@ public class DiscordChannel : Entity<DiscordChannelId>
         Name = name;
         Type = type;
     }
+
+    public string Name { get; private set; }
+    public DiscordChannelType Type { get; private set; }
 
     public static DiscordChannel Create(
         DiscordChannelId id,

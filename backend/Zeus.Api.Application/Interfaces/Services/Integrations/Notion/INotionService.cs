@@ -14,7 +14,7 @@ public interface INotionService
     /// <param name="code">The code provided by the service</param>
     /// <returns>Notion workspace tokens</returns>
     public Task<ErrorOr<NotionWorkspaceTokens>> GetTokensFromOauth2Async(string code);
-    
+
     /// <summary>
     /// Get bot infos from workspace access token.
     /// </summary>

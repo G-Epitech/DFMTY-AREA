@@ -10,7 +10,7 @@ public static partial class Errors
             code: "Integrations.NotFound",
             description: "Integration not found."
         );
-        
+
         public static Error PropertiesHandlerNotFound => Error.NotFound(
             code: "Integrations.PropertiesHandlerNotFound",
             description: "Properties handler not found."

@@ -13,11 +13,11 @@ namespace Zeus.Api.Application.Authentication.Commands.GoogleAuthFromCode
 
 public class GoogleAuthFromCodeCommandHandler : IRequestHandler<GoogleAuthFromCodeCommand, ErrorOr<GoogleAuthFromCodeCommandResult>>
 {
-    private readonly IGoogleOAuth2Service _googleOAuth2Service;
     private readonly IAuthenticationMethodReadRepository _authenticationMethodReadRepository;
-    private readonly IUserReadRepository _userReadRepository;
+    private readonly IGoogleOAuth2Service _googleOAuth2Service;
     private readonly IJwtGenerator _jwtGenerator;
     private readonly ISender _sender;
+    private readonly IUserReadRepository _userReadRepository;
 
     public GoogleAuthFromCodeCommandHandler(IGoogleOAuth2Service googleOAuth2Service,
         IAuthenticationMethodReadRepository authenticationMethodReadRepository, IUserReadRepository userReadRepository,

@@ -13,11 +13,11 @@ public readonly struct TriggerHandler
 
     public async Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
     {
-        var invoker  = new TriggerHandlerInvoker(this);
+        var invoker = new TriggerHandlerInvoker(this);
 
         return await invoker.RegisterAsync(automation, cancellationToken);
     }
-    
+
     public async Task<bool> RemoveAsync(AutomationId automationId, CancellationToken cancellationToken = default)
     {
         var invoker = new TriggerHandlerInvoker(this);

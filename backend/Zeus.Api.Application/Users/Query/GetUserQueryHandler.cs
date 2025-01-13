@@ -19,7 +19,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<GetUser
         _userReadRepository = userReadRepository;
         _userSettingsProvider = userSettingsProvider;
     }
-    
+
     public async Task<ErrorOr<GetUserQueryResult>> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
         var user = await _userReadRepository.GetUserByIdAsync(new UserId(query.UserId));

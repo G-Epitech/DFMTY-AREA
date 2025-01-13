@@ -10,7 +10,7 @@ public static class MethodInfoExtensions
     {
         return methodInfo.GetCustomAttributes<T>().Any();
     }
-    
+
     public static bool ContainsActionHandlerMethods(this Type type)
     {
         return type

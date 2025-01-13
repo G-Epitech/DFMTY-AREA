@@ -10,15 +10,15 @@ public sealed class IntegrationLinkRequestReadRepository : IIntegrationLinkReque
 {
     private readonly ZeusDbContext _dbContext;
 
-    private IAsyncQueryable<IntegrationLinkRequest> IntegrationLinkRequests => _dbContext.IntegrationLinkRequests
-        .AsNoTracking()
-        .AsAsyncEnumerable()
-        .AsAsyncQueryable();
-
     public IntegrationLinkRequestReadRepository(ZeusDbContext dbContext)
     {
         _dbContext = dbContext;
     }
+
+    private IAsyncQueryable<IntegrationLinkRequest> IntegrationLinkRequests => _dbContext.IntegrationLinkRequests
+        .AsNoTracking()
+        .AsAsyncEnumerable()
+        .AsAsyncQueryable();
 
     public async Task<IntegrationLinkRequest?> GetRequestByIdAsync(IntegrationLinkRequestId id, CancellationToken cancellationToken = default)
     {

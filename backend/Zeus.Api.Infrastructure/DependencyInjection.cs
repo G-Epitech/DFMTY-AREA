@@ -13,8 +13,10 @@ using Zeus.Api.Application.Interfaces.Services.OAuth2;
 using Zeus.Api.Application.Interfaces.Services.Settings;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.OAuth2;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Infrastructure.Authentication.Jwt;
+using Zeus.Api.Infrastructure.Integrations;
 using Zeus.Api.Infrastructure.Persistence;
 using Zeus.Api.Infrastructure.Persistence.Interceptors;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
@@ -28,8 +30,6 @@ using Zeus.Api.Infrastructure.Services.Settings.OAuth2;
 using Zeus.Api.Infrastructure.Settings;
 using Zeus.Api.Infrastructure.Settings.Integrations;
 using Zeus.Api.Infrastructure.Settings.OAuth2;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
@@ -62,8 +62,10 @@ public static class DependencyInjection
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+        services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         services.AddDatabase(configuration);
         services.AddConfiguration(configuration);
+        services.AddMessageBroker(configuration, typeof(DependencyInjection).Assembly);
 
         return services;
     }
@@ -118,9 +120,12 @@ public static class DependencyInjection
                 o.MapEnum<IntegrationTokenUsage>(nameof(IntegrationTokenUsage));
                 o.MapEnum<AutomationActionParameterType>(nameof(AutomationActionParameterType));
                 o.MapEnum<AuthenticationMethodType>(nameof(AuthenticationMethodType));
+
+                o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
         });
 
         services.AddScoped<AuditableEntitiesInterceptor>();
+        services.AddScoped<PublishDomainEventsInterceptor>();
     }
 }

@@ -2,12 +2,6 @@
 
 public class ProviderSchema
 {
-    public string Name { get; }
-    public string IconUri { get; }
-    public string Color { get; }
-    public Dictionary<string, TriggerSchema> Triggers { get; }
-    public Dictionary<string, ActionSchema> Actions { get; }
-
     public ProviderSchema(
         string name,
         string iconUri,
@@ -22,4 +16,10 @@ public class ProviderSchema
         Triggers = triggers;
         Actions = actions;
     }
+
+    public string Name { get; }
+    public string IconUri { get; }
+    public string Color { get; }
+    public Dictionary<string, TriggerSchema> Triggers { get; }
+    public Dictionary<string, ActionSchema> Actions { get; }
 }

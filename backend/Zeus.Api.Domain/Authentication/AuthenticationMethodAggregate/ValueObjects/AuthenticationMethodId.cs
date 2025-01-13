@@ -2,17 +2,22 @@ using System.Diagnostics.CodeAnalysis;
 
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+namespace Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class AuthenticationMethodId : ValueObject
 {
-    public Guid Value { get; }
-
     public AuthenticationMethodId(Guid value)
     {
         Value = value;
     }
+
+#pragma warning disable CS8618
+    private AuthenticationMethodId()
+    {
+    }
+#pragma warning restore CS8618
+    public Guid Value { get; }
 
     public static AuthenticationMethodId CreateUnique()
     {
@@ -23,10 +28,4 @@ public sealed class AuthenticationMethodId : ValueObject
     {
         yield return Value;
     }
-
-#pragma warning disable CS8618
-    private AuthenticationMethodId()
-    {
-    }
-#pragma warning restore CS8618
 }

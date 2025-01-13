@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Repositories;
 
@@ -13,7 +11,7 @@ public class AuthenticationMethodWriteRepository : IAuthenticationMethodWriteRep
     {
         _dbContext = dbContext;
     }
-    
+
     public async Task AddAuthenticationMethodAsync(AuthenticationMethod authenticationMethod,
         CancellationToken cancellationToken = default)
     {

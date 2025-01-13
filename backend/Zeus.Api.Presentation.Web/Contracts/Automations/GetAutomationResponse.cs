@@ -32,5 +32,5 @@ public record GetAutomationActionParameterResponse(
 public enum GetAutomationActionParameterTypeResponse
 {
     Var,
-    Row
+    Raw
 }
