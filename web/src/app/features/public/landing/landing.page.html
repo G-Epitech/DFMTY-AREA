@@ -1,5 +1,5 @@
-<div class="bg-secondary-50 h-screen">
-  <div class="bg-white h-5/6 flex items-center justify-center">
+<div class="bg-primary h-screen">
+  <div class="bg-white h-full flex items-center py-10 justify-center">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
         <div
@@ -38,30 +38,24 @@
         Discover how Triggo simplifies your workflow and increases productivity.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-md p-6">
-          <div class="text-primary text-3xl mb-4">⚡</div>
-          <h3 class="tr-title-3">Seamless Integrations</h3>
-          <p class="text-muted mt-2">
-            Connect apps like Notion, Discord, ChatGPT, and more to streamline
-            your processes.
-          </p>
-        </div>
-        <div class="bg-white rounded-md p-6">
-          <div class="text-primary text-3xl mb-4">🔁</div>
-          <h3 class="tr-title-3">Custom Automations</h3>
-          <p class="text-muted mt-2">
-            Build custom workflows tailored to your needs with our easy-to-use
-            tools.
-          </p>
-        </div>
-        <div class="bg-white rounded-md p-6">
-          <div class="text-primary text-3xl mb-4">📊</div>
-          <h3 class="tr-title-3">Detailed Insights</h3>
-          <p class="text-muted mt-2">
-            Track your automation performance and optimize your workflows with
-            analytics.
-          </p>
-        </div>
+        <tr-feature-showcase-card
+          color="bg-orange-500"
+          icon="heroBoltSolid"
+          title="Seamless Integrations"
+          description="Connect apps like Notion, Discord, ChatGPT, and more to streamline
+            your processes." />
+        <tr-feature-showcase-card
+          color="bg-blue-400"
+          icon="heroArrowPathRoundedSquareSolid"
+          title="Custom Automations"
+          description="Build custom workflows tailored to your needs with our easy-to-use
+            tools. Customize every step." />
+        <tr-feature-showcase-card
+          color="bg-green-500"
+          icon="heroChartBarSquareSolid"
+          title="Detailed Insights"
+          description="Track your automation performance and optimize your workflows with
+            analytics. Save money and time" />
       </div>
     </div>
   </section>
@@ -69,15 +63,16 @@
   <section class="bg-primary py-12">
     <div class="container mx-auto px-6 text-center">
       <h2 class="tr-title-2 text-white">Start Automating Today</h2>
-      <p class="tr-subtitle text-white mt-4">
+      <p class="tr-subtitle text-white mt-4 mb-4">
         Join thousands of users already simplifying their workflows with Triggo.
       </p>
-
-      <a
-        href="#"
-        class="inline-block mt-6 px-6 py-3 text-primary bg-white rounded-lg hover:bg-gray-100">
+      <button
+        trBtn
+        size="lg"
+        class="bg-white hover:bg-accent text-primary"
+        routerLink="/login">
         Get Started for Free
-      </a>
+      </button>
     </div>
   </section>
 </div>
