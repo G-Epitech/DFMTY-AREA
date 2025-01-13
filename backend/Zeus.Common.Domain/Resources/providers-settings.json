@@ -278,7 +278,7 @@
         "Parameters": {
           "ParentId": {
             "Name": "Parent id",
-            "Description": "The ID of the parent where you want to create the page.",
+            "Description": "The ID of the parent page where you want to create the page.",
             "Type": "string"
           },
           "Title": {

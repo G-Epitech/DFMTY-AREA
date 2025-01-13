@@ -5,6 +5,8 @@ using System.Text.Json;
 
 using ErrorOr;
 
+using MapsterMapper;
+
 using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
@@ -20,10 +22,12 @@ public class NotionService : INotionService
     private readonly HttpClient _httpClient;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IMapper _mapper;
 
-    public NotionService(IIntegrationsSettingsProvider integrationsSettingsProvider)
+    public NotionService(IIntegrationsSettingsProvider integrationsSettingsProvider, IMapper mapper)
     {
         _integrationsSettingsProvider = integrationsSettingsProvider;
+        _mapper = mapper;
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
 
         _httpClient = new HttpClient();
@@ -95,5 +99,39 @@ public class NotionService : INotionService
                 responseContent.Bot.Owner.User.Name,
                 new Uri(responseContent.Bot.Owner.User.AvatarUrl),
                 responseContent.Bot.Owner.User.Person.Email));
+    }
+
+    public async Task<ErrorOr<List<NotionDatabase>>> GetWorkspaceDatabasesAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        var filter = new { property = "object", value = "database" };
+
+        var requestContent = new StringContent(
+            JsonSerializer.Serialize(new { filter }),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        HttpResponseMessage response = await _httpClient.PostAsync("search", requestContent);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Integrations.Notion.ErrorDuringSearchRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<SearchNotionDatabasesResponse>(_jsonSerializerOptions);
+        if (responseContent is null)
+        {
+            return Errors.Integrations.Notion.InvalidBody;
+        }
+
+        return responseContent.Results.Select(database => _mapper.Map<NotionDatabase>(database)).ToList();
+    }
+
+    public Task<ErrorOr<List<NotionPage>>> GetWorkspacePagesAsync(AccessToken accessToken)
+    {
+        throw new NotImplementedException();
     }
 }
