@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GoogleMediator } from '@mediators/google.mediator';
-import { delay, finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AuthStore } from '@app/store';
 import { Subject, takeUntil } from 'rxjs';
 import { AppRouter } from '@app/app.router';

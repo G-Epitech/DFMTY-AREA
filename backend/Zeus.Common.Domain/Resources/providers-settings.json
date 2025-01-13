@@ -371,6 +371,42 @@
         "Facts": {}
       }
     }
+  },
+  "OpenAi": {
+    "Name": "OpenAi",
+    "IconUri": "https://www.svgrepo.com/show/306500/openai.svg",
+    "Color": "#74AA9C",
+    "Triggers": {},
+    "Actions": {
+      "CreateCompletion": {
+        "Name": "Create completion",
+        "Description": "Creates a completion using the OpenAI models.",
+        "Icon": "chat-bubble-left-ellipsis",
+        "Parameters": {
+          "Model": {
+            "Name": "Model",
+            "Description": "The model to use for the completion.",
+            "Type": "string"
+          },
+          "Prompt": {
+            "Name": "Prompt",
+            "Description": "The prompt to generate the completion from.",
+            "Type": "string"
+          },
+          "MaxTokens": {
+            "Name": "Max tokens",
+            "Description": "The maximum number of tokens to generate.",
+            "Type": "integer"
+          }
+        },
+        "Facts": {
+          "Completion": {
+            "Name": "Completion",
+            "Description": "The generated completion.",
+            "Type": "string"
+          }
+        }
+      }
+    }
   }
 }
- 
