@@ -1,11 +1,13 @@
 <div class="flex flex-row items-center">
   <div class="relative">
-    <img
-      [ngSrc]="integration().discordProps.avatarUri"
-      alt="Discord Avatar"
-      [width]="47"
-      [height]="47"
-      class="rounded-full" />
+    @if (discordProps()?.avatarUri) {
+      <img
+        [ngSrc]="discordProps()!.avatarUri"
+        alt="Discord Avatar"
+        [width]="47"
+        [height]="47"
+        class="rounded-full" />
+    }
     <div
       class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center"
       [ngStyle]="{ 'background-color': color() }">
@@ -18,10 +20,9 @@
     </div>
   </div>
   <div class="flex flex-col ml-4 mr-auto">
-    <h1 class="tr-large">{{ integration().discordProps.displayName }}</h1>
+    <h1 class="tr-large">{{ discordProps()?.displayName }}</h1>
     <span class="text-gray-500 text-sm"
-      >{{ integration().discordProps.username }} -
-      {{ integration().discordProps.email }}</span
+      >{{ discordProps()?.username }} - {{ discordProps()?.email }}</span
     >
   </div>
   <button trBtn variant="outline" (click)="openModal()">Manage guilds</button>

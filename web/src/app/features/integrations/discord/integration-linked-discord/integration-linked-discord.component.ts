@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
+  signal,
 } from '@angular/core';
-import { IntegrationModel } from '@models/integration';
+import { IntegrationDiscordProps, IntegrationModel } from '@models/integration';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { ManageGuildDialogComponent } from '@features/integrations/discord/manage-guild-dialog/manage-guild-dialog.component';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -24,6 +26,18 @@ export class IntegrationLinkedDiscordComponent {
   integration = input.required<IntegrationModel>();
   iconUri = input.required<string>();
   color = input.required<string>();
+
+  discordProps = signal<IntegrationDiscordProps | null>(null);
+
+  constructor() {
+    effect(() => {
+      if (this.integration()) {
+        this.discordProps.set(
+          this.integration().props as IntegrationDiscordProps
+        );
+      }
+    });
+  }
 
   openModal() {
     this.#dialogService.open(ManageGuildDialogComponent, {
