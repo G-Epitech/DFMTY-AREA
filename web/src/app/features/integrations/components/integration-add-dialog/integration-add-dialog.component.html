@@ -26,6 +26,7 @@
               [iconUri]="integration.iconUri"
               [name]="integration.name"
               [color]="integration.color"
+              [forceWhite]="forceWhite(integration)"
               class="w-full cursor-pointer transition-transform hover:scale-[1.02]"
               (click)="selectIntegration(integration)" />
           } @empty {
@@ -73,6 +74,8 @@
                 <li class="flex items-center">
                   <span>- {{ trigger }}</span>
                 </li>
+              } @empty {
+                <span>No triggers available for this integration.</span>
               }
             </ul>
           </section>
@@ -84,6 +87,8 @@
                 <li class="flex items-center">
                   <span>- {{ action }}</span>
                 </li>
+              } @empty {
+                <span>No actions available for this integration.</span>
               }
             </ul>
           </section>

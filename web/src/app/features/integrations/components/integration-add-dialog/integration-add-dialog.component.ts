@@ -19,6 +19,7 @@ import {
   LinkFunction,
 } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 import { NotionMediator } from '@mediators/integrations';
+import { IntegrationTypeEnum } from '@models/integration';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -140,5 +141,9 @@ export class IntegrationAddDialogComponent {
   linkIntegration(): void {
     const fn = this.linkFn();
     if (fn) fn();
+  }
+
+  forceWhite(integration: IntegrationAvailableProps): boolean {
+    return integration.name === IntegrationTypeEnum.OPENAI;
   }
 }

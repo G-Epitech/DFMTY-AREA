@@ -8,7 +8,8 @@
         [ngSrc]="iconUri()"
         alt="Integration Logo"
         [width]="35"
-        [height]="35" />
+        [height]="35"
+        [style.filter]="forceWhite() ? 'brightness(0) invert(1)' : 'none'" />
     </div>
     <h1 class="tr-container-title">{{ name() }}</h1>
   </div>
