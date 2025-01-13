@@ -12,12 +12,13 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { IntegrationAvailableCardComponent } from '@features/integrations/components/integration-available-card/integration-available-card.component';
 import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
-import { IntegrationsMediator } from '@mediators/integrations.mediator';
+import { IntegrationsMediator } from '@mediators/integrations/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
 import {
   IntegrationAvailableProps,
   LinkFunction,
 } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
+import { NotionMediator } from '@mediators/integrations';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -37,11 +38,25 @@ import {
 })
 export class IntegrationAddDialogComponent {
   readonly #integrationsMediator = inject(IntegrationsMediator);
+  readonly #notionMediator = inject(NotionMediator);
   readonly #schemaStore = inject(SchemaStore);
 
   readonly #linkFunctions: Record<string, LinkFunction> = {
     discord: () => {
       this.#integrationsMediator.discordRepository.getUri().subscribe({
+        next: uri => {
+          if (!uri) {
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+      });
+    },
+    notion: () => {
+      this.#notionMediator.getUri().subscribe({
         next: uri => {
           if (!uri) {
             return;

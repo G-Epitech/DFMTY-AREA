@@ -1,3 +1,9 @@
-import { IntegrationDiscordProps } from '@models/integration';
+import {
+  IntegrationDiscordProps,
+  IntegrationNotionProps,
+} from '@models/integration';
 
-export type IntegrationProps = IntegrationDiscordProps | string;
+export type IntegrationProps =
+  | IntegrationDiscordProps
+  | IntegrationNotionProps
+  | string;

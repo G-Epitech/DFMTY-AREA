@@ -6,4 +6,12 @@ export class AutomationSchemaModel {
   constructor(services: Record<string, AutomationSchemaService>) {
     this.automationServices = services;
   }
+
+  getIntegrationIconUri(integrationName: string) {
+    return this.automationServices[integrationName.toLowerCase()].iconUri;
+  }
+
+  getIntegrationColor(integrationName: string) {
+    return this.automationServices[integrationName.toLowerCase()].color;
+  }
 }

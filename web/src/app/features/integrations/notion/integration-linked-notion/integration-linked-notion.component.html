@@ -1,9 +1,9 @@
 <div class="flex flex-row items-center">
   <div class="relative">
-    @if (discordProps()?.avatarUri) {
+    @if (notionProps()?.avatarUri) {
       <img
-        [ngSrc]="discordProps()!.avatarUri"
-        alt="Discord Avatar"
+        [ngSrc]="notionProps()!.avatarUri"
+        alt="Notion User Avatar"
         [width]="47"
         [height]="47"
         class="rounded-full" />
@@ -13,17 +13,18 @@
       [ngStyle]="{ 'background-color': color() }">
       <img
         [ngSrc]="iconUri()"
-        alt="Discord Logo"
+        alt="Notion Logo"
         class="rounded-full"
         [width]="12"
         [height]="12" />
     </div>
   </div>
   <div class="flex flex-col ml-4 mr-auto">
-    <h1 class="tr-large">{{ discordProps()?.displayName }}</h1>
+    <h1 class="tr-large">
+      {{ notionProps()?.workspaceName }}
+    </h1>
     <span class="text-gray-500 text-sm"
-      >{{ discordProps()?.username }} - {{ discordProps()?.email }}</span
+      >{{ notionProps()?.name }} - {{ notionProps()?.email }}</span
     >
   </div>
-  <button trBtn variant="outline" (click)="openModal()">Manage guilds</button>
 </div>

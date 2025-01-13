@@ -5,22 +5,22 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { finalize } from 'rxjs/operators';
-import { DiscordRepository } from '@repositories/integrations';
 import { Oauth2BaseComponent } from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
+import { ActivatedRoute } from '@angular/router';
+import { NotionMediator } from '@mediators/integrations';
+import { finalize } from 'rxjs/operators';
 import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
-  selector: 'tr-oauth2-discord',
-  templateUrl: './discord.oauth2.page.html',
+  selector: 'tr-notion.oauth2',
+  imports: [Oauth2BaseComponent, TrButtonDirective],
+  templateUrl: './notion.oauth2.page.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [Oauth2BaseComponent, TrButtonDirective],
 })
-export class DiscordOAuth2PageComponent implements OnInit {
-  readonly #discordRepository = inject(DiscordRepository);
+export class NotionOauth2PageComponent implements OnInit {
+  readonly #notionMediator = inject(NotionMediator);
 
   loading = signal<boolean>(false);
   success = signal<boolean>(false);
@@ -28,23 +28,23 @@ export class DiscordOAuth2PageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loading.set(true);
     this.route.queryParams.subscribe(params => {
       const code: string | null = params['code'];
       const state: string | null = params['state'];
 
       if (code && state) {
-        this.#linkDiscordAccount(code, state);
+        this.#linkNotionAccount(code, state);
       } else {
         this.success.set(false);
       }
     });
   }
 
-  #linkDiscordAccount(code: string, state: string): void {
-    this.#discordRepository
-      .link({ code, state })
+  #linkNotionAccount(code: string, state: string) {
+    this.#notionMediator
+      .link(state, code)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: () => {
