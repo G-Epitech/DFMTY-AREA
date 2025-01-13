@@ -9,6 +9,10 @@ export class AppRouter extends Router {
     void this.navigate(['/login']);
   }
 
+  redirectToLanding() {
+    void this.navigate(['/landing']);
+  }
+
   redirectToHome() {
     void this.navigate(['/home']);
   }
