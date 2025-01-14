@@ -13,12 +13,21 @@ import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
 import { environment } from '@environments/environment';
 import { provideIcons } from '@ng-icons/core';
-import * as heroiconsOutline from '@ng-icons/heroicons/outline';
 import {
-  heroSparklesSolid,
-  heroChatBubbleBottomCenterTextSolid,
-  heroBoltSolid,
-} from '@ng-icons/heroicons/solid';
+  heroHome,
+  heroBolt,
+  heroLink,
+  heroExclamationTriangle,
+  heroCheckCircle,
+  heroCheck,
+  heroArrowLeft,
+  heroArrowRight,
+  heroInformationCircle,
+  heroChatBubbleOvalLeftEllipsis,
+  heroPlus,
+  heroArrowLeftStartOnRectangle,
+} from '@ng-icons/heroicons/outline';
+import * as heroiconsSolid from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -39,10 +48,19 @@ export const appConfig: ApplicationConfig = {
       useValue: environment.apiUrl,
     },
     provideIcons({
-      ...heroiconsOutline,
-      heroSparklesSolid,
-      heroChatBubbleBottomCenterTextSolid,
-      heroBoltSolid,
+      heroHome,
+      heroLink,
+      heroBolt,
+      heroCheckCircle,
+      heroExclamationTriangle,
+      heroArrowRight,
+      heroArrowLeft,
+      heroCheck,
+      heroInformationCircle,
+      heroChatBubbleOvalLeftEllipsis,
+      heroPlus,
+      heroArrowLeftStartOnRectangle,
+      ...heroiconsSolid,
     }),
     provideAnimations(),
     provideToastr({
