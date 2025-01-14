@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
 import {
+  ActionShortModel,
   AutomationModel,
   AutomationSchemaModel,
   AutomationSchemaService,
@@ -12,6 +13,7 @@ import {
   AutomationSchemaDTO,
   TriggerDTO,
   ActionDTO,
+  ActionShortDTO,
 } from '@repositories/automations/dto';
 
 @Injectable({
@@ -41,7 +43,7 @@ export class AutomationsMediator {
             dto.trigger.parameters,
             dto.trigger.providers
           ),
-          dto.actions
+          this._mapActions(dto.actions)
         );
       })
     );
@@ -102,5 +104,16 @@ export class AutomationsMediator {
       };
     }
     return schemaActions;
+  }
+
+  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
+    return actions.map(
+      action =>
+        new ActionShortModel(
+          action.identifier,
+          action.parameters,
+          action.providers
+        )
+    );
   }
 }

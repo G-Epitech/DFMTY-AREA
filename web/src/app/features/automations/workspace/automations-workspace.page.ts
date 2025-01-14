@@ -7,6 +7,9 @@ import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ActivatedRoute } from '@angular/router';
 import { TriggerCardComponent } from '@features/automations/workspace/components/trigger-card/trigger-card.component';
+import {
+  ActionCardComponent
+} from '@features/automations/workspace/components/action-card/action-card.component';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -15,6 +18,7 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
     NgStyle,
     AsyncPipe,
     TriggerCardComponent,
+    ActionCardComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],

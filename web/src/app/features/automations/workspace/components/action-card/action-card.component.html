@@ -1,10 +1,16 @@
-<div
-  class="bg-white p-2.5 rounded-lg flex flex-row items-center space-x-2"
-  style="border: 3px #5865f2 solid">
-  <img
-    ngSrc="icons/discord_logo.svg"
-    alt="Integration Logo"
-    [width]="35"
-    [height]="35" />
-  <span class="tr-large">{{ label() }}</span>
-</div>
+@if (action()) {
+  <div
+    class="p-3 rounded-md bg-white hover:bg-gray-100 transition-colors hover:cursor-pointer flex flex-row gap-2 items-center"
+    [ngStyle]="{
+      border: color() ? '3px solid ' + color() : 'none',
+    }">
+    @if (icon()) {
+      <div
+        [style.background-color]="color()"
+        class="p-2 flex items-center justify-center rounded-md">
+        <ng-icon [name]="icon()!" size="1.5rem" class="text-white" />
+      </div>
+    }
+    <span class="tr-container-title">{{ name() }}</span>
+  </div>
+}

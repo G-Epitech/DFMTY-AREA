@@ -3,8 +3,13 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import { AutomationModel, TriggerShortModel } from '@models/automation';
+import {
+  ActionShortModel,
+  AutomationModel,
+  TriggerShortModel,
+} from '@models/automation';
 import { UserModel } from '@models/user.model';
+import { ActionShortDTO } from '@repositories/automations/dto';
 
 @Injectable({
   providedIn: 'root',
@@ -88,10 +93,21 @@ export class UsersMediator {
                 automation.trigger.parameters,
                 automation.trigger.providers
               ),
-              automation.actions
+              this._mapActions(automation.actions)
             )
         ),
       }))
+    );
+  }
+
+  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
+    return actions.map(
+      action =>
+        new ActionShortModel(
+          action.identifier,
+          action.parameters,
+          action.providers
+        )
     );
   }
 }

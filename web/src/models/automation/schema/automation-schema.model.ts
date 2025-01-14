@@ -54,9 +54,22 @@ export class AutomationSchemaModel {
   getActionIcon(integrationName: string, actionName: string) {
     for (const [, value] of Object.entries(this.automationServices)) {
       if (value.name == integrationName) {
-        for (const [, action] of Object.entries(value.actions)) {
-          if (action.name === actionName) {
+        for (const [key, action] of Object.entries(value.actions)) {
+          if (key === actionName) {
             return action.icon;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  getActionName(integrationName: string, actionName: string) {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [key, action] of Object.entries(value.actions)) {
+          if (key === actionName) {
+            return action.name;
           }
         }
       }
