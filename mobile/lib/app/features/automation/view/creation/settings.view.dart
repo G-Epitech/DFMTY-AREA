@@ -24,7 +24,9 @@ class AutomationCreationSettingsView extends StatelessWidget {
               children: [
                 AutomationLabelParameterWidget(
                   title: 'Label',
-                  previewData: state.cleanedAutomation.label,
+                  previewData: state.cleanedAutomation.label.isNotEmpty
+                      ? state.cleanedAutomation.label
+                      : null,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.text,
                     label: 'Label',
@@ -34,14 +36,18 @@ class AutomationCreationSettingsView extends StatelessWidget {
                           .read<AutomationCreationBloc>()
                           .add(AutomationCreationLabelChanged(label: value));
                     },
-                    value: state.cleanedAutomation.label,
+                    value: state.cleanedAutomation.label.isNotEmpty
+                        ? state.cleanedAutomation.label
+                        : null,
                     routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),
                 SizedBox(height: 12.0),
                 AutomationLabelParameterWidget(
                   title: 'Description',
-                  previewData: state.cleanedAutomation.description,
+                  previewData: state.cleanedAutomation.description.isNotEmpty
+                      ? state.cleanedAutomation.description
+                      : null,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
@@ -51,7 +57,9 @@ class AutomationCreationSettingsView extends StatelessWidget {
                           AutomationCreationDescriptionChanged(
                               description: value));
                     },
-                    value: state.cleanedAutomation.description,
+                    value: state.cleanedAutomation.description.isNotEmpty
+                        ? state.cleanedAutomation.description
+                        : null,
                     routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),
@@ -81,6 +89,7 @@ class AutomationLabelParameterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         if (disabled) return;
         Navigator.push(context, customScreenBuilder(input));

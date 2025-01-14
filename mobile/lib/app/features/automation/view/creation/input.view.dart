@@ -190,28 +190,13 @@ class _TextAreaInputState extends State<_TextAreaInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.label.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              widget.label,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-        TriggoInput(
-          controller: _controller,
-          placeholder: widget.placeholder,
-          keyboardType: TextInputType.multiline,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          backgroundColor: Colors.white,
-          maxLines: 5,
-        ),
-      ],
+    return TriggoInput(
+      controller: _controller,
+      placeholder: widget.placeholder,
+      keyboardType: TextInputType.multiline,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      backgroundColor: Colors.white,
+      maxLines: 5,
     );
   }
 }
@@ -289,6 +274,7 @@ class _RadioInputState extends State<_RadioInput> {
       child: Column(
         children: widget.options.map((option) {
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               setState(() {
                 localValue = option.value;

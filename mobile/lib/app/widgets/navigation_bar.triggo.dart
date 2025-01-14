@@ -49,6 +49,7 @@ class _TriggoNavigationBarItem {
         final bool isSelected = currentRoute == routeName;
         return Expanded(
           child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               if (currentRoute != routeName) {
                 currentRouteNotifier.value = routeName;

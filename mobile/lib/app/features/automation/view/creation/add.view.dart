@@ -77,6 +77,7 @@ class _List extends StatelessWidget {
               triggersOrActions.keys.elementAt(index);
           final triggerOrAction = triggersOrActions[triggerOrActionIdentifier]!;
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               // Navigate to the next screen
               log("Go to parameters screen");

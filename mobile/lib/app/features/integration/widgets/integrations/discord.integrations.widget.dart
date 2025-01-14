@@ -53,6 +53,7 @@ class DiscordCustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         if (type != null &&
             integrationIdentifier != null &&

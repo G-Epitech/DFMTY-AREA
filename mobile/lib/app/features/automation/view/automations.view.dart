@@ -157,6 +157,7 @@ class _AutomationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(context,
             customScreenBuilder(AutomationView(automation: automation)));

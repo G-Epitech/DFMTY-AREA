@@ -68,6 +68,7 @@ class _PageTitle extends StatelessWidget {
       return Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.of(context).pop();
             },

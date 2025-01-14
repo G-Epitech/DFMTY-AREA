@@ -46,6 +46,7 @@ class _DiscordGuildsCustomWidget extends StatelessWidget {
           ),
         ),
         GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {
             integrationMediator.launchURL(
                 "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");

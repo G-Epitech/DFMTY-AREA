@@ -49,6 +49,7 @@ class _CustomWidget extends StatelessWidget {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         if (type != null) {
           Navigator.push(

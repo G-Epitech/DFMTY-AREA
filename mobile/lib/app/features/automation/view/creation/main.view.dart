@@ -73,6 +73,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -182,6 +183,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         context
             .read<AutomationCreationBloc>()
@@ -292,6 +294,7 @@ class _TriggerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         context
             .read<AutomationCreationBloc>()
@@ -308,7 +311,7 @@ class _TriggerListItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFF5865F2), width: 3),
+          border: Border.all(color: color, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(10),

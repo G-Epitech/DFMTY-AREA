@@ -95,6 +95,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.of(context).pop();
             },
