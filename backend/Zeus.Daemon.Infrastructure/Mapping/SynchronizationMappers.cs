@@ -91,6 +91,7 @@ public static class SynchronizationMappers
             IntegrationType.Gmail => new GmailIntegration(id, ownerId, clientId, updatedAt, createdAt),
             IntegrationType.Notion => new NotionIntegration(id, ownerId, clientId, updatedAt, createdAt),
             IntegrationType.OpenAi => new OpenAiIntegration(id, ownerId, clientId, updatedAt, createdAt),
+            IntegrationType.LeagueOfLegends => new LeagueOfLegendsIntegration(id, ownerId, clientId, updatedAt, createdAt),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

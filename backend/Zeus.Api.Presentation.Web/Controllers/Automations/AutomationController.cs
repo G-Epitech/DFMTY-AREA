@@ -49,7 +49,7 @@ public class AutomationController : ApiController
             request.Actions.Select(a => _mapper.Map<CreateAutomationActionCommand>(a)).ToList(),
             request.Enabled
         );
-        
+
         var automation = await _sender.Send(command);
 
         return automation.Match(

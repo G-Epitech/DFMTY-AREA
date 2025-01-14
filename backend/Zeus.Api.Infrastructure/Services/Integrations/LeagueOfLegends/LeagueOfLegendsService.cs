@@ -1,4 +1,3 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -55,7 +54,7 @@ public class LeagueOfLegendsService : ILeagueOfLegendsService
             responseContent.GameName,
             responseContent.TagLine);
     }
-    
+
     public async Task<ErrorOr<RiotAccount>> GetRiotAccountByIdAsync(RiotAccountId riotAccountId)
     {
         var requestUri = new Uri(_regionalApiEndpoint, $"riot/account/v1/accounts/by-puuid/{riotAccountId.Value}");
@@ -88,8 +87,8 @@ public class LeagueOfLegendsService : ILeagueOfLegendsService
         {
             return Errors.Integrations.LeagueOfLegends.ErrorDuringSummonerRequest;
         }
-        
-        
+
+
 
         var responseContent =
             await response.Content.ReadFromJsonAsync<GetLeagueOfLegendsSummonerResponse>(_jsonSerializerOptions);
