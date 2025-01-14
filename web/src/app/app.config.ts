@@ -11,7 +11,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors';
 import { AppService } from './app.service';
-import { environment } from '../environments/environment';
+import { environment } from '@environments/environment';
 import { provideIcons } from '@ng-icons/core';
 import {
   heroHome,
@@ -31,6 +31,8 @@ import {
   heroSparklesSolid,
   heroChatBubbleBottomCenterTextSolid,
   heroBoltSolid,
+  heroChartBarSquareSolid,
+  heroArrowPathRoundedSquareSolid,
 } from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -67,6 +69,8 @@ export const appConfig: ApplicationConfig = {
       heroChatBubbleOvalLeftEllipsis,
       heroPlus,
       heroArrowLeftStartOnRectangle,
+      heroChartBarSquareSolid,
+      heroArrowPathRoundedSquareSolid,
     }),
     provideAnimations(),
     provideToastr({

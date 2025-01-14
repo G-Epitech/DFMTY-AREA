@@ -1,0 +1,11 @@
+<div class="bg-white rounded-md p-6">
+  <div
+    class="w-8 h-8 rounded-md flex justify-center items-center mb-4"
+    [ngClass]="color()">
+    <ng-icon [name]="icon()" size="1.4rem" class="text-white"></ng-icon>
+  </div>
+  <h3 class="tr-title-3">{{ title() }}</h3>
+  <p class="text-muted mt-2 min-h-20 h-full">
+    {{ description() }}
+  </p>
+</div>
