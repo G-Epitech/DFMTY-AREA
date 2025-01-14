@@ -24,7 +24,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
               children: [
                 AutomationLabelParameterWidget(
                   title: 'Label',
-                  previewData: state.automation.label,
+                  previewData: state.cleanedAutomation.label,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.text,
                     label: 'Label',
@@ -34,14 +34,14 @@ class AutomationCreationSettingsView extends StatelessWidget {
                           .read<AutomationCreationBloc>()
                           .add(AutomationCreationLabelChanged(label: value));
                     },
-                    value: state.automation.label,
+                    value: state.cleanedAutomation.label,
                     routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),
                 SizedBox(height: 12.0),
                 AutomationLabelParameterWidget(
                   title: 'Description',
-                  previewData: state.automation.description,
+                  previewData: state.cleanedAutomation.description,
                   input: AutomationCreationInputView(
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
@@ -51,7 +51,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                           AutomationCreationDescriptionChanged(
                               description: value));
                     },
-                    value: state.automation.description,
+                    value: state.cleanedAutomation.description,
                     routeToGoWhenSave: RoutesNames.popOneTime,
                   ),
                 ),

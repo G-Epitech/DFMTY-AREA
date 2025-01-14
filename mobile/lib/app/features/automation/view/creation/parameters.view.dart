@@ -9,6 +9,7 @@ import 'package:triggo/app/features/automation/models/radio.model.dart';
 import 'package:triggo/app/features/automation/view/creation/input.view.dart';
 import 'package:triggo/app/features/automation/view/creation/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';
+import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
@@ -19,6 +20,7 @@ class AutomationCreationParametersView extends StatefulWidget {
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final int indexOfTheTriggerOrAction;
+  final bool isEdit;
 
   const AutomationCreationParametersView({
     super.key,
@@ -26,6 +28,7 @@ class AutomationCreationParametersView extends StatefulWidget {
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
     required this.indexOfTheTriggerOrAction,
+    this.isEdit = false,
   });
 
   @override
@@ -48,19 +51,22 @@ class _AutomationCreationParametersViewState
       title:
           '${widget.type == AutomationChoiceEnum.trigger ? 'Trigger' : 'Action'} parameters',
       getBack: true,
-      body: _Body(widget: widget, properties: properties),
+      body:
+          _Body(widget: widget, properties: properties, isEdit: widget.isEdit),
     );
   }
 }
 
 class _Body extends StatelessWidget {
+  final AutomationCreationParametersView widget;
+  final Map<String, AutomationSchemaTriggerActionProperty> properties;
+  final bool isEdit;
+
   const _Body({
     required this.widget,
     required this.properties,
+    required this.isEdit,
   });
-
-  final AutomationCreationParametersView widget;
-  final Map<String, AutomationSchemaTriggerActionProperty> properties;
 
   @override
   Widget build(BuildContext context) {
@@ -75,19 +81,21 @@ class _Body extends StatelessWidget {
             indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
           ),
         ),
-        _OKButton(),
+        _OKButton(isEdit: isEdit),
       ],
     );
   }
 }
 
 class _OKButton extends StatelessWidget {
-  const _OKButton();
+  final bool isEdit;
+
+  const _OKButton({required this.isEdit});
 
   @override
   Widget build(BuildContext context) {
     final Automation automation = context.select(
-      (AutomationCreationBloc bloc) => bloc.state.automation,
+      (AutomationCreationBloc bloc) => bloc.state.dirtyAutomation,
     );
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
@@ -101,11 +109,29 @@ class _OKButton extends StatelessWidget {
             text: "OK",
             onPressed: isValid
                 ? () {
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop();
+                    context
+                        .read<AutomationCreationBloc>()
+                        .add(AutomationCreationValidatePendingAutomation());
+                    if (isEdit) {
+                      Navigator.of(context).pop();
+                    } else {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop()
+                        ..pop()
+                        ..pop();
+                    }
                   }
                 : null,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontFamily: containerTitle.fontFamily,
+              fontSize: 20,
+              fontWeight: containerTitle.fontWeight,
+              letterSpacing: containerTitle.letterSpacing,
+            ),
           ),
         ),
       ],
@@ -122,6 +148,11 @@ class _OKButton extends StatelessWidget {
       return false;
     }
 
+    if (trigger.providers.isEmpty) {
+      log("Trigger providers is empty");
+      return false;
+    }
+
     for (final parameter in trigger.parameters) {
       if (parameter.value.isEmpty) {
         log("Trigger parameter value is empty");
@@ -132,14 +163,16 @@ class _OKButton extends StatelessWidget {
     final integrationIdentifier = trigger.identifier.split('.').first;
     final triggerOrActionIdentifier = trigger.identifier.split('.').last;
 
-    if (schema!.schemas[integrationIdentifier] != null &&
-        schema.schemas[integrationIdentifier]!
-                .triggers[triggerOrActionIdentifier] !=
-            null &&
-        schema.schemas[integrationIdentifier]!
-                .triggers[triggerOrActionIdentifier]!.parameters.length !=
-            trigger.parameters.length) {
-      log("Trigger parameters length is different");
+    final integrationSchema = schema!.schemas[integrationIdentifier];
+    final triggerSchema =
+        integrationSchema?.triggers[triggerOrActionIdentifier];
+    final hasDifferentParameterLength =
+        triggerSchema?.parameters.length != trigger.parameters.length;
+
+    if (integrationSchema != null &&
+        triggerSchema != null &&
+        hasDifferentParameterLength) {
+      log("Trigger parameters length is different: ${trigger.parameters.length} - ${triggerSchema.parameters.length}");
       return false;
     }
 
@@ -172,8 +205,9 @@ class _List extends StatelessWidget {
         return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
           builder: (context, state) {
             final title = property.name;
+            log(" ===== Automation Parameters Length: ${state.dirtyAutomation.trigger.parameters.length} =====");
             final previewData = getPreviewData(
-                state.automation,
+                state.dirtyAutomation,
                 type,
                 integrationIdentifier,
                 indexOfTheTriggerOrAction,
@@ -181,13 +215,13 @@ class _List extends StatelessWidget {
                 parameterIdentifier,
                 state.previews);
             final String selectedValue = getSelectedValue(
-                    state.automation,
+                    state.dirtyAutomation,
                     type,
                     triggerOrActionIdentifier,
                     indexOfTheTriggerOrAction) ??
                 "";
             final List<AutomationRadioModel>? options = getOptions(
-                state.automation,
+                state.dirtyAutomation,
                 type,
                 integrationIdentifier,
                 triggerOrActionIdentifier,
@@ -367,6 +401,7 @@ List<AutomationRadioModel>? getOptions(
           }
           if (parameterIdentifier == 'ChannelId') {
             if (automation.trigger.parameters.isEmpty) {
+              log("====== Trigger parameters is empty ======");
               return null;
             }
             final guildId = automation.trigger.parameters[0].value;

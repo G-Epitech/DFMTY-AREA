@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/automation_parameter.view.dart';
+import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
 import 'package:triggo/app/features/automation/view/creation/select_integration.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
@@ -14,6 +14,7 @@ import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
+import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationCreationMainView extends StatefulWidget {
@@ -32,15 +33,17 @@ class _AutomationCreationMainViewState
 
     return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
       builder: (context, state) {
+        log('AutomationCreationMainView: ${state.cleanedAutomation.trigger.providers.length}');
         return BaseScaffold(
           title: 'Automation',
-          header: _Header(automation: state.automation),
+          header: _Header(automation: state.cleanedAutomation),
           getBack: true,
           body: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(0.0),
             child: Column(
               children: [
-                _AutomationCreationContainer(automation: state.automation),
+                _AutomationCreationContainer(
+                    automation: state.cleanedAutomation),
                 const Spacer(),
                 Row(
                   children: [
@@ -180,6 +183,9 @@ class _AddTriggerEventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        context
+            .read<AutomationCreationBloc>()
+            .add(AutomationCreationLoadAutomation());
         Navigator.push(
             context,
             customScreenBuilder(AutomationCreationSelectIntegrationView(
@@ -227,19 +233,38 @@ class CustomRectangleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+    final schema = automationMediator.automationSchemas;
+
+    if (schema == null) {
+      return Container();
+    }
+    final trigger = automation.trigger;
+    final integrationIdentifier = trigger.identifier.split('.').first;
+    final triggerOrActionIdentifier = trigger.identifier.split('.').last;
+
+    final triggerIntegration = schema.schemas[integrationIdentifier]!;
+    final triggerOrAction =
+        triggerIntegration.triggers[triggerOrActionIdentifier]!;
+
     return Column(
       children: [
         _TriggerListItem(
-          icon: "assets/icons/chat.svg",
-          color: Color(0xFF5865F2),
-          text: "Message received in channel",
+          icon: "assets/icons/${triggerOrAction.icon}.svg",
+          color: HexColor(triggerIntegration.color),
+          text: triggerOrAction.name,
+          type: AutomationChoiceEnum.trigger,
+          indexOfTheTriggerOrAction: 0,
+          integrationIdentifier: integrationIdentifier,
+          triggerOrActionIdentifier: triggerOrActionIdentifier,
         ),
         SizedBox(height: 10),
-        _TriggerListItem(
+        /*_TriggerListItem(
           icon: "assets/icons/people.svg",
           color: Color(0xFF5865F2),
           text: "React to a message",
-        ),
+        ),*/
       ],
     );
   }
@@ -249,18 +274,37 @@ class _TriggerListItem extends StatelessWidget {
   final String icon;
   final Color color;
   final String text;
+  final AutomationChoiceEnum type;
+  final int indexOfTheTriggerOrAction;
+  final String integrationIdentifier;
+  final String triggerOrActionIdentifier;
 
   const _TriggerListItem({
     required this.icon,
     required this.color,
     required this.text,
+    required this.type,
+    required this.indexOfTheTriggerOrAction,
+    required this.integrationIdentifier,
+    required this.triggerOrActionIdentifier,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, customScreenBuilder(AutomationParameterView()));
+        context
+            .read<AutomationCreationBloc>()
+            .add(AutomationCreationLoadAutomation());
+        Navigator.push(
+            context,
+            customScreenBuilder(AutomationCreationParametersView(
+              type: type,
+              integrationIdentifier: integrationIdentifier,
+              triggerOrActionIdentifier: triggerOrActionIdentifier,
+              indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+              isEdit: true,
+            )));
       },
       child: Container(
         decoration: BoxDecoration(

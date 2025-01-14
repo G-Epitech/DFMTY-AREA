@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/creation/add.view.dart';
+import 'package:triggo/app/features/integration/utils/automation_update_provider.dart';
 import 'package:triggo/app/features/integration/view/integrations/discord.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -56,6 +57,12 @@ class DiscordCustomWidget extends StatelessWidget {
         if (type != null &&
             integrationIdentifier != null &&
             indexOfTheTriggerOrAction != null) {
+          automationUpdateProvider(
+            context,
+            type!,
+            integration.id,
+            indexOfTheTriggerOrAction!,
+          );
           Navigator.push(
               context,
               customScreenBuilder(AutomationCreationAddView(

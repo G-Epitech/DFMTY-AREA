@@ -158,3 +158,12 @@ final class AutomationCreationPreviewUpdated extends AutomationCreationEvent {
   @override
   List<Object> get props => [key, value];
 }
+
+final class AutomationCreationValidatePendingAutomation
+    extends AutomationCreationEvent {
+  const AutomationCreationValidatePendingAutomation();
+}
+
+final class AutomationCreationLoadAutomation extends AutomationCreationEvent {
+  const AutomationCreationLoadAutomation();
+}
