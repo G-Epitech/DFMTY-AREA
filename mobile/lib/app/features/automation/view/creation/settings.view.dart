@@ -75,7 +75,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
 class AutomationLabelParameterWidget extends StatelessWidget {
   final String title;
   final String? previewData;
-  final StatefulWidget input;
+  final Widget input;
   final bool disabled;
 
   const AutomationLabelParameterWidget({

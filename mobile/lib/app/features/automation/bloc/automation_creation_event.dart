@@ -108,6 +108,20 @@ final class AutomationCreationActionProviderAdded
   List<Object> get props => [index, provider];
 }
 
+final class AutomationCreationActionIdentifierChanged
+    extends AutomationCreationEvent {
+  final int index;
+  final String identifier;
+
+  const AutomationCreationActionIdentifierChanged({
+    required this.index,
+    required this.identifier,
+  });
+
+  @override
+  List<Object> get props => [index, identifier];
+}
+
 final class AutomationCreationActionParameterChanged
     extends AutomationCreationEvent {
   final int index;

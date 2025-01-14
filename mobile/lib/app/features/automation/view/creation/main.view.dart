@@ -45,7 +45,6 @@ class _AutomationCreationMainViewState
               children: [
                 _AutomationCreationContainer(
                     automation: state.cleanedAutomation),
-                const Spacer(),
                 Row(
                   children: [
                     Expanded(
@@ -169,7 +168,12 @@ class _AutomationCreationContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (automation.trigger.identifier.isEmpty) {
-      return _AddTriggerEventWidget();
+      return Expanded(
+          child: Column(
+        children: [
+          _AddTriggerEventWidget(),
+        ],
+      ));
     }
     return Expanded(
         child: Column(
@@ -252,94 +256,99 @@ class CustomRectangleList extends StatelessWidget {
         triggerIntegration.triggers[triggerOrActionIdentifier]!;
 
     return Expanded(
+      child: SingleChildScrollView(
         child: Column(
-      children: [
-        _TriggerListItem(
-          icon: "assets/icons/${triggerOrAction.icon}.svg",
-          color: HexColor(triggerIntegration.color),
-          text: triggerOrAction.name,
-          type: AutomationChoiceEnum.trigger,
-          indexOfTheTriggerOrAction: 0,
-          integrationIdentifier: integrationIdentifier,
-          triggerOrActionIdentifier: triggerOrActionIdentifier,
-        ),
-        SizedBox(height: 10),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: automation.actions.length,
-          itemBuilder: (context, index) {
-            final action = automation.actions[index];
-            final integrationIdentifier = action.identifier.split('.').first;
-            final triggerOrActionIdentifier = action.identifier.split('.').last;
-
-            final actionIntegration = schema.schemas[integrationIdentifier]!;
-            final actionOrAction =
-                actionIntegration.actions[triggerOrActionIdentifier]!;
-
-            return _TriggerListItem(
-              icon: "assets/icons/${actionOrAction.icon}.svg",
-              color: HexColor(actionIntegration.color),
-              text: actionOrAction.name,
-              type: AutomationChoiceEnum.action,
-              indexOfTheTriggerOrAction: index,
+          children: [
+            _TriggerListItem(
+              icon: "assets/icons/${triggerOrAction.icon}.svg",
+              color: HexColor(triggerIntegration.color),
+              text: triggerOrAction.name,
+              type: AutomationChoiceEnum.trigger,
+              indexOfTheTriggerOrAction: 0,
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
-            );
-          },
-        ),
-        SizedBox(
-          height: 40,
-          child: DottedLine(
-            direction: Axis.vertical,
-            lineLength: double.infinity,
-            lineThickness: 2.40,
-            dashLength: 7.5,
-            dashColor: textPrimaryColor,
-          ),
-        ),
-        Center(
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              context
-                  .read<AutomationCreationBloc>()
-                  .add(AutomationCreationLoadAutomation());
-              Navigator.push(
-                  context,
-                  customScreenBuilder(AutomationCreationSelectIntegrationView(
-                    type: AutomationChoiceEnum.action,
-                    indexOfTheTriggerOrAction: automation.actions.length,
-                  )));
-            },
-            child: Container(
-              width: 35,
-              height: 35,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(8),
+            ),
+            SizedBox(height: 10),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: automation.actions.length,
+              itemBuilder: (context, index) {
+                final action = automation.actions[index];
+                final integrationIdentifier =
+                    action.identifier.split('.').first;
+                final triggerOrActionIdentifier =
+                    action.identifier.split('.').last;
+
+                final actionIntegration =
+                    schema.schemas[integrationIdentifier]!;
+                final actionOrAction =
+                    actionIntegration.actions[triggerOrActionIdentifier]!;
+
+                return _TriggerListItem(
+                  icon: "assets/icons/${actionOrAction.icon}.svg",
+                  color: HexColor(actionIntegration.color),
+                  text: actionOrAction.name,
+                  type: AutomationChoiceEnum.action,
+                  indexOfTheTriggerOrAction: index,
+                  integrationIdentifier: integrationIdentifier,
+                  triggerOrActionIdentifier: triggerOrActionIdentifier,
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 8.0);
+              },
+            ),
+            SizedBox(
+              height: 40,
+              child: DottedLine(
+                direction: Axis.vertical,
+                lineLength: double.infinity,
+                lineThickness: 2.40,
+                dashLength: 7.5,
+                dashColor: textPrimaryColor,
               ),
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/icons/plus.svg',
-                  height: 16,
-                  width: 16,
-                  colorFilter: ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
+            ),
+            Center(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  context
+                      .read<AutomationCreationBloc>()
+                      .add(AutomationCreationLoadAutomation());
+                  Navigator.push(
+                      context,
+                      customScreenBuilder(
+                          AutomationCreationSelectIntegrationView(
+                        type: AutomationChoiceEnum.action,
+                        indexOfTheTriggerOrAction: automation.actions.length,
+                      )));
+                },
+                child: Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/icons/plus.svg',
+                      height: 16,
+                      width: 16,
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
-        /*_TriggerListItem(
-          icon: "assets/icons/people.svg",
-          color: Color(0xFF5865F2),
-          text: "React to a message",
-        ),*/
-      ],
-    ));
+      ),
+    );
   }
 }
 

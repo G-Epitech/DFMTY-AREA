@@ -177,6 +177,53 @@ class _OKButton extends StatelessWidget {
 
     return true;
   }
+
+  bool _validateAction(Automation automation,
+      AutomationMediator automationMediator, int indexOfTheTriggerOrAction) {
+    final schema = automationMediator.automationSchemas;
+
+    if (indexOfTheTriggerOrAction < 0 ||
+        indexOfTheTriggerOrAction >= automation.actions.length) {
+      log("Index of the trigger or action is out of bounds");
+      return false;
+    }
+
+    final action = automation.actions[indexOfTheTriggerOrAction];
+
+    if (action.identifier.isEmpty) {
+      log("Trigger identifier is empty");
+      return false;
+    }
+
+    if (action.providers.isEmpty) {
+      log("Trigger providers is empty");
+      return false;
+    }
+
+    for (final parameter in action.parameters) {
+      if (parameter.value.isEmpty) {
+        log("Trigger parameter value is empty");
+        return false;
+      }
+    }
+
+    final integrationIdentifier = action.identifier.split('.').first;
+    final triggerOrActionIdentifier = action.identifier.split('.').last;
+
+    final integrationSchema = schema!.schemas[integrationIdentifier];
+    final actionSchema = integrationSchema?.actions[triggerOrActionIdentifier];
+    final hasDifferentParameterLength =
+        actionSchema?.parameters.length != action.parameters.length;
+
+    if (integrationSchema != null &&
+        actionSchema != null &&
+        hasDifferentParameterLength) {
+      log("Trigger parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
+      return false;
+    }
+
+    return true;
+  }
 }
 
 class _List extends StatelessWidget {
@@ -229,57 +276,307 @@ class _List extends StatelessWidget {
                 triggerOrActionIdentifier,
                 parameterIdentifier);
             return AutomationLabelParameterWidget(
-              title: title,
-              previewData: previewData,
-              disabled: options != null && options.isEmpty,
-              input: AutomationCreationInputView(
-                type: options != null
-                    ? AutomationInputEnum.radio
-                    : AutomationInputEnum.text,
-                label: title,
-                routeToGoWhenSave: RoutesNames.popOneTime,
-                value: selectedValue,
-                options: options,
-                onSave: (value) {
-                  if (type == AutomationChoiceEnum.trigger) {
-                    final humanReadableValue = options != null
-                        ? options
-                            .firstWhere((element) => element.value == value)
-                            .title
-                        : value;
+                title: title,
+                previewData: previewData,
+                disabled: options != null && options.isEmpty,
+                input: options != null
+                    ? AutomationCreationInputView(
+                        type: AutomationInputEnum.radio,
+                        label: title,
+                        routeToGoWhenSave: RoutesNames.popOneTime,
+                        value: selectedValue,
+                        options: options,
+                        onSave: (value) {
+                          final humanReadableValue = options
+                              .firstWhere((element) => element.value == value)
+                              .title;
+                          if (type == AutomationChoiceEnum.trigger) {
+                            context.read<AutomationCreationBloc>().add(
+                                AutomationCreationPreviewUpdated(
+                                    key:
+                                        "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
+                                    value: humanReadableValue));
 
-                    context.read<AutomationCreationBloc>().add(
-                        AutomationCreationPreviewUpdated(
-                            key:
-                                "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
-                            value: humanReadableValue));
+                            context
+                                .read<AutomationCreationBloc>()
+                                .add(AutomationCreationTriggerParameterChanged(
+                                  parameterIdentifier: parameterIdentifier,
+                                  parameterValue: value,
+                                ));
+                          } else {
+                            context.read<AutomationCreationBloc>().add(
+                                AutomationCreationPreviewUpdated(
+                                    key:
+                                        "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
+                                    value: humanReadableValue));
 
-                    context
-                        .read<AutomationCreationBloc>()
-                        .add(AutomationCreationTriggerParameterChanged(
-                          parameterIdentifier: parameterIdentifier,
-                          parameterValue: value,
-                        ));
-                  } else {
-                    /*context
-                        .read<AutomationCreationBloc>()
-                        .add(AutomationCreationActionParameterChanged(
-                          parameterIdentifier: key,
-                          parameterValue: value,
-                        ));*/
-                  }
-                  /*context
+                            context
+                                .read<AutomationCreationBloc>()
+                                .add(AutomationCreationActionParameterChanged(
+                                  index: indexOfTheTriggerOrAction,
+                                  parameterIdentifier: parameterIdentifier,
+                                  parameterValue: value,
+                                  parameterType: "raw",
+                                ));
+                          }
+                          /*context
                   .read<AutomationCreationBloc>()
                   .add(AutomationCreationLabelChanged(label: value));*/
-                },
-              ),
-            );
+                        },
+                      )
+                    : AutomationParameterChoice(
+                        title: title,
+                        type: type,
+                        automation: state.cleanedAutomation,
+                        onSave: (value, valueType) {
+                          final humanReadableValue = options != null
+                              ? options
+                                  .firstWhere(
+                                      (element) => element.value == value)
+                                  .title
+                              : value;
+                          if (type == AutomationChoiceEnum.trigger) {
+                            context.read<AutomationCreationBloc>().add(
+                                AutomationCreationPreviewUpdated(
+                                    key:
+                                        "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
+                                    value: humanReadableValue));
+
+                            context
+                                .read<AutomationCreationBloc>()
+                                .add(AutomationCreationTriggerParameterChanged(
+                                  parameterIdentifier: parameterIdentifier,
+                                  parameterValue: value,
+                                ));
+                          } else {
+                            context.read<AutomationCreationBloc>().add(
+                                AutomationCreationPreviewUpdated(
+                                    key:
+                                        "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
+                                    value: valueType == 'var'
+                                        ? 'From a previous trigger/action'
+                                        : 'Manual input'));
+
+                            context
+                                .read<AutomationCreationBloc>()
+                                .add(AutomationCreationActionParameterChanged(
+                                  index: indexOfTheTriggerOrAction,
+                                  parameterIdentifier: parameterIdentifier,
+                                  parameterValue: value,
+                                  parameterType: valueType,
+                                ));
+                          }
+                        },
+                      ));
           },
         );
       },
       separatorBuilder: (context, index) {
         return const SizedBox(height: 8.0);
       },
+    );
+  }
+}
+
+class AutomationParameterChoice extends StatelessWidget {
+  final String title;
+  final void Function(String, String) onSave;
+  final AutomationChoiceEnum type;
+  final Automation automation;
+  final List<AutomationRadioModel>? options;
+  final String? value;
+  final String? selectedValue;
+
+  const AutomationParameterChoice({
+    super.key,
+    required this.title,
+    required this.onSave,
+    required this.type,
+    required this.automation,
+    this.options,
+    this.value,
+    this.selectedValue,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseScaffold(
+        title: title,
+        getBack: true,
+        body: ListView(
+          children: [
+            AutomationLabelParameterWidget(
+              title: "From a previous trigger/action",
+              previewData:
+                  "Select a value that resulted from a previous trigger/action",
+              input: AutomationParameterFromActions(
+                type: type,
+                automation: automation,
+                label: title,
+                onSave: onSave,
+                options: options,
+                value: value,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            AutomationLabelParameterWidget(
+              title: "Manual input",
+              previewData: "Enter manually a value",
+              input: AutomationCreationInputView(
+                type: AutomationInputEnum.text,
+                label: title,
+                routeToGoWhenSave: RoutesNames.popTwoTimes,
+                onSave: (value) {
+                  onSave(value, 'raw');
+                },
+                value: selectedValue,
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+class AutomationParameterFromActions extends StatelessWidget {
+  final AutomationChoiceEnum type;
+  final Automation automation;
+  final String label;
+  final String? placeholder;
+  final List<AutomationRadioModel>? options;
+  final void Function(String, String) onSave;
+  final String? value;
+
+  const AutomationParameterFromActions({
+    super.key,
+    required this.automation,
+    required this.type,
+    required this.label,
+    this.placeholder,
+    this.options,
+    required this.onSave,
+    this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+    final schema = automationMediator.automationSchemas;
+
+    if (schema == null || schema.schemas.isEmpty) {
+      return const SizedBox();
+    }
+
+    final List<AutomationTrigger> triggers = [automation.trigger];
+    final List<AutomationAction> actions = automation.actions;
+
+    return BaseScaffold(
+      title: 'Edit $label',
+      getBack: true,
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: triggers.length,
+                itemBuilder: (context, index) {
+                  final trigger = triggers[index];
+                  final integrationIdentifier =
+                      trigger.identifier.split('.').first;
+                  final triggerIdentifier = trigger.identifier.split('.').last;
+
+                  final integrationName =
+                      schema.schemas[integrationIdentifier]?.name;
+                  final triggerName = schema.schemas[integrationIdentifier]
+                      ?.triggers[triggerIdentifier]?.name;
+                  final facts = schema.schemas[integrationIdentifier]
+                      ?.triggers[triggerIdentifier]?.facts;
+
+                  if (facts == null ||
+                      facts.isEmpty ||
+                      integrationName == null ||
+                      triggerName == null) {
+                    return const SizedBox();
+                  }
+
+                  final options = getOptionsFromFacts(facts);
+
+                  return AutomationLabelParameterWidget(
+                    title: "Trigger",
+                    previewData: integrationName,
+                    input: AutomationCreationInputView(
+                      type: AutomationInputEnum.radio,
+                      label: triggerName,
+                      options: options,
+                      routeToGoWhenSave: RoutesNames.popThreeTimes,
+                      onSave: (value) {
+                        onSave(value, 'var');
+                      },
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 8.0);
+                },
+              ),
+              if (actions.isNotEmpty) const SizedBox(height: 8.0),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: actions.length,
+                itemBuilder: (context, index) {
+                  final action = actions[index];
+                  final integrationIdentifier =
+                      action.identifier.split('.').first;
+                  final actionsIdentifier = action.identifier.split('.').last;
+
+                  final integrationName =
+                      schema.schemas[integrationIdentifier]?.name;
+                  final actionParameterName = schema
+                      .schemas[integrationIdentifier]
+                      ?.actions[actionsIdentifier]
+                      ?.name;
+
+                  final actionsName = schema.schemas[integrationIdentifier]
+                      ?.actions[actionsIdentifier]?.name;
+                  final facts = schema.schemas[integrationIdentifier]
+                      ?.actions[actionsIdentifier]?.facts;
+
+                  if (facts == null ||
+                      facts.isEmpty ||
+                      integrationName == null ||
+                      actionsName == null) {
+                    return const SizedBox();
+                  }
+
+                  final options = getOptionsFromFacts(facts);
+
+                  return AutomationLabelParameterWidget(
+                    title: "Action $index - $actionParameterName",
+                    previewData: integrationName,
+                    input: AutomationCreationInputView(
+                      type: AutomationInputEnum.radio,
+                      label: actionsName,
+                      options: options,
+                      routeToGoWhenSave: RoutesNames.popThreeTimes,
+                      onSave: (value) {
+                        onSave(value, 'var');
+                      },
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 8.0);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -345,10 +642,10 @@ String? replaceByHumanReadable(
     Map<String, String> previews) {
   String key = '';
   if (type == AutomationChoiceEnum.trigger) {
+    key = 'trigger';
   } else {
     key = 'action';
   }
-  key = 'trigger';
   key += '.$indexOfTheTriggerOrAction';
   key += '.$integrationIdentifier';
   key += '.$triggerOrActionIdentifier';
@@ -422,4 +719,17 @@ List<AutomationRadioModel>? getOptions(
       break;
   }
   return null;
+}
+
+List<AutomationRadioModel> getOptionsFromFacts(
+    Map<String, AutomationSchemaTriggerActionProperty> facts) {
+  List<AutomationRadioModel> options = [];
+  for (final fact in facts.entries) {
+    options.add(AutomationRadioModel(
+      title: fact.value.name,
+      description: fact.value.description,
+      value: fact.key,
+    ));
+  }
+  return options;
 }

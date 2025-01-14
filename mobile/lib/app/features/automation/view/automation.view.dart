@@ -90,9 +90,6 @@ class _AutomationTriggerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);*/
-
     return Column(
       children: [
         CustomRectangleList(automation: automation),

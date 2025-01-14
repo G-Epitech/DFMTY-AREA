@@ -229,6 +229,11 @@ class _OKButton extends StatelessWidget {
                 Navigator.of(context)
                   ..pop()
                   ..pop();
+              } else if (routeToGoWhenSave == RoutesNames.popThreeTimes) {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop()
+                  ..pop();
               } else {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   routeToGoWhenSave,

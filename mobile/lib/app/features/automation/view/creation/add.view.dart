@@ -86,6 +86,12 @@ class _List extends StatelessWidget {
                     AutomationCreationTriggerIdentifierChanged(
                         identifier:
                             "$integrationIdentifier.$triggerOrActionIdentifier"));
+              } else {
+                context.read<AutomationCreationBloc>().add(
+                    AutomationCreationActionIdentifierChanged(
+                        index: indexOfTheTriggerOrAction,
+                        identifier:
+                            "$integrationIdentifier.$triggerOrActionIdentifier"));
               }
               Navigator.push(
                   context,

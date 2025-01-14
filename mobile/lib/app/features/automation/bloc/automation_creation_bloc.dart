@@ -18,6 +18,7 @@ class AutomationCreationBloc
     on<AutomationCreationTriggerProviderAdded>(_onTriggerProviderAdded);
     on<AutomationCreationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
     on<AutomationCreationTriggerParameterChanged>(_onTriggerParameterChanged);
+    on<AutomationCreationActionIdentifierChanged>(_onActionIdentifierChanged);
     on<AutomationCreationActionProviderAdded>(_onActionProviderAdded);
     on<AutomationCreationActionParameterChanged>(_onActionParameterChanged);
     on<AutomationCreationActionDeleted>(_onActionDeleted);
@@ -109,6 +110,29 @@ class AutomationCreationBloc
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
 
     log('!===== Trigger parameter changed: ${updatedAutomation.trigger.parameters.length} =====');
+    emit(AutomationCreationDirty(
+        state.cleanedAutomation, updatedAutomation, state.previews));
+  }
+
+  void _onActionIdentifierChanged(
+      AutomationCreationActionIdentifierChanged event,
+      Emitter<AutomationCreationState> emit) {
+    final List<AutomationAction> updatedActions =
+        List.from(state.dirtyAutomation.actions);
+    if (updatedActions.length <= event.index) {
+      updatedActions.add(AutomationAction(
+        identifier: event.identifier,
+        providers: [],
+        parameters: [],
+      ));
+    } else {
+      updatedActions[event.index] = updatedActions[event.index].copyWith(
+        identifier: event.identifier,
+      );
+    }
+
+    final updatedAutomation =
+        state.dirtyAutomation.copyWith(actions: updatedActions);
     emit(AutomationCreationDirty(
         state.cleanedAutomation, updatedAutomation, state.previews));
   }
