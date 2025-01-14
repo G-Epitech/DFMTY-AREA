@@ -43,6 +43,11 @@ services:
       - .env
     networks:
       - zeus-network
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "node_health_check" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   zeus-api-web:
     container_name: zeus-api-web
