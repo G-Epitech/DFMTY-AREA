@@ -5,21 +5,24 @@ using Zeus.Api.Domain.Integrations.Properties;
 using Zeus.Api.Presentation.Web.Contracts.Integrations;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Discord;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Notion;
+using Zeus.Api.Presentation.Web.Contracts.Integrations.OpenAi;
 
 namespace Zeus.Api.Presentation.Web.Mapping;
 
 public static class IntegrationPropertiesMappingExtention
 {
     public static GetIntegrationPropertiesResponse MapIntegrationPropertiesResponse(this IMapper mapper,
-        GetIntegrationQueryResult integrationQueryResult)
+        GetIntegrationWithPropertiesQueryResult result)
     {
-        return integrationQueryResult.Properties switch
+        return result.Properties switch
         {
             IntegrationDiscordProperties discord =>
                 mapper.Map<GetIntegrationDiscordPropertiesResponse>(discord),
             IntegrationNotionProperties notion =>
                 mapper.Map<GetIntegrationNotionPropertiesResponse>(notion),
-            _ => throw new ArgumentOutOfRangeException(nameof(integrationQueryResult.Properties))
+            IntegrationOpenAiProperties openAi =>
+                mapper.Map<GetIntegrationOpenAiPropertiesResponse>(openAi),
+            _ => throw new ArgumentOutOfRangeException(nameof(result.Properties))
         };
     }
 }

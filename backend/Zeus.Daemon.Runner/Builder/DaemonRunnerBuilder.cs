@@ -9,12 +9,6 @@ namespace Zeus.Daemon.Runner.Builder;
 
 public class DaemonRunnerBuilder
 {
-    private string[] Args { get; set; } = [];
-
-    public IServiceCollection Services { get; } = new ServiceCollection();
-
-    public IConfigurationManager Configuration { get; private set; }
-
     private DaemonRunnerBuilder()
     {
         Configuration = BuildConfiguration();
@@ -25,6 +19,12 @@ public class DaemonRunnerBuilder
         });
         Services.AddEnvironmentProvider(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production");
     }
+
+    private string[] Args { get; set; } = [];
+
+    public IServiceCollection Services { get; } = new ServiceCollection();
+
+    public IConfigurationManager Configuration { get; private set; }
 
     public static DaemonRunnerBuilder CreateBuilder(string[] args)
     {

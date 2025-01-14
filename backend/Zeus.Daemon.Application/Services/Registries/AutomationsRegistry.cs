@@ -1,6 +1,7 @@
 ﻿using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Interfaces.Registries;
+using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services.Registries;
 
@@ -14,14 +15,21 @@ public class AutomationsRegistry : IAutomationsRegistry
         _triggersRegistry = triggersRegistry;
     }
 
-    public async Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
+    public async Task<bool> RegisterAsync(RegistrableAutomation registrable, CancellationToken cancellationToken = default)
     {
-        var valid = !_automations.ContainsKey(automation.Id)
-                    && await _triggersRegistry.RegisterAsync(automation, cancellationToken);
+        var automation = registrable.Automation;
+        var exists = _automations.ContainsKey(automation.Id);
+
+        if (exists && !await RemoveAsync(registrable.Automation.Id, cancellationToken))
+        {
+            return false;
+        }
+
+        var valid = await _triggersRegistry.RegisterAsync(registrable, cancellationToken);
 
         if (valid)
         {
-            _automations.Add(automation.Id, automation);
+            _automations[automation.Id] = automation;
         }
         return valid;
     }
@@ -30,7 +38,7 @@ public class AutomationsRegistry : IAutomationsRegistry
     {
         var valid = _automations.TryGetValue(automationId, out var automation)
                     && await _triggersRegistry.RemoveAsync(automation, cancellationToken);
-        
+
         if (valid)
         {
             _automations.Remove(automationId);
@@ -41,5 +49,12 @@ public class AutomationsRegistry : IAutomationsRegistry
     public Automation? GetAutomation(AutomationId automationId)
     {
         return _automations.GetValueOrDefault(automationId);
+    }
+
+    public IReadOnlyList<Automation> GetAutomations(IReadOnlyList<AutomationId> automationIds)
+    {
+        return _automations.Values
+            .Where(k => automationIds.Contains(k.Id))
+            .ToList();
     }
 }

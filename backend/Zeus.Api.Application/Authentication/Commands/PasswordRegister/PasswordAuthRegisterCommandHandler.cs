@@ -4,19 +4,19 @@ using MediatR;
 
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Repositories;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Api.Domain.Errors;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
-using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Application.Authentication.Commands.PasswordRegister;
 
 public class PasswordAuthRegisterCommandHandler : IRequestHandler<PasswordAuthRegisterCommand, ErrorOr<PasswordAuthRegisterCommandResult>>
 {
+    private readonly IAuthenticationMethodWriteRepository _authenticationMethodWriteRepository;
     private readonly IJwtGenerator _jwtGenerator;
     private readonly IUserReadRepository _userReadRepository;
     private readonly IUserWriteRepository _userWriteRepository;
-    private readonly IAuthenticationMethodWriteRepository _authenticationMethodWriteRepository;
 
     public PasswordAuthRegisterCommandHandler(IJwtGenerator jwtGenerator, IUserReadRepository userReadRepository,
         IUserWriteRepository userWriteRepository,

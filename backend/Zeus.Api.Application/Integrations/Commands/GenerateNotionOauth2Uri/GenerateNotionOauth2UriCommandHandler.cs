@@ -12,8 +12,8 @@ namespace Zeus.Api.Application.Integrations.Commands.GenerateNotionOauth2Uri;
 public class GenerateNotionOauth2UriCommandHandler : IRequestHandler<GenerateNotionOauth2UriCommand,
     ErrorOr<GenerateNotionOauth2UriCommandResult>>
 {
-    private readonly ISender _sender;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
+    private readonly ISender _sender;
 
     public GenerateNotionOauth2UriCommandHandler(ISender sender,
         IIntegrationsSettingsProvider integrationsSettingsProvider)

@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
@@ -23,6 +24,7 @@ public class DiscordSendMessageActionHandler
         AutomationId automationId,
         [FromParameters] string channelId,
         [FromParameters] string content,
+        [FromIntegrations] DiscordIntegration? discordIntegration,
         CancellationToken cancellationToken
     )
     {

@@ -25,6 +25,7 @@ import {
   heroInformationCircle,
   heroChatBubbleOvalLeftEllipsis,
   heroPlus,
+  heroArrowLeftStartOnRectangle,
 } from '@ng-icons/heroicons/outline';
 import {
   heroSparklesSolid,
@@ -69,6 +70,7 @@ export const appConfig: ApplicationConfig = {
       heroPlus,
       heroChartBarSquareSolid,
       heroArrowPathRoundedSquareSolid,
+      heroArrowLeftStartOnRectangle,
     }),
     provideAnimations(),
     provideToastr({

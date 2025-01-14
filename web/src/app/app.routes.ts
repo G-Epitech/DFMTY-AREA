@@ -1,7 +1,8 @@
-import { MainLayoutComponent } from '@features/layout/main.layout.component';
-import { authGuard } from '@app/guards';
 import { PublicLayoutComponent } from '@features/public/public-layout/public-layout.component';
 import { Routes } from '@angular/router';
+import { authGuard, stateGuard } from '@app/guards';
+import { MainLayoutComponent } from '@features/layout/main.layout.component';
+import { GOOGLE_STATE_CODE_KEY } from '@common/constants';
 
 export const routes: Routes = [
   {
@@ -98,11 +99,34 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'oauth2/discord',
-    loadComponent: () =>
-      import('@features/oauth2/discord/discord.oauth2.page').then(
-        m => m.DiscordOAuth2PageComponent
-      ),
-    pathMatch: 'full',
+    path: 'oauth2',
+    children: [
+      {
+        path: 'discord',
+        loadComponent: () =>
+          import('@features/oauth2/discord/discord.oauth2.page').then(
+            m => m.DiscordOAuth2PageComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
+        path: 'notion',
+        loadComponent: () =>
+          import('@features/oauth2/notion/notion.oauth2.page').then(
+            m => m.NotionOauth2PageComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
+        path: 'google',
+        loadComponent: () =>
+          import('@features/oauth2/google/google.oauth2.page').then(
+            m => m.GoogleOauth2PageComponent
+          ),
+        pathMatch: 'full',
+        canActivate: [stateGuard],
+        data: { stateKey: GOOGLE_STATE_CODE_KEY, redirectUrl: '/login' },
+      },
+    ],
   },
 ];

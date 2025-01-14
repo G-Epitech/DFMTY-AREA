@@ -1,4 +1,4 @@
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
 
 namespace Zeus.Api.Application.Interfaces.Repositories;
 

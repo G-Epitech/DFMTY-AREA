@@ -4,10 +4,6 @@ namespace Zeus.Api.Domain.Integrations.Discord.ValueObjects;
 
 public class DiscordUserId : ValueObject
 {
-    public ulong Value { get; }
-
-    public string ValueString => Value.ToString();
-
     public DiscordUserId(ulong value)
     {
         Value = value;
@@ -17,6 +13,10 @@ public class DiscordUserId : ValueObject
     {
         Value = ulong.Parse(value);
     }
+
+    public ulong Value { get; }
+
+    public string ValueString => Value.ToString();
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

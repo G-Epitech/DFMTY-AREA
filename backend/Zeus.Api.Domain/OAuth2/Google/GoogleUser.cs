@@ -5,12 +5,6 @@ namespace Zeus.Api.Domain.OAuth2.Google;
 
 public sealed class GoogleUser : Entity<GoogleUserId>
 {
-    public string Email { get; private set; }
-    public string Name { get; private set; }
-    public string GivenName { get; private set; }
-    public string FamilyName { get; private set; }
-    public Uri Picture { get; private set; }
-
     private GoogleUser(
         GoogleUserId id,
         string email,
@@ -25,6 +19,12 @@ public sealed class GoogleUser : Entity<GoogleUserId>
         FamilyName = familyName;
         Picture = picture;
     }
+
+    public string Email { get; private set; }
+    public string Name { get; private set; }
+    public string GivenName { get; private set; }
+    public string FamilyName { get; private set; }
+    public Uri Picture { get; private set; }
 
     public static GoogleUser Create(
         GoogleUserId id,

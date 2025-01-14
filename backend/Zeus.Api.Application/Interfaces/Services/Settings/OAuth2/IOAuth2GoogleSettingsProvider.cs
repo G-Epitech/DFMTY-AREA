@@ -28,9 +28,7 @@ public interface IOAuth2GoogleWebClientSettingsProvider : IOAuth2GoogleClientSet
 }
 
 public interface IOAuth2GoogleAndroidClientSettingsProvider : IOAuth2GoogleClientSettingsProvider
-{
-}
+{ }
 
 public interface IOAuth2GoogleIosClientSettingsProvider : IOAuth2GoogleClientSettingsProvider
-{
-}
+{ }

@@ -18,9 +18,9 @@ namespace Zeus.Api.Presentation.Web.Controllers.Authentication.Oauth2;
 [Route("auth/oauth2/google")]
 public class GoogleOAuth2Controller : ApiController
 {
+    private readonly IMapper _mapper;
     private readonly IOAuth2SettingsProvider _oAuth2SettingsProvider;
     private readonly ISender _sender;
-    private readonly IMapper _mapper;
 
     public GoogleOAuth2Controller(IOAuth2SettingsProvider oAuth2SettingsProvider, ISender sender, IMapper mapper)
     {
