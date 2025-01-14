@@ -86,20 +86,24 @@ class IntegrationRepository {
     //       errors: response.errors,
     //     );
     final json = {
-      "page": {
-        "pageNumber": 1,
-        "pageSize": 10,
-        "totalPages": 1,
-        "totalRecords": 3,
-        "data": [
-          {
-            "name": "Discord",
-            "iconUri": 'assets/icons/discord.svg',
-            "color": "#7289da",
-            "url": "discord"
-          }
-        ]
-      },
+      "pageNumber": 1,
+      "pageSize": 10,
+      "totalPages": 1,
+      "totalRecords": 3,
+      "data": [
+        {
+          "name": "Discord",
+          "iconUri": 'assets/icons/discord.svg',
+          "color": "#7289da",
+          "url": "discord"
+        },
+        {
+          "name": "Notion",
+          "iconUri": 'assets/icons/notion.svg',
+          "color": "#000000",
+          "url": "notion"
+        }
+      ]
     };
     return Response<OutGetIntegrationNamesDTO>(
       statusCode: Codes.ok,

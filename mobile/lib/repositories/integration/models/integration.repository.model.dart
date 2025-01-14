@@ -1,9 +1,10 @@
 import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/integration/models/integrations/notion.integrations.dart';
 import 'package:triggo/utils/json.dart';
 
 class IntegrationType {
   static const String discord = 'Discord';
-  static const String gmail = 'Gmail';
+  static const String notion = 'Notion';
 }
 
 abstract class IntegrationPropertiesDTO implements Json {
@@ -43,6 +44,8 @@ class IntegrationDTO implements Json {
       case IntegrationType.discord:
         properties = DiscordPropertiesDTO.fromJson(json['properties']);
         break;
+      case IntegrationType.notion:
+        properties = NotionPropertiesDTO.fromJson(json['properties']);
       default:
         throw Exception('Unknown integration type');
     }
