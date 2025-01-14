@@ -39,29 +39,6 @@ public class DiscordService : IDiscordService
         Convert.ToBase64String(Encoding.UTF8.GetBytes(
             $"{_integrationsSettingsProvider.Discord.ClientId}:{_integrationsSettingsProvider.Discord.ClientSecret}")));
 
-    private static AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
-        new AuthenticationHeaderValue(
-            "Bearer",
-            accessToken.Value);
-
-    private static Uri GetUserAvatarUri(ulong userId, string? avatarHash)
-    {
-        if (avatarHash is null)
-        {
-            var index = (userId >> 22) % 6;
-            return new Uri($"https://cdn.discordapp.com/embed/avatars/{index}.png");
-        }
-
-        return new Uri($"https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.png");
-    }
-
-    private static Uri GetGuildAvatarUri(string guildId, string? iconHash)
-    {
-        return iconHash is null
-            ? new Uri("https://cdn.discordapp.com/embed/avatars/default.png")
-            : new Uri($"https://cdn.discordapp.com/icons/{guildId}/{iconHash}.png");
-    }
-
     public async Task<ErrorOr<DiscordUserTokens>> GetTokensFromOauth2Async(string code)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderClientValue;
@@ -180,5 +157,28 @@ public class DiscordService : IDiscordService
             new DiscordChannelId(channel.Id),
             channel.Name ?? "Unknown",
             (DiscordChannelType)channel.Type)).ToList();
+    }
+
+    private static AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue(
+            "Bearer",
+            accessToken.Value);
+
+    private static Uri GetUserAvatarUri(ulong userId, string? avatarHash)
+    {
+        if (avatarHash is null)
+        {
+            var index = (userId >> 22) % 6;
+            return new Uri($"https://cdn.discordapp.com/embed/avatars/{index}.png");
+        }
+
+        return new Uri($"https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.png");
+    }
+
+    private static Uri GetGuildAvatarUri(string guildId, string? iconHash)
+    {
+        return iconHash is null
+            ? new Uri("https://cdn.discordapp.com/embed/avatars/default.png")
+            : new Uri($"https://cdn.discordapp.com/icons/{guildId}/{iconHash}.png");
     }
 }

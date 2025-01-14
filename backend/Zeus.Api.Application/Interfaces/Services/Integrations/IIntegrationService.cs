@@ -1,9 +1,10 @@
 using ErrorOr;
 
 using Zeus.Api.Domain.Integrations.Properties;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 namespace Zeus.Api.Application.Interfaces.Services.Integrations;
+
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 
 public interface IIntegrationService
 {

@@ -13,8 +13,8 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Discord;
 [Route("integrations/discord")]
 public class DiscordCreationController : ApiController
 {
-    private readonly ISender _sender;
     private readonly IAuthUserContext _authUserContext;
+    private readonly ISender _sender;
 
     public DiscordCreationController(ISender sender, IAuthUserContext authUserContext)
     {

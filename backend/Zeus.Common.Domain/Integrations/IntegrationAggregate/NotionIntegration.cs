@@ -11,7 +11,7 @@ namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 public sealed class NotionIntegration : Integration
 {
-    private NotionIntegration(
+    public NotionIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,

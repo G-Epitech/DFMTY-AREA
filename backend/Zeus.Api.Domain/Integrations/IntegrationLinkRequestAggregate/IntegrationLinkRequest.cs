@@ -10,6 +10,23 @@ namespace Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
 {
+    private IntegrationLinkRequest(
+        IntegrationLinkRequestId id,
+        UserId ownerId,
+        IntegrationType integrationType,
+        DateTime updatedAt,
+        DateTime createdAt)
+        : base(id, updatedAt, createdAt)
+    {
+        OwnerId = ownerId;
+        Type = integrationType;
+    }
+
+#pragma warning disable CS8618
+    private IntegrationLinkRequest()
+    {
+    }
+#pragma warning restore CS8618
     /// <summary>
     /// The user that owns the integration link request.
     /// </summary>
@@ -30,22 +47,4 @@ public class IntegrationLinkRequest : AggregateRoot<IntegrationLinkRequestId>
             DateTime.UtcNow
         );
     }
-
-    private IntegrationLinkRequest(
-        IntegrationLinkRequestId id,
-        UserId ownerId,
-        IntegrationType integrationType,
-        DateTime updatedAt,
-        DateTime createdAt)
-        : base(id, updatedAt, createdAt)
-    {
-        OwnerId = ownerId;
-        Type = integrationType;
-    }
-
-#pragma warning disable CS8618
-    private IntegrationLinkRequest()
-    {
-    }
-#pragma warning restore CS8618
 }

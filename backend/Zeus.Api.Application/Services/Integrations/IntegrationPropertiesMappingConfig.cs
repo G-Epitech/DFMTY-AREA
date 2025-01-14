@@ -25,7 +25,7 @@ public class IntegrationPropertiesMappingConfig : IRegister
             .Map(dest => dest.Name, src => src.Owner.Name)
             .Map(dest => dest.Email, src => src.Owner.Email)
             .Map(dest => dest.WorkspaceName, src => src.WorkspaceName);
-        
+
         config.NewConfig<OpenAiUser, IntegrationOpenAiProperties>()
             .Map(dest => dest.OwnerId, src => src.Id.Value)
             .Map(dest => dest.OwnerName, src => src.Name)

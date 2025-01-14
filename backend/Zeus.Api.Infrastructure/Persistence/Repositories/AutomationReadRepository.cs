@@ -11,12 +11,12 @@ public sealed class AutomationReadRepository : IAutomationReadRepository
 {
     private readonly ZeusDbContext _context;
 
-    private IAsyncQueryable<Automation> Automations => _context.Automations.AsAsyncEnumerable().AsAsyncQueryable();
-
     public AutomationReadRepository(ZeusDbContext context)
     {
         _context = context;
     }
+
+    private IAsyncQueryable<Automation> Automations => _context.Automations.AsAsyncEnumerable().AsAsyncQueryable();
 
     public async Task<Automation?> GetByIdAsync(AutomationId id, CancellationToken cancellationToken = default)
     {

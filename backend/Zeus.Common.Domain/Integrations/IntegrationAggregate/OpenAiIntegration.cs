@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
@@ -5,9 +7,10 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 public sealed class OpenAiIntegration : Integration
 {
-    private OpenAiIntegration(
+    public OpenAiIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,

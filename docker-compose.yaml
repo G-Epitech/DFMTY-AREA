@@ -32,6 +32,23 @@ services:
       zeus-db:
         condition: service_healthy
 
+  zeus-message-broker:
+    container_name: zeus-message-broker
+    restart: always
+    image: rabbitmq:4-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+    networks:
+      - zeus-network
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "node_health_check" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   zeus-api-web:
     container_name: zeus-api-web
     restart: always
@@ -47,7 +64,9 @@ services:
     depends_on:
       zeus-api-migrations:
         condition: service_completed_successfully
-  
+      zeus-message-broker:
+        condition: service_healthy
+
   zeus-api-grpc:
     container_name: zeus-api-grpc
     restart: always
@@ -59,7 +78,10 @@ services:
     networks:
       - zeus-network
     depends_on:
-      - zeus-api-web
+      zeus-api-migrations:
+        condition: service_completed_successfully
+      zeus-message-broker:
+        condition: service_healthy
 
   zeus-daemon-runner:
     container_name: zeus-daemon-runner
@@ -73,6 +95,7 @@ services:
       - zeus-network
     depends_on:
       - zeus-api-grpc
+      - zeus-message-broker
 
 volumes:
   zeus-db-data:

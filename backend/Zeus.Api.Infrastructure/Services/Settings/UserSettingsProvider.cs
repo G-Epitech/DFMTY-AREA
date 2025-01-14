@@ -11,6 +11,6 @@ public class UserSettingsProvider : IUserSettingsProvider
     {
         DefaultPicture = settings.Value.DefaultPicture;
     }
-    
+
     public string DefaultPicture { get; }
 }

@@ -33,6 +33,6 @@ public class ValidateBehavior<TMessage, TResponse> :
         }
 
         var errors = validationResult.Errors.ConvertAll(e => Error.Validation(e.PropertyName, e.ErrorMessage));
-        return (dynamic) errors;
+        return (dynamic)errors;
     }
 }

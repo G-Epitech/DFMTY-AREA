@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -5,21 +6,23 @@ using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 
 using Zeus.Daemon.Application.Discord.Services;
+using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Domain.Discord.Enums;
 
 namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
-public class DiscordWebSocketService : IDiscordWebSocketService
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
 {
-    private readonly ILogger _logger;
-    private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
-    private readonly ClientWebSocket _webSocket;
-    private CancellationToken? _cancellationToken;
-    private int _heartbeatInterval = 0;
-
     private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
         _eventHandlers = [];
+
+    private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
+    private readonly ILogger _logger;
+    private readonly ClientWebSocket _webSocket;
+    private CancellationToken? _cancellationToken;
+    private int _heartbeatInterval;
 
 
     public DiscordWebSocketService(
@@ -40,6 +43,11 @@ public class DiscordWebSocketService : IDiscordWebSocketService
         _logger.LogInformation("Discord WebSocket connected.");
 
         await ListenAsync(_cancellationToken ?? CancellationToken.None);
+    }
+
+    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
+    {
+        _eventHandlers.Add((eventType, handler));
     }
 
     private async Task ListenAsync(CancellationToken cancellationToken)
@@ -138,15 +146,20 @@ public class DiscordWebSocketService : IDiscordWebSocketService
         }
     }
 
-    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
-    {
-        _eventHandlers.Add((eventType, handler));
-    }
-
     private async Task SendAsync(string message)
     {
         var messageBytes = Encoding.UTF8.GetBytes(message);
         await _webSocket.SendAsync(new ArraySegment<byte>(messageBytes), WebSocketMessageType.Text, true,
             _cancellationToken ?? CancellationToken.None);
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        return ConnectAsync(cancellationToken);
+    }
+
+    public Task StopAsync()
+    {
+        return _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
     }
 }

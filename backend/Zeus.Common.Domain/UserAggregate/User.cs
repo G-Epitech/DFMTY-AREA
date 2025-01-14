@@ -22,6 +22,12 @@ public sealed class User : AggregateRoot<UserId>
         Email = email;
     }
 
+#pragma warning disable CS8618
+    private User()
+    {
+    }
+#pragma warning restore CS8618
+
     public string FirstName { get; }
     public string LastName { get; }
     public string Email { get; }
@@ -40,10 +46,4 @@ public sealed class User : AggregateRoot<UserId>
             DateTime.UtcNow
         );
     }
-
-#pragma warning disable CS8618
-    private User()
-    {
-    }
-#pragma warning restore CS8618
 }
