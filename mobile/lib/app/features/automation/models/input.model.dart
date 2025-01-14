@@ -5,3 +5,9 @@ enum AutomationInputEnum {
   radio,
   date,
 }
+
+enum AutomationParameterNeedOptions {
+  yes,
+  no,
+  blocked,
+}

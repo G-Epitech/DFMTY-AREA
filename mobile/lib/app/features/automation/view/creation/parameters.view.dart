@@ -13,6 +13,7 @@ import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
+import 'package:triggo/mediator/integrations/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationCreationParametersView extends StatefulWidget {
@@ -269,27 +270,41 @@ class _List extends StatelessWidget {
                 parameterIdentifier,
                 state.previews,
                 false);
-            final List<AutomationRadioModel>? options = getOptions(
+            final AutomationParameterNeedOptions options = haveOptions(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
                 triggerOrActionIdentifier,
                 parameterIdentifier);
+            log("Options: $options");
             return AutomationLabelParameterWidget(
                 title: title,
                 previewData: previewData,
-                disabled: options != null && options.isEmpty,
-                input: options != null
+                disabled: options == AutomationParameterNeedOptions.blocked,
+                input: options != AutomationParameterNeedOptions.no
                     ? AutomationCreationInputView(
-                        type: AutomationInputEnum.radio,
+                        type: options == AutomationParameterNeedOptions.yes
+                            ? AutomationInputEnum.radio
+                            : AutomationInputEnum.text,
                         label: title,
                         routeToGoWhenSave: RoutesNames.popOneTime,
                         value: selectedValue,
-                        options: options,
-                        onSave: (value) {
-                          final humanReadableValue = options
-                              .firstWhere((element) => element.value == value)
-                              .title;
+                        humanReadableValue: previewData,
+                        getOptions: () async {
+                          final integrationMediator =
+                              RepositoryProvider.of<IntegrationMediator>(
+                                  context);
+                          final options = await getOptionsFromMediator(
+                              state.dirtyAutomation,
+                              type,
+                              integrationIdentifier,
+                              triggerOrActionIdentifier,
+                              parameterIdentifier,
+                              integrationMediator);
+                          return options;
+                        },
+                        onSave: (value, humanReadableValue) {
+                          log("Human: $humanReadableValue");
                           if (type == AutomationChoiceEnum.trigger) {
                             context.read<AutomationCreationBloc>().add(
                                 AutomationCreationPreviewUpdated(
@@ -328,13 +343,7 @@ class _List extends StatelessWidget {
                         title: title,
                         type: type,
                         automation: state.cleanedAutomation,
-                        onSave: (value, valueType) {
-                          final humanReadableValue = options != null
-                              ? options
-                                  .firstWhere(
-                                      (element) => element.value == value)
-                                  .title
-                              : value;
+                        onSave: (value, valueType, humanReadableValue) {
                           if (type == AutomationChoiceEnum.trigger) {
                             context.read<AutomationCreationBloc>().add(
                                 AutomationCreationPreviewUpdated(
@@ -380,7 +389,7 @@ class _List extends StatelessWidget {
 
 class AutomationParameterChoice extends StatelessWidget {
   final String title;
-  final void Function(String, String) onSave;
+  final void Function(String, String, String) onSave;
   final AutomationChoiceEnum type;
   final Automation automation;
   final List<AutomationRadioModel>? options;
@@ -426,8 +435,8 @@ class AutomationParameterChoice extends StatelessWidget {
                 type: AutomationInputEnum.text,
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
-                onSave: (value) {
-                  onSave(value, 'raw');
+                onSave: (value, humanReadableValue) {
+                  onSave(value, 'raw', humanReadableValue);
                 },
                 value: selectedValue,
               ),
@@ -443,7 +452,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String, String) onSave;
+  final void Function(String, String, String) onSave;
   final String? value;
 
   const AutomationParameterFromActions({
@@ -513,8 +522,8 @@ class AutomationParameterFromActions extends StatelessWidget {
                       label: triggerName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
-                      onSave: (value) {
-                        onSave(value, 'var');
+                      onSave: (value, humanReadableValue) {
+                        onSave(value, 'var', humanReadableValue);
                       },
                     ),
                   );
@@ -563,8 +572,8 @@ class AutomationParameterFromActions extends StatelessWidget {
                       label: actionsName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
-                      onSave: (value) {
-                        onSave(value, 'var');
+                      onSave: (value, humanReadableValue) {
+                        onSave(value, 'var', humanReadableValue);
                       },
                     ),
                   );
@@ -653,12 +662,13 @@ String? replaceByHumanReadable(
   return previews[key];
 }
 
-List<AutomationRadioModel>? getOptions(
+Future<List<AutomationRadioModel>> getOptionsFromMediator(
     Automation automation,
     AutomationChoiceEnum type,
     String integrationName,
     String propertyIdentifier,
-    String parameterIdentifier) {
+    String parameterIdentifier,
+    IntegrationMediator integrationMediator) async {
   List<AutomationRadioModel> options = [];
 
   switch (type) {
@@ -666,31 +676,20 @@ List<AutomationRadioModel>? getOptions(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'MessageReceivedInChannel') {
           if (parameterIdentifier == 'GuildId') {
-            options = List.generate(
-                30,
-                (index) => AutomationRadioModel(
-                      title: 'Guild ${index + 1}',
-                      description: 'Guild ${index + 1} description',
-                      value: '${index + 1}',
-                    ));
+            final integrationId = automation.trigger.providers[0];
 
-            return options;
+            return await integrationMediator.discord
+                .getGuildsRadio(integrationId);
           }
           if (parameterIdentifier == 'ChannelId') {
             if (automation.trigger.parameters.isEmpty) {
-              log("====== Trigger parameters is empty ======");
               return [];
             }
+            final integrationId = automation.trigger.providers[0];
             final guildId = automation.trigger.parameters[0].value;
-            options = List.generate(
-                30,
-                (index) => AutomationRadioModel(
-                      title: 'Channel ${index + 1}',
-                      description: 'Channel ${index + 1} description',
-                      value: '${index + 1}',
-                    ));
 
-            return options;
+            return await integrationMediator.discord
+                .getChannelsRadio(integrationId, guildId);
           }
         }
       }
@@ -699,26 +698,53 @@ List<AutomationRadioModel>? getOptions(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'ChannelId') {
-            options = [
-              AutomationRadioModel(
-                title: 'Channel 1',
-                description: 'Channel 1 description',
-                value: '1',
-              ),
-              AutomationRadioModel(
-                title: 'Channel 2',
-                description: 'Channel 2 description',
-                value: '2',
-              ),
-            ];
+            final integrationId = automation.trigger.providers[0];
+            final guildId = automation.trigger.parameters[0].value;
 
-            return options;
+            return await integrationMediator.discord
+                .getChannelsRadio(integrationId, guildId);
           }
         }
       }
       break;
   }
-  return null;
+  return options;
+}
+
+AutomationParameterNeedOptions haveOptions(
+    Automation automation,
+    AutomationChoiceEnum type,
+    String integrationName,
+    String propertyIdentifier,
+    String parameterIdentifier) {
+  switch (type) {
+    case AutomationChoiceEnum.trigger:
+      if (integrationName == 'discord') {
+        if (propertyIdentifier == 'MessageReceivedInChannel') {
+          if (parameterIdentifier == 'GuildId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+          if (parameterIdentifier == 'ChannelId') {
+            if (automation.trigger.parameters.isEmpty) {
+              return AutomationParameterNeedOptions.blocked;
+            }
+
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+      }
+      break;
+    case AutomationChoiceEnum.action:
+      if (integrationName == 'discord') {
+        if (propertyIdentifier == 'SendMessageToChannel') {
+          if (parameterIdentifier == 'ChannelId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+      }
+      break;
+  }
+  return AutomationParameterNeedOptions.no;
 }
 
 List<AutomationRadioModel> getOptionsFromFacts(

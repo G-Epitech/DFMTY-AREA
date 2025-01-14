@@ -31,7 +31,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                     type: AutomationInputEnum.text,
                     label: 'Label',
                     placeholder: 'Enter a label',
-                    onSave: (value) {
+                    onSave: (value, humanValue) {
                       context
                           .read<AutomationCreationBloc>()
                           .add(AutomationCreationLabelChanged(label: value));
@@ -52,7 +52,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
                     placeholder: 'Enter a description',
-                    onSave: (value) {
+                    onSave: (value, humanValue) {
                       context.read<AutomationCreationBloc>().add(
                           AutomationCreationDescriptionChanged(
                               description: value));

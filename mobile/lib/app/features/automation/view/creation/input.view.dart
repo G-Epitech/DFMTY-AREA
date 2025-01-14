@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/models/radio.model.dart';
@@ -13,9 +11,11 @@ class AutomationCreationInputView extends StatefulWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String) onSave;
+  final void Function(String, String) onSave;
   final String? value;
+  final String? humanReadableValue;
   final String routeToGoWhenSave;
+  final Future<List<AutomationRadioModel>> Function()? getOptions;
 
   const AutomationCreationInputView({
     super.key,
@@ -25,7 +25,9 @@ class AutomationCreationInputView extends StatefulWidget {
     this.options,
     required this.onSave,
     this.value,
+    this.humanReadableValue,
     required this.routeToGoWhenSave,
+    this.getOptions,
   });
 
   @override
@@ -36,11 +38,13 @@ class AutomationCreationInputView extends StatefulWidget {
 class _AutomationCreationInputViewState
     extends State<AutomationCreationInputView> {
   late String localValue;
+  late String humanReadableValue;
 
   @override
   void initState() {
     super.initState();
     localValue = widget.value ?? "";
+    humanReadableValue = widget.humanReadableValue ?? "";
   }
 
   @override
@@ -56,6 +60,7 @@ class _AutomationCreationInputViewState
             _OKButton(
               onSave: widget.onSave,
               value: localValue,
+              humanReadableValue: humanReadableValue,
               routeToGoWhenSave: widget.routeToGoWhenSave,
             ),
           ],
@@ -91,13 +96,15 @@ class _AutomationCreationInputViewState
       case AutomationInputEnum.radio:
         return _RadioInput(
           label: widget.label,
-          options: widget.options!,
+          options: widget.options,
           defaultValue: localValue,
-          onChanged: (value) {
+          onChanged: (value, humanValue) {
             setState(() {
               localValue = value;
+              humanReadableValue = humanValue;
             });
           },
+          getOptions: widget.getOptions,
         );
       default:
         return Container();
@@ -202,13 +209,15 @@ class _TextAreaInputState extends State<_TextAreaInput> {
 }
 
 class _OKButton extends StatelessWidget {
-  final void Function(String) onSave;
+  final void Function(String, String) onSave;
   final String value;
+  final String humanReadableValue;
   final String routeToGoWhenSave;
 
   const _OKButton({
     required this.onSave,
     required this.value,
+    required this.humanReadableValue,
     required this.routeToGoWhenSave,
   });
 
@@ -222,7 +231,8 @@ class _OKButton extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             onPressed: () {
-              onSave(value);
+              print("Human readable value on save: $humanReadableValue");
+              onSave(value, humanReadableValue);
               if (routeToGoWhenSave == RoutesNames.popOneTime) {
                 Navigator.of(context).pop();
               } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
@@ -250,15 +260,17 @@ class _OKButton extends StatelessWidget {
 
 class _RadioInput extends StatefulWidget {
   final String label;
-  final List<AutomationRadioModel> options;
-  final void Function(String) onChanged;
+  final List<AutomationRadioModel>? options;
+  final void Function(String, String) onChanged;
   final String defaultValue;
+  final Future<List<AutomationRadioModel>> Function()? getOptions;
 
   const _RadioInput({
     required this.label,
-    required this.options,
+    this.options,
     required this.onChanged,
     required this.defaultValue,
+    this.getOptions,
   });
 
   @override
@@ -267,90 +279,122 @@ class _RadioInput extends StatefulWidget {
 
 class _RadioInputState extends State<_RadioInput> {
   late String localValue;
+  late String humanReadableValue;
+  late Future<List<AutomationRadioModel>> optionsFuture;
 
   @override
   void initState() {
     super.initState();
     localValue = widget.defaultValue;
+
+    optionsFuture = widget.getOptions != null
+        ? widget.getOptions!()
+        : Future.value(widget.options ?? []);
   }
 
   @override
   Widget build(BuildContext context) {
-    log("Local value: $localValue");
-    return SingleChildScrollView(
-      child: Column(
-        children: widget.options.map((option) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              setState(() {
-                localValue = option.value;
-                widget.onChanged(option.value);
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 8.0),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: localValue == option.value
-                      ? Theme.of(context).colorScheme.primary
-                      : Colors.transparent,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 22,
-                    width: 22,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: localValue == option.value
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.grey.shade400,
-                        width: 2,
-                      ),
-                    ),
-                    child: localValue == option.value
-                        ? Center(
-                            child: Container(
-                              height: 12,
-                              width: 12,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          )
-                        : null,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(option.title,
-                            style: Theme.of(context).textTheme.labelLarge),
-                        Text(option.description,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(
-                                  fontSize: 12,
-                                )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+    return FutureBuilder<List<AutomationRadioModel>>(
+      future: optionsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Erreur lors du chargement des options',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           );
-        }).toList(),
-      ),
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              'Aucune option disponible',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          );
+        }
+
+        final options = snapshot.data!;
+        return SingleChildScrollView(
+          child: Column(
+            children: options.map((option) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  setState(() {
+                    localValue = option.value;
+                    humanReadableValue = option.title;
+                    print("Local value: ${option.title}");
+                    widget.onChanged(option.value, option.title);
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: localValue == option.value
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.transparent,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 22,
+                        width: 22,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: localValue == option.value
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey.shade400,
+                            width: 2,
+                          ),
+                        ),
+                        child: localValue == option.value
+                            ? Center(
+                                child: Container(
+                                  height: 12,
+                                  width: 12,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(option.title,
+                                style: Theme.of(context).textTheme.labelLarge),
+                            Text(option.description,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      fontSize: 12,
+                                    )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 }
