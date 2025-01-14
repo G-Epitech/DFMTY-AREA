@@ -10,6 +10,7 @@ using Zeus.Api.Application.Automations.Query.GetAutomation;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Automations;
 using Zeus.Common.Domain.ProvidersSettings;
+using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Automations;
 
@@ -32,15 +33,23 @@ public class AutomationController : ApiController
 
     [HttpPost(Name = "CreateAutomation")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateAutomation()
+    public async Task<IActionResult> CreateAutomation(CreateAutomationRequest request)
     {
-        var authUser = _authUserContext.User;
-        if (authUser is null)
+        var userId = _authUserContext.User is not null ? new UserId(_authUserContext.User.Id) : null;
+        if (userId is null)
         {
             return Unauthorized();
         }
 
-        var command = new CreateAutomationCommand(authUser.Id);
+        var command = new CreateAutomationCommand(
+            userId,
+            request.Label,
+            request.Description,
+            _mapper.Map<CreateAutomationTriggerCommand>(request.Trigger),
+            request.Actions.Select(a => _mapper.Map<CreateAutomationActionCommand>(a)).ToList(),
+            request.Enabled
+        );
+        
         var automation = await _sender.Send(command);
 
         return automation.Match(
