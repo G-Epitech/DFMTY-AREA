@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 
 import 'integrations_event.dart';
 import 'integrations_state.dart';

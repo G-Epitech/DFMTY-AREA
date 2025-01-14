@@ -7,7 +7,7 @@ import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/mediator/user.mediator.dart';
 import 'package:triggo/repositories/authentication/authentication.repository.dart';
 import 'package:triggo/repositories/authentication/google.repository.dart';
