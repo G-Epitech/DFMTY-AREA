@@ -2,4 +2,5 @@ export 'package:triggo/app/features/integration/widgets/integrations/discord.int
 
 class IntegrationNames {
   static const String discord = 'Discord';
+  static const String notion = 'Notion';
 }

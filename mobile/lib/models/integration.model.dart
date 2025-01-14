@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/repositories/integration/models/integration.repository.model.dart';
 
 abstract class Integration {
@@ -12,6 +13,8 @@ abstract class Integration {
     switch (dto.type) {
       case IntegrationType.discord:
         return DiscordIntegration.fromDTO(dto);
+      case IntegrationType.notion:
+        return NotionIntegration.fromDTO(dto);
       default:
         throw Exception('Unknown integration type');
     }
