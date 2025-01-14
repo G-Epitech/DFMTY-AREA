@@ -5,29 +5,29 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { IntegrationModel, IntegrationNotionProps } from '@models/integration';
+import { IntegrationModel, IntegrationOpenaiProps } from '@models/integration';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'tr-integration-linked-notion',
+  selector: 'tr-integration-linked-openai',
   imports: [NgOptimizedImage, NgStyle],
-  templateUrl: './integration-linked-notion.component.html',
+  templateUrl: './integration-linked-openai.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class IntegrationLinkedNotionComponent {
+export class IntegrationLinkedOpenaiComponent {
   integration = input.required<IntegrationModel>();
   iconUri = input.required<string | null>();
   color = input.required<string | null>();
 
-  notionProps = signal<IntegrationNotionProps | null>(null);
+  openaiProps = signal<IntegrationOpenaiProps | null>(null);
 
   constructor() {
     effect(() => {
       if (this.integration()) {
-        this.notionProps.set(
-          this.integration().props as IntegrationNotionProps
+        this.openaiProps.set(
+          this.integration().props as IntegrationOpenaiProps
         );
       }
     });

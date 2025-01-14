@@ -8,10 +8,19 @@ export class AutomationSchemaModel {
   }
 
   getIntegrationIconUri(integrationName: string) {
-    return this.automationServices[integrationName.toLowerCase()].iconUri;
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name === integrationName) {
+        return value.iconUri;
+      }
+    }
+    return null;
   }
 
   getIntegrationColor(integrationName: string) {
-    return this.automationServices[integrationName.toLowerCase()].color;
-  }
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name === integrationName) {
+        return value.color;
+      }
+    }
+    return null;  }
 }
