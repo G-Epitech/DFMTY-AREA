@@ -1,39 +1,39 @@
 <div class="flex flex-row items-center gap-6 h-full w-full">
   <div class="min-h-full flex flex-col space-y-3 w-full">
-    @if (automation$ | async; as automation) {
-      <div class="flex flex-row items-center gap-3">
-        <div
-          class="p-2.5 rounded-md flex items-center justify-center"
-          [ngStyle]="{ 'background-color': automation.color }">
-          <ng-icon
-            [name]="iconName(automation.iconName)"
-            size="2rem"
-            color="white" />
-        </div>
-        <h1 class="tr-title-2">{{ automation.label }}</h1>
-        <button trBtn class="ml-auto w-16" variant="outline">
-          <ng-icon name="heroCog6Tooth" size="1.4rem" />
-        </button>
-        <button trBtn class="w-32">Save</button>
+    <div class="flex flex-row items-center gap-3">
+      <div
+        class="p-3 rounded-md flex items-center justify-center"
+        [ngStyle]="{ 'background-color': automation().color }">
+        <ng-icon [name]="automation().iconName" size="2rem" color="white" />
       </div>
-      <div class="flex-grow bg-secondary rounded-md overflow-auto p-4">
-        <div class="flex flex-col w-full items-center">
-          <tr-trigger-card [trigger]="automation.trigger" class="w-full" />
+      <div class="flex flex-col">
+        <h3 class="tr-title-2">{{ automation().label }}</h3>
+        <span class="text-muted">{{ automation().description }}</span>
+      </div>
+      <button trBtn class="ml-auto p-2" variant="outline">
+        <ng-icon name="heroCog6Tooth" size="1.4rem" />
+      </button>
+      <button trBtn class="w-32">Save</button>
+    </div>
+    <div class="flex-grow bg-secondary rounded-md overflow-auto p-4">
+      <div class="flex flex-col w-full items-center">
+        <tr-trigger-card [trigger]="automation().trigger" class="w-full" />
+        @if (automation().trigger) {
           <div
             class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
-          @if (!automation.actions.length) {
+          @if (!automation().actions.length) {
             <tr-add-step-button />
           }
-          @for (action of automation.actions; track action.identifier) {
-            <tr-action-card [action]="action" class="w-full" />
-            <div
-              class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
-            @if ($last) {
-              <tr-add-step-button />
-            }
+        }
+        @for (action of automation().actions; track action.identifier) {
+          <tr-action-card [action]="action" class="w-full" />
+          <div
+            class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
+          @if ($last) {
+            <tr-add-step-button />
           }
-        </div>
+        }
       </div>
-    }
+    </div>
   </div>
 </div>

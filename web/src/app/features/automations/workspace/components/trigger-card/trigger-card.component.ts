@@ -9,7 +9,7 @@ import {
 import { NgStyle } from '@angular/common';
 import { AutomationSchemaModel, TriggerShortModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
-import { iconName } from '@utils/icon';
+import { iconNameFromIdentifier } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
 
 @Component({
@@ -43,7 +43,7 @@ export class TriggerCardComponent {
         trigger.nameIdentifier
       );
       if (iconIdentifier) {
-        return iconName(iconIdentifier);
+        return iconNameFromIdentifier(iconIdentifier);
       }
     }
     return null;

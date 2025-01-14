@@ -1,22 +1,25 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AutomationModel } from '@models/automation';
-import { iconName } from '@utils/icon';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-import { AsyncPipe, NgStyle } from '@angular/common';
-import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { AutomationsMediator } from '@mediators/automations.mediator';
+import { NgStyle } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TriggerCardComponent } from '@features/automations/workspace/components/trigger-card/trigger-card.component';
 import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
+import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
 
 @Component({
   selector: 'tr-automations-workspace',
   imports: [
     NgIcon,
     NgStyle,
-    AsyncPipe,
     TriggerCardComponent,
     ActionCardComponent,
     TrButtonDirective,
@@ -26,18 +29,26 @@ import { AddStepButtonComponent } from '@features/automations/workspace/componen
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  providers: [AutomationWorkspaceStore],
 })
-export class AutomationsWorkspacePageComponent {
-  readonly #automationMediator = inject(AutomationsMediator);
+export class AutomationsWorkspacePageComponent implements OnInit, OnDestroy {
   readonly #route = inject(ActivatedRoute);
+  readonly #workspaceStore = inject(AutomationWorkspaceStore);
 
-  private destory$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-  automation$: Observable<AutomationModel> = this.#route.params.pipe(
-    takeUntil(this.destory$),
-    map(params => params['id'] as string),
-    switchMap(id => this.#automationMediator.getById(id))
-  );
+  automation = this.#workspaceStore.getAutomation;
 
-  protected readonly iconName = iconName;
+  ngOnInit() {
+    this.#route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      if (params['id']) {
+        this.#workspaceStore.getById(params['id']);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

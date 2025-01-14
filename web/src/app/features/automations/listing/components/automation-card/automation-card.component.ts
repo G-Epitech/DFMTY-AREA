@@ -9,7 +9,7 @@ import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';
 import { FormatDatePipe } from '@app/pipes';
 import { RouterLink } from '@angular/router';
-import { iconName } from '@utils/icon';
+import { iconNameFromIdentifier } from '@utils/icon';
 
 @Component({
   selector: 'tr-automation-card',
@@ -21,8 +21,4 @@ import { iconName } from '@utils/icon';
 })
 export class AutomationCardComponent {
   automation = input.required<AutomationModel>();
-
-  icon = computed(() => {
-    return iconName(this.automation().iconName);
-  });
 }
