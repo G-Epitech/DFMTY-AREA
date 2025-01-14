@@ -10,7 +10,7 @@ namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class GmailIntegration : Integration
 {
-    private GmailIntegration(
+    public GmailIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,

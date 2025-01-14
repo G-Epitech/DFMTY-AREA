@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
-using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Extensions;
+using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Execution;
 
@@ -17,9 +17,9 @@ public class TriggerHandlerInvoker
         _handler = handler;
     }
 
-    public Task<bool> RegisterAsync(Automation automation, CancellationToken cancellationToken = default)
+    public Task<bool> RegisterAsync(RegistrableAutomation registrable, CancellationToken cancellationToken = default)
     {
-        var parameters = GetOnRegisterMethodParameters(_handler.OnRegisterMethod, automation, cancellationToken);
+        var parameters = GetOnRegisterMethodParameters(_handler.OnRegisterMethod, registrable, cancellationToken);
 
         var res = _handler.OnRegisterMethod.Invoke(_handler.Target, parameters);
         if (res is Task<bool> task)
@@ -69,10 +69,11 @@ public class TriggerHandlerInvoker
         }
     }
 
-    private object[] GetOnRegisterMethodParameters(MethodInfo method, Automation automation, CancellationToken cancellationToken)
+    private object?[] GetOnRegisterMethodParameters(MethodInfo method, RegistrableAutomation registrable, CancellationToken cancellationToken)
     {
         var parameters = method.GetParameters();
-        var result = new object[parameters.Length];
+        var result = new object?[parameters.Length];
+        var automation = registrable.Automation;
 
         foreach (var parameter in parameters)
         {
@@ -85,8 +86,7 @@ public class TriggerHandlerInvoker
             }
             else if (hasIntegrationAttribute)
             {
-                // TODO: Implement integration value
-                //result[parameter.Position] = GetIntegrationValue(parameter.ParameterType);
+                result[parameter.Position] = StepUtils.GetFromIntegrationsValue(parameter, registrable.TriggerIntegrations);
             }
             else if (parameter.ParameterType.IsAssignableTo(typeof(CancellationToken)))
             {

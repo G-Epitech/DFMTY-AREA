@@ -5,19 +5,19 @@ using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Infrastructure.Mapping;
 
-namespace Zeus.Daemon.Infrastructure.Automations;
+namespace Zeus.Daemon.Infrastructure.Services.Api;
 
-public class AutomationSynchronizationService : IDaemonService
+public class SynchronizationService : IDaemonService
 {
     private readonly IAutomationsRegistry _automationsRegistry;
     private readonly ILogger _logger;
-    private readonly AutomationService _automationService;
+    private readonly IAutomationsService _automationService;
     private CancellationTokenSource? _currentSyncingToken;
     private const int MaxRetries = 3;
     private const int RetryDelayMilliseconds = 5000;
 
-    public AutomationSynchronizationService(AutomationService automationService,
-        IAutomationsRegistry automationsRegistry, ILogger<AutomationSynchronizationService> logger)
+    public SynchronizationService(IAutomationsService automationService,
+        IAutomationsRegistry automationsRegistry, ILogger<SynchronizationService> logger)
     {
         _automationService = automationService;
         _automationsRegistry = automationsRegistry;
@@ -48,7 +48,7 @@ public class AutomationSynchronizationService : IDaemonService
         {
             try
             {
-                var automations = _automationService.GetAutomationsAsync();
+                var automations = _automationService.GetRegistrableAutomationsAsync();
                 var enumerator = automations.GetAsyncEnumerator();
                 var loadedAutomationsCount = 0;
 
@@ -56,18 +56,18 @@ public class AutomationSynchronizationService : IDaemonService
                 {
                     try
                     {
-                        if (await _automationsRegistry.RegisterAsync(enumerator.Current.MapToAutomation()))
+                        if (await _automationsRegistry.RegisterAsync(enumerator.Current.MapToRegistrableAutomation()))
                         {
                             loadedAutomationsCount++;
                         }
                         else
                         {
-                            _logger.LogWarning("Automation {id} has not correctly been registered", enumerator.Current.Id);
+                            _logger.LogWarning("Automation {id} has not correctly been registered", enumerator.Current.Automation.Id);
                         }
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e, "Failed to register automation {id}", enumerator.Current.Id);
+                        _logger.LogError(e, "Failed to register automation {id}", enumerator.Current.Automation.Id);
                     }
                 }
                 if (loadedAutomationsCount > 0)

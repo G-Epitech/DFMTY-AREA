@@ -1,4 +1,6 @@
-﻿using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
+﻿using Zeus.Common.Domain.AutomationAggregate.Enums;
+using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
@@ -15,5 +17,10 @@ public interface IIntegrationReadRepository
         CancellationToken cancellationToken = default);
 
     public Task<Page<Integration>> GetIntegrationsByOwnerIdAsync(UserId userId, PageQuery query,
+        CancellationToken cancellationToken = default);
+
+    public Task<Page<Integration>> GetIntegrationsByAutomationIdsAsync(
+        IReadOnlyList<AutomationId> automationIds,
+        AutomationIntegrationSource source = AutomationIntegrationSource.Any,
         CancellationToken cancellationToken = default);
 }

@@ -18,8 +18,13 @@ public sealed class AutomationLauncher : IAutomationsLauncher
 
     private IAutomationsRunner AutomationsRunner => _automationsRunner ??= _serviceProvider.GetRequiredService<IAutomationsRunner>();
 
-    public Task<bool> LaunchAutomationAsync(AutomationId automationId, FactsDictionary facts)
+    public Task<bool> LaunchAsync(AutomationId automationId, FactsDictionary facts)
     {
         return AutomationsRunner.RunAsync(automationId, facts);
+    }
+
+    public Task<Dictionary<AutomationId, bool>> LaunchManyAsync(IReadOnlyList<AutomationId> automationIds, FactsDictionary facts)
+    {
+        return AutomationsRunner.RunManyAsync(automationIds, facts);
     }
 }

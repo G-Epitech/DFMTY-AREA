@@ -4,6 +4,7 @@ using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Events;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.AutomationAggregate;
@@ -45,6 +46,12 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public AutomationTrigger Trigger { get; private set; }
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
+
+    public IReadOnlyList<IntegrationId> Providers => _actions
+        .SelectMany(a => a.Providers)
+        .Union(Trigger.Providers)
+        .Distinct()
+        .ToList();
 
     public bool Enabled
     {

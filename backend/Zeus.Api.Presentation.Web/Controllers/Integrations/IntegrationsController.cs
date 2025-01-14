@@ -4,7 +4,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegration;
+using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrationWithProperties;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations;
 using Zeus.Api.Presentation.Web.Mapping;
@@ -35,7 +35,7 @@ public class IntegrationsController : ApiController
             return Unauthorized();
         }
 
-        var getIntegrationResult = await _sender.Send(new GetIntegrationQuery(authUser.Id, id));
+        var getIntegrationResult = await _sender.Send(new GetIntegrationWithPropertiesQuery(authUser.Id, id));
         if (getIntegrationResult.IsError)
         {
             return Problem(getIntegrationResult.Errors);

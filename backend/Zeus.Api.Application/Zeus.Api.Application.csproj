@@ -25,8 +25,4 @@
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Integrations\Query\Integrations\" />
-    </ItemGroup>
-
 </Project>

@@ -2,10 +2,13 @@ syntax = "proto3";
 
 option csharp_namespace = "Zeus.Api.Presentation.gRPC.Contracts";
 
+import "IntegrationsService.proto";
+
 package automations;
 
 service AutomationsService {
   rpc GetAutomations(GetAutomationsRequest) returns (stream Automation);
+  rpc GetRegistrableAutomations(GetAutomationsRequest) returns (stream RegistrableAutomation);
   rpc GetAutomation(GetAutomationRequest) returns (Automation);
 }
 
@@ -18,6 +21,15 @@ enum AutomationEnabledState {
 message GetAutomationsRequest {
   optional string ownerId = 1;
   optional AutomationEnabledState state = 2;
+}
+
+message GetRegistrableAutomations {
+  repeated RegistrableAutomation automations = 1;
+}
+
+message RegistrableAutomation {
+  Automation automation = 1;
+  repeated integrations.Integration triggerIntegrations = 2;
 }
 
 message GetAutomationRequest {

@@ -10,37 +10,37 @@ using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
 
-namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrations;
+namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrationsWithProperties;
 
 public class
-    GetIntegrationsQueryHandler : IRequestHandler<GetIntegrationsQuery, ErrorOr<Page<GetIntegrationQueryResult>>>
+    GetIntegrationsWithPropertiesQueryHandler : IRequestHandler<GetIntegrationsWithPropertiesQuery, ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>>
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationService _integrationService;
     private readonly ILogger _logger;
 
-    public GetIntegrationsQueryHandler(
+    public GetIntegrationsWithPropertiesQueryHandler(
         IIntegrationReadRepository integrationReadRepository,
         IIntegrationService integrationService,
-        ILogger<GetIntegrationsQueryHandler> logger)
+        ILogger<GetIntegrationsWithPropertiesQueryHandler> logger)
     {
         _integrationReadRepository = integrationReadRepository;
         _integrationService = integrationService;
         _logger = logger;
     }
 
-    public async Task<ErrorOr<Page<GetIntegrationQueryResult>>> Handle(GetIntegrationsQuery query,
+    public async Task<ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>> Handle(GetIntegrationsWithPropertiesQuery withPropertiesQuery,
         CancellationToken cancellationToken)
     {
-        var index = query.Index ?? 0;
-        var limit = query.Limit ?? 10;
+        var index = withPropertiesQuery.Index ?? 0;
+        var limit = withPropertiesQuery.Limit ?? 10;
 
-        var userId = new UserId(query.UserId);
+        var userId = new UserId(withPropertiesQuery.UserId);
         var pageQuery = new PageQuery { Index = index, Limit = limit };
 
         var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery, cancellationToken);
 
-        var integrationResultItems = new List<GetIntegrationQueryResult>();
+        var integrationResultItems = new List<GetIntegrationWithPropertiesQueryResult>();
 
         foreach (var integration in integrations.Items)
         {
@@ -52,7 +52,7 @@ public class
                 continue;
             }
 
-            integrationResultItems.Add(new GetIntegrationQueryResult(
+            integrationResultItems.Add(new GetIntegrationWithPropertiesQueryResult(
                 integration.Id.Value,
                 integration.OwnerId.Value,
                 integration.Type.ToString(),
@@ -60,7 +60,7 @@ public class
                 propertiesResult.Value));
         }
 
-        return new Page<GetIntegrationQueryResult>(
+        return new Page<GetIntegrationWithPropertiesQueryResult>(
             integrations.Index, integrations.Size, integrations.TotalPages, integrations.TotalItems,
             integrationResultItems);
     }

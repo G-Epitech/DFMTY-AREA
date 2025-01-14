@@ -7,9 +7,9 @@ using Zeus.Common.Extensions.DependencyInjection;
 using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
-using Zeus.Daemon.Infrastructure.Automations;
 using Zeus.Daemon.Infrastructure.Integrations;
 using Zeus.Daemon.Infrastructure.Integrations.Api;
+using Zeus.Daemon.Infrastructure.Services.Api;
 using Zeus.Daemon.Infrastructure.Services.Discord;
 using Zeus.Daemon.Infrastructure.Services.Settings;
 using Zeus.Daemon.Infrastructure.Services.Settings.Integrations;
@@ -24,7 +24,8 @@ public static class DependencyInjection
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
 
-        services.AddSingleton<IDaemonService, AutomationSynchronizationService>();
+        services.AddSingleton<IDaemonService, SynchronizationService>();
+        services.AddSingleton<IIntegrationsProvider, IntegrationsProvider>();
 
         #region Discord
 

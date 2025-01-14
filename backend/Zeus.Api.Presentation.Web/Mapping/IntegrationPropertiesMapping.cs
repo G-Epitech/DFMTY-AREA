@@ -11,15 +11,15 @@ namespace Zeus.Api.Presentation.Web.Mapping;
 public static class IntegrationPropertiesMappingExtention
 {
     public static GetIntegrationPropertiesResponse MapIntegrationPropertiesResponse(this IMapper mapper,
-        GetIntegrationQueryResult integrationQueryResult)
+        GetIntegrationWithPropertiesQueryResult integrationWithPropertiesQueryResult)
     {
-        return integrationQueryResult.Properties switch
+        return integrationWithPropertiesQueryResult.Properties switch
         {
             IntegrationDiscordProperties discord =>
                 mapper.Map<GetIntegrationDiscordPropertiesResponse>(discord),
             IntegrationNotionProperties notion =>
                 mapper.Map<GetIntegrationNotionPropertiesResponse>(notion),
-            _ => throw new ArgumentOutOfRangeException(nameof(integrationQueryResult.Properties))
+            _ => throw new ArgumentOutOfRangeException(nameof(integrationWithPropertiesQueryResult.Properties))
         };
     }
 }

@@ -35,7 +35,7 @@ services:
   zeus-message-broker:
     container_name: zeus-message-broker
     restart: always
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:4-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -61,7 +61,7 @@ services:
         condition: service_completed_successfully
       zeus-message-broker:
         condition: service_healthy
-  
+
   zeus-api-grpc:
     container_name: zeus-api-grpc
     restart: always

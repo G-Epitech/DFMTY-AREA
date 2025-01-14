@@ -39,7 +39,7 @@ public class DiscordMessageReceivedTriggerHandler
         AutomationId automationId,
         [FromParameters] string channelId,
         [FromParameters] string guildId,
-        [FromIntegrations] DiscordIntegration integration,
+        [FromIntegrations] IList<DiscordIntegration> integrations,
         CancellationToken cancellationToken = default)
     {
         _triggers[automationId] = new TriggerParameters { GuildId = guildId, ChannelId = channelId };
@@ -87,18 +87,20 @@ public class DiscordMessageReceivedTriggerHandler
         return targeted.GuildId == candidate.GuildId && targeted.ChannelId == candidate.ChannelId;
     }
 
+    private List<AutomationId> GetTargetedAutomations(TriggerParameters targeted)
+    {
+        return _triggers.Where(k => TriggerIsTargeted(targeted, k.Value)).Select(t => t.Key).ToList();
+    }
+
     private async Task LaunchTargetedAutomations(TriggerParameters targeted, FactsDictionary facts, CancellationToken cancellationToken)
     {
-        foreach ((AutomationId automationId, TriggerParameters trigger) in _triggers)
+        var res = await _automationsLauncher.LaunchManyAsync(GetTargetedAutomations(targeted), facts);
+
+        foreach ((AutomationId automationId, bool started) in res)
         {
-            if (!TriggerIsTargeted(targeted, trigger) || cancellationToken.IsCancellationRequested)
+            if (!started)
             {
-                continue;
-            }
-            var res = await _automationsLauncher.LaunchAutomationAsync(automationId, facts);
-            if (!res)
-            {
-                _logger.LogError("Failed to launch automation {id}", automationId.Value.ToString());
+                _logger.LogError("Automation {id} failed to launch", automationId.Value);
             }
         }
     }

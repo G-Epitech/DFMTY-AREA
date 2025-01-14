@@ -2,7 +2,7 @@ using Zeus.Api.Domain.Integrations.Properties;
 
 namespace Zeus.Api.Application.Integrations.Query.Results;
 
-public record GetIntegrationQueryResult(
+public record GetIntegrationWithPropertiesQueryResult(
     Guid Id,
     Guid OwnerId,
     string Type,
