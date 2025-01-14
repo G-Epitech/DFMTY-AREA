@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/repositories/authentification/dtos/authentication.dtos.dart';
+import 'package:triggo/repositories/authentication/dtos/authentication.dtos.dart';
 
 class AuthenticationRepository {
   final http.Client? client;

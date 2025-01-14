@@ -4,7 +4,7 @@ using Zeus.Api.Domain.Integrations.Notion;
 using Zeus.Api.Domain.Integrations.Notion.ValueObjects;
 using Zeus.Common.Domain.Authentication.Common;
 
-namespace Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
+namespace Zeus.Api.Application.Interfaces.Services.Integrations;
 
 public interface INotionService
 {

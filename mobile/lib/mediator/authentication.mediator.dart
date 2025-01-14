@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/authentification/authentication.repository.dart';
+import 'package:triggo/repositories/authentication/authentication.repository.dart';
+import 'package:triggo/repositories/authentication/google.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 
 enum AuthenticationStatus {
@@ -15,9 +17,10 @@ enum AuthenticationStatus {
 class AuthenticationMediator with ChangeNotifier {
   final AuthenticationRepository _authenticationRepository;
   final CredentialsRepository _credentialsRepository;
+  final GoogleRepository _googleRepository;
 
-  AuthenticationMediator(
-      this._authenticationRepository, this._credentialsRepository);
+  AuthenticationMediator(this._authenticationRepository,
+      this._credentialsRepository, this._googleRepository);
 
   final _controller = StreamController<AuthenticationStatus>();
 
@@ -99,6 +102,39 @@ class AuthenticationMediator with ChangeNotifier {
       _controller.add(AuthenticationStatus.unauthenticated);
     } catch (e) {
       // Display error message with a snackbar or dialog (something like that)
+    }
+  }
+
+  Future<bool?> authenticateWithGoogle() async {
+    try {
+      final res = await _googleRepository.getGoogleOAuth2Configuration();
+      if (res.statusCode == Codes.ok) {
+        _controller.add(AuthenticationStatus.authenticating);
+        final GoogleSignIn googleSignIn =
+            GoogleSignIn(scopes: res.data!.scopes);
+        final googleAccount = await googleSignIn.signIn();
+        final googleAuth = await googleAccount?.authentication;
+
+        final credentials = await _googleRepository.getGoogleOAuth2Credentials(
+            googleAuth?.accessToken ?? '', '.', 'Bearer');
+        if (credentials.statusCode == Codes.ok) {
+          await _credentialsRepository
+              .saveAccessToken(credentials.data!.accessToken);
+          await _credentialsRepository
+              .saveRefreshToken(credentials.data!.refreshToken);
+          _controller.add(AuthenticationStatus.authenticated);
+          return true;
+        } else {
+          _controller.add(AuthenticationStatus.unauthenticated);
+          throw Exception(credentials.message);
+        }
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      // Display error message with a snackbar or dialog (something like that)
+      _controller.add(AuthenticationStatus.unauthenticated);
+      return false;
     }
   }
 }

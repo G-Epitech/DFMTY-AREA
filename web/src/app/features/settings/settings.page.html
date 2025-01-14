@@ -1,4 +1,60 @@
-<div class="flex flex-col">
-  <h1 class="tr-title-1">Settings</h1>
+<div class="flex flex-col h-full space-y-5">
+  <h1 class="tr-title-1 mb-10">Settings</h1>
+  @if (user()) {
+    <div class="w-2/3 h-full space-y-6 mx-auto">
+      <div class="flex flex-row gap-5 items-center bg-secondary p-8 rounded-md">
+        <img
+          [ngSrc]="user()?.picture || ''"
+          alt="avatar"
+          height="90"
+          width="90"
+          class="rounded-full" />
+        <span class="tr-title-3 mr-auto"
+          >{{ user()?.firstName | titlecase }}
+          {{ user()?.lastName | titlecase }}</span
+        >
+        <button trBtn>Edit Profile</button>
+      </div>
+      <div
+        class="flex flex-col space-y-4 bg-secondary flex-grow rounded-md p-8">
+        <div class="flex justify-between items-center flex-row">
+          <div class="flex flex-col">
+            <span class="text-md text-muted"> First Name </span>
+            <span class="tr-large">{{ user()?.firstName | titlecase }}</span>
+          </div>
+          <button trBtn>Edit</button>
+        </div>
+        <div class="border-t bg-secondary"></div>
+        <div class="flex justify-between items-center flex-row">
+          <div class="flex flex-col">
+            <span class="text-md text-muted"> Last Name </span>
+            <span class="tr-large">{{ user()?.lastName | titlecase }}</span>
+          </div>
+          <button trBtn>Edit</button>
+        </div>
+        <div class="border-t bg-secondary"></div>
+        <div class="flex justify-between items-center flex-row">
+          <div class="flex flex-col">
+            <span class="text-md text-muted"> Email </span>
+            <span class="tr-large">{{ user()?.email }}</span>
+          </div>
+          <button trBtn>Edit</button>
+        </div>
+      </div>
+      <button
+        trBtn
+        (click)="logout()"
+        variant="destructive"
+        class="flex flex-row items-center gap-1">
+        <ng-icon
+          size="1.1rem"
+          strokeWidth="0.12rem"
+          name="heroArrowLeftStartOnRectangle" />
+        Logout
+      </button>
+    </div>
+  } @else {
+    <tr-skeleton class="w-25 h-25 rounded-full" />
+    <tr-skeleton class="w-50 h-25" />
+  }
 </div>
-<button trBtn (click)="logout()">Logout</button>
