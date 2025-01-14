@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -250,7 +251,8 @@ class CustomRectangleList extends StatelessWidget {
     final triggerOrAction =
         triggerIntegration.triggers[triggerOrActionIdentifier]!;
 
-    return Column(
+    return Expanded(
+        child: Column(
       children: [
         _TriggerListItem(
           icon: "assets/icons/${triggerOrAction.icon}.svg",
@@ -262,13 +264,82 @@ class CustomRectangleList extends StatelessWidget {
           triggerOrActionIdentifier: triggerOrActionIdentifier,
         ),
         SizedBox(height: 10),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: automation.actions.length,
+          itemBuilder: (context, index) {
+            final action = automation.actions[index];
+            final integrationIdentifier = action.identifier.split('.').first;
+            final triggerOrActionIdentifier = action.identifier.split('.').last;
+
+            final actionIntegration = schema.schemas[integrationIdentifier]!;
+            final actionOrAction =
+                actionIntegration.actions[triggerOrActionIdentifier]!;
+
+            return _TriggerListItem(
+              icon: "assets/icons/${actionOrAction.icon}.svg",
+              color: HexColor(actionIntegration.color),
+              text: actionOrAction.name,
+              type: AutomationChoiceEnum.action,
+              indexOfTheTriggerOrAction: index,
+              integrationIdentifier: integrationIdentifier,
+              triggerOrActionIdentifier: triggerOrActionIdentifier,
+            );
+          },
+        ),
+        SizedBox(
+          height: 40,
+          child: DottedLine(
+            direction: Axis.vertical,
+            lineLength: double.infinity,
+            lineThickness: 2.40,
+            dashLength: 7.5,
+            dashColor: textPrimaryColor,
+          ),
+        ),
+        Center(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              context
+                  .read<AutomationCreationBloc>()
+                  .add(AutomationCreationLoadAutomation());
+              Navigator.push(
+                  context,
+                  customScreenBuilder(AutomationCreationSelectIntegrationView(
+                    type: AutomationChoiceEnum.action,
+                    indexOfTheTriggerOrAction: automation.actions.length,
+                  )));
+            },
+            child: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/icons/plus.svg',
+                  height: 16,
+                  width: 16,
+                  colorFilter: ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         /*_TriggerListItem(
           icon: "assets/icons/people.svg",
           color: Color(0xFF5865F2),
           text: "React to a message",
         ),*/
       ],
-    );
+    ));
   }
 }
 

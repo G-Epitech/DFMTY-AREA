@@ -117,10 +117,19 @@ class AutomationCreationBloc
       Emitter<AutomationCreationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
-    updatedActions[event.index] = updatedActions[event.index].copyWith(
-      providers: List.from(updatedActions[event.index].providers)
-        ..add(event.provider),
-    );
+    if (updatedActions.length <= event.index) {
+      updatedActions.add(AutomationAction(
+        identifier: '',
+        providers: [event.provider],
+        parameters: [],
+      ));
+    } else {
+      updatedActions[event.index] = updatedActions[event.index].copyWith(
+        providers: List.from(updatedActions[event.index].providers)
+          ..add(event.provider),
+      );
+    }
+
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
     emit(AutomationCreationDirty(

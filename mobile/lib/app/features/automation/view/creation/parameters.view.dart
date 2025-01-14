@@ -46,7 +46,6 @@ class _AutomationCreationParametersViewState
         automationMediator.getParameters(widget.integrationIdentifier,
             widget.type, widget.triggerOrActionIdentifier);
 
-    log("Properties Length: ${properties.length}");
     return BaseScaffold(
       title:
           '${widget.type == AutomationChoiceEnum.trigger ? 'Trigger' : 'Action'} parameters',
@@ -205,7 +204,6 @@ class _List extends StatelessWidget {
         return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
           builder: (context, state) {
             final title = property.name;
-            log(" ===== Automation Parameters Length: ${state.dirtyAutomation.trigger.parameters.length} =====");
             final previewData = getPreviewData(
                 state.dirtyAutomation,
                 type,
@@ -233,7 +231,7 @@ class _List extends StatelessWidget {
             return AutomationLabelParameterWidget(
               title: title,
               previewData: previewData,
-              disabled: options == null,
+              disabled: options != null && options.isEmpty,
               input: AutomationCreationInputView(
                 type: options != null
                     ? AutomationInputEnum.radio
@@ -384,7 +382,7 @@ List<AutomationRadioModel>? getOptions(
           if (parameterIdentifier == 'ChannelId') {
             if (automation.trigger.parameters.isEmpty) {
               log("====== Trigger parameters is empty ======");
-              return null;
+              return [];
             }
             final guildId = automation.trigger.parameters[0].value;
             options = List.generate(
@@ -402,7 +400,7 @@ List<AutomationRadioModel>? getOptions(
       break;
     case AutomationChoiceEnum.action:
       if (integrationName == 'discord') {
-        if (propertyIdentifier == 'SendMessage') {
+        if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'ChannelId') {
             options = [
               AutomationRadioModel(

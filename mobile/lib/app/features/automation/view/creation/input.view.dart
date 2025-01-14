@@ -219,6 +219,8 @@ class _OKButton extends StatelessWidget {
         Expanded(
           child: TriggoButton(
             text: "OK",
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             onPressed: () {
               onSave(value);
               if (routeToGoWhenSave == RoutesNames.popOneTime) {
