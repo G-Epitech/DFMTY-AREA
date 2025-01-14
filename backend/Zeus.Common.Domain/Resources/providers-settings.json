@@ -53,7 +53,7 @@
       "SendMessageToChannel": {
         "Name": "Send message to channel",
         "Description": "Sends a message to a specific guild channel as triggo bot.",
-        "Icon": "chat-bubble-oval-right-ellipsis",
+        "Icon": "chat-bubble-oval-left-ellipsis",
         "Parameters": {
           "ChannelId": {
             "Name": "Channel id",
