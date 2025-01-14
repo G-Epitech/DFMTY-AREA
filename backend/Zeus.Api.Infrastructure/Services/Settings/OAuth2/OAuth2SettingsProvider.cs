@@ -7,10 +7,10 @@ namespace Zeus.Api.Infrastructure.Services.Settings.OAuth2;
 
 public class OAuth2SettingsProvider : IOAuth2SettingsProvider
 {
-    public IOAuth2GoogleSettingsProvider Google { get; }
-
     public OAuth2SettingsProvider(IOptions<OAuth2Settings> settings)
     {
         Google = new OAuth2GoogleSettingsProvider(settings.Value.Google);
     }
+
+    public IOAuth2GoogleSettingsProvider Google { get; }
 }

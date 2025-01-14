@@ -12,8 +12,8 @@ namespace Zeus.Api.Application.Integrations.Commands.GenerateDiscordOauth2Uri;
 public class GenerateDiscordOauth2UriCommandHandler : IRequestHandler<GenerateDiscordOauth2UriCommand,
     ErrorOr<GenerateDiscordOauth2UriCommandResult>>
 {
-    private readonly ISender _sender;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
+    private readonly ISender _sender;
 
     public GenerateDiscordOauth2UriCommandHandler(ISender sender,
         IIntegrationsSettingsProvider integrationsSettingsProvider)

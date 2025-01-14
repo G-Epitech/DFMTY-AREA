@@ -11,7 +11,7 @@ public sealed class UserWriteRepository : IUserWriteRepository
     {
         _dbContext = dbContext;
     }
-    
+
     public async Task AddUserAsync(User user, CancellationToken cancellationToken = default)
     {
         _dbContext.Users.Add(user);

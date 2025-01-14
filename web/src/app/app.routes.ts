@@ -1,3 +1,4 @@
+import { PublicLayoutComponent } from '@features/public/public-layout/public-layout.component';
 import { Routes } from '@angular/router';
 import { authGuard, stateGuard } from '@app/guards';
 import { MainLayoutComponent } from '@features/layout/main.layout.component';
@@ -6,12 +7,41 @@ import { GOOGLE_STATE_CODE_KEY } from '@common/constants';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
     pathMatch: 'full',
+    redirectTo: 'home',
+  },
+  {
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      {
+        path: 'landing',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/landing/landing.page').then(
+            m => m.LandingPageComponent
+          ),
+      },
+      {
+        path: 'downloads',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/downloads/downloads.page').then(
+            m => m.DownloadsPageComponent
+          ),
+      },
+      {
+        path: 'faq',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/faq/faq.page').then(m => m.FaqPageComponent),
+      },
+    ],
   },
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'home',
@@ -51,7 +81,6 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
-    canActivate: [authGuard],
   },
   {
     path: 'login',

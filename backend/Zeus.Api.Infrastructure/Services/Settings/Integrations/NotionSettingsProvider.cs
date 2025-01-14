@@ -5,12 +5,6 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 
 public class NotionSettingsProvider : INotionSettingsProvider
 {
-    public string ApiEndpoint { get; }
-    public string OAuth2Endpoint { get; }
-    public string ClientId { get; }
-    public string ClientSecret { get; }
-    public string RedirectUrl { get; }
-
     public NotionSettingsProvider(NotionSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
@@ -19,4 +13,10 @@ public class NotionSettingsProvider : INotionSettingsProvider
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
     }
+
+    public string ApiEndpoint { get; }
+    public string OAuth2Endpoint { get; }
+    public string ClientId { get; }
+    public string ClientSecret { get; }
+    public string RedirectUrl { get; }
 }

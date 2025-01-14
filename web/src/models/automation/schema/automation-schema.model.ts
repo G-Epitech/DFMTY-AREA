@@ -22,5 +22,6 @@ export class AutomationSchemaModel {
         return value.color;
       }
     }
-    return null;  }
+    return null;
+  }
 }

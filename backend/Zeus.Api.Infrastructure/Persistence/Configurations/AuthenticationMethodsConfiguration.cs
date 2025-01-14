@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.Enums;
-using Zeus.Common.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.ValueObjects;
+using Zeus.Api.Domain.Authentication.ValueObjects;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 

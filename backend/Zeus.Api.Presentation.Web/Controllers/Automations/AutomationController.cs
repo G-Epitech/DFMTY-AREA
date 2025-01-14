@@ -16,10 +16,10 @@ namespace Zeus.Api.Presentation.Web.Controllers.Automations;
 [Route("automations")]
 public class AutomationController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
     private readonly ProvidersSettings _providersSettings;
+    private readonly ISender _sender;
 
     public AutomationController(ISender sender, IAuthUserContext authUserContext, IMapper mapper,
         ProvidersSettings providersSettings)

@@ -10,9 +10,7 @@ import { IntegrationModel, IntegrationTypeEnum } from '@models/integration';
 import { IntegrationLinkedDiscordComponent } from '@features/integrations/discord/integration-linked-discord/integration-linked-discord.component';
 import { SchemaStore } from '@app/store/schema-store';
 import { IntegrationLinkedNotionComponent } from '@features/integrations/notion/integration-linked-notion/integration-linked-notion.component';
-import {
-  IntegrationLinkedOpenaiComponent
-} from '@features/integrations/openai/integration-linked-openai/integration-linked-openai.component';
+import { IntegrationLinkedOpenaiComponent } from '@features/integrations/openai/integration-linked-openai/integration-linked-openai.component';
 
 @Component({
   selector: 'tr-integration-linked-card',

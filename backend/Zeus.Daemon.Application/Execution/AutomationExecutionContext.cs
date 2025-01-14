@@ -5,6 +5,7 @@ using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
@@ -14,20 +15,18 @@ namespace Zeus.Daemon.Application.Execution;
 
 public sealed class AutomationExecutionContext
 {
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly IActionHandlersProvider _handlersProvider;
-    private readonly FactsDictionary _facts;
-    private readonly IReadOnlyList<Integration> _integrations;
     private readonly IReadOnlyList<AutomationAction> _actions;
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly FactsDictionary _facts;
+    private readonly IActionHandlersProvider _handlersProvider;
+    private readonly IReadOnlyDictionary<IntegrationId, Integration> _integrations;
     private Task<FactsDictionary>? _currentTask;
     private Task? _mainTask;
-
-    private AutomationId AutomationId { get; set; }
 
     public AutomationExecutionContext(
         IActionHandlersProvider actionHandlersProvider,
         Automation automation,
-        IReadOnlyList<Integration> integrations,
+        IReadOnlyDictionary<IntegrationId, Integration> integrations,
         FactsDictionary facts)
     {
         _handlersProvider = actionHandlersProvider;
@@ -37,6 +36,8 @@ public sealed class AutomationExecutionContext
 
         AutomationId = automation.Id;
     }
+
+    private AutomationId AutomationId { get; set; }
 
     public void Cancel()
     {
@@ -104,10 +105,11 @@ public sealed class AutomationExecutionContext
         return true;
     }
 
-    private object[] GetHandlerParameters(MethodInfo method, AutomationAction action)
+    private object?[] GetHandlerParameters(MethodInfo method, AutomationAction action)
     {
         var parameters = method.GetParameters();
-        var result = new object[parameters.Length];
+        var result = new object?[parameters.Length];
+        var providers = GetActionProviders(action);
 
         foreach (var parameter in parameters)
         {
@@ -120,7 +122,7 @@ public sealed class AutomationExecutionContext
             }
             else if (fromIntegrationAttribute is not null)
             {
-                result[parameter.Position] = GetIntegrationValue(parameter.ParameterType);
+                result[parameter.Position] = StepUtils.GetFromIntegrationsValue(parameter, providers);
             }
             else if (parameter.ParameterType.IsAssignableTo(typeof(CancellationToken)))
             {
@@ -186,14 +188,8 @@ public sealed class AutomationExecutionContext
         }
     }
 
-    private Integration GetIntegrationValue(Type destType)
+    private List<Integration> GetActionProviders(AutomationAction step)
     {
-        var integration = _integrations.FirstOrDefault(i => i.GetType().IsAssignableTo(destType));
-
-        if (integration is null)
-        {
-            throw new InvalidOperationException($"Integration of type '{destType.Name}' not found");
-        }
-        return integration;
+        return step.Providers.Select(p => _integrations[p]).ToList();
     }
 }
