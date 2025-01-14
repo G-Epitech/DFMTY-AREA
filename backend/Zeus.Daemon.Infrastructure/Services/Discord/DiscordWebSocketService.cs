@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -11,6 +12,7 @@ using Zeus.Daemon.Domain.Discord.Enums;
 
 namespace Zeus.Daemon.Infrastructure.Services.Discord;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
 public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
 {
     private readonly List<(DiscordGatewayEventType EventType, Func<JsonNode, CancellationToken, Task> Handler)>
@@ -20,7 +22,7 @@ public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
     private readonly ILogger _logger;
     private readonly ClientWebSocket _webSocket;
     private CancellationToken? _cancellationToken;
-    private int _heartbeatInterval = 0;
+    private int _heartbeatInterval;
 
 
     public DiscordWebSocketService(

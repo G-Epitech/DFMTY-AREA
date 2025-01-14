@@ -16,19 +16,16 @@ public sealed class AutomationsRunner : IAutomationsRunner
 {
     private readonly IActionHandlersProvider _actionHandlersProvider;
     private readonly IAutomationsRegistry _automationsRegistry;
-    private readonly IServiceProvider _serviceProvider;
     private readonly IIntegrationsProvider _integrationsProvider;
     private readonly ILogger _logger;
 
     public AutomationsRunner(
         IAutomationsRegistry automationsRegistry,
-        IServiceProvider serviceProvider,
         IActionHandlersProvider actionHandlersProvider,
         IIntegrationsProvider integrationsProvider,
         ILogger<AutomationsRunner> logger)
     {
         _automationsRegistry = automationsRegistry;
-        _serviceProvider = serviceProvider;
         _actionHandlersProvider = actionHandlersProvider;
         _integrationsProvider = integrationsProvider;
         _logger = logger;

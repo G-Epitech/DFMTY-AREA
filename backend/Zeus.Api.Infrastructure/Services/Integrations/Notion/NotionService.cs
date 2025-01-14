@@ -5,7 +5,9 @@ using System.Text.Json;
 
 using ErrorOr;
 
-using Zeus.Api.Application.Interfaces.Services.Integrations.Notion;
+using MapsterMapper;
+
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Notion;
@@ -20,14 +22,17 @@ public class NotionService : INotionService
     private readonly HttpClient _httpClient;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IMapper _mapper;
 
-    public NotionService(IIntegrationsSettingsProvider integrationsSettingsProvider)
+    public NotionService(IIntegrationsSettingsProvider integrationsSettingsProvider, IMapper mapper)
     {
         _integrationsSettingsProvider = integrationsSettingsProvider;
+        _mapper = mapper;
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
 
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri(_integrationsSettingsProvider.Notion.ApiEndpoint);
+        _httpClient.DefaultRequestHeaders.Add("Notion-Version", "2022-06-28");
         _httpClient.DefaultRequestHeaders.Accept.Clear();
         _httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
@@ -37,6 +42,9 @@ public class NotionService : INotionService
         "Basic",
         Convert.ToBase64String(Encoding.UTF8.GetBytes(
             $"{_integrationsSettingsProvider.Notion.ClientId}:{_integrationsSettingsProvider.Notion.ClientSecret}")));
+
+    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue("Bearer", accessToken.Value);
 
     public async Task<ErrorOr<NotionWorkspaceTokens>> GetTokensFromOauth2Async(string code)
     {
@@ -69,7 +77,6 @@ public class NotionService : INotionService
     public async Task<ErrorOr<NotionBot>> GetBotAsync(AccessToken accessToken)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
-        _httpClient.DefaultRequestHeaders.Add("Notion-Version", "2022-02-22");
 
         HttpResponseMessage response = await _httpClient.GetAsync("users/me");
 
@@ -94,6 +101,61 @@ public class NotionService : INotionService
                 responseContent.Bot.Owner.User.Person.Email));
     }
 
-    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
-        new AuthenticationHeaderValue("Bearer", accessToken.Value);
+    public async Task<ErrorOr<List<NotionDatabase>>> GetWorkspaceDatabasesAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        var filter = new { property = "object", value = "database" };
+
+        var requestContent = new StringContent(
+            JsonSerializer.Serialize(new { filter }),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        HttpResponseMessage response = await _httpClient.PostAsync("search", requestContent);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Integrations.Notion.ErrorDuringSearchRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<SearchNotionDatabasesResponse>(_jsonSerializerOptions);
+        if (responseContent is null)
+        {
+            return Errors.Integrations.Notion.InvalidBody;
+        }
+
+        return responseContent.Results.Select(database => _mapper.Map<NotionDatabase>(database)).ToList();
+    }
+
+    public async Task<ErrorOr<List<NotionPage>>> GetWorkspacePagesAsync(AccessToken accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        var filter = new { property = "object", value = "page" };
+
+        var requestContent = new StringContent(
+            JsonSerializer.Serialize(new { filter }),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        HttpResponseMessage response = await _httpClient.PostAsync("search", requestContent);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Integrations.Notion.ErrorDuringSearchRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<SearchNotionPagesResponse>(_jsonSerializerOptions);
+        if (responseContent is null)
+        {
+            return Errors.Integrations.Notion.InvalidBody;
+        }
+
+        return responseContent.Results.Select(database => _mapper.Map<NotionPage>(database)).ToList();
+    }
 }

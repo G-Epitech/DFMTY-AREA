@@ -18,6 +18,11 @@ public static partial class Errors
                 description: "Error during notion bot get request."
             );
 
+            public static Error ErrorDuringSearchRequest => Error.Failure(
+                code: "Integrations.Notion.ErrorDuringSearchRequest",
+                description: "Error during notion search request."
+            );
+
             public static Error InvalidBody => Error.Validation(
                 code: "Integrations.Notion.InvalidBody",
                 description: "Invalid body."

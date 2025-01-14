@@ -3,7 +3,6 @@
 using MassTransit;
 
 using Zeus.Api.Integration.Contracts;
-using Zeus.Api.Presentation.gRPC.SDK.Services;
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Registries;
@@ -20,8 +19,7 @@ public class AutomationCreatedEventHandler : IConsumer<AutomationCreatedEvent>
     public AutomationCreatedEventHandler(
         IAutomationsRegistry automationsRegistry,
         IIntegrationsProvider integrationsProvider,
-        IMapper mapper,
-        IAutomationsService automationsService)
+        IMapper mapper)
     {
         _automationsRegistry = automationsRegistry;
         _mapper = mapper;

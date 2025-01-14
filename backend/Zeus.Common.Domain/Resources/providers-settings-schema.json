@@ -4,11 +4,19 @@
   "properties": {
     "Discord": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "Notion": {
+      "$ref": "#/$defs/providerSettings"
+    },
+    "OpenAi": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
   "required": [
-    "Discord"
+    "Discord",
+    "Notion",
+    "OpenAi"
   ],
   "$defs": {
     "varType": {

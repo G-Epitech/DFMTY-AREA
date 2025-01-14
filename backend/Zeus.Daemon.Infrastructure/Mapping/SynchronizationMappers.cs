@@ -48,7 +48,7 @@ public static class SynchronizationMappers
         return new AutomationTrigger(
             automationTriggerId,
             trigger.Identifier,
-            trigger.Parameters.Select(p => new AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }).ToList(),
+            trigger.Parameters.Select(MapToAutomationTriggerParameter).ToList(),
             trigger.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );
     }
