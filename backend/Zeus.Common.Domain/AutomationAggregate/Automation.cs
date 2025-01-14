@@ -12,6 +12,9 @@ namespace Zeus.Common.Domain.AutomationAggregate;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class Automation : AggregateRoot<AutomationId>
 {
+    public const int LabelMaxLength = 100;
+    public const int DescriptionMaxLength = 255;
+    
     private readonly List<AutomationAction> _actions;
     private bool _enabled;
 

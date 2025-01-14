@@ -5,9 +5,8 @@ using MediatR;
 using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
-using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Common.Domain.UserAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
 namespace Zeus.Api.Application.Automations.Commands.CreateAutomation;
 
@@ -22,30 +21,36 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
     public async Task<ErrorOr<Automation>> Handle(CreateAutomationCommand command, CancellationToken cancellationToken)
     {
-        var triggerParams = new List<AutomationTriggerParameter>
-        {
-            new() { Identifier = "GuildId", Value = "1316046870178697267" }, new() { Identifier = "ChannelId", Value = "1316046972733620244" }
-        };
-
-        var trigger =
-            AutomationTrigger.Create("Discord.MessageReceivedInChannel", triggerParams, []);
-
-        var actionParams = new List<AutomationActionParameter>
-        {
-            new() { Identifier = "ChannelId", Value = "1316046972733620244", Type = AutomationActionParameterType.Raw },
-            new() { Identifier = "Content", Value = "Discord.MessageReceivedInChannel.Content", Type = AutomationActionParameterType.Var }
-        };
-
-        var action = AutomationAction.Create("Discord.SendMessageToChannel", 0, actionParams, []);
+        var trigger = CreateTrigger(command.Trigger);
+        var actions = command.Actions.Select(CreateAction).ToList();
 
         var automation = Automation.Create(
-            "Reply with a Yann gif",
-            "Reply to any message with a unique gif where yann is present",
-            new UserId(command.UserId),
-            trigger, [action], true);
+            command.Label,
+            command.Description,
+            command.OwnerId,
+            trigger,
+            actions,
+            command.Enabled
+        );
 
         await _automationWriteRepository.AddAutomationAsync(automation, cancellationToken);
 
         return automation;
+    }
+
+    private static AutomationTrigger CreateTrigger(CreateAutomationTriggerCommand trigger)
+    {
+        var parameters = trigger.Parameters.Select(p => new AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }).ToList();
+        var providers = trigger.Providers.Select(p => new IntegrationId(p)).ToList();
+
+        return AutomationTrigger.Create(trigger.Identifier, parameters, providers);
+    }
+
+    private static AutomationAction CreateAction(CreateAutomationActionCommand action, int rank)
+    {
+        var parameters = action.Parameters.Select(p => new AutomationActionParameter { Identifier = p.Identifier, Value = p.Value, Type = p.Type }).ToList();
+        var providers = action.Providers.Select(p => new IntegrationId(p)).ToList();
+
+        return AutomationAction.Create(action.Identifier, rank, parameters, providers);
     }
 }
