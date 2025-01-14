@@ -29,6 +29,7 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
             .HasValue<DiscordIntegration>(IntegrationType.Discord)
             .HasValue<NotionIntegration>(IntegrationType.Notion)
             .HasValue<OpenAiIntegration>(IntegrationType.OpenAi)
+            .HasValue<LeagueOfLegendsIntegration>(IntegrationType.LeagueOfLegends)
             .HasValue<GmailIntegration>(IntegrationType.Gmail);
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id)
