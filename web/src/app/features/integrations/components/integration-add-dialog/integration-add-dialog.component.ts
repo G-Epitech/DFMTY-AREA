@@ -20,9 +20,7 @@ import {
 } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 import { NotionMediator } from '@mediators/integrations';
 import { IntegrationTypeEnum } from '@models/integration';
-import {
-  OpenaiLinkFormComponent
-} from '@features/integrations/openai/openai-link-form/openai-link-form.component';
+import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
 
 @Component({
   selector: 'tr-integration-add-dialog',

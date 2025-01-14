@@ -51,7 +51,9 @@
                 height="35"
                 class="object-contain"
                 [style.filter]="
-                  forceWhite(selectedIntegration()!) ? 'brightness(0) invert(1)' : 'none'
+                  forceWhite(selectedIntegration()!)
+                    ? 'brightness(0) invert(1)'
+                    : 'none'
                 " />
             </div>
             <h1 class="tr-title-3">

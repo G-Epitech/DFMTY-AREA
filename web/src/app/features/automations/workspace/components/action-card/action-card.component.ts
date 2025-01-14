@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { ActionShortModel, AutomationSchemaModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconName } from '@utils/icon';

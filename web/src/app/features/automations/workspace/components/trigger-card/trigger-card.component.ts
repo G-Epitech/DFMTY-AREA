@@ -5,9 +5,8 @@ import {
   effect,
   inject,
   input,
-  signal,
 } from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { AutomationSchemaModel, TriggerShortModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconName } from '@utils/icon';

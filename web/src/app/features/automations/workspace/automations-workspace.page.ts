@@ -7,9 +7,9 @@ import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ActivatedRoute } from '@angular/router';
 import { TriggerCardComponent } from '@features/automations/workspace/components/trigger-card/trigger-card.component';
-import {
-  ActionCardComponent
-} from '@features/automations/workspace/components/action-card/action-card.component';
+import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
+import { TrButtonDirective } from '@triggo-ui/button';
+import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -19,6 +19,8 @@ import {
     AsyncPipe,
     TriggerCardComponent,
     ActionCardComponent,
+    TrButtonDirective,
+    AddStepButtonComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],
