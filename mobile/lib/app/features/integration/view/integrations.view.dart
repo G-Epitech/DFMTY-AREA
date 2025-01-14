@@ -5,6 +5,7 @@ import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/features/integration/widgets/integrations/notion.integrations.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integrations/open_ai.integrations.widget.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -12,6 +13,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
+import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
 class IntegrationsView extends StatefulWidget {
   const IntegrationsView({super.key});
@@ -165,6 +167,9 @@ class _IntegrationListItem extends StatelessWidget {
       case IntegrationNames.notion:
         return NotionIntegrationListItemWidget(
             integration: integration as NotionIntegration);
+      case IntegrationNames.openAI:
+        return OpenAIIntegrationListItemWidget(
+            integration: integration as OpenAIIntegration);
       default:
         return _DefaultIntegrationListItem(integration: integration);
     }

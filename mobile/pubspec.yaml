@@ -53,6 +53,7 @@ flutter:
     - assets/icons/user.svg
     - assets/icons/google.svg
     - assets/icons/notion.svg
+    - assets/icons/openai.svg
 
   uses-material-design: true
 
