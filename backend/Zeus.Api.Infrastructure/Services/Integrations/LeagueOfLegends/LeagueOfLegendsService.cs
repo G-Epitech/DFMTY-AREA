@@ -26,19 +26,19 @@ public class LeagueOfLegendsService : ILeagueOfLegendsService
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", integrationsSettingsProvider.Riot.ApiKey);
-        _httpClient.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+
         _platformApiEndpoint = new Uri(integrationsSettingsProvider.Riot.PlatformApiEndpoint);
         _regionalApiEndpoint = new Uri(integrationsSettingsProvider.Riot.RegionalApiEndpoint);
     }
 
     public async Task<ErrorOr<LeagueOfLegendsAccount>> GetAccountByRiotIdAsync(string gameName, string tagLine)
     {
-        var requestUri = new Uri(_platformApiEndpoint, $"riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
+        var requestUri = new Uri(_regionalApiEndpoint, $"riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
 
         HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
         if (!response.IsSuccessStatusCode)
         {
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             return Errors.Integrations.LeagueOfLegends.ErrorDuringAccountRequest;
         }
 

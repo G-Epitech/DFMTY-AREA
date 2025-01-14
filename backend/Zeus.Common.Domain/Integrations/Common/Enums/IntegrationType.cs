@@ -5,5 +5,6 @@ public enum IntegrationType
     Discord,
     Gmail,
     Notion,
-    OpenAi
+    OpenAi,
+    LeagueOfLegends
 }
