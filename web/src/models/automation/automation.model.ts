@@ -36,4 +36,8 @@ export class AutomationModel {
     this.trigger = trigger;
     this.actions = actions;
   }
+
+  get hasTrigger(): boolean {
+    return !!this.trigger;
+  }
 }

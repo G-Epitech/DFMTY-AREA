@@ -1,0 +1,13 @@
+@if (!trigger()) {
+  <div
+    class="p-4 rounded-md flex items-center justify-center bg-accent border-dashed border-2 border-black hover:cursor-pointer hover:bg-accent/50">
+    <span class="tr-container-title">Add a Trigger Event</span>
+  </div>
+} @else {
+  <div
+    class="p-4 rounded-md bg-white hover:bg-gray-100 transition-colors hover:cursor-pointer"
+    [ngStyle]="{
+      border: color() ? '3px solid ' + color() : 'none',
+    <span class="tr-container-title">{{ name() }}</span>
+  </div>
+}

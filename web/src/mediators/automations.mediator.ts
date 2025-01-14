@@ -6,6 +6,7 @@ import {
   AutomationSchemaModel,
   AutomationSchemaService,
   AutomationSchemaTrigger,
+  TriggerShortModel,
 } from '@models/automation';
 import {
   AutomationSchemaDTO,
@@ -35,7 +36,11 @@ export class AutomationsMediator {
           dto.updatedAt,
           '#EE883A',
           'chat-bubble-bottom-center-text',
-          dto.trigger,
+          new TriggerShortModel(
+            dto.trigger.identifier,
+            dto.trigger.parameters,
+            dto.trigger.providers
+          ),
           dto.actions
         );
       })

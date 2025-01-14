@@ -3,7 +3,7 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import { AutomationModel } from '@models/automation';
+import { AutomationModel, TriggerShortModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
 
 @Injectable({
@@ -83,7 +83,11 @@ export class UsersMediator {
               automation.updatedAt,
               '#EE883A',
               'chat-bubble-bottom-center-text',
-              automation.trigger,
+              new TriggerShortModel(
+                automation.trigger.identifier,
+                automation.trigger.parameters,
+                automation.trigger.providers
+              ),
               automation.actions
             )
         ),
