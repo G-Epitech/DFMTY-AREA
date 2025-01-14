@@ -1,77 +1,84 @@
-<form class="space-y-6" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
-  <div>
-    <label for="firstName" trLabel
-      >First Name
+<form class="space-y-4" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div class="flex flex-row gap-3">
+    <div>
+      <tr-register-form-label
+        for="firstName"
+        name="First Name"
+        [untouched]="registerForm.controls.firstName.untouched"
+        [invalid]="registerForm.controls.firstName.invalid"
+        [errors]="registerForm.controls.firstName.errors" />
       <input
         id="firstName"
         type="text"
         trInput
+        placeholder="Jon"
         class="w-full"
-        placeholder="John"
         [formControl]="registerForm.controls.firstName" />
-      @if (isControlInvalid(registerForm.controls.firstName)) {
-        <div class="h-1">
-          <small class="text-destructive">First name is required</small>
-        </div>
-      }
-    </label>
-  </div>
+    </div>
 
-  <div>
-    <label for="lastName" trLabel
-      >Last Name
+    <div>
+      <tr-register-form-label
+        for="lastName"
+        name="Last Name"
+        [untouched]="registerForm.controls.lastName.untouched"
+        [invalid]="registerForm.controls.lastName.invalid"
+        [errors]="registerForm.controls.lastName.errors" />
       <input
         id="lastName"
         type="text"
         trInput
-        class="w-full"
         placeholder="Doe"
-        [formControl]="registerForm.controls.lastName" />
-      @if (isControlInvalid(registerForm.controls.lastName)) {
-        <div class="h-1">
-          <small class="text-destructive">Last name is required</small>
-        </div>
-      }
-    </label>
-  </div>
-
-  <div>
-    <label for="email" trLabel
-      >Email
-      <input
-        id="email"
-        type="email"
-        trInput
+        [error]="false"
         class="w-full"
-        placeholder="example@email.com"
-        [formControl]="registerForm.controls.email" />
-      @if (isControlInvalid(registerForm.controls.email)) {
-        <div class="h-1">
-          <small class="text-destructive">{{ getEmailErrorMessage() }}</small>
-        </div>
-      }
-    </label>
+        [formControl]="registerForm.controls.lastName" />
+    </div>
   </div>
 
   <div>
+    <tr-register-form-label
+      for="email"
+      name="Email"
+      [untouched]="registerForm.controls.email.untouched"
+      [invalid]="registerForm.controls.email.invalid"
+      [errors]="registerForm.controls.email.errors" />
+    <input
+      id="email"
+      type="email"
+      trInput
+      placeholder="example@email.com"
+      class="w-full"
+      [formControl]="registerForm.controls.email" />
+  </div>
+
+  <div>
+    <tr-register-form-label
+      for="password"
+      name="Password"
+      [untouched]="registerForm.controls.password.untouched"
+      [invalid]="registerForm.controls.password.invalid"
+      [errors]="registerForm.controls.password.errors" />
     <tr-form-password
       label="Password"
       id="password"
-      [formControl]="registerForm.controls.password"
-      [errorMessage]="getPasswordErrorMessage()" />
+      [formControl]="registerForm.controls.password" />
   </div>
 
   <div>
+    <tr-register-form-label
+      for="confirmPassword"
+      name="Confirm Password"
+      [untouched]="registerForm.controls.confirmPassword.untouched"
+      [invalid]="registerForm.controls.confirmPassword.invalid"
+      [errors]="registerForm.controls.confirmPassword.errors" />
     <tr-form-password
       label="Confirm Password"
       id="confirmPassword"
-      [formControl]="registerForm.controls.confirmPassword"
-      errorMessage="Passwords need to match" />
+      [formControl]="registerForm.controls.confirmPassword" />
   </div>
 
   <button type="submit" trBtn class="w-full" [disabled]="registerLoading()">
     @if (registerLoading()) {
-      <tr-spinner />
+      <tr-spinner size="sm" />
     } @else {
       Register
     }

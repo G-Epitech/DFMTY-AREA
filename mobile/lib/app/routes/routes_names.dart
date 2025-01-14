@@ -12,4 +12,6 @@ class RoutesNames {
   static const String popOneTime = "pop_one_time";
   static const String popTwoTimes = "pop_two_times";
   static const String popThreeTimes = "pop_three_times";
+  static const String createAutomation = "create_automation_view";
+  static const String profile = "profile_view";
 }

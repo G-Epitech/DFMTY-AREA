@@ -11,9 +11,10 @@ namespace Zeus.Common.Domain.ProvidersSettings;
 
 public static class DependencyInjection
 {
-    private static readonly Assembly Assembly = typeof(DependencyInjection).Assembly;
     private const string ProvidersSettingsSchemaResourceName = "Resources/providers-settings-schema.json";
     private const string ProvidersSettingsResourceName = "Resources/providers-settings.json";
+    private static readonly Assembly Assembly = typeof(DependencyInjection).Assembly;
+
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         Converters =
@@ -43,7 +44,7 @@ public static class DependencyInjection
             {
                 LogErrorsDetails(results);
             }
-            
+
             var deserializedSettings = settings.Deserialize<ProvidersSettings>(JsonSerializerOptions);
 
             if (deserializedSettings is null)

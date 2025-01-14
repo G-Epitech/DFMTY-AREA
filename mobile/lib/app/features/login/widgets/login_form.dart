@@ -5,6 +5,7 @@ import 'package:triggo/app/features/login/bloc/login_bloc.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
+import 'package:triggo/app/widgets/navigation_bar.triggo.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -103,6 +104,15 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
+void _onLoginSuccess(BuildContext context) {
+  currentRouteNotifier.value = RoutesNames.home;
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    RoutesNames.home,
+    (route) => false,
+  );
+}
+
 void _listener(BuildContext context, LoginState state) {
   if (state.status.isFailure) {
     ScaffoldMessenger.of(context)
@@ -116,9 +126,6 @@ void _listener(BuildContext context, LoginState state) {
     return;
   }
   if (state.status.isSuccess) {
-    Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-      RoutesNames.home,
-      (route) => false,
-    );
+    _onLoginSuccess(context);
   }
 }

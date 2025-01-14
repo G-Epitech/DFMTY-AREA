@@ -2,7 +2,9 @@
 
 using Zeus.BuildingBlocks.Domain.Models;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
+using Zeus.Common.Domain.AutomationAggregate.Events;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.AutomationAggregate;
@@ -10,14 +12,11 @@ namespace Zeus.Common.Domain.AutomationAggregate;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class Automation : AggregateRoot<AutomationId>
 {
-    private readonly List<AutomationAction> _actions;
+    public const int LabelMaxLength = 100;
+    public const int DescriptionMaxLength = 255;
 
-    public string Label { get; private set; }
-    public string Description { get; private set; }
-    public AutomationTrigger Trigger { get; private set; }
-    public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
-    public UserId OwnerId { get; private set; }
-    public bool Enabled { get; private set; }
+    private readonly List<AutomationAction> _actions;
+    private bool _enabled;
 
     public Automation(
         AutomationId id,
@@ -36,7 +35,39 @@ public sealed class Automation : AggregateRoot<AutomationId>
         Description = description;
         Trigger = trigger;
         OwnerId = ownerId;
-        Enabled = enabled;
+        _enabled = enabled;
+    }
+
+#pragma warning disable CS8618
+    private Automation()
+    {
+    }
+#pragma warning restore CS8618
+
+    public string Label { get; private set; }
+    public string Description { get; private set; }
+    public AutomationTrigger Trigger { get; private set; }
+    public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
+    public UserId OwnerId { get; private set; }
+
+    public IReadOnlyList<IntegrationId> Providers => _actions
+        .SelectMany(a => a.Providers)
+        .Union(Trigger.Providers)
+        .Distinct()
+        .ToList();
+
+    public bool Enabled
+    {
+        get => _enabled;
+        private set
+        {
+            if (value == _enabled)
+            {
+                return;
+            }
+            _enabled = value;
+            AddDomainEvent(new AutomationEnabledStateChangedEvent(this));
+        }
     }
 
     public static Automation Create(
@@ -47,7 +78,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
         List<AutomationAction> actions,
         bool enabled = true)
     {
-        return new Automation(
+        var automation = new Automation(
             AutomationId.CreateUnique(),
             label,
             description,
@@ -57,11 +88,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
             DateTime.UtcNow,
             DateTime.UtcNow,
             enabled);
+        automation.AddDomainEvent(new AutomationCreatedEvent(automation));
+        return automation;
     }
-
-#pragma warning disable CS8618
-    private Automation()
-    {
-    }
-#pragma warning restore CS8618
 }

@@ -3,10 +3,10 @@ using ErrorOr;
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
-using Zeus.Common.Domain.Authentication.ValueObjects;
+using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
@@ -16,8 +16,8 @@ namespace Zeus.Api.Application.Integrations.Query.Discord.GetDiscordUserGuilds;
 public class
     GetDiscordUserGuildsQueryHandler : IRequestHandler<GetDiscordUserGuildsQuery, ErrorOr<List<GetDiscordUserGuildQueryResult>>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IDiscordService _discordService;
+    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
 
     public GetDiscordUserGuildsQueryHandler(IDiscordService discordService,
@@ -51,7 +51,7 @@ public class
         }
 
         var botGuilds = await _discordService.GetBotGuildsAsync(_integrationsSettingsProvider.Discord.BotToken);
-        
+
         if (botGuilds.IsError)
         {
             return botGuilds.Errors;

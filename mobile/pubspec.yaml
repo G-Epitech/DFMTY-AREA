@@ -8,13 +8,13 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
-  bloc: ^8.1.0
+  bloc: ^9.0.0
   http: ^1.2.2
   cupertino_icons: ^1.0.8
   json_annotation: ^4.9.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.1
+  flutter_bloc: ^9.0.0
   flutter_secure_storage: ^9.2.2
   formz: ^0.8.0
   equatable: ^2.0.7
@@ -25,6 +25,7 @@ dependencies:
   url_launcher: ^6.3.1
   dotted_border: ^2.1.0
   dotted_line: ^3.2.3
+  google_sign_in: ^6.2.2
 
 dev_dependencies:
   mockito: 5.4.4
@@ -54,6 +55,10 @@ flutter:
     - assets/icons/discord.svg
     - assets/icons/inbox-arrow-down.svg
     - assets/icons/chat-bubble-oval-right-ellipsis.svg
+    - assets/icons/user.svg
+    - assets/icons/google.svg
+    - assets/icons/notion.svg
+    - assets/icons/openai.svg
 
   uses-material-design: true
 

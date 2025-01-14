@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
+import 'package:triggo/repositories/authentication/google.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
@@ -10,14 +11,20 @@ class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository credentialsRepository;
   final DiscordRepository discordRepository;
+  final GoogleRepository googleRepository;
 
   IntegrationRepository({this.client, required this.credentialsRepository})
       : discordRepository = DiscordRepository(
           client: client,
           credentialsRepository: credentialsRepository,
+        ),
+        googleRepository = GoogleRepository(
+          client: client,
+          credentialsRepository: credentialsRepository,
         );
 
   get discord => discordRepository;
+  get google => googleRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
       {int page = 0, int size = 10}) async {
@@ -89,6 +96,18 @@ class IntegrationRepository {
           "iconUri": 'assets/icons/discord.svg',
           "color": "#7289da",
           "url": "discord"
+        },
+        {
+          "name": "Notion",
+          "iconUri": 'assets/icons/notion.svg',
+          "color": "#000000",
+          "url": "notion"
+        },
+        {
+          "name": "OpenAI",
+          "iconUri": 'assets/icons/openai.svg',
+          "color": "#10a37f",
+          "url": "openAI"
         }
       ]
     };

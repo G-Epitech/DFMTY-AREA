@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.Common.Enums;
@@ -16,10 +16,10 @@ namespace Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
 public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDiscordIntegrationCommand,
     ErrorOr<CreateDiscordIntegrationCommandResult>>
 {
+    private readonly IDiscordService _discordService;
     private readonly IIntegrationLinkRequestReadRepository _integrationLinkRequestReadRepository;
     private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestWriteRepository;
     private readonly IIntegrationWriteRepository _integrationWriteRepository;
-    private readonly IDiscordService _discordService;
 
     public CreateDiscordIntegrationCommandHandler(
         IIntegrationLinkRequestReadRepository integrationLinkRequestReadRepository,

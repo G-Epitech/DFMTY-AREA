@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Zeus.Api.Domain\Zeus.Api.Domain.csproj" />
+      <ProjectReference Include="..\Zeus.Api.Integration\Zeus.Api.Integration.csproj" />
       <ProjectReference Include="..\Zeus.BuildingBlocks.Application\Zeus.BuildingBlocks.Application.csproj" />
       <ProjectReference Include="..\Zeus.BuildingBlocks.Extensions\Zeus.BuildingBlocks.Extensions.csproj" />
     </ItemGroup>
@@ -17,14 +18,11 @@
       <PackageReference Include="FluentValidation" Version="11.11.0" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
       <PackageReference Include="Mapster" Version="7.4.0" />
+      <PackageReference Include="MassTransit.Abstractions" Version="8.3.4" />
       <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Integrations\Query\Integrations\" />
     </ItemGroup>
 
 </Project>

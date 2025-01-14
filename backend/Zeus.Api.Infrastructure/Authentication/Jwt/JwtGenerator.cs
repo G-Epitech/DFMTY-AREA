@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Zeus.Api.Application.Interfaces.Authentication;
 using Zeus.Api.Application.Interfaces.Services;
 using Zeus.Api.Infrastructure.Settings;
-using Zeus.Common.Domain.Authentication.ValueObjects;
+using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Authentication.Jwt;
@@ -22,6 +22,16 @@ public class JwtGenerator : IJwtGenerator
     {
         _dateTimeProvider = dateTimeProvider;
         _jwtSettings = jwtSettings.Value;
+    }
+
+    public AccessToken GenerateAccessToken(User user)
+    {
+        return new AccessToken(GenerateToken(user, AccessToken.Type, _jwtSettings.AccessTokenExpiryMinutes));
+    }
+
+    public RefreshToken GenerateRefreshToken(User user)
+    {
+        return new RefreshToken(GenerateToken(user, RefreshToken.Type, _jwtSettings.RefreshTokenExpiryMinutes));
     }
 
     private string GenerateToken(User user, string type, int expireMinutes)
@@ -47,15 +57,5 @@ public class JwtGenerator : IJwtGenerator
             signingCredentials: signingCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
-    }
-
-    public AccessToken GenerateAccessToken(User user)
-    {
-        return new AccessToken(GenerateToken(user, AccessToken.Type, _jwtSettings.AccessTokenExpiryMinutes));
-    }
-
-    public RefreshToken GenerateRefreshToken(User user)
-    {
-        return new RefreshToken(GenerateToken(user, RefreshToken.Type, _jwtSettings.RefreshTokenExpiryMinutes));
     }
 }

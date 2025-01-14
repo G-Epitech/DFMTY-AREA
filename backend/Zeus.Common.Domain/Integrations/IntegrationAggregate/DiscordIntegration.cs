@@ -11,7 +11,7 @@ namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 public sealed class DiscordIntegration : Integration
 {
-    private DiscordIntegration(
+    public DiscordIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,

@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/creation/select_integration_account.view.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/view/integrations/openAI.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 
 class IntegrationListItemWidget extends StatelessWidget {
@@ -61,7 +63,7 @@ class _CustomWidget extends StatelessWidget {
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,
               )));
         } else {
-          integrationMediator.launchURLFromIntegration(integration.url);
+          _customOnTap(context, integration, integrationMediator);
         }
       },
       child: Row(
@@ -114,5 +116,19 @@ class _CustomWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> _customOnTap(
+    BuildContext context,
+    AvailableIntegration integration,
+    IntegrationMediator integrationMediator) async {
+  if (integration.name == IntegrationNames.openAI) {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OpenAIIntegrationView()),
+    );
+  } else {
+    integrationMediator.launchURLFromIntegration(integration.url);
   }
 }

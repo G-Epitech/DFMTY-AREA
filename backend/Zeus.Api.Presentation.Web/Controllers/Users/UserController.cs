@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Automations.Query.GetAutomations;
-using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrations;
+using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrationsWithProperties;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Users.Query;
 using Zeus.Api.Infrastructure.Authentication.Context;
@@ -15,16 +15,15 @@ using Zeus.Api.Presentation.Web.Contracts.Integrations;
 using Zeus.Api.Presentation.Web.Contracts.Users;
 using Zeus.Api.Presentation.Web.Mapping;
 using Zeus.Common.Domain.AutomationAggregate;
-using Zeus.Common.Domain.ProvidersSettings;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Users;
 
 [Route("user", Name = "User")]
 public class UserController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public UserController(ISender sender, IMapper mapper, IAuthUserContext authUserContext)
     {
@@ -35,7 +34,7 @@ public class UserController : ApiController
 
     [HttpGet(Name = "GetAuthUser")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthUser([FromServices] ProvidersSettings settings)
+    public async Task<IActionResult> GetAuthUser()
     {
         var authUser = _authUserContext.User;
         if (authUser is null)
@@ -60,7 +59,7 @@ public class UserController : ApiController
             return Unauthorized();
         }
 
-        var integrationsResult = await _sender.Send(new GetIntegrationsQuery(authUser.Id, page, size));
+        var integrationsResult = await _sender.Send(new GetIntegrationsWithPropertiesQuery(authUser.Id, page, size));
         if (integrationsResult.IsError)
         {
             return Problem(integrationsResult.Errors);
@@ -68,7 +67,7 @@ public class UserController : ApiController
 
         var integrationResponses = new List<GetIntegrationResponse>();
 
-        foreach (GetIntegrationQueryResult integrationQueryResult in integrationsResult.Value.Items)
+        foreach (GetIntegrationWithPropertiesQueryResult integrationQueryResult in integrationsResult.Value.Items)
         {
             var propertiesResponse = _mapper.MapIntegrationPropertiesResponse(integrationQueryResult);
             var integrationResponse = new GetIntegrationResponse(

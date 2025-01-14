@@ -6,6 +6,7 @@ import 'package:triggo/app/features/home/home.dart';
 import 'package:triggo/app/features/integration/view/integration_connect.view.dart';
 import 'package:triggo/app/features/integration/view/integrations.view.dart';
 import 'package:triggo/app/features/login/view/login.view.dart';
+import 'package:triggo/app/features/profile/view/profile.view.dart';
 import 'package:triggo/app/features/register/view/register.view.dart';
 import 'package:triggo/app/features/splash/view/splash.view.dart';
 import 'package:triggo/app/features/welcome/view/welcome.view.dart';
@@ -34,6 +35,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return customScreenBuilder(const AutomationCreationMainView());
     case (RoutesNames.automationSettings):
       return customScreenBuilder(const AutomationCreationSettingsView());
+    case (RoutesNames.profile):
+      return customScreenBuilder(const ProfileView());
     default:
       return customScreenBuilder(const Placeholder());
   }

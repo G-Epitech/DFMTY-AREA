@@ -37,42 +37,6 @@ podTemplate(containers: [
             }
         }
 
-        stage('Web Prepare') {
-            container('docker') {
-                def WEB_IMAGE_TEST = "web-test:${env.BUILD_ID}"
-                sh "docker build -f ${WEB_PATH}/Dockerfile -t ${WEB_IMAGE_TEST} ${WEB_PATH}"
-                sh "docker stop angular-container || true"
-                sh "docker rm angular-container || true"
-                sh "docker run -d --name angular-container ${WEB_IMAGE_TEST} sleep infinity"
-            }
-        }
-
-        stage('Web Build') {
-            container('docker') {
-                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run build')
-            }
-        }
-
-        stage('Web Lint') {
-            container('docker') {
-                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run lint')
-            }
-        }
-
-        stage('Web Format') {
-            container('docker') {
-                shInContainer('angular-container', "web-test:${env.BUILD_ID}", 'npm run format:check')
-            }
-        }
-
-        stage('Web Cleanup') {
-            container('docker') {
-                sh "docker stop angular-container"
-                sh "docker rm angular-container"
-                sh "docker rmi web-test:${env.BUILD_ID}"
-            }
-        }
-
         stage('Backend Build') {
             parallel(
                 'Zeus Api Web': {
@@ -115,6 +79,42 @@ podTemplate(containers: [
                 if (runStatus != 0) {
                     error 'Docker run failed for Mobile App'
                 }
+            }
+        }
+
+        stage('Web Prepare') {
+            container('docker') {
+                def WEB_IMAGE_TEST = "web-test:${env.BUILD_TAG}"
+                sh "docker build -f ${WEB_PATH}/Dockerfile -t ${WEB_IMAGE_TEST} ${WEB_PATH}"
+                sh "docker stop angular-container || true"
+                sh "docker rm angular-container || true"
+                sh "docker run -d --name angular-container ${WEB_IMAGE_TEST} sleep infinity"
+            }
+        }
+
+        stage('Web Build') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_TAG}", 'npm run build --configuration=test')
+            }
+        }
+
+        stage('Web Lint') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_TAG}", 'npm run lint')
+            }
+        }
+
+        stage('Web Format') {
+            container('docker') {
+                shInContainer('angular-container', "web-test:${env.BUILD_TAG}", 'npm run format:check')
+            }
+        }
+
+        stage('Web Cleanup') {
+            container('docker') {
+                sh "docker stop angular-container"
+                sh "docker rm angular-container"
+                sh "docker rmi web-test:${env.BUILD_TAG}"
             }
         }
 

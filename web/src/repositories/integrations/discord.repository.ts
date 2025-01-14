@@ -1,7 +1,10 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { DiscordUriResponseDTO } from '@repositories/integrations/dto/discord';
+import {
+  DiscordGuildDTO,
+  DiscordUriResponseDTO,
+} from '@repositories/integrations/dto/discord';
 import { DiscordRequestDTO } from '@repositories/integrations/dto/discord/discord.dto';
 
 @Injectable({
@@ -21,5 +24,10 @@ export class DiscordRepository {
   link(dto: DiscordRequestDTO): Observable<void> {
     const url = `${this.baseUrl}/integrations/discord`;
     return this.#httpClient.post<void>(url, dto);
+  }
+
+  getGuilds(integrationId: string): Observable<DiscordGuildDTO[]> {
+    const url = `${this.baseUrl}/integrations/${integrationId}/discord/guilds`;
+    return this.#httpClient.get<DiscordGuildDTO[]>(url);
   }
 }

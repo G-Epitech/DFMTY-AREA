@@ -5,12 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Discord;
 
 public class DiscordUser : Entity<DiscordUserId>
 {
-    public string Username { get; private set; }
-    public string Email { get; private set; }
-    public string DisplayName { get; private set; }
-    public Uri AvatarUri { get; private set; }
-    public string[] Flags { get; private set; }
-
     private DiscordUser(
         DiscordUserId id,
         string username,
@@ -25,6 +19,12 @@ public class DiscordUser : Entity<DiscordUserId>
         AvatarUri = avatarUri;
         Flags = flags;
     }
+
+    public string Username { get; private set; }
+    public string Email { get; private set; }
+    public string DisplayName { get; private set; }
+    public Uri AvatarUri { get; private set; }
+    public string[] Flags { get; private set; }
 
     public static DiscordUser Create(
         DiscordUserId id,

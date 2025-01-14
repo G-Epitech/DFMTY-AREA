@@ -6,7 +6,7 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
-public class UsersConfiguration: IEntityTypeConfiguration<User>
+public class UsersConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
@@ -21,8 +21,6 @@ public class UsersConfiguration: IEntityTypeConfiguration<User>
             .HasMaxLength(100);
         builder.Property(u => u.LastName)
             .HasMaxLength(100);
-        builder.Property(u => u.Password)
-            .HasMaxLength(255);
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedNever()
             .IsRequired();

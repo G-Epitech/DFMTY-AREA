@@ -6,7 +6,7 @@ import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 

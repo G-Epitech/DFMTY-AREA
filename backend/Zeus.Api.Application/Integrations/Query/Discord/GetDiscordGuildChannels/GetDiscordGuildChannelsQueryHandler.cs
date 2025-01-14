@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
-using Zeus.Api.Application.Interfaces.Services.Integrations.Discord;
+using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
 using Zeus.Api.Domain.Integrations.Discord.ValueObjects;
@@ -15,8 +15,8 @@ namespace Zeus.Api.Application.Integrations.Query.Discord.GetDiscordGuildChannel
 public class GetDiscordGuildChannelsQueryHandler : IRequestHandler<GetDiscordGuildChannelsQuery,
     ErrorOr<List<GetDiscordGuildChannelQueryResult>>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IDiscordService _discordService;
+    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
 
     public GetDiscordGuildChannelsQueryHandler(IIntegrationReadRepository integrationReadRepository,

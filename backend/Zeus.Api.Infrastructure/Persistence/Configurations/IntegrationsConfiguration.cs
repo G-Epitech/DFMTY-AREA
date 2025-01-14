@@ -8,6 +8,8 @@ using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
+using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
+
 public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
 {
     private const int ClientIdMaxLength = 255;
@@ -25,6 +27,9 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         builder.ToTable("Integrations");
         builder.HasDiscriminator(i => i.Type)
             .HasValue<DiscordIntegration>(IntegrationType.Discord)
+            .HasValue<NotionIntegration>(IntegrationType.Notion)
+            .HasValue<OpenAiIntegration>(IntegrationType.OpenAi)
+            .HasValue<LeagueOfLegendsIntegration>(IntegrationType.LeagueOfLegends)
             .HasValue<GmailIntegration>(IntegrationType.Gmail);
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id)

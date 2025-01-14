@@ -6,30 +6,41 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>baf70c47-0fa0-41c6-92a8-a15c9b0de96e</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>baf70c47-0fa0-41c6-92a8-a15c9b0de96e</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-      <None Remove="appsettings.json" />
-      <Content Include="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+        <None Remove="appsettings.json"/>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="appsettings.Development.json"/>
+        <Content Include="appsettings.Development.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Update="Properties\launchSettings.json">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj" />
-      <ProjectReference Include="..\Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj" />
+        <ProjectReference Include="..\Zeus.Daemon.Application\Zeus.Daemon.Application.csproj"/>
+        <ProjectReference Include="..\Zeus.Daemon.Infrastructure\Zeus.Daemon.Infrastructure.csproj"/>
     </ItemGroup>
 </Project>

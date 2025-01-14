@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
+using Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.Enums;
 using Zeus.Api.Infrastructure.Persistence;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.Integrations.Common.Enums;
@@ -24,12 +24,65 @@ namespace Zeus.Api.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AuthenticationMethodType", new[] { "google", "password" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "AutomationActionParameterType", new[] { "raw", "var" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationTokenUsage", new[] { "access", "refresh" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "IntegrationType", new[] { "discord", "gmail", "league_of_legends", "notion", "open_ai" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Zeus.Api.Domain.AutomationAggregate.Automation", b =>
+            modelBuilder.Entity("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.AuthenticationMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<AuthenticationMethodType>("Type")
+                        .HasColumnType("\"AuthenticationMethodType\"");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuthenticationMethods", (string)null);
+
+                    b.HasDiscriminator<AuthenticationMethodType>("Type");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<IntegrationType>("Type")
+                        .HasColumnType("\"IntegrationType\"");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("IntegrationLinkRequests", (string)null);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.AutomationAggregate.Automation", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -63,7 +116,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.ToTable("Automations", (string)null);
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationAggregate.Integration", b =>
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -96,31 +149,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<IntegrationType>("Type")
-                        .HasColumnType("\"IntegrationType\"");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("IntegrationLinkRequests", (string)null);
-                });
-
-            modelBuilder.Entity("Zeus.Api.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Zeus.Common.Domain.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -143,11 +172,6 @@ namespace Zeus.Api.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -156,29 +180,98 @@ namespace Zeus.Api.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationAggregate.DiscordIntegration", b =>
+            modelBuilder.Entity("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.GoogleAuthenticationMethod", b =>
                 {
-                    b.HasBaseType("Zeus.Api.Domain.Integrations.IntegrationAggregate.Integration");
+                    b.HasBaseType("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.AuthenticationMethod");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasDiscriminator().HasValue(AuthenticationMethodType.Google);
+                });
+
+            modelBuilder.Entity("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.PasswordAuthenticationMethod", b =>
+                {
+                    b.HasBaseType("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.AuthenticationMethod");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasDiscriminator().HasValue(AuthenticationMethodType.Password);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.DiscordIntegration", b =>
+                {
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
 
                     b.HasDiscriminator().HasValue(IntegrationType.Discord);
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationAggregate.GmailIntegration", b =>
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.GmailIntegration", b =>
                 {
-                    b.HasBaseType("Zeus.Api.Domain.Integrations.IntegrationAggregate.Integration");
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
 
                     b.HasDiscriminator().HasValue(IntegrationType.Gmail);
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.AutomationAggregate.Automation", b =>
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.LeagueOfLegendsIntegration", b =>
                 {
-                    b.HasOne("Zeus.Api.Domain.UserAggregate.User", null)
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
+
+                    b.HasDiscriminator().HasValue(IntegrationType.LeagueOfLegends);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.NotionIntegration", b =>
+                {
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
+
+                    b.HasDiscriminator().HasValue(IntegrationType.Notion);
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.OpenAiIntegration", b =>
+                {
+                    b.HasBaseType("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration");
+
+                    b.HasDiscriminator().HasValue(IntegrationType.OpenAi);
+                });
+
+            modelBuilder.Entity("Zeus.Api.Domain.Authentication.AuthenticationMethodAggregate.AuthenticationMethod", b =>
+                {
+                    b.HasOne("Zeus.Common.Domain.UserAggregate.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
+                {
+                    b.HasOne("Zeus.Common.Domain.UserAggregate.User", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Zeus.Common.Domain.AutomationAggregate.Automation", b =>
+                {
+                    b.HasOne("Zeus.Common.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Zeus.Api.Domain.AutomationAggregate.Entities.AutomationAction", "Actions", b1 =>
+                    b.OwnsMany("Zeus.Common.Domain.AutomationAggregate.Entities.AutomationAction", "Actions", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -204,7 +297,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AutomationId");
 
-                            b1.OwnsMany("Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
                                 {
                                     b2.Property<Guid>("ActionId")
                                         .HasColumnType("uuid");
@@ -220,7 +313,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                                         .HasForeignKey("ActionId");
                                 });
 
-                            b1.OwnsMany("Zeus.Api.Domain.AutomationAggregate.ValueObjects.AutomationActionParameter", "Parameters", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.AutomationAggregate.ValueObjects.AutomationActionParameter", "Parameters", b2 =>
                                 {
                                     b2.Property<Guid>("ActionId")
                                         .HasColumnType("uuid");
@@ -249,7 +342,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                             b1.Navigation("Providers");
                         });
 
-                    b.OwnsOne("Zeus.Api.Domain.AutomationAggregate.Entities.AutomationTrigger", "Trigger", b1 =>
+                    b.OwnsOne("Zeus.Common.Domain.AutomationAggregate.Entities.AutomationTrigger", "Trigger", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -273,7 +366,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AutomationId");
 
-                            b1.OwnsMany("Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
                                 {
                                     b2.Property<Guid>("TriggerId")
                                         .HasColumnType("uuid");
@@ -289,7 +382,7 @@ namespace Zeus.Api.Infrastructure.Migrations
                                         .HasForeignKey("TriggerId");
                                 });
 
-                            b1.OwnsMany("Zeus.Api.Domain.AutomationAggregate.ValueObjects.AutomationTriggerParameter", "Parameters", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.AutomationAggregate.ValueObjects.AutomationTriggerParameter", "Parameters", b2 =>
                                 {
                                     b2.Property<Guid>("TriggerId")
                                         .HasColumnType("uuid");
@@ -321,15 +414,15 @@ namespace Zeus.Api.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationAggregate.Integration", b =>
+            modelBuilder.Entity("Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration", b =>
                 {
-                    b.HasOne("Zeus.Api.Domain.UserAggregate.User", null)
+                    b.HasOne("Zeus.Common.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Zeus.Api.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationToken", "Tokens", b1 =>
+                    b.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationToken", "Tokens", b1 =>
                         {
                             b1.Property<string>("Value")
                                 .HasMaxLength(255)
@@ -359,15 +452,6 @@ namespace Zeus.Api.Infrastructure.Migrations
                         });
 
                     b.Navigation("Tokens");
-                });
-
-            modelBuilder.Entity("Zeus.Api.Domain.Integrations.IntegrationLinkRequestAggregate.IntegrationLinkRequest", b =>
-                {
-                    b.HasOne("Zeus.Api.Domain.UserAggregate.User", null)
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

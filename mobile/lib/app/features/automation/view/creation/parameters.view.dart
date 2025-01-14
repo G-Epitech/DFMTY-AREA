@@ -13,7 +13,7 @@ import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationCreationParametersView extends StatefulWidget {

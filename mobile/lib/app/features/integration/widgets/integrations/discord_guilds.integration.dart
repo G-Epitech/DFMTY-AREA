@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/utils/launch_url.dart';
 
 class DiscordGuildItemWidget extends StatelessWidget {
   final DiscordGuild guild;
@@ -27,8 +26,6 @@ class _DiscordGuildsCustomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IntegrationMediator integrationMediator =
-        RepositoryProvider.of<IntegrationMediator>(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -48,7 +45,7 @@ class _DiscordGuildsCustomWidget extends StatelessWidget {
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            integrationMediator.launchURL(
+            launchURL(
                 "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");
           },
           child: Container(

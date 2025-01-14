@@ -13,7 +13,6 @@ public sealed class User : AggregateRoot<UserId>
         string firstName,
         string lastName,
         string email,
-        string password,
         DateTime updatedAt,
         DateTime createdAt)
         : base(id, updatedAt, createdAt)
@@ -21,29 +20,6 @@ public sealed class User : AggregateRoot<UserId>
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Password = password;
-    }
-
-    public string FirstName { get; }
-    public string LastName { get; }
-    public string Email { get; }
-    public string Password { get; }
-
-    public static User Create(
-        string firstName,
-        string lastName,
-        string email,
-        string password)
-    {
-        return new User(
-            UserId.CreateUnique(),
-            firstName,
-            lastName,
-            email,
-            password,
-            DateTime.UtcNow,
-            DateTime.UtcNow
-        );
     }
 
 #pragma warning disable CS8618
@@ -51,4 +27,23 @@ public sealed class User : AggregateRoot<UserId>
     {
     }
 #pragma warning restore CS8618
+
+    public string FirstName { get; }
+    public string LastName { get; }
+    public string Email { get; }
+
+    public static User Create(
+        string firstName,
+        string lastName,
+        string email)
+    {
+        return new User(
+            UserId.CreateUnique(),
+            firstName,
+            lastName,
+            email,
+            DateTime.UtcNow,
+            DateTime.UtcNow
+        );
+    }
 }

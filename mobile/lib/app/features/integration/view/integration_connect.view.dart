@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/integration/widgets/integration.widget.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 
 class IntegrationAvailableView extends StatefulWidget {
@@ -180,34 +180,13 @@ class _IntegrationListViewContent extends StatelessWidget {
         itemCount: integrations.length,
         itemBuilder: (context, index) {
           final integration = integrations[index];
-          return _IntegrationListItem(
+          return IntegrationListItemWidget(
             integration: integration,
             type: type,
             indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
           );
         },
       ),
-    );
-  }
-}
-
-class _IntegrationListItem extends StatelessWidget {
-  final AvailableIntegration integration;
-  final AutomationChoiceEnum? type;
-  final int? indexOfTheTriggerOrAction;
-
-  const _IntegrationListItem({
-    required this.integration,
-    this.type,
-    this.indexOfTheTriggerOrAction,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IntegrationListItemWidget(
-      integration: integration,
-      type: type,
-      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
     );
   }
 }

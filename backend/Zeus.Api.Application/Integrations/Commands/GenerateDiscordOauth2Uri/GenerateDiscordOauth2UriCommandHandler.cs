@@ -12,8 +12,8 @@ namespace Zeus.Api.Application.Integrations.Commands.GenerateDiscordOauth2Uri;
 public class GenerateDiscordOauth2UriCommandHandler : IRequestHandler<GenerateDiscordOauth2UriCommand,
     ErrorOr<GenerateDiscordOauth2UriCommandResult>>
 {
-    private readonly ISender _sender;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
+    private readonly ISender _sender;
 
     public GenerateDiscordOauth2UriCommandHandler(ISender sender,
         IIntegrationsSettingsProvider integrationsSettingsProvider)
@@ -37,7 +37,7 @@ public class GenerateDiscordOauth2UriCommandHandler : IRequestHandler<GenerateDi
         queryString.Add("client_id", settings.ClientId);
         queryString.Add("redirect_uri", settings.RedirectUrl);
         queryString.Add("response_type", "code");
-        queryString.Add("scope", string.Join(" ", settings.Scope));
+        queryString.Add("scope", string.Join(" ", settings.Scopes));
         queryString.Add("state", linkRequestResult.Value.IntegrationLinkRequestId.ToString());
 
         var uri = new UriBuilder(settings.OAuth2Endpoint) { Query = queryString.ToString() }.Uri;

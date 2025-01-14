@@ -4,8 +4,9 @@ import 'package:triggo/app/features/integration/bloc/integrations/discord/discor
 import 'package:triggo/app/features/integration/widgets/integrations/discord_guilds.integration.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/utils/launch_url.dart';
 
 class DiscordView extends StatefulWidget {
   final DiscordIntegration discordGuild;
@@ -82,13 +83,10 @@ class _GuildConnectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IntegrationMediator integrationMediator =
-        RepositoryProvider.of<IntegrationMediator>(context);
-
     return TriggoButton(
       text: 'Link a Guild',
       onPressed: () async {
-        await integrationMediator.launchURL(
+        await launchURL(
             "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");
       },
     );

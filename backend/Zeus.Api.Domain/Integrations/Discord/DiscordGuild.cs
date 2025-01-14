@@ -5,10 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Discord;
 
 public class DiscordGuild : Entity<DiscordGuildId>
 {
-    public string Name { get; private set; }
-    public Uri IconUri { get; private set; }
-    public uint ApproximateMemberCount { get; private set; }
-
     private DiscordGuild(
         DiscordGuildId id,
         string name,
@@ -19,6 +15,10 @@ public class DiscordGuild : Entity<DiscordGuildId>
         IconUri = iconUri;
         ApproximateMemberCount = approximateMemberCount;
     }
+
+    public string Name { get; private set; }
+    public Uri IconUri { get; private set; }
+    public uint ApproximateMemberCount { get; private set; }
 
     public static DiscordGuild Create(
         DiscordGuildId id,

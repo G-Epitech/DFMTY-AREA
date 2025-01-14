@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Presentation.gRPC.Contracts", "Zeus.Api.Presentation.gRPC.Contracts\Zeus.Api.Presentation.gRPC.Contracts.csproj", "{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeus.Api.Integration", "Zeus.Api.Integration\Zeus.Api.Integration.csproj", "{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,7 @@ Global
 		{D4D27FFE-5E17-47A6-A829-AFB266164A4A} = {6177C21B-1BCE-4925-AC04-FFB23B67AEF3}
 		{89CBC98E-2863-4445-9D05-94ACD5A78E39} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
+		{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4} = {750068C9-CB1A-4988-B317-53BC1F0896BE}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6373179-DEEE-44AD-9CB4-9C53BB5EED04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -141,5 +144,9 @@ Global
 		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52EE8D9A-0BE1-4672-97AB-4A0AC5DFBFD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB405DF-10B6-4E81-820F-3CC1E0DEA3C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

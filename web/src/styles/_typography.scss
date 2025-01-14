@@ -46,7 +46,7 @@
 }
 
 .tr-subtitle {
-  @include typography($weight: 400, $size: 1.75rem);
+  @include typography($weight: 400, $size: 1.1rem);
 }
 
 .tr-large {
@@ -58,5 +58,5 @@
 }
 
 .tr-small {
-  @include typography($weight: 400, $size: 0.6rem, $letter-spacing: -0.013rem);
+  @include typography($weight: 400, $size: 0.7rem, $letter-spacing: -0.013rem);
 }
