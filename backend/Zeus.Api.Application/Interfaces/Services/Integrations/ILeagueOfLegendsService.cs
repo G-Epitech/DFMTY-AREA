@@ -28,7 +28,7 @@ public interface ILeagueOfLegendsService
     /// <param name="riotAccountId">Riot account id (PUUID)</param>
     /// <returns>League of legends summoner</returns>
     public Task<ErrorOr<LeagueOfLegendsSummoner>> GetSummonerByRiotAccountId(RiotAccountId riotAccountId);
-    
+
     /// <summary>
     /// Get summoner profile icon uri
     /// </summary>

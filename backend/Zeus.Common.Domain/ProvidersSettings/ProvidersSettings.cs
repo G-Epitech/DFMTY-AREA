@@ -48,12 +48,12 @@ public class ProvidersSettings
             _ => throw new InvalidOperationException($"Provider '{providerName}' not found")
         };
     }
-    
+
     public bool IsTriggerIdentifierValid(string identifier)
     {
         return AllTriggerIdentifiers.Contains(identifier);
     }
-    
+
     public bool IsActionIdentifierValid(string identifier)
     {
         return AllActionIdentifiers.Contains(identifier);

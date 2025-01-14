@@ -1,7 +1,6 @@
 using Mapster;
 
 using Zeus.Api.Domain.Integrations.Discord;
-using Zeus.Api.Domain.Integrations.LeagueOfLegends;
 using Zeus.Api.Domain.Integrations.Notion;
 using Zeus.Api.Domain.Integrations.OpenAi;
 using Zeus.Api.Domain.Integrations.Properties;
