@@ -10,7 +10,7 @@ import { TrDialogImports } from '@triggo-ui/dialog';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputSearchComponent } from '@triggo-ui/input';
-import { IntegrationsMediator } from '@mediators/integrations.mediator';
+import { IntegrationsMediator } from '@mediators/integrations/integrations.mediator';
 import { Observable } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
