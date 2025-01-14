@@ -213,13 +213,17 @@ class _List extends StatelessWidget {
                 indexOfTheTriggerOrAction,
                 triggerOrActionIdentifier,
                 parameterIdentifier,
-                state.previews);
-            final String selectedValue = getSelectedValue(
-                    state.dirtyAutomation,
-                    type,
-                    triggerOrActionIdentifier,
-                    indexOfTheTriggerOrAction) ??
-                "";
+                state.previews,
+                true);
+            final selectedValue = getPreviewData(
+                state.dirtyAutomation,
+                type,
+                integrationIdentifier,
+                indexOfTheTriggerOrAction,
+                triggerOrActionIdentifier,
+                parameterIdentifier,
+                state.previews,
+                false);
             final List<AutomationRadioModel>? options = getOptions(
                 state.dirtyAutomation,
                 type,
@@ -282,19 +286,21 @@ class _List extends StatelessWidget {
   }
 }
 
-String getPreviewData(
+String? getPreviewData(
     Automation automation,
     AutomationChoiceEnum type,
     String integrationIdentifier,
     int indexOfTheTriggerOrAction,
     String triggerOrActionIdentifier,
     String parameterIdentifier,
-    Map<String, String> previews) {
-  String value = '';
+    Map<String, String> previews,
+    bool humanReadable) {
+  String? value;
   bool isNotHumanReadable = true;
   switch (type) {
     case AutomationChoiceEnum.trigger:
-      if (automation.trigger.identifier != triggerOrActionIdentifier) {
+      if (automation.trigger.identifier !=
+          "$integrationIdentifier.$triggerOrActionIdentifier") {
         break;
       }
       for (final parameter in automation.trigger.parameters) {
@@ -306,19 +312,21 @@ String getPreviewData(
       break;
     case AutomationChoiceEnum.action:
       for (final action in automation.actions) {
-        if (action.identifier == triggerOrActionIdentifier) {
-          for (final parameter in action.parameters) {
-            if (parameter.identifier == parameterIdentifier) {
-              value = parameter.value;
-              isNotHumanReadable = parameter.type != 'raw';
-              break;
-            }
+        if (action.identifier !=
+            "$integrationIdentifier.$triggerOrActionIdentifier") {
+          break;
+        }
+        for (final parameter in action.parameters) {
+          if (parameter.identifier == parameterIdentifier) {
+            value = parameter.value;
+            isNotHumanReadable = parameter.type != 'raw';
+            break;
           }
         }
       }
       break;
   }
-  if (isNotHumanReadable) {
+  if (humanReadable && isNotHumanReadable) {
     return replaceByHumanReadable(
         type,
         integrationIdentifier,
@@ -330,7 +338,7 @@ String getPreviewData(
   return value;
 }
 
-String replaceByHumanReadable(
+String? replaceByHumanReadable(
     AutomationChoiceEnum type,
     String integrationIdentifier,
     int indexOfTheTriggerOrAction,
@@ -347,33 +355,7 @@ String replaceByHumanReadable(
   key += '.$integrationIdentifier';
   key += '.$triggerOrActionIdentifier';
   key += '.$parameterIdentifier';
-  return previews[key] ?? '';
-}
-
-String? getSelectedValue(Automation automation, AutomationChoiceEnum type,
-    String propertyIdentifier, int parameterIndex) {
-  switch (type) {
-    case AutomationChoiceEnum.trigger:
-      if (automation.trigger.identifier == propertyIdentifier) {
-        for (final parameter in automation.trigger.parameters) {
-          if (parameter.identifier == propertyIdentifier) {
-            return parameter.value;
-          }
-        }
-      }
-      break;
-    case AutomationChoiceEnum.action:
-      for (final action in automation.actions) {
-        if (action.identifier == propertyIdentifier) {
-          if (action.parameters.isNotEmpty) {
-            return action.parameters[parameterIndex].value;
-          }
-          break;
-        }
-      }
-      break;
-  }
-  return null;
+  return previews[key];
 }
 
 List<AutomationRadioModel>? getOptions(

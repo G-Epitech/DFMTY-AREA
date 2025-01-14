@@ -66,7 +66,7 @@ class AutomationCreationSettingsView extends StatelessWidget {
 
 class AutomationLabelParameterWidget extends StatelessWidget {
   final String title;
-  final String previewData;
+  final String? previewData;
   final StatefulWidget input;
   final bool disabled;
 
@@ -104,7 +104,7 @@ class AutomationLabelParameterWidget extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    previewData.isEmpty ? 'No $title' : previewData,
+                    previewData == null ? 'No $title' : previewData!,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/models/radio.model.dart';
@@ -282,33 +284,80 @@ class _RadioInputState extends State<_RadioInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                for (final option in widget.options)
-                  RadioListTile<String>(
-                    title: Text(
-                      option.title,
-                      style: Theme.of(context).textTheme.labelLarge,
+    log("Local value: $localValue");
+    return SingleChildScrollView(
+      child: Column(
+        children: widget.options.map((option) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                localValue = option.value;
+                widget.onChanged(option.value);
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: localValue == option.value
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.transparent,
+                ),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: 22,
+                    width: 22,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: localValue == option.value
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.grey.shade400,
+                        width: 2,
+                      ),
                     ),
-                    value: option.value,
-                    groupValue: localValue,
-                    onChanged: (value) {
-                      setState(() {
-                        localValue = value!;
-                        widget.onChanged(value);
-                      });
-                    },
+                    child: localValue == option.value
+                        ? Center(
+                            child: Container(
+                              height: 12,
+                              width: 12,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          )
+                        : null,
                   ),
-              ],
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(option.title,
+                            style: Theme.of(context).textTheme.labelLarge),
+                        Text(option.description,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  fontSize: 12,
+                                )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-      ],
+          );
+        }).toList(),
+      ),
     );
   }
 }
