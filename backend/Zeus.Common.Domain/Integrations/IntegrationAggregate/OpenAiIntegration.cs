@@ -10,7 +10,7 @@ namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 public sealed class OpenAiIntegration : Integration
 {
-    private OpenAiIntegration(
+    public OpenAiIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,
