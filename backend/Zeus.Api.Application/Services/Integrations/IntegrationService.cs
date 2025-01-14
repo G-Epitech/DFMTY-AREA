@@ -4,6 +4,7 @@ using MapsterMapper;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
 using Zeus.Api.Domain.Errors.Integrations;
+using Zeus.Api.Domain.Integrations.LeagueOfLegends.ValueObjects;
 using Zeus.Api.Domain.Integrations.Properties;
 using Zeus.Common.Domain.Authentication.Common;
 using Zeus.Common.Domain.Integrations.Common.Enums;
@@ -20,14 +21,16 @@ public class IntegrationService : IIntegrationService
     private readonly IOpenAiService _openAiService;
     private readonly IMapper _mapper;
     private readonly INotionService _notionService;
+    private readonly ILeagueOfLegendsService _leagueOfLegendsService;
 
     public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper,
-        IOpenAiService openAiService)
+        IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService)
     {
         _discordService = discordService;
         _notionService = notionService;
         _mapper = mapper;
         _openAiService = openAiService;
+        _leagueOfLegendsService = leagueOfLegendsService;
     }
 
     public async Task<ErrorOr<IntegrationProperties>> GetProperties(Integration integration)
@@ -37,6 +40,7 @@ public class IntegrationService : IIntegrationService
             IntegrationType.Discord => await GetIntegrationDiscordProperties(integration),
             IntegrationType.Notion => await GetIntegrationNotionProperties(integration),
             IntegrationType.OpenAi => await GetIntegrationOpenAiProperties(integration),
+            IntegrationType.LeagueOfLegends => await GetIntegrationLeagueOfLegendsProperties(integration),
             _ => Errors.Integrations.PropertiesHandlerNotFound
         };
     }
@@ -94,5 +98,33 @@ public class IntegrationService : IIntegrationService
         }
 
         return _mapper.Map<IntegrationOpenAiProperties>(owner);
+    }
+
+    private async Task<ErrorOr<IntegrationProperties>> GetIntegrationLeagueOfLegendsProperties(
+        Integration integration)
+    {
+        var riotAccountId = new RiotAccountId(integration.ClientId);
+
+        var riotAccount = await _leagueOfLegendsService.GetRiotAccountByIdAsync(riotAccountId);
+        if (riotAccount.IsError)
+        {
+            return riotAccount.Errors;
+        }
+
+        var summoner = await _leagueOfLegendsService.GetSummonerByRiotAccountId(riotAccountId);
+        if (summoner.IsError)
+        {
+            return summoner.Errors;
+        }
+
+        var profileIconUri = _leagueOfLegendsService.GetSummonerProfileIconUri(summoner.Value.ProfileIconId);
+
+        return new IntegrationLeagueOfLegendsProperties(
+            riotAccountId.Value,
+            riotAccount.Value.GameName,
+            riotAccount.Value.TagLine,
+            summoner.Value.Id.Value,
+            summoner.Value.AccountId.Value,
+            profileIconUri);
     }
 }
