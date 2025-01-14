@@ -12,9 +12,9 @@ namespace Zeus.Api.Presentation.Web.Mapping;
 public static class IntegrationPropertiesMappingExtention
 {
     public static GetIntegrationPropertiesResponse MapIntegrationPropertiesResponse(this IMapper mapper,
-        GetIntegrationQueryResult integrationQueryResult)
+        GetIntegrationWithPropertiesQueryResult result)
     {
-        return integrationQueryResult.Properties switch
+        return result.Properties switch
         {
             IntegrationDiscordProperties discord =>
                 mapper.Map<GetIntegrationDiscordPropertiesResponse>(discord),
@@ -22,7 +22,7 @@ public static class IntegrationPropertiesMappingExtention
                 mapper.Map<GetIntegrationNotionPropertiesResponse>(notion),
             IntegrationOpenAiProperties openAi =>
                 mapper.Map<GetIntegrationOpenAiPropertiesResponse>(openAi),
-            _ => throw new ArgumentOutOfRangeException(nameof(integrationQueryResult.Properties))
+            _ => throw new ArgumentOutOfRangeException(nameof(result.Properties))
         };
     }
 }

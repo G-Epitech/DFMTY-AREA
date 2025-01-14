@@ -16,10 +16,10 @@ namespace Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
 public class CreateDiscordIntegrationCommandHandler : IRequestHandler<CreateDiscordIntegrationCommand,
     ErrorOr<CreateDiscordIntegrationCommandResult>>
 {
+    private readonly IDiscordService _discordService;
     private readonly IIntegrationLinkRequestReadRepository _integrationLinkRequestReadRepository;
     private readonly IIntegrationLinkRequestWriteRepository _integrationLinkRequestWriteRepository;
     private readonly IIntegrationWriteRepository _integrationWriteRepository;
-    private readonly IDiscordService _discordService;
 
     public CreateDiscordIntegrationCommandHandler(
         IIntegrationLinkRequestReadRepository integrationLinkRequestReadRepository,

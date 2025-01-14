@@ -6,8 +6,10 @@ public interface IIntegrationLinkRequestWriteRepository
 {
     public Task AddRequestAsync(IntegrationLinkRequest request,
         CancellationToken cancellationToken = default);
+
     public Task UpdateRequestAsync(IntegrationLinkRequest request,
         CancellationToken cancellationToken = default);
+
     public Task DeleteRequestAsync(IntegrationLinkRequest request,
         CancellationToken cancellationToken = default);
 }

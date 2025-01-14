@@ -15,8 +15,8 @@ namespace Zeus.Api.Application.Integrations.Query.Discord.GetDiscordGuildChannel
 public class GetDiscordGuildChannelsQueryHandler : IRequestHandler<GetDiscordGuildChannelsQuery,
     ErrorOr<List<GetDiscordGuildChannelQueryResult>>>
 {
-    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IDiscordService _discordService;
+    private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationsSettingsProvider _integrationsSettingsProvider;
 
     public GetDiscordGuildChannelsQueryHandler(IIntegrationReadRepository integrationReadRepository,

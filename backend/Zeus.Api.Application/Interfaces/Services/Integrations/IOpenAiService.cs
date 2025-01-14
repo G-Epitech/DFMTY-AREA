@@ -13,7 +13,7 @@ public interface IOpenAiService
     /// <param name="accessToken">The openAI Access Token</param>
     /// <returns>List of models</returns>
     public Task<ErrorOr<List<OpenAiModel>>> GetModelsAsync(AccessToken accessToken);
-    
+
     /// <summary>
     /// Get users available in OpenAI
     /// </summary>

@@ -1,0 +1,51 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Zeus.Api.Presentation.gRPC.Contracts";
+
+package integrations;
+
+service IntegrationsService {
+  rpc GetAutomationsIntegrations(GetAutomationsIntegrationsRequest) returns (GetAutomationsIntegrationsResponse);
+}
+
+message GetAutomationsIntegrationsRequest {
+  repeated string automationIds = 1;
+  IntegrationSource source = 2;
+}
+
+enum IntegrationSource {
+  Trigger = 0;
+  Action = 1;
+  Any = 2;
+}
+
+enum IntegrationType {
+  Discord = 0;
+  Gmail = 1;
+  Notion = 2;
+}
+
+message Integration {
+  string id = 1;
+  IntegrationType type = 2;
+  string ownerId = 3;
+  string clientId = 4;
+  repeated IntegrationToken tokens = 5;
+  int64 createdAt = 6;
+  int64 updatedAt = 7;
+}
+
+enum IntegrationTokenUsage {
+  Access = 0;
+  Refresh = 1;
+}
+
+message IntegrationToken {
+  string value = 1;
+  string type = 2;
+  IntegrationTokenUsage usage = 3;
+}
+
+message GetAutomationsIntegrationsResponse {
+  repeated Integration integrations = 1;
+}

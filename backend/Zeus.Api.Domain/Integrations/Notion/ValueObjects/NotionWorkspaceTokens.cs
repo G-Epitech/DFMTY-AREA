@@ -5,10 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Notion.ValueObjects;
 
 public class NotionWorkspaceTokens : ValueObject
 {
-    public AccessToken AccessToken { get; }
-    public NotionWorkspaceId WorkspaceId { get; }
-    public string BotId { get; }
-
     public NotionWorkspaceTokens(AccessToken accessToken, NotionWorkspaceId workspaceId,
         string botId)
     {
@@ -16,6 +12,10 @@ public class NotionWorkspaceTokens : ValueObject
         WorkspaceId = workspaceId;
         BotId = botId;
     }
+
+    public AccessToken AccessToken { get; }
+    public NotionWorkspaceId WorkspaceId { get; }
+    public string BotId { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

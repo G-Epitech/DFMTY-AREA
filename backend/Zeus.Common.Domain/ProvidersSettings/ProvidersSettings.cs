@@ -4,8 +4,11 @@ namespace Zeus.Common.Domain.ProvidersSettings;
 
 public class ProvidersSettings
 {
-    [JsonIgnore] private List<string>? _cachedTriggersIdentifiers;
-    [JsonIgnore] private List<string>? _cachedActionsIdentifiers;
+    [JsonIgnore]
+    private List<string>? _cachedActionsIdentifiers;
+
+    [JsonIgnore]
+    private List<string>? _cachedTriggersIdentifiers;
 
     [JsonIgnore]
     public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();

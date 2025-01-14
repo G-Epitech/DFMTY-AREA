@@ -15,17 +15,11 @@ namespace Zeus.Daemon.Application.Services.HandlerProviders;
 
 public class ActionHandlersProvider : IActionHandlersProvider
 {
-    private struct ActionHandlerDefinition
-    {
-        public Type HostingClass { get; init; }
-        public MethodInfo Method { get; init; }
-    }
-
     private static readonly Assembly Assembly = typeof(ActionHandlersProvider).Assembly;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger _logger;
 
     private readonly Dictionary<string, ActionHandlerDefinition> _handlers = new();
+    private readonly ILogger _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     public ActionHandlersProvider(
         IServiceProvider serviceProvider,
@@ -44,6 +38,15 @@ public class ActionHandlersProvider : IActionHandlersProvider
         }
         EnsureEveryActionHasHandler(providersSettings);
         _logger.LogDebug("{count} action handlers have been registered", _handlers.Count);
+    }
+
+    public ActionHandler GetHandler(string actionIdentifier)
+    {
+        if (_handlers.TryGetValue(actionIdentifier, out var handlerDefinition))
+        {
+            return new ActionHandler { Method = handlerDefinition.Method, Target = _serviceProvider.GetRequiredService(handlerDefinition.HostingClass) };
+        }
+        throw new InvalidOperationException($"Action handler with identifier '{actionIdentifier}' not found");
     }
 
     private void RegisterHandler(Type hostingClass, MethodInfo method)
@@ -68,15 +71,6 @@ public class ActionHandlersProvider : IActionHandlersProvider
                 throw new InvalidOperationException($"Action '{actionIdentifier}' has no handler registered");
             }
         }
-    }
-
-    public ActionHandler GetHandler(string actionIdentifier)
-    {
-        if (_handlers.TryGetValue(actionIdentifier, out var handlerDefinition))
-        {
-            return new ActionHandler { Method = handlerDefinition.Method, Target = _serviceProvider.GetRequiredService(handlerDefinition.HostingClass) };
-        }
-        throw new InvalidOperationException($"Action handler with identifier '{actionIdentifier}' not found");
     }
 
     private void CheckHandlerDeclarationsAndRegister(Type hostingClass, ProvidersSettings providersSettings)
@@ -180,5 +174,11 @@ public class ActionHandlersProvider : IActionHandlersProvider
         {
             throw new InvalidOperationException($"Method '{method.Name}' has invalid return type on '{method.DeclaringType?.Name}'");
         }
+    }
+
+    private struct ActionHandlerDefinition
+    {
+        public Type HostingClass { get; init; }
+        public MethodInfo Method { get; init; }
     }
 }

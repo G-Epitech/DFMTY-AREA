@@ -4,12 +4,12 @@ namespace Zeus.Daemon.Domain.Discord.ValueObjects;
 
 public sealed class DiscordChannelId : ValueObject
 {
-    public string Value { get; }
-
     public DiscordChannelId(string value)
     {
         Value = value;
     }
+
+    public string Value { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option csharp_namespace = "Zeus.Api.Presentation.gRPC.Contracts";
+
+import "IntegrationsService.proto";
+
+package automations;
+
+service AutomationsService {
+  rpc GetAutomations(GetAutomationsRequest) returns (stream Automation);
+  rpc GetRegistrableAutomations(GetAutomationsRequest) returns (stream RegistrableAutomation);
+  rpc GetAutomation(GetAutomationRequest) returns (Automation);
+}
+
+enum AutomationEnabledState {
+  Enabled = 0;
+  Disabled = 1;
+  Any = 2;
+}
+
+message GetAutomationsRequest {
+  optional string ownerId = 1;
+  optional AutomationEnabledState state = 2;
+}
+
+message GetRegistrableAutomations {
+  repeated RegistrableAutomation automations = 1;
+}
+
+message RegistrableAutomation {
+  Automation automation = 1;
+  repeated integrations.Integration triggerIntegrations = 2;
+}
+
+message GetAutomationRequest {
+  string id = 1;
+}
+
+message AutomationTriggerParameter {
+  string identifier = 1;
+  string value = 2;
+}
+
+message AutomationTrigger {
+  string id = 1;
+  string identifier = 2;
+  repeated AutomationTriggerParameter parameters = 3;
+  repeated string providers = 4;
+}
+
+message AutomationActionParameter {
+  string identifier = 1;
+  string value = 2;
+  string type = 3;
+}
+
+message AutomationAction {
+  string id = 1;
+  string identifier = 2;
+  int32 rank = 3;
+  repeated AutomationActionParameter parameters = 4;
+  repeated string providers = 5;
+}
+
+message Automation {
+  string id = 1;
+  string label = 2;
+  string description = 3;
+  string ownerId = 4;
+  bool enabled = 5;
+  AutomationTrigger trigger = 6;
+  repeated AutomationAction actions = 7;
+  int64 updatedAt = 8;
+  int64 createdAt = 9;
+}

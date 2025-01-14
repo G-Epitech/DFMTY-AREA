@@ -3,9 +3,6 @@
 public abstract class AuditableEntity<TId> : Entity<TId>, IAuditableEntity
     where TId : notnull
 {
-    public DateTime CreatedAt { get; protected set; }
-    public DateTime UpdatedAt { get; protected set; }
-
     protected AuditableEntity(TId id, DateTime updatedAt, DateTime createdAt)
         : base(id)
     {
@@ -18,4 +15,6 @@ public abstract class AuditableEntity<TId> : Entity<TId>, IAuditableEntity
     {
     }
 #pragma warning restore CS8618
+    public DateTime CreatedAt { get; protected set; }
+    public DateTime UpdatedAt { get; protected set; }
 }

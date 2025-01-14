@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Automations.Query.GetAutomations;
-using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrations;
+using Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrationsWithProperties;
 using Zeus.Api.Application.Integrations.Query.Results;
 using Zeus.Api.Application.Users.Query;
 using Zeus.Api.Infrastructure.Authentication.Context;
@@ -59,7 +59,7 @@ public class UserController : ApiController
             return Unauthorized();
         }
 
-        var integrationsResult = await _sender.Send(new GetIntegrationsQuery(authUser.Id, page, size));
+        var integrationsResult = await _sender.Send(new GetIntegrationsWithPropertiesQuery(authUser.Id, page, size));
         if (integrationsResult.IsError)
         {
             return Problem(integrationsResult.Errors);
@@ -67,7 +67,7 @@ public class UserController : ApiController
 
         var integrationResponses = new List<GetIntegrationResponse>();
 
-        foreach (GetIntegrationQueryResult integrationQueryResult in integrationsResult.Value.Items)
+        foreach (GetIntegrationWithPropertiesQueryResult integrationQueryResult in integrationsResult.Value.Items)
         {
             var propertiesResponse = _mapper.MapIntegrationPropertiesResponse(integrationQueryResult);
             var integrationResponse = new GetIntegrationResponse(

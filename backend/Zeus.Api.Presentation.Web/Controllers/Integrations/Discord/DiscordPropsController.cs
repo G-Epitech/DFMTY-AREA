@@ -14,9 +14,9 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Discord;
 [Route("integrations/{integrationId}/discord")]
 public class DiscordPropsController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public DiscordPropsController(ISender sender, IAuthUserContext authUserContext, IMapper mapper)
     {
@@ -41,7 +41,7 @@ public class DiscordPropsController : ApiController
             result => Ok(result.Select(guild => _mapper.Map<GetDiscordGuildResponse>(guild))),
             Problem);
     }
-    
+
     [HttpGet("guilds/{guildId}/channels", Name = "GetDiscordGuildChannels")]
     [ProducesResponseType<List<GetDiscordGuildChannelResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDiscordGuildChannels(string guildId, Guid integrationId)
