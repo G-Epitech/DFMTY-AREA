@@ -1,0 +1,23 @@
+<tr-sheet side="right">
+  <button brnSheetTrigger class="w-full">
+    <tr-trigger-card [trigger]="trigger()" />
+  </button>
+  <tr-sheet-content *brnSheetContent="let ctx">
+    <tr-sheet-header>
+      <h3 trSheetTitle>Choose a trigger</h3>
+    </tr-sheet-header>
+    <div class="py-4 grid gap-4">
+      <div class="items-center grid grid-cols-4 gap-4">
+        <label trLabel for="name" class="text-right">Name</label>
+        <input trInput id="name" value="Pedro Duarte" class="col-span-3" />
+      </div>
+      <div class="items-center grid grid-cols-4 gap-4">
+        <label trLabel for="username" class="text-right">Username</label>
+        <input trInput id="username" value="@peduarte" class="col-span-3" />
+      </div>
+    </div>
+    <tr-sheet-footer>
+      <button trBtn type="submit">Save</button>
+    </tr-sheet-footer>
+  </tr-sheet-content>
+</tr-sheet>

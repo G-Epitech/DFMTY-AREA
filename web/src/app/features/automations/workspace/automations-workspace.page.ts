@@ -14,6 +14,9 @@ import { ActionCardComponent } from '@features/automations/workspace/components/
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
 import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import {
+  SelectTriggerSheetComponent
+} from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.component';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -24,6 +27,7 @@ import { AutomationWorkspaceStore } from '@features/automations/workspace/automa
     ActionCardComponent,
     TrButtonDirective,
     AddStepButtonComponent,
+    SelectTriggerSheetComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],
