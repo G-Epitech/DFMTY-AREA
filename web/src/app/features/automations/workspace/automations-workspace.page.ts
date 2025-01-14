@@ -10,6 +10,7 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
 import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
+import { heroCog6Tooth } from '@ng-icons/heroicons/outline';
 
 @Component({
   selector: 'tr-automations-workspace',
