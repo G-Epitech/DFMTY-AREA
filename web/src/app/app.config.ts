@@ -68,9 +68,9 @@ export const appConfig: ApplicationConfig = {
       heroInformationCircle,
       heroChatBubbleOvalLeftEllipsis,
       heroPlus,
-      heroArrowLeftStartOnRectangle,
       heroChartBarSquareSolid,
       heroArrowPathRoundedSquareSolid,
+      heroArrowLeftStartOnRectangle,
     }),
     provideAnimations(),
     provideToastr({
