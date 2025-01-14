@@ -153,6 +153,7 @@ class AutomationCreationBloc
           ..add(event.provider),
       );
     }
+    log('Action provider added: ${updatedActions[event.index].providers.length}');
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
@@ -164,17 +165,44 @@ class AutomationCreationBloc
       Emitter<AutomationCreationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
-    updatedActions[event.index] = updatedActions[event.index].copyWith(
-      parameters: updatedActions[event.index].parameters.map((param) {
-        if (param.identifier == event.parameterIdentifier) {
-          return param.copyWith(
+    log('Action parameter changed: ${event.parameterIdentifier}');
+    bool updated = false;
+    if (event.index < updatedActions.length) {
+      updatedActions[event.index] = updatedActions[event.index].copyWith(
+        parameters: updatedActions[event.index].parameters.map((param) {
+          if (param.identifier == event.parameterIdentifier) {
+            updated = true;
+            return param.copyWith(
+              value: event.parameterValue,
+              type: event.parameterType,
+            );
+          }
+          return param;
+        }).toList(),
+      );
+      if (!updated) {
+        updatedActions[event.index].parameters.add(AutomationActionParameter(
+              identifier: event.parameterIdentifier,
+              value: event.parameterValue,
+              type: event.parameterType,
+            ));
+      }
+    } else {
+      updatedActions.add(AutomationAction(
+        identifier: '',
+        providers: [],
+        parameters: [
+          AutomationActionParameter(
+            identifier: event.parameterIdentifier,
             value: event.parameterValue,
             type: event.parameterType,
-          );
-        }
-        return param;
-      }).toList(),
-    );
+          ),
+        ],
+      ));
+    }
+    log('Action length: ${updatedActions.length}');
+    log('Action index: ${event.index}');
+    log('Action parameter changed: ${updatedActions[event.index].parameters.length}');
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
     emit(AutomationCreationDirty(

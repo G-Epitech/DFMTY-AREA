@@ -70,27 +70,40 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: _List(
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: _List(
+              type: widget.type,
+              integrationIdentifier: widget.integrationIdentifier,
+              triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
+              properties: properties,
+              indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
+            ),
+          ),
+          _OKButton(
+            isEdit: isEdit,
             type: widget.type,
-            integrationIdentifier: widget.integrationIdentifier,
-            triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
-            properties: properties,
             indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
           ),
-        ),
-        _OKButton(isEdit: isEdit),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class _OKButton extends StatelessWidget {
   final bool isEdit;
+  final AutomationChoiceEnum type;
+  final int indexOfTheTriggerOrAction;
 
-  const _OKButton({required this.isEdit});
+  const _OKButton({
+    required this.isEdit,
+    required this.type,
+    required this.indexOfTheTriggerOrAction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +113,10 @@ class _OKButton extends StatelessWidget {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
 
-    final isValid = _validateTrigger(automation, automationMediator);
+    final isValid = type == AutomationChoiceEnum.trigger
+        ? _validateTrigger(automation, automationMediator)
+        : _validateAction(
+            automation, automationMediator, indexOfTheTriggerOrAction);
 
     return Row(
       children: [
@@ -189,21 +205,22 @@ class _OKButton extends StatelessWidget {
       return false;
     }
 
+    log("Index of the trigger or action: $indexOfTheTriggerOrAction");
     final action = automation.actions[indexOfTheTriggerOrAction];
 
     if (action.identifier.isEmpty) {
-      log("Trigger identifier is empty");
+      log("Action identifier is empty");
       return false;
     }
 
     if (action.providers.isEmpty) {
-      log("Trigger providers is empty");
+      log("Action providers is empty");
       return false;
     }
 
     for (final parameter in action.parameters) {
       if (parameter.value.isEmpty) {
-        log("Trigger parameter value is empty");
+        log("Action parameter value is empty");
         return false;
       }
     }
@@ -219,7 +236,7 @@ class _OKButton extends StatelessWidget {
     if (integrationSchema != null &&
         actionSchema != null &&
         hasDifferentParameterLength) {
-      log("Trigger parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
+      log("Action parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
       return false;
     }
 
@@ -331,7 +348,10 @@ class _List extends StatelessWidget {
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: value,
-                                  parameterType: "raw",
+                                  parameterType: options ==
+                                          AutomationParameterNeedOptions.yes
+                                      ? "var"
+                                      : "raw",
                                 ));
                           }
                           /*context
@@ -623,6 +643,7 @@ String? getPreviewData(
         for (final parameter in action.parameters) {
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
+            log("Parameter Type: ${parameter.type}");
             isNotHumanReadable = parameter.type != 'raw';
             break;
           }
@@ -639,6 +660,7 @@ String? getPreviewData(
         parameterIdentifier,
         previews);
   }
+  log("NOT HUMAN Value: $value");
   return value;
 }
 

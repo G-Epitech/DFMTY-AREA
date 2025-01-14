@@ -40,7 +40,7 @@ class _AutomationCreationMainViewState
           header: _Header(automation: state.cleanedAutomation),
           getBack: true,
           body: Padding(
-            padding: const EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(4.0),
             child: Column(
               children: [
                 _AutomationCreationContainer(
@@ -268,7 +268,7 @@ class CustomRectangleList extends StatelessWidget {
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
             ),
-            SizedBox(height: 10),
+            if (automation.actions.isNotEmpty) SizedBox(height: 10),
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -305,7 +305,8 @@ class CustomRectangleList extends StatelessWidget {
                 direction: Axis.vertical,
                 lineLength: double.infinity,
                 lineThickness: 2.40,
-                dashLength: 7.5,
+                dashLength: 10,
+                dashGapRadius: 2,
                 dashColor: textPrimaryColor,
               ),
             ),

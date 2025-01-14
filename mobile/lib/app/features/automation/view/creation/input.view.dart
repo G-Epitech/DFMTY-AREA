@@ -53,7 +53,7 @@ class _AutomationCreationInputViewState
       title: 'Edit ${widget.label}',
       getBack: true,
       body: Padding(
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
           children: [
             Expanded(child: _buildInput()),
@@ -231,7 +231,6 @@ class _OKButton extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             onPressed: () {
-              print("Human readable value on save: $humanReadableValue");
               onSave(value, humanReadableValue);
               if (routeToGoWhenSave == RoutesNames.popOneTime) {
                 Navigator.of(context).pop();
@@ -330,7 +329,9 @@ class _RadioInputState extends State<_RadioInput> {
                   });
                 },
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 8.0),
+                  margin: option == options.last
+                      ? const EdgeInsets.all(0)
+                      : const EdgeInsets.only(bottom: 8.0),
                   padding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 16.0),
                   decoration: BoxDecoration(
@@ -377,13 +378,14 @@ class _RadioInputState extends State<_RadioInput> {
                           children: [
                             Text(option.title,
                                 style: Theme.of(context).textTheme.labelLarge),
-                            Text(option.description,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(
-                                      fontSize: 12,
-                                    )),
+                            if (option.description.isNotEmpty)
+                              Text(option.description,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(
+                                        fontSize: 12,
+                                      )),
                           ],
                         ),
                       ),
