@@ -8,12 +8,12 @@ using Zeus.Api.Domain.Errors;
 
 namespace Zeus.Api.Application.Authentication.Queries.RefreshTokens;
 
-public class RefreshTokenQueryHandler : IRequestHandler<RefreshTokensQuery, ErrorOr<RefreshTokensQueryResult>>
+public class RefreshTokensQueryHandler : IRequestHandler<RefreshTokensQuery, ErrorOr<RefreshTokensQueryResult>>
 {
     private readonly IUserReadRepository _userReadRepository;
     private readonly IJwtGenerator _jwtGenerator;
 
-    public RefreshTokenQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator)
+    public RefreshTokensQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator)
     {
         _userReadRepository = userReadRepository;
         _jwtGenerator = jwtGenerator;
