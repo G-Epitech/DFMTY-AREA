@@ -2,11 +2,11 @@ using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Domain.Integrations.LeagueOfLegends.ValueObjects;
 
-public class LeagueOfLegendsAccountId : ValueObject
+public class LeagueOfLegendsSummonerAccountId : ValueObject
 {
     public string Value { get; }
     
-    public LeagueOfLegendsAccountId(string value)
+    public LeagueOfLegendsSummonerAccountId(string value)
     {
         Value = value;
     }

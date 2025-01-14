@@ -1,6 +1,6 @@
 namespace Zeus.Api.Infrastructure.Services.Integrations.LeagueOfLegends.Contracts;
 
-public record GetLeagueOfLegendsAccountRequest(
+public record GetLeagueOfLegendsAccountResponse(
     string Puuid,
     string GameName,
     string TagLine);

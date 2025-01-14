@@ -25,16 +25,16 @@ public class CreateLeagueOfLegendsIntegrationCommandHandler : IRequestHandler<Cr
     public async Task<ErrorOr<CreateLeagueOfLegendsIntegrationCommandResult>> Handle(
         CreateLeagueOfLegendsIntegrationCommand command, CancellationToken cancellationToken)
     {
-        var leagueOfLegendsAccount =
-            await _leagueOfLegendsServiceService.GetAccountByRiotIdAsync(command.GameName, command.TagLine);
+        var riotAccount =
+            await _leagueOfLegendsServiceService.GetRiotAccountByNameAsync(command.GameName, command.TagLine);
 
-        if (leagueOfLegendsAccount.IsError)
+        if (riotAccount.IsError)
         {
-            return leagueOfLegendsAccount.Errors;
+            return riotAccount.Errors;
         }
 
         var userId = new UserId(command.UserId);
-        var integration = LeagueOfLegendsIntegration.Create(userId, leagueOfLegendsAccount.Value.Id.Value);
+        var integration = LeagueOfLegendsIntegration.Create(userId, riotAccount.Value.Id.Value);
 
         await _integrationWriteRepository.AddIntegrationAsync(integration, cancellationToken);
 
