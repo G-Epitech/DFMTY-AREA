@@ -35,7 +35,6 @@ class IntegrationRepository {
       headers: {'Authorization': 'Bearer $accessToken'},
       client: client,
     );
-
     return Response<OutGetUserIntegrationDTO>(
       statusCode: response.statusCode,
       message: response.message,
@@ -102,6 +101,12 @@ class IntegrationRepository {
           "iconUri": 'assets/icons/notion.svg',
           "color": "#000000",
           "url": "notion"
+        },
+        {
+          "name": "OpenAI",
+          "iconUri": 'assets/icons/openai.svg',
+          "color": "#10a37f",
+          "url": "openAI"
         }
       ]
     };

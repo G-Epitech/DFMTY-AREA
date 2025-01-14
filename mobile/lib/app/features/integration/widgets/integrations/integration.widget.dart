@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/view/integrations/openAI.view.dart';
 import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
@@ -36,7 +38,7 @@ class _CustomWidget extends StatelessWidget {
         RepositoryProvider.of<IntegrationMediator>(context);
     return GestureDetector(
       onTap: () {
-        integrationMediator.launchURLFromIntegration(integration.url);
+        _customOnTap(context, integration, integrationMediator);
       },
       child: Row(
         children: [
@@ -78,5 +80,19 @@ class _CustomWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> _customOnTap(
+    BuildContext context,
+    AvailableIntegration integration,
+    IntegrationMediator integrationMediator) async {
+  if (integration.name == IntegrationNames.openAI) {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OpenAIIntegrationView()),
+    );
+  } else {
+    integrationMediator.launchURLFromIntegration(integration.url);
   }
 }
