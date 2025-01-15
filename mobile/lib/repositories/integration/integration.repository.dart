@@ -6,12 +6,14 @@ import 'package:triggo/repositories/authentication/google.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
+import 'package:triggo/repositories/integration/notion.repository.dart';
 
 class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository credentialsRepository;
   final DiscordRepository discordRepository;
   final GoogleRepository googleRepository;
+  final NotionRepository notionRepository;
 
   IntegrationRepository({this.client, required this.credentialsRepository})
       : discordRepository = DiscordRepository(
@@ -21,11 +23,17 @@ class IntegrationRepository {
         googleRepository = GoogleRepository(
           client: client,
           credentialsRepository: credentialsRepository,
+        ),
+        notionRepository = NotionRepository(
+          client: client,
+          credentialsRepository: credentialsRepository,
         );
 
   get discord => discordRepository;
 
   get google => googleRepository;
+
+  get notion => notionRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
       {int page = 0, int size = 20}) async {

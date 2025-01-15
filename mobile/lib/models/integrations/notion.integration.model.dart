@@ -29,3 +29,52 @@ class NotionIntegration extends Integration {
     );
   }
 }
+
+class NotionDatabase {
+  final String id;
+  final String title;
+  final String? description;
+  final String? iconUri;
+  final String uri;
+
+  NotionDatabase({
+    required this.id,
+    required this.title,
+    this.description,
+    this.iconUri,
+    required this.uri,
+  });
+
+  static NotionDatabase fromDTO(NotionDatabaseDTO dto) {
+    return NotionDatabase(
+      id: dto.id,
+      title: dto.title,
+      description: dto.description,
+      iconUri: dto.iconUri,
+      uri: dto.uri,
+    );
+  }
+}
+
+class NotionPage {
+  final String id;
+  final String title;
+  final String? icon;
+  final String uri;
+
+  NotionPage({
+    required this.id,
+    required this.title,
+    this.icon,
+    required this.uri,
+  });
+
+  static NotionPage fromDTO(NotionPageDTO dto) {
+    return NotionPage(
+      id: dto.id,
+      title: dto.title,
+      icon: dto.icon,
+      uri: dto.uri,
+    );
+  }
+}

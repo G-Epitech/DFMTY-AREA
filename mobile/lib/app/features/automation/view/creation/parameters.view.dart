@@ -722,6 +722,17 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           }
         }
       }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'DatabaseRowCreated' ||
+            propertyIdentifier == 'DatabaseRowDeleted') {
+          if (parameterIdentifier == 'DatabaseId') {
+            final integrationId = automation.trigger.providers[0];
+
+            return await integrationMediator.notion
+                .getDatabasesRadio(integrationId);
+          }
+        }
+      }
       break;
     case AutomationChoiceEnum.action:
       if (integrationName == 'discord') {
@@ -758,6 +769,14 @@ AutomationParameterNeedOptions haveOptions(
               return AutomationParameterNeedOptions.blocked;
             }
 
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+      }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'DatabaseRowCreated' ||
+            propertyIdentifier == 'DatabaseRowDeleted') {
+          if (parameterIdentifier == 'DatabaseId') {
             return AutomationParameterNeedOptions.yes;
           }
         }

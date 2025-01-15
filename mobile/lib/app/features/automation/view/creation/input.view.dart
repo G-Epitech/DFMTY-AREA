@@ -301,14 +301,14 @@ class _RadioInputState extends State<_RadioInput> {
         } else if (snapshot.hasError) {
           return Center(
             child: Text(
-              'Erreur lors du chargement des options',
+              'Error loading options',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: Text(
-              'Aucune option disponible',
+              'No options available',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           );
@@ -324,7 +324,6 @@ class _RadioInputState extends State<_RadioInput> {
                   setState(() {
                     localValue = option.value;
                     humanReadableValue = option.title;
-                    print("Local value: ${option.title}");
                     widget.onChanged(option.value, option.title);
                   });
                 },
