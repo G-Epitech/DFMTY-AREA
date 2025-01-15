@@ -10,22 +10,29 @@
     <div class="h-full">
       @switch (selectionStep()) {
         @case (TriggerSelectionStep.MAIN) {
-          <div class="grid gap-4">
-            <div>
-              <span class="tr-large">Select Integration</span>
+          <div>
+            <span class="tr-large">Select Integration</span>
+            @if (!selectedIntegration()) {
               <button
                 trBtn
                 class="w-full text-left items-center justify-start gap-1"
                 variant="outline"
-                (click)="selectIntegration()">
+                (click)="goToIntegrationSelection()">
                 <ng-icon name="heroBolt" size="1.1rem" />
                 No Integration Selected
               </button>
-            </div>
+            } @else {
+              <tr-available-integration-list-card
+                class="w-full"
+                [integration]="selectedIntegration()!"
+                (click)="goToIntegrationSelection()" />
+            }
           </div>
         }
         @case (TriggerSelectionStep.INTEGRATION) {
-          <tr-integration-selection class="h-full" />
+          <tr-integration-selection
+            class="h-full"
+            (selectedIntegration)="selectIntegration($event)" />
         }
       }
     </div>

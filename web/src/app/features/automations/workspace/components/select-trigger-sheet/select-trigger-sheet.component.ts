@@ -12,6 +12,10 @@ import { TriggerShortModel } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
 import { IntegrationSelectionComponent } from '@features/automations/workspace/components/select-trigger-sheet/integration-selection/integration-selection.component';
+import { AvailableIntegrationType } from '@common/types';
+import {
+  AvailableIntegrationListCardComponent
+} from '@components/available-integration-list-card/available-integration-list-card.component';
 
 @Component({
   standalone: true,
@@ -23,6 +27,7 @@ import { IntegrationSelectionComponent } from '@features/automations/workspace/c
     TriggerCardComponent,
     NgIcon,
     IntegrationSelectionComponent,
+    AvailableIntegrationListCardComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],
@@ -32,13 +37,19 @@ export class SelectTriggerSheetComponent {
   trigger = input.required<TriggerShortModel | null>();
   selectionStep = signal<TriggerSelectionStep>(TriggerSelectionStep.MAIN);
   stepHistory = signal<TriggerSelectionStep[]>([TriggerSelectionStep.MAIN]);
+  selectedIntegration = signal<AvailableIntegrationType | null>(null);
 
-  selectIntegration() {
+  goToIntegrationSelection() {
     this.selectionStep.set(TriggerSelectionStep.INTEGRATION);
     this.stepHistory.set([
       ...this.stepHistory(),
       TriggerSelectionStep.INTEGRATION,
     ]);
+  }
+
+  selectIntegration(integration: AvailableIntegrationType): void {
+    this.selectedIntegration.set(integration);
+    this.back();
   }
 
   back() {

@@ -4,6 +4,7 @@ import {
   computed,
   effect,
   inject,
+  output,
   signal,
 } from '@angular/core';
 import { TrInputSearchComponent } from '@triggo-ui/input';
@@ -25,6 +26,7 @@ export class IntegrationSelectionComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   #searchTerm = signal<string>('');
+  selectedIntegration = output<AvailableIntegrationType>();
 
   availableIntegrations = signal<AvailableIntegrationType[]>([]);
   filteredIntegrations = computed(() => {
@@ -52,5 +54,9 @@ export class IntegrationSelectionComponent {
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.#searchTerm.set(input.value);
+  }
+
+  selectIntegration(integration: AvailableIntegrationType): void {
+    this.selectedIntegration.emit(integration);
   }
 }

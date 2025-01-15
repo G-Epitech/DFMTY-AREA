@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { IntegrationTypeEnum } from '@models/integration';
+import { AvailableIntegrationType } from '@common/types';
 
 @Component({
   selector: 'tr-available-integration-list-card',
@@ -11,8 +13,9 @@ import { NgOptimizedImage, NgStyle } from '@angular/common';
   standalone: true,
 })
 export class AvailableIntegrationListCardComponent {
-  iconUri = input.required<string>();
-  name = input.required<string>();
-  color = input.required<string>();
-  forceWhite = input.required<boolean>();
+  integration = input.required<AvailableIntegrationType>();
+
+  forceWhite(): boolean {
+    return this.integration().identifier === IntegrationTypeEnum.OPENAI;
+  }
 }
