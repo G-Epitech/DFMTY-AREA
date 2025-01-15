@@ -18,6 +18,8 @@ class OpenAIIntegrationBloc extends Bloc<OpenAIEvent, OpenAIIntegrationState> {
     on<OpenAIReset>(_onReset);
   }
 
+  // Need to be removed
+
   final OpenAIMediator _openAIMediator;
 
   void _onApiKeyChanged(
