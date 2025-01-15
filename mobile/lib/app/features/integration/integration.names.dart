@@ -4,4 +4,5 @@ class IntegrationNames {
   static const String discord = 'Discord';
   static const String notion = 'Notion';
   static const String openAI = 'OpenAI';
+  static const String leagueOfLegends = 'LeagueOfLegends';
 }

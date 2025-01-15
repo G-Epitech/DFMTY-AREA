@@ -337,6 +337,7 @@ flutter:
     - ./assets/icons/wrench.svg
     - ./assets/icons/x-circle.svg
     - ./assets/icons/x-mark.svg
+    - ./assets/icons/riot.svg
 
   uses-material-design: true
 

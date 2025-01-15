@@ -117,6 +117,12 @@ class IntegrationRepository {
           "iconUri": 'assets/icons/openai.svg',
           "color": "#10a37f",
           "url": "openAI"
+        },
+        {
+          "name": "LeagueOfLegends",
+          "iconUri": 'assets/icons/riot.svg',
+          "color": "#d53235",
+          "url": "leagueOfLegends"
         }
       ]
     };

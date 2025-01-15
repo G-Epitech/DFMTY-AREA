@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/integration/models/models.dart';
-import 'package:triggo/mediator/integrations/openAi.mediator.dart';
+import 'package:triggo/mediator/integrations/openAI.mediator.dart';
 
 part 'open_ai_event.dart';
 part 'open_ai_state.dart';

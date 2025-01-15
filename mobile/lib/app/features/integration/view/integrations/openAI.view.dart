@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/integration/bloc/integrations/openAI/open_ai_bloc.dart';
 import 'package:triggo/app/features/integration/widgets/integrations/open_ai_form.widget.dart';
-import 'package:triggo/mediator/integrations/openAi.mediator.dart';
+import 'package:triggo/mediator/integrations/openAI.mediator.dart';
 
 class OpenAIIntegrationView extends StatelessWidget {
   const OpenAIIntegrationView({super.key});

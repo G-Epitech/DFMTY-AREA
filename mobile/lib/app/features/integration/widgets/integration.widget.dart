@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/creation/select_integration_account.view.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/view/integrations/leagueOfLegends.view.dart';
 import 'package:triggo/app/features/integration/view/integrations/openAI.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -123,12 +124,18 @@ Future<void> _customOnTap(
     BuildContext context,
     AvailableIntegration integration,
     IntegrationMediator integrationMediator) async {
-  if (integration.name == IntegrationNames.openAI) {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OpenAIIntegrationView()),
-    );
-  } else {
-    integrationMediator.launchURLFromIntegration(integration.url);
+  switch (integration.name) {
+    case IntegrationNames.openAI:
+      await Navigator.push(context,
+          MaterialPageRoute(builder: (context) => OpenAIIntegrationView()));
+      break;
+    case IntegrationNames.leagueOfLegends:
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LeagueOfLegendsIntegrationView()));
+      break;
+    default:
+      integrationMediator.launchURLFromIntegration(integration.url);
   }
 }
