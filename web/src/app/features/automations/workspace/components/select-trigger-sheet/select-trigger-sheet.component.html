@@ -8,11 +8,11 @@
       <span trSheetDescription>Edit the trigger for this automation</span>
     </tr-sheet-header>
     <div class="h-full">
-      @switch (selectionStep()) {
+      @switch (stateGroup().selectionStep) {
         @case (TriggerSelectionStep.MAIN) {
           <div>
             <span class="tr-large">Select Integration</span>
-            @if (!selectedIntegration()) {
+            @if (!stateGroup().selectedIntegration) {
               <button
                 trBtn
                 class="w-full text-left items-center justify-start gap-1"
@@ -24,7 +24,7 @@
             } @else {
               <tr-available-integration-list-card
                 class="w-full"
-                [integration]="selectedIntegration()!"
+                [integration]="stateGroup().selectedIntegration!"
                 (click)="goToIntegrationSelection()" />
             }
           </div>
@@ -37,7 +37,7 @@
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
-      @if (selectionStep() === TriggerSelectionStep.MAIN) {
+      @if (stateGroup().selectionStep === TriggerSelectionStep.MAIN) {
         <button trBtn type="submit" class="w-[50%]">Save</button>
       } @else {
         <button trBtn class="w-[50%]" variant="outline" (click)="back()">
