@@ -11,8 +11,6 @@ namespace Zeus.Api.Infrastructure.Persistence.Configurations;
 
 public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automation>
 {
-    private const int AutomationLabelMaxLength = 100;
-    private const int AutomationDescriptionMaxLength = 255;
     private const int ParameterIdentifierMaxLength = 300;
 
     public void Configure(EntityTypeBuilder<Automation> builder)
@@ -23,10 +21,10 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
             .ValueGeneratedNever()
             .HasConversion(x => x.Value, x => new AutomationId(x));
         builder.Property(x => x.Label)
-            .HasMaxLength(AutomationLabelMaxLength)
+            .HasMaxLength(Automation.LabelMaxLength)
             .IsRequired();
         builder.Property(x => x.Description)
-            .HasMaxLength(AutomationDescriptionMaxLength);
+            .HasMaxLength(Automation.DescriptionMaxLength);
         builder.Ignore(x => x.Providers);
         builder.Property(x => x.Enabled);
         builder.Property(x => x.CreatedAt)

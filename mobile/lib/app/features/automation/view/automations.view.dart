@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/view/automation.view.dart';
-import 'package:triggo/app/features/integration/widgets/integration_card.widget.dart';
 import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
+import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
@@ -61,12 +62,13 @@ class _AutomationCreationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
+    /*final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);*/
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
-        automationMediator.createAutomation();
+        // automationMediator.createAutomation();
+        Navigator.pushNamed(context, RoutesNames.automationCreation);
       },
     );
   }
@@ -155,11 +157,12 @@ class _AutomationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(context,
             customScreenBuilder(AutomationView(automation: automation)));
       },
-      child: IntegrationCard(
+      child: TriggoCard(
         customWidget: Row(
           children: [
             Stack(
@@ -169,7 +172,7 @@ class _AutomationListItem extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: automation.iconColor,
+                    color: Color(automation.iconColor),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Center(
@@ -187,7 +190,7 @@ class _AutomationListItem extends StatelessWidget {
                 Positioned(
                   bottom: -5,
                   right: -5,
-                  child: _ActivityIcon(state: automation.isActive),
+                  child: _ActivityIcon(state: automation.enabled),
                 )
               ],
             ),
@@ -200,7 +203,7 @@ class _AutomationListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          automation.name,
+                          automation.label,
                           style: Theme.of(context).textTheme.labelLarge,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

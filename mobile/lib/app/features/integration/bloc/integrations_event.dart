@@ -7,6 +7,10 @@ abstract class IntegrationsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadIntegrations extends IntegrationsEvent {}
+class LoadIntegrations extends IntegrationsEvent {
+  final String? integrationIdentifier;
+
+  const LoadIntegrations({this.integrationIdentifier});
+}
 
 class ReloadIntegrations extends IntegrationsEvent {}
