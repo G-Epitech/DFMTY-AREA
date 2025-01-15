@@ -75,7 +75,7 @@ void _loginMock(MockClient mock) {
 }
 
 void _refreshTokenMock(MockClient mock) {
-  when(mock.get(
+  when(mock.post(
     Uri.parse('${Env.apiUrl}/auth/refresh'),
     headers: anyNamed('headers'),
   )).thenAnswer((invocation) async {
