@@ -25,11 +25,11 @@ public class NotionDatabase : Entity<NotionDatabaseId>
         DateTime lastEditedAt,
         NotionUserId lastEditedBy,
         string title,
-        string? description,
         bool isInline,
         NotionParent parent,
         Uri uri,
         bool archived,
+        string? description,
         bool inTrash) : base(id)
     {
         Icon = icon;
