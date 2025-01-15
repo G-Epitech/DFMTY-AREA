@@ -4,6 +4,7 @@ import 'package:triggo/app/features/integration/bloc/integrations_bloc.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/widgets/integrations/league_of_legends.integrations.widget.dart';
 import 'package:triggo/app/features/integration/widgets/integrations/notion.integrations.widget.dart';
 import 'package:triggo/app/features/integration/widgets/integrations/open_ai.integrations.widget.dart';
 import 'package:triggo/app/routes/routes_names.dart';
@@ -12,6 +13,7 @@ import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/leagueOfLegends.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
@@ -170,6 +172,9 @@ class _IntegrationListItem extends StatelessWidget {
       case IntegrationNames.openAI:
         return OpenAIIntegrationListItemWidget(
             integration: integration as OpenAIIntegration);
+      case IntegrationNames.leagueOfLegends:
+        return LeagueOfLegendsIntegrationListItemWidget(
+            integration: integration as LeagueOfLegendsIntegration);
       default:
         return _DefaultIntegrationListItem(integration: integration);
     }
