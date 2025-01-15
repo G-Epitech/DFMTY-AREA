@@ -90,6 +90,10 @@ public class NotionService : INotionService
         if (responseContent is null)
             return Errors.Integrations.Notion.InvalidBody;
 
+        var avatarUri = responseContent.Bot.Owner.User.AvatarUrl is not null
+            ? new Uri(responseContent.Bot.Owner.User.AvatarUrl)
+            : null;
+
         return NotionBot.Create(
             new NotionIntegrationId(responseContent.Id),
             responseContent.Name,
@@ -97,7 +101,7 @@ public class NotionService : INotionService
             NotionUser.Create(
                 new NotionUserId(responseContent.Bot.Owner.User.Id),
                 responseContent.Bot.Owner.User.Name,
-                new Uri(responseContent.Bot.Owner.User.AvatarUrl),
+                avatarUri,
                 responseContent.Bot.Owner.User.Person.Email));
     }
 

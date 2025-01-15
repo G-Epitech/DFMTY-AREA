@@ -31,7 +31,7 @@ public class LeagueOfLegendsCreationController : ApiController
         }
 
         var createIntegrationResult = await _sender.Send(new CreateLeagueOfLegendsIntegrationCommand(
-            authUser.Id, request.GameName, request.TagName));
+            authUser.Id, request.GameName, request.TagLine));
 
         return createIntegrationResult.Match(
             result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),
