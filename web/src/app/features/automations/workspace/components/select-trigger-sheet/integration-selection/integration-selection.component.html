@@ -1,8 +1,16 @@
-<div class="flex flex-col">
-  <tr-input-search placeholder="Search for an integration" />
-  <div class="flex flex-col">
-    @for (integration of availableIntegrations(); track integration.identifier) {
-      <span>{{integration.name}}</span>
+<div class="flex flex-col h-full">
+  <tr-input-search placeholder="Search for an integration" class="mb-3"/>
+  <div class="flex flex-col bg-secondary rounded-md p-4 space-y-2 flex-grow">
+    @for (
+      integration of availableIntegrations();
+      track integration.identifier
+    ) {
+      <tr-available-integration-list-card class="w-full"
+        [color]="integration.color"
+        [name]="integration.name"
+        [iconUri]="integration.iconUri"
+        [forceWhite]="forceWhite(integration)"
+      />
     }
   </div>
 </div>

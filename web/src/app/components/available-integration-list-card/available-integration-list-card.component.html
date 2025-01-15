@@ -1,1 +1,13 @@
-<p>available-integration-list-card works!</p>
+<button trBtn variant="outline" class="flex flex-row gap-2 w-full justify-start bg-white p-6 px-3">
+  <div
+    class="w-8 h-8 rounded-md flex flex-col items-center justify-center"
+    [ngStyle]="{ 'background-color': color() }">
+    <img
+      [ngSrc]="iconUri()"
+      alt="Integration Logo"
+      [width]="20"
+      [height]="20"
+      [style.filter]="forceWhite() ? 'brightness(0) invert(1)' : 'none'" />
+  </div>
+  <span>{{ name() }}</span>
+</button>
