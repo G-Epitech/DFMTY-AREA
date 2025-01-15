@@ -9,7 +9,6 @@ Future<void> launchURL(String url) async {
       throw 'Could not launch $url';
     }
   } catch (e) {
-    // Display error message with a snackbar or dialog (something like that)
     rethrow;
   }
 }

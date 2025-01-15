@@ -35,8 +35,7 @@ class IntegrationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting integrations: $e');
     }
   }
 
@@ -59,8 +58,7 @@ class IntegrationMediator with ChangeNotifier {
       }
     } catch (e) {
       log('Error getting integrations: $e');
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting integrations: $e');
     }
   }
 
@@ -74,7 +72,6 @@ class IntegrationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       rethrow;
     }
   }

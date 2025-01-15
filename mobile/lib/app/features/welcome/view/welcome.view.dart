@@ -6,6 +6,7 @@ import 'package:triggo/app/features/register/view/register.view.dart';
 import 'package:triggo/app/routes/custom_auth.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
+import 'package:triggo/app/widgets/navigation_bar.triggo.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
 
 class WelcomeView extends StatefulWidget {
@@ -101,8 +102,17 @@ class WelcomeViewState extends State<WelcomeView> {
                         final bool? connected =
                             await authMediator.authenticateWithGoogle();
                         if (context.mounted && connected != null && connected) {
+                          currentRouteNotifier.value = RoutesNames.home;
                           Navigator.pushNamedAndRemoveUntil(
                               context, RoutesNames.home, (route) => false);
+                        } else if (context.mounted) {
+                          ScaffoldMessenger.of(context)
+                            ..removeCurrentSnackBar()
+                            ..showSnackBar(
+                              const SnackBar(
+                                content: Text('Could not authenticate'),
+                              ),
+                            );
                         }
                       },
                       style: ElevatedButton.styleFrom(

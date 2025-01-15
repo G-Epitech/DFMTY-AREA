@@ -129,6 +129,14 @@ Future<void> _customOnTap(
       MaterialPageRoute(builder: (context) => OpenAIIntegrationView()),
     );
   } else {
-    integrationMediator.launchURLFromIntegration(integration.url);
+    try {
+      integrationMediator.launchURLFromIntegration(integration.url);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Could not connect to the integration'),
+        ),
+      );
+    }
   }
 }
