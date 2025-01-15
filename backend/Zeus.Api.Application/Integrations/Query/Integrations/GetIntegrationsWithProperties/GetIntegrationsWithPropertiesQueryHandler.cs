@@ -13,7 +13,8 @@ using Zeus.Common.Extensions.Queryable;
 namespace Zeus.Api.Application.Integrations.Query.Integrations.GetIntegrationsWithProperties;
 
 public class
-    GetIntegrationsWithPropertiesQueryHandler : IRequestHandler<GetIntegrationsWithPropertiesQuery, ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>>
+    GetIntegrationsWithPropertiesQueryHandler : IRequestHandler<GetIntegrationsWithPropertiesQuery,
+    ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>>
 {
     private readonly IIntegrationReadRepository _integrationReadRepository;
     private readonly IIntegrationService _integrationService;
@@ -29,7 +30,8 @@ public class
         _logger = logger;
     }
 
-    public async Task<ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>> Handle(GetIntegrationsWithPropertiesQuery withPropertiesQuery,
+    public async Task<ErrorOr<Page<GetIntegrationWithPropertiesQueryResult>>> Handle(
+        GetIntegrationsWithPropertiesQuery withPropertiesQuery,
         CancellationToken cancellationToken)
     {
         var index = withPropertiesQuery.Index ?? 0;
@@ -38,7 +40,8 @@ public class
         var userId = new UserId(withPropertiesQuery.UserId);
         var pageQuery = new PageQuery { Index = index, Limit = limit };
 
-        var integrations = await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery, cancellationToken);
+        var integrations =
+            await _integrationReadRepository.GetIntegrationsByOwnerIdAsync(userId, pageQuery, cancellationToken);
 
         var integrationResultItems = new List<GetIntegrationWithPropertiesQueryResult>();
 
@@ -48,7 +51,8 @@ public class
 
             if (propertiesResult.IsError)
             {
-                _logger.LogError("Unable to get integration properties: {IntegrationId}", integration.Id.Value);
+                _logger.LogError("Unable to get integration properties: {IntegrationId}\n{Errors}",
+                    integration.Id.Value, propertiesResult.Errors);
                 continue;
             }
 

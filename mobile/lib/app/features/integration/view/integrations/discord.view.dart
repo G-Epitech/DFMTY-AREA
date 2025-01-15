@@ -4,7 +4,7 @@ import 'package:triggo/app/features/integration/bloc/integrations/discord/discor
 import 'package:triggo/app/features/integration/widgets/integrations/discord_guilds.integration.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 import 'package:triggo/utils/launch_url.dart';
 

@@ -18,7 +18,7 @@ class _AutomationViewState extends State<AutomationView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'Create Automation',
+      title: 'Automation',
       header: _Header(automation: widget.automation),
       body: _AutomationTriggerContainer(automation: widget.automation),
       getBack: true,
@@ -38,6 +38,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -52,7 +53,7 @@ class _Header extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: automation.iconColor,
+              color: Color(automation.iconColor),
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Center(
@@ -69,7 +70,7 @@ class _Header extends StatelessWidget {
           ),
           SizedBox(width: 10.0),
           Text(
-            automation.name,
+            automation.label,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20.0,
                 ),
@@ -89,9 +90,6 @@ class _AutomationTriggerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);*/
-
     return Column(
       children: [
         CustomRectangleList(automation: automation),
@@ -139,6 +137,7 @@ class _TriggerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(context, customScreenBuilder(AutomationParameterView()));
       },
