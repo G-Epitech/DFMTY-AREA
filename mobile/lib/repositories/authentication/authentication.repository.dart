@@ -27,7 +27,7 @@ class AuthenticationRepository {
 
   Future<Response<OutRefreshTokenDTO>> refreshToken(String refreshToken) async {
     final response = await call(
-      method: 'GET',
+      method: 'POST',
       endpoint: '/auth/refresh',
       headers: {'Authorization': 'Bearer $refreshToken'},
       client: client,

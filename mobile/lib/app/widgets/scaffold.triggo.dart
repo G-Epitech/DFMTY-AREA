@@ -47,6 +47,7 @@ class _PageTitle extends StatelessWidget {
   final String title;
   final bool getBack;
   final Widget? header;
+
   const _PageTitle({required this.title, this.getBack = false, this.header});
 
   @override
@@ -67,6 +68,7 @@ class _PageTitle extends StatelessWidget {
       return Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -77,12 +79,14 @@ class _PageTitle extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10.0),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       );
     }
@@ -91,6 +95,7 @@ class _PageTitle extends StatelessWidget {
 
 class _MainContainer extends StatelessWidget {
   final Widget? body;
+
   const _MainContainer({required this.body});
 
   @override

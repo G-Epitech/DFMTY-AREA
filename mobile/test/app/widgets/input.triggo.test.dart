@@ -9,7 +9,6 @@ void triggoInputTest() {
         home: Scaffold(
       body: TriggoInput(
         placeholder: 'Triggo',
-        controller: null,
         keyboardType: TextInputType.text,
         onChanged: null,
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),

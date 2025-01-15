@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:triggo/mediator/integrations/integration.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 
 import 'integrations_event.dart';
 import 'integrations_state.dart';
@@ -17,6 +17,10 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
     emit(IntegrationsLoading());
     try {
       final integrations = await _integrationMediator.getUserIntegrations();
+      if (event.integrationIdentifier != null) {
+        integrations.removeWhere((element) =>
+            element.name.toLowerCase() != event.integrationIdentifier);
+      }
       emit(IntegrationsLoaded(integrations));
     } catch (e) {
       emit(IntegrationsError(e.toString()));

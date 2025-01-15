@@ -1,4 +1,3 @@
-
 using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Common.Domain.Authentication.Common;
@@ -15,5 +14,10 @@ public abstract class Token : ValueObject
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
+    }
+
+    public override string ToString()
+    {
+        return Value;
     }
 }

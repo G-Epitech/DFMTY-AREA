@@ -6,12 +6,14 @@ import 'package:triggo/repositories/authentication/google.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
+import 'package:triggo/repositories/integration/notion.repository.dart';
 
 class IntegrationRepository {
   final http.Client? client;
   final CredentialsRepository credentialsRepository;
   final DiscordRepository discordRepository;
   final GoogleRepository googleRepository;
+  final NotionRepository notionRepository;
 
   IntegrationRepository({this.client, required this.credentialsRepository})
       : discordRepository = DiscordRepository(
@@ -21,10 +23,17 @@ class IntegrationRepository {
         googleRepository = GoogleRepository(
           client: client,
           credentialsRepository: credentialsRepository,
+        ),
+        notionRepository = NotionRepository(
+          client: client,
+          credentialsRepository: credentialsRepository,
         );
 
   get discord => discordRepository;
+
   get google => googleRepository;
+
+  get notion => notionRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
       {int page = 0, int size = 10}) async {
@@ -86,20 +95,30 @@ class IntegrationRepository {
     //       errors: response.errors,
     //     );
     final json = {
-      "page": {
-        "pageNumber": 1,
-        "pageSize": 10,
-        "totalPages": 1,
-        "totalRecords": 3,
-        "data": [
-          {
-            "name": "Discord",
-            "iconUri": 'assets/icons/discord.svg',
-            "color": "#7289da",
-            "url": "discord"
-          }
-        ]
-      },
+      "pageNumber": 1,
+      "pageSize": 10,
+      "totalPages": 1,
+      "totalRecords": 3,
+      "data": [
+        {
+          "name": "Discord",
+          "iconUri": 'assets/icons/discord.svg',
+          "color": "#7289da",
+          "url": "discord"
+        },
+        {
+          "name": "Notion",
+          "iconUri": 'assets/icons/notion.svg',
+          "color": "#000000",
+          "url": "notion"
+        },
+        {
+          "name": "OpenAI",
+          "iconUri": 'assets/icons/openai.svg',
+          "color": "#10a37f",
+          "url": "openAI"
+        }
+      ]
     };
     return Response<OutGetIntegrationNamesDTO>(
       statusCode: Codes.ok,
