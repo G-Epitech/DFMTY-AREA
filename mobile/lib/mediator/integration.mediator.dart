@@ -6,7 +6,7 @@ import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/mediator/integrations/discord.mediator.dart';
 import 'package:triggo/mediator/integrations/leagueOfLegends.mediator.dart';
 import 'package:triggo/mediator/integrations/notion.mediator.dart';
-import 'package:triggo/mediator/integrations/openAI.mediator.dart';
+import 'package:triggo/mediator/integrations/openAi.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:triggo/utils/launch_url.dart';
