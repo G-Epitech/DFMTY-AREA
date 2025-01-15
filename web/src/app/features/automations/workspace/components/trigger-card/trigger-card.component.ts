@@ -7,39 +7,40 @@ import {
   input,
 } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { ActionShortModel, AutomationSchemaModel } from '@models/automation';
+import { AutomationSchemaModel, TriggerShortModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconName } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
 
 @Component({
-  selector: 'tr-action-card',
-  imports: [NgIcon, NgStyle],
-  templateUrl: './action-card.component.html',
+  selector: 'tr-trigger-card',
+  templateUrl: './trigger-card.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  imports: [NgStyle, NgIcon],
 })
-export class ActionCardComponent {
+export class TriggerCardComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   schema: AutomationSchemaModel | null = null;
-  action = input.required<ActionShortModel>();
+
+  trigger = input.required<TriggerShortModel | null>();
 
   color = computed(() => {
-    const action = this.action();
-    if (action && this.schema) {
-      return this.schema.getIntegrationColor(action.integration);
+    const trigger = this.trigger();
+    if (trigger && this.schema) {
+      return this.schema.getIntegrationColor(trigger.integration);
     }
     return null;
   });
 
   icon = computed(() => {
-    const action = this.action();
-    if (action && this.schema) {
-      const iconIdentifier = this.schema.getActionIcon(
-        action.integration,
-        action.nameIdentifier
+    const trigger = this.trigger();
+    if (trigger && this.schema) {
+      const iconIdentifier = this.schema.getTriggerIcon(
+        trigger.integration,
+        trigger.nameIdentifier
       );
       if (iconIdentifier) {
         return iconName(iconIdentifier);
@@ -49,11 +50,11 @@ export class ActionCardComponent {
   });
 
   name = computed(() => {
-    const action = this.action();
-    if (action && this.schema) {
-      return this.schema.getActionName(
-        action.integration,
-        action.nameIdentifier
+    const trigger = this.trigger();
+    if (trigger && this.schema) {
+      return this.schema.getTriggerName(
+        trigger.integration,
+        trigger.nameIdentifier
       );
     }
     return null;
