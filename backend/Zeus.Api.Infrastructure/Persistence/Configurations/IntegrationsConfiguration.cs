@@ -57,7 +57,7 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
         {
             tb.ToTable("IntegrationTokens");
             tb.WithOwner().HasForeignKey("IntegrationId");
-            tb.HasKey("Value", "Type", "Usage");
+            tb.HasKey("IntegrationId", "Type", "Usage");
             tb.Property(t => t.Value)
                 .HasColumnName("TokenValue")
                 .HasMaxLength(TokenValueMaxLength);
