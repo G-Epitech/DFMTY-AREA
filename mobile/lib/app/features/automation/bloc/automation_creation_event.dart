@@ -178,6 +178,7 @@ final class AutomationCreationValidatePendingAutomation
   const AutomationCreationValidatePendingAutomation();
 }
 
-final class AutomationCreationLoadAutomation extends AutomationCreationEvent {
-  const AutomationCreationLoadAutomation();
+final class AutomationCreationLoadCleanAutomation
+    extends AutomationCreationEvent {
+  const AutomationCreationLoadCleanAutomation();
 }

@@ -1,0 +1,44 @@
+{
+  "id": "",
+  "label": "",
+  "description": "",
+  "ownerId": "",
+  "trigger": {
+    "identifier": "discord.MessageReceivedInChannel",
+    "parameters": [
+      {
+        "identifier": "GuildId",
+        "value": "1316046870178697267"
+      },
+      {
+        "identifier": "ChannelId",
+        "value": "1316046871063691318"
+      }
+    ],
+    "providers": [
+      "3377d03d-d009-457b-8156-dba304b37909"
+    ]
+  },
+  "actions": [
+    {
+      "identifier": "discord.SendMessageToChannel",
+      "parameters": [
+        {
+          "identifier": "ChannelId",
+          "value": "1316046972733620244",
+          "type": "var"
+        },
+        {
+          "identifier": "Content",
+          "value": "1.Content",
+          "type": "var"
+        }
+      ],
+      "providers": [
+        "3377d03d-d009-457b-8156-dba304b37909"
+      ]
+    }
+  ],
+  "enabled": true,
+  "updatedAt": "0000-01-01T00:00:00.000"
+}

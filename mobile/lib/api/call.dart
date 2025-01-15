@@ -73,6 +73,7 @@ Future<http.Response> _makeRequest<T extends Json>({
   T? body,
 }) async {
   final encodedBody = body != null ? jsonEncode(body.toJson()) : null;
+  print("Encoded body: $encodedBody");
   final requestMethods = {
     'POST': httpClient.post,
     'PUT': httpClient.put,

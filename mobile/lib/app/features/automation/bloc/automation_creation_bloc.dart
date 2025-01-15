@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 part 'automation_creation_event.dart';
@@ -11,7 +13,11 @@ part 'automation_creation_state.dart';
 
 class AutomationCreationBloc
     extends Bloc<AutomationCreationEvent, AutomationCreationState> {
-  AutomationCreationBloc() : super(AutomationCreationInitial()) {
+  final AutomationMediator _automationMediator;
+
+  AutomationCreationBloc({required AutomationMediator automationMediator})
+      : _automationMediator = automationMediator,
+        super(AutomationCreationInitial()) {
     on<AutomationCreationLabelChanged>(_onLabelChanged);
     on<AutomationCreationDescriptionChanged>(_onDescriptionChanged);
     on<AutomationCreationTriggerProviderChanged>(_onTriggerProviderChanged);
@@ -28,7 +34,7 @@ class AutomationCreationBloc
     on<AutomationCreationPreviewUpdated>(_onPreviewUpdated);
     on<AutomationCreationValidatePendingAutomation>(
         _onValidatePendingAutomation);
-    on<AutomationCreationLoadAutomation>(_onLoadAutomation);
+    on<AutomationCreationLoadCleanAutomation>(_onLoadAutomation);
   }
 
   void _onLabelChanged(AutomationCreationLabelChanged event,
@@ -36,7 +42,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.cleanedAutomation.copyWith(label: event.label);
     emit(AutomationCreationDirty(
-        updatedAutomation, updatedAutomation, state.previews));
+        updatedAutomation, updatedAutomation, state.previews, state.status));
   }
 
   void _onDescriptionChanged(AutomationCreationDescriptionChanged event,
@@ -44,7 +50,7 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.cleanedAutomation.copyWith(description: event.description);
     emit(AutomationCreationDirty(
-        updatedAutomation, updatedAutomation, state.previews));
+        updatedAutomation, updatedAutomation, state.previews, state.status));
   }
 
   void _onTriggerProviderChanged(AutomationCreationTriggerProviderChanged event,
@@ -55,8 +61,8 @@ class AutomationCreationBloc
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onTriggerProviderAdded(AutomationCreationTriggerProviderAdded event,
@@ -68,8 +74,8 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
     log('Trigger provider added: ${updatedAutomation.trigger.providers.length}');
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onTriggerIdentifierChanged(
@@ -81,8 +87,8 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
     log('Trigger identifier changed: ${updatedAutomation.trigger.identifier}');
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onTriggerParameterChanged(
@@ -110,8 +116,8 @@ class AutomationCreationBloc
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
 
     log('!===== Trigger parameter changed: ${updatedAutomation.trigger.parameters.length} =====');
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onActionIdentifierChanged(
@@ -133,8 +139,8 @@ class AutomationCreationBloc
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onActionProviderAdded(AutomationCreationActionProviderAdded event,
@@ -157,15 +163,16 @@ class AutomationCreationBloc
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onActionParameterChanged(AutomationCreationActionParameterChanged event,
       Emitter<AutomationCreationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
-    log('Action parameter changed: ${event.parameterIdentifier}');
+    log('/!\\ Action parameter changed: ${event.parameterIdentifier}');
+    log('/!\\ Action parameter changed to value: ${event.parameterValue}');
     bool updated = false;
     if (event.index < updatedActions.length) {
       updatedActions[event.index] = updatedActions[event.index].copyWith(
@@ -205,8 +212,8 @@ class AutomationCreationBloc
     log('Action parameter changed: ${updatedActions[event.index].parameters.length}');
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onResetPending(AutomationCreationResetPending event,
@@ -220,8 +227,8 @@ class AutomationCreationBloc
           providers: [],
           parameters: [],
         ));
-        emit(AutomationCreationState(
-            state.cleanedAutomation, updatedAutomation, state.previews));
+        emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
+            state.previews, state.status));
         break;
       case AutomationChoiceEnum.action:
         final updatedActions =
@@ -231,15 +238,38 @@ class AutomationCreationBloc
         }
         final updatedAutomation =
             state.dirtyAutomation.copyWith(actions: updatedActions);
-        emit(AutomationCreationState(
-            state.cleanedAutomation, updatedAutomation, state.previews));
+        emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
+            state.previews, state.status));
         break;
     }
   }
 
   void _onSubmitted(AutomationCreationSubmitted event,
-      Emitter<AutomationCreationState> emit) {
-    log('Automation submitted');
+      Emitter<AutomationCreationState> emit) async {
+    emit(AutomationCreationState(state.cleanedAutomation, state.dirtyAutomation,
+        state.previews, FormzSubmissionStatus.inProgress));
+    try {
+      final res =
+          await _automationMediator.createAutomation(state.cleanedAutomation);
+
+      print('Response Code: ${res}');
+
+      if (!res) {
+        throw Exception('Failed to create automation');
+      }
+
+      emit(AutomationCreationState(
+          state.cleanedAutomation,
+          state.dirtyAutomation,
+          state.previews,
+          FormzSubmissionStatus.success));
+    } catch (e) {
+      emit(AutomationCreationState(
+          state.cleanedAutomation,
+          state.dirtyAutomation,
+          state.previews,
+          FormzSubmissionStatus.failure));
+    }
   }
 
   void _onActionDeleted(AutomationCreationActionDeleted event,
@@ -249,8 +279,8 @@ class AutomationCreationBloc
     updatedActions.removeAt(event.index);
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(
-        state.cleanedAutomation, updatedAutomation, state.previews));
+    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
+        state.previews, state.status));
   }
 
   void _onReset(
@@ -268,7 +298,7 @@ class AutomationCreationBloc
         _manageSpecialCasesAutomation(state.dirtyAutomation, event.key);
     log('Preview key: ${event.key}');
     emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
-        updatedPreviewsSpecialCases));
+        updatedPreviewsSpecialCases, state.status));
   }
 
   Map<String, String> _manageSpecialCasesPreviews(
@@ -293,13 +323,13 @@ class AutomationCreationBloc
       AutomationCreationValidatePendingAutomation event,
       Emitter<AutomationCreationState> emit) {
     log('Validate: ${state.dirtyAutomation.trigger.providers.length}');
-    emit(AutomationCreationState(
-        state.dirtyAutomation, state.dirtyAutomation, state.previews));
+    emit(AutomationCreationState(state.dirtyAutomation, state.dirtyAutomation,
+        state.previews, state.status));
   }
 
-  void _onLoadAutomation(AutomationCreationLoadAutomation event,
+  void _onLoadAutomation(AutomationCreationLoadCleanAutomation event,
       Emitter<AutomationCreationState> emit) {
-    emit(AutomationCreationState(
-        state.cleanedAutomation, state.cleanedAutomation, state.previews));
+    emit(AutomationCreationState(state.cleanedAutomation,
+        state.cleanedAutomation, state.previews, state.status));
   }
 }

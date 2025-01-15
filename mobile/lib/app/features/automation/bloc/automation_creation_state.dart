@@ -4,11 +4,13 @@ class AutomationCreationState extends Equatable {
   final Automation cleanedAutomation;
   final Automation dirtyAutomation;
   final Map<String, String> previews;
+  final FormzSubmissionStatus status;
 
   const AutomationCreationState(
     this.cleanedAutomation,
     this.dirtyAutomation,
     this.previews,
+    this.status,
   );
 
   @override
@@ -50,7 +52,8 @@ final class AutomationCreationInitial extends AutomationCreationState {
               iconColor: 0,
               iconUri: '',
             ),
-            {});
+            {},
+            FormzSubmissionStatus.initial);
 }
 
 final class AutomationCreationDirty extends AutomationCreationState {
@@ -58,5 +61,6 @@ final class AutomationCreationDirty extends AutomationCreationState {
     super.cleanedAutomation,
     super.dirtyAutomation,
     super.previews,
+    super.status,
   );
 }

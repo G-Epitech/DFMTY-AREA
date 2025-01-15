@@ -45,13 +45,7 @@ class _AutomationCreationMainViewState
               children: [
                 _AutomationCreationContainer(
                     automation: state.cleanedAutomation),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _SaveButton(),
-                    ),
-                  ],
-                ),
+                _SaveButton(),
               ],
             ),
           ),
@@ -143,19 +137,29 @@ class _SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TriggoButton(
-      text: 'Save',
-      onPressed: () async {
-        log('Save button pressed');
-      },
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-      style: TextStyle(
-        color: Theme.of(context).colorScheme.onPrimary,
-        fontFamily: containerTitle.fontFamily,
-        fontSize: 20,
-        fontWeight: containerTitle.fontWeight,
-        letterSpacing: containerTitle.letterSpacing,
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: TriggoButton(
+            text: 'Save',
+            onPressed: () async {
+              log('Save button pressed');
+              context
+                  .read<AutomationCreationBloc>()
+                  .add(AutomationCreationSubmitted());
+            },
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontFamily: containerTitle.fontFamily,
+              fontSize: 20,
+              fontWeight: containerTitle.fontWeight,
+              letterSpacing: containerTitle.letterSpacing,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -192,7 +196,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
       onTap: () {
         context
             .read<AutomationCreationBloc>()
-            .add(AutomationCreationLoadAutomation());
+            .add(AutomationCreationLoadCleanAutomation());
         Navigator.push(
             context,
             customScreenBuilder(AutomationCreationSelectIntegrationView(
@@ -316,7 +320,7 @@ class CustomRectangleList extends StatelessWidget {
                 onTap: () {
                   context
                       .read<AutomationCreationBloc>()
-                      .add(AutomationCreationLoadAutomation());
+                      .add(AutomationCreationLoadCleanAutomation());
                   Navigator.push(
                       context,
                       customScreenBuilder(
@@ -379,7 +383,7 @@ class _TriggerListItem extends StatelessWidget {
       onTap: () {
         context
             .read<AutomationCreationBloc>()
-            .add(AutomationCreationLoadAutomation());
+            .add(AutomationCreationLoadCleanAutomation());
         Navigator.push(
             context,
             customScreenBuilder(AutomationCreationParametersView(

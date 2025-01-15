@@ -95,7 +95,9 @@ class _TriggoAppState extends State<TriggoApp> {
             ),
           ),
           BlocProvider(
-            create: (_) => AutomationCreationBloc(),
+            create: (_) => AutomationCreationBloc(
+              automationMediator: _automationMediator,
+            ),
           ),
         ],
         child: MaterialApp(

@@ -355,22 +355,17 @@ class _List extends StatelessWidget {
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: value,
-                                  parameterType: options ==
-                                          AutomationParameterNeedOptions.yes
-                                      ? "var"
-                                      : "raw",
+                                  parameterType: "raw",
                                 ));
                           }
-                          /*context
-                  .read<AutomationCreationBloc>()
-                  .add(AutomationCreationLabelChanged(label: value));*/
                         },
                       )
                     : AutomationParameterChoice(
                         title: title,
                         type: type,
                         automation: state.cleanedAutomation,
-                        onSave: (value, valueType, humanReadableValue) {
+                        onSave: (value, valueType, humanReadableValue,
+                            indexVariable) {
                           if (type == AutomationChoiceEnum.trigger) {
                             context.read<AutomationCreationBloc>().add(
                                 AutomationCreationPreviewUpdated(
@@ -398,7 +393,10 @@ class _List extends StatelessWidget {
                                 .add(AutomationCreationActionParameterChanged(
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
-                                  parameterValue: value,
+                                  parameterValue: (valueType == 'var'
+                                          ? "$indexVariable."
+                                          : "") +
+                                      value,
                                   parameterType: valueType,
                                 ));
                           }
@@ -416,7 +414,7 @@ class _List extends StatelessWidget {
 
 class AutomationParameterChoice extends StatelessWidget {
   final String title;
-  final void Function(String, String, String) onSave;
+  final void Function(String, String, String, int) onSave;
   final AutomationChoiceEnum type;
   final Automation automation;
   final List<AutomationRadioModel>? options;
@@ -463,7 +461,7 @@ class AutomationParameterChoice extends StatelessWidget {
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
-                  onSave(value, 'raw', humanReadableValue);
+                  onSave(value, 'raw', humanReadableValue, 0);
                 },
                 value: selectedValue,
               ),
@@ -479,7 +477,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String, String, String) onSave;
+  final void Function(String, String, String, int) onSave;
   final String? value;
 
   const AutomationParameterFromActions({
@@ -550,7 +548,8 @@ class AutomationParameterFromActions extends StatelessWidget {
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue);
+                        log("/!\\ Trigger Index: $index");
+                        onSave(value, 'var', humanReadableValue, index);
                       },
                     ),
                   );
@@ -600,7 +599,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue);
+                        onSave(value, 'var', humanReadableValue, index);
                       },
                     ),
                   );
@@ -651,7 +650,7 @@ String? getPreviewData(
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
             log("Parameter Type: ${parameter.type}");
-            isNotHumanReadable = parameter.type != 'raw';
+            isNotHumanReadable = parameter.type != 'var';
             break;
           }
         }

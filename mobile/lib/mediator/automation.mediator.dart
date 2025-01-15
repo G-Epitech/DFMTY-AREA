@@ -7,6 +7,7 @@ import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/automation/dtos/automation.dtos.dart';
+import 'package:triggo/repositories/automation/models/automation.repository.model.dart';
 
 class AutomationMediator with ChangeNotifier {
   final AutomationRepository _automationRepository;
@@ -45,16 +46,21 @@ class AutomationMediator with ChangeNotifier {
     }
   }
 
-  Future<bool> createAutomation() async {
+  Future<bool> createAutomation(Automation automation) async {
     try {
-      InPostAutomationDTO automation = InPostAutomationDTO();
-      final res = await _automationRepository.createAutomation(automation);
+      final json = automation.toJson();
+      print(json);
+      final dto = AutomationDTO.fromJson(json);
+      InPostAutomationDTO automationDTO = InPostAutomationDTO(automation: dto);
+      final res = await _automationRepository.createAutomation(automationDTO);
+      print('AutomationMediator: ${res.statusCode}');
       if (res.statusCode == Codes.created) {
         return true;
       } else {
         throw Exception(res.message);
       }
     } catch (e) {
+      print(e);
       // Display error message with a snackbar or dialog (something like that)
       return false;
     }
