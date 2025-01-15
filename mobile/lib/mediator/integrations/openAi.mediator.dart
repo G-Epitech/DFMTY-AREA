@@ -35,7 +35,6 @@ class OpenAIMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(LinkStatus.notLinked);
       rethrow;
     }

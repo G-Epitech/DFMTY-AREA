@@ -32,8 +32,7 @@ class DiscordMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting guilds: $e');
     }
   }
 
@@ -51,8 +50,7 @@ class DiscordMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting channels: $e');
     }
   }
 
@@ -71,8 +69,7 @@ class DiscordMediator with ChangeNotifier {
       }
       return guildsRadio;
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting guilds: $e');
     }
   }
 
@@ -90,8 +87,7 @@ class DiscordMediator with ChangeNotifier {
       }
       return channelsRadio;
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting channels: $e');
     }
   }
 }

@@ -58,7 +58,14 @@ class _TriggoAppState extends State<TriggoApp> {
       _googleRepository,
     );
     _integrationMediator = IntegrationMediator(_integrationRepository);
-    _automationMediator = AutomationMediator(_automationRepository);
+    try {
+      _automationMediator = AutomationMediator(_automationRepository);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+            SnackBar(content: Text('Error initializing Automation')));
+    }
     _userMediator = UserMediator(_userRepository);
   }
 
