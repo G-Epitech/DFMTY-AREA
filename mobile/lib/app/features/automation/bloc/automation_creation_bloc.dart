@@ -258,11 +258,6 @@ class AutomationCreationBloc
     emit(AutomationCreationInitial());
   }
 
-  bool _isValid(Automation automation) {
-    return automation.label.isNotEmpty &&
-        automation.trigger.identifier.isNotEmpty;
-  }
-
   void _onPreviewUpdated(AutomationCreationPreviewUpdated event,
       Emitter<AutomationCreationState> emit) {
     final updatedPreviews = Map<String, String>.from(state.previews)

@@ -36,7 +36,7 @@ class IntegrationRepository {
   get notion => notionRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
-      {int page = 0, int size = 20}) async {
+      {int page = 0, int size = 10}) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',
