@@ -1,3 +1,8 @@
 <div class="flex flex-col">
   <tr-input-search placeholder="Search for an integration" />
+  <div class="flex flex-col">
+    @for (integration of availableIntegrations(); track integration.identifier) {
+      <span>{{integration.name}}</span>
+    }
+  </div>
 </div>

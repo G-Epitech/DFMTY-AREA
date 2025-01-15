@@ -29,6 +29,9 @@ export const SchemaStore = signalStore(
     getSchema: computed(() => {
       return store.automationSchema();
     }),
+    getAvailableIntegrations: computed(() => {
+      return store.automationSchema()?.getAvailableIntegration() ?? null;
+    }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
     initialize: rxMethod<void>(
