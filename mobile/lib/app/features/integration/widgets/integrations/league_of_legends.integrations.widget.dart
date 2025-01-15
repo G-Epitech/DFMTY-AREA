@@ -86,7 +86,7 @@ class LeagueOfLegendsCustomWidget extends StatelessWidget {
                 right: 0,
                 child: CircleAvatar(
                     radius: 10,
-                    backgroundColor: Color(0xFF4E4E4E),
+                    backgroundColor: Color(0xFFd53235),
                     child: SvgPicture.asset(
                       "assets/icons/riot.svg",
                       width: 15,
