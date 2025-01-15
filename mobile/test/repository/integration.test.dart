@@ -31,7 +31,7 @@ void integrationRepositoryTests() {
         CredentialsRepository(secureStorage: mockSecureStorage);
 
     when(mock.get(
-      Uri.parse('${Env.apiUrl}/user/integration'),
+      Uri.parse('${Env.apiUrl}/user/integrations'),
       headers: {
         'Authorization': 'Bearer dummy',
         'Content-Type': 'application/json; charset=utf-8',

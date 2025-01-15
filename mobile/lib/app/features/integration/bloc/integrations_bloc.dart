@@ -17,6 +17,10 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
     emit(IntegrationsLoading());
     try {
       final integrations = await _integrationMediator.getUserIntegrations();
+      if (event.integrationIdentifier != null) {
+        integrations.removeWhere((element) =>
+            element.name.toLowerCase() != event.integrationIdentifier);
+      }
       emit(IntegrationsLoaded(integrations));
     } catch (e) {
       emit(IntegrationsError(e.toString()));

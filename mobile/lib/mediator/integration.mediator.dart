@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/mediator/integrations/discord.mediator.dart';
+import 'package:triggo/mediator/integrations/notion.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:triggo/utils/launch_url.dart';
@@ -9,11 +12,15 @@ import 'package:triggo/utils/launch_url.dart';
 class IntegrationMediator with ChangeNotifier {
   final IntegrationRepository _integrationRepository;
   final DiscordMediator _discordMediator;
+  final NotionMediator _notionMediator;
 
   IntegrationMediator(this._integrationRepository)
-      : _discordMediator = DiscordMediator(_integrationRepository.discord);
+      : _discordMediator = DiscordMediator(_integrationRepository.discord),
+        _notionMediator = NotionMediator(_integrationRepository.notion);
 
   DiscordMediator get discord => _discordMediator;
+
+  NotionMediator get notion => _notionMediator;
 
   Future<List<Integration>> getUserIntegrations() async {
     List<Integration> integrations = [];
@@ -33,7 +40,7 @@ class IntegrationMediator with ChangeNotifier {
     }
   }
 
-  Future<List<AvailableIntegration>> getIntegrationNames() async {
+  Future<List<AvailableIntegration>> getIntegrations() async {
     List<AvailableIntegration> integrations = [];
     try {
       final res = await _integrationRepository.getIntegrationNames();
@@ -51,6 +58,7 @@ class IntegrationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
+      log('Error getting integrations: $e');
       // Display error message with a snackbar or dialog (something like that)
       return [];
     }
