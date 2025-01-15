@@ -30,6 +30,5 @@ public record CreateAutomationActionRequest(
 public record CreateAutomationActionParameterRequest(
     string Identifier,
     string Value,
-    AutomationActionParameterType Type,
-    Guid[] Providers
+    AutomationActionParameterType Type
 );
