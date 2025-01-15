@@ -19,6 +19,8 @@ import {
   LinkFunction,
 } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 import { NotionMediator } from '@mediators/integrations';
+import { IntegrationTypeEnum } from '@models/integration';
+import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -30,6 +32,7 @@ import { NotionMediator } from '@mediators/integrations';
     TrInputDirective,
     NgOptimizedImage,
     NgStyle,
+    OpenaiLinkFormComponent,
   ],
   templateUrl: './integration-add-dialog.component.html',
   styles: [],
@@ -141,4 +144,10 @@ export class IntegrationAddDialogComponent {
     const fn = this.linkFn();
     if (fn) fn();
   }
+
+  forceWhite(integration: IntegrationAvailableProps): boolean {
+    return integration.name === IntegrationTypeEnum.OPENAI;
+  }
+
+  protected readonly IntegrationTypeEnum = IntegrationTypeEnum;
 }

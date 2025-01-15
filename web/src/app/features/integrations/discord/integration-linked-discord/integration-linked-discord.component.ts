@@ -24,8 +24,8 @@ export class IntegrationLinkedDiscordComponent {
   readonly #dialogService = inject(TrDialogService);
 
   integration = input.required<IntegrationModel>();
-  iconUri = input.required<string>();
-  color = input.required<string>();
+  iconUri = input.required<string | null>();
+  color = input.required<string | null>();
 
   discordProps = signal<IntegrationDiscordProps | null>(null);
 

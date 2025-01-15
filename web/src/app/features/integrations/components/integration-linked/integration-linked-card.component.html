@@ -12,5 +12,11 @@
         [iconUri]="iconUri()"
         [color]="color()" />
     }
+    @case (IntegrationTypeEnum.OPENAI) {
+      <tr-integration-linked-openai
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
+    }
   }
 </div>

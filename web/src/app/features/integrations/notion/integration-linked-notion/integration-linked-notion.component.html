@@ -12,7 +12,7 @@
       class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center"
       [ngStyle]="{ 'background-color': color() }">
       <img
-        [ngSrc]="iconUri()"
+        [ngSrc]="iconUri() || ''"
         alt="Notion Logo"
         class="rounded-full"
         [width]="12"

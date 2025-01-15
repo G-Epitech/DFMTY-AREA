@@ -26,6 +26,7 @@
               [iconUri]="integration.iconUri"
               [name]="integration.name"
               [color]="integration.color"
+              [forceWhite]="forceWhite(integration)"
               class="w-full cursor-pointer transition-transform hover:scale-[1.02]"
               (click)="selectIntegration(integration)" />
           } @empty {
@@ -48,7 +49,12 @@
                 alt="Integration Logo"
                 width="35"
                 height="35"
-                class="object-contain" />
+                class="object-contain"
+                [style.filter]="
+                  forceWhite(selectedIntegration()!)
+                    ? 'brightness(0) invert(1)'
+                    : 'none'
+                " />
             </div>
             <h1 class="tr-title-3">
               {{ selectedIntegration()?.name }} Integration
@@ -73,6 +79,8 @@
                 <li class="flex items-center">
                   <span>- {{ trigger }}</span>
                 </li>
+              } @empty {
+                <span>No triggers available for this integration.</span>
               }
             </ul>
           </section>
@@ -84,6 +92,8 @@
                 <li class="flex items-center">
                   <span>- {{ action }}</span>
                 </li>
+              } @empty {
+                <span>No actions available for this integration.</span>
               }
             </ul>
           </section>
@@ -94,6 +104,9 @@
             <button trBtn class="w-full" (click)="linkIntegration()">
               Link Integration
             </button>
+          }
+          @if (selectedIntegration()?.name === IntegrationTypeEnum.OPENAI) {
+            <tr-openai-link-form />
           }
         </div>
       </div>

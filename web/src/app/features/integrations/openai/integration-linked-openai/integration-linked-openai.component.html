@@ -1,0 +1,21 @@
+<div class="flex flex-row items-center">
+  @if (openaiProps()) {
+    <div
+      class="h-[47px] w-[47px] rounded-full flex flex-col items-center justify-center"
+      [ngStyle]="{ 'background-color': color() }">
+      <img
+        [ngSrc]="iconUri() || ''"
+        alt="OpenAI Logo"
+        class="rounded-full"
+        [width]="30"
+        [height]="30"
+        style="filter: brightness(0) invert(1)" />
+    </div>
+  }
+  <div class="flex flex-col ml-4 mr-auto">
+    <h1 class="tr-large">
+      {{ openaiProps()?.ownerName }}
+    </h1>
+    <span class="text-gray-500 text-sm">{{ openaiProps()?.ownerEmail }}</span>
+  </div>
+</div>

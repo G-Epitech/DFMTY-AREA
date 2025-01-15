@@ -13,4 +13,5 @@ export class IntegrationAvailableCardComponent {
   iconUri = input.required<string>();
   name = input.required<string>();
   color = input.required<string>();
+  forceWhite = input.required<boolean>();
 }
