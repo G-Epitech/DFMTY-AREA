@@ -12,54 +12,51 @@ public class NotionResponsesMappingConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<GetNotionDatabaseResponse, NotionDatabase>()
-            .Map(dest => dest.Id, src => new NotionDatabaseId(src.Id))
-            .Map(dest => dest.Title, src => GetNotionTextString(src.Title, "No title"))
-            .Map(dest => dest.Description,
-                src => GetNotionTextString(src.Description, "No description"))
-            .Map(dest => dest.Icon, src => GetNotionIconString(src.Icon))
-            .Map(dest => dest.CreatedAt, src => DateTime.Parse(src.CreatedTime))
-            .Map(dest => dest.CreatedBy, src => new NotionUserId(src.CreatedBy.Id))
-            .Map(dest => dest.LastEditedAt, src => DateTime.Parse(src.LastEditedTime))
-            .Map(dest => dest.LastEditedBy, src => new NotionUserId(src.LastEditedBy.Id))
-            .Map(dest => dest.IsInline, src => src.IsInline)
-            .Map(dest => dest.Parent, src => GetNotionParent(src.Parent))
-            .Map(dest => dest.Uri, src => new Uri(src.Url))
-            .Map(dest => dest.Archived, src => src.Archived)
-            .Map(dest => dest.InTrash, src => src.InTrash);
+            .MapWith(dest => new NotionDatabase(
+                new NotionDatabaseId(dest.Id),
+                GetNotionIconString(dest.Icon),
+                DateTime.Parse(dest.CreatedTime),
+                new NotionUserId(dest.CreatedBy.Id),
+                DateTime.Parse(dest.LastEditedTime),
+                new NotionUserId(dest.LastEditedBy.Id),
+                GetNotionTextString(dest.Title, "No title"),
+                dest.IsInline,
+                GetNotionParent(dest.Parent),
+                new Uri(dest.Url),
+                dest.Archived,
+                GetNotionTextString(dest.Description, "No description"),
+                dest.InTrash));
 
         config.NewConfig<GetNotionPageResponse, NotionPage>()
-            .Map(dest => dest.Id, src => new NotionDatabaseId(src.Id))
-            .Map(dest => dest.Title, src => ExtractTitleFromPageProperties(src.Properties))
-            .Map(dest => dest.Icon, src => GetNotionIconString(src.Icon))
-            .Map(dest => dest.CreatedAt, src => DateTime.Parse(src.CreatedTime))
-            .Map(dest => dest.CreatedBy, src => new NotionUserId(src.CreatedBy.Id))
-            .Map(dest => dest.LastEditedAt, src => DateTime.Parse(src.LastEditedTime))
-            .Map(dest => dest.LastEditedBy, src => new NotionUserId(src.LastEditedBy.Id))
-            .Map(dest => dest.Parent, src => GetNotionParent(src.Parent))
-            .Map(dest => dest.Uri, src => new Uri(src.Url))
-            .Map(dest => dest.Archived, src => src.Archived)
-            .Map(dest => dest.InTrash, src => src.InTrash);
+            .MapWith(src => new NotionPage(
+                new NotionPageId(src.Id),
+                GetNotionIconString(src.Icon),
+                DateTime.Parse(src.CreatedTime),
+                new NotionUserId(src.CreatedBy.Id),
+                DateTime.Parse(src.LastEditedTime),
+                new NotionUserId(src.LastEditedBy.Id),
+                ExtractTitleFromPageProperties(src.Properties),
+                null,
+                GetNotionParent(src.Parent),
+                new Uri(src.Url),
+                src.Archived,
+                src.InTrash));
     }
 
-    private string ExtractTitleFromPageProperties(Dictionary<string, NotionPropertyContract> properties)
+    private static string ExtractTitleFromPageProperties(Dictionary<string, NotionPropertyContract> properties)
     {
         var title = properties.Where(prop => prop.Value.Type == "title")
             .Select(prop => prop.Value.Title).FirstOrDefault();
 
-        if (title is null)
-        {
-            return "No title";
-        }
-
-        return GetNotionTextString(title, "No title");
+        return title is null ? "No title" : GetNotionTextString(title, "No title");
     }
 
-    private string GetNotionTextString(List<NotionTextContract> text, string defaultValue)
+    private static string GetNotionTextString(List<NotionTextContract> text, string defaultValue)
     {
         return text.FirstOrDefault()?.Text.Content ?? defaultValue;
     }
 
-    private string? GetNotionIconString(NotionIconContract? iconContract)
+    private static string? GetNotionIconString(NotionIconContract? iconContract)
     {
         if (iconContract is null)
         {
@@ -74,7 +71,7 @@ public class NotionResponsesMappingConfig : IRegister
         };
     }
 
-    private NotionParent GetNotionParent(NotionParentContract parent)
+    private static NotionParent GetNotionParent(NotionParentContract parent)
     {
         return parent.Type switch
         {
