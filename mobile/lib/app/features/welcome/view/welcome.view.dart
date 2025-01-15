@@ -102,6 +102,7 @@ class WelcomeViewState extends State<WelcomeView> {
                         final bool? connected =
                             await authMediator.authenticateWithGoogle();
                         if (context.mounted && connected != null && connected) {
+                          currentRouteNotifier.value = RoutesNames.home;
                           Navigator.pushNamedAndRemoveUntil(
                               context, RoutesNames.home, (route) => false);
                         } else if (context.mounted) {
