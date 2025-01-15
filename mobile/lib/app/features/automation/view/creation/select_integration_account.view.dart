@@ -5,10 +5,14 @@ import 'package:triggo/app/features/integration/bloc/integrations_bloc.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/widgets/integrations/notion.integrations.widget.dart';
+import 'package:triggo/app/features/integration/widgets/integrations/open_ai.integrations.widget.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/notion.integration.model.dart';
+import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
 class AutomationCreationSelectIntegrationsAccountView extends StatefulWidget {
   final AutomationChoiceEnum type;
@@ -36,7 +40,8 @@ class _AutomationCreationSelectIntegrationsAccountViewState
     return BlocProvider(
       create: (context) => IntegrationsBloc(
         integrationMediator,
-      )..add(LoadIntegrations()),
+      )..add(LoadIntegrations(
+          integrationIdentifier: widget.integrationIdentifier)),
       child: BaseScaffold(
         title: 'Integrations',
         getBack: true,
@@ -165,6 +170,20 @@ class _IntegrationListItem extends StatelessWidget {
       case IntegrationNames.discord:
         return DiscordIntegrationListItemWidget(
           integration: integration as DiscordIntegration,
+          type: type,
+          integrationIdentifier: integrationIdentifier,
+          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        );
+      case IntegrationNames.notion:
+        return NotionIntegrationListItemWidget(
+          integration: integration as NotionIntegration,
+          type: type,
+          integrationIdentifier: integrationIdentifier,
+          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        );
+      case IntegrationNames.openAI:
+        return OpenAIIntegrationListItemWidget(
+          integration: integration as OpenAIIntegration,
           type: type,
           integrationIdentifier: integrationIdentifier,
           indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,

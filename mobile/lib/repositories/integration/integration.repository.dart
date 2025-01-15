@@ -24,10 +24,11 @@ class IntegrationRepository {
         );
 
   get discord => discordRepository;
+
   get google => googleRepository;
 
   Future<Response<OutGetUserIntegrationDTO>> getUserIntegrations(
-      {int page = 0, int size = 10}) async {
+      {int page = 0, int size = 20}) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final response = await call(
       method: 'GET',

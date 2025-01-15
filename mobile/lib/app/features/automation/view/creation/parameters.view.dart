@@ -261,6 +261,13 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (properties.isEmpty) {
+      return Center(
+        child: Text('No need for parameters',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelLarge),
+      );
+    }
     return ListView.separated(
       itemCount: properties.length,
       itemBuilder: (context, index) {

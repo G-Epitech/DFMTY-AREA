@@ -107,7 +107,7 @@ class DiscordCustomWidget extends StatelessWidget {
                   integration.displayName,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         height: 1.1,
-                        fontSize: 25,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
                       ),
                   overflow: TextOverflow.ellipsis,
