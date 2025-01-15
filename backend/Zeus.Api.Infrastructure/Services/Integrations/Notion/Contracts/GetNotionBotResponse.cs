@@ -21,7 +21,7 @@ public record GetNotionBotOwnerUserResponse(
     string Object,
     string Id,
     string Name,
-    string AvatarUrl,
+    string? AvatarUrl,
     string Type,
     GetNotionBotOwnerUserPersonResponse Person);
 
