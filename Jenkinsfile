@@ -86,34 +86,34 @@ podTemplate(containers: [
             container('docker') {
                 def WEB_IMAGE_TEST = "web-test:${env.BUILD_TAG}"
                 sh "docker build -f ${WEB_PATH}/Dockerfile -t ${WEB_IMAGE_TEST} ${WEB_PATH}"
-                sh "docker stop angular-container:${env.BUILD_TAG} || true"
-                sh "docker rm angular-container:${env.BUILD_TAG} || true"
-                sh "docker run -d --name angular-container:${env.BUILD_TAG} ${WEB_IMAGE_TEST} sleep infinity"
+                sh "docker stop angular-container_${env.BUILD_TAG} || true"
+                sh "docker rm angular-container_${env.BUILD_TAG} || true"
+                sh "docker run -d --name angular-container_${env.BUILD_TAG} ${WEB_IMAGE_TEST} sleep infinity"
             }
         }
 
         stage('Web Build') {
             container('docker') {
-                shInContainer("angular-container:${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run build --configuration=test')
+                shInContainer("angular-container_${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run build --configuration=test')
             }
         }
 
         stage('Web Lint') {
             container('docker') {
-                shInContainer("angular-container:${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run lint')
+                shInContainer("angular-container_${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run lint')
             }
         }
 
         stage('Web Format') {
             container('docker') {
-                shInContainer("angular-container:${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run format:check')
+                shInContainer("angular-container_${env.BUILD_TAG}", "web-test:${env.BUILD_TAG}", 'npm run format:check')
             }
         }
 
         stage('Web Cleanup') {
             container('docker') {
-                sh "docker stop angular-container:${env.BUILD_TAG}"
-                sh "docker rm angular-container:${env.BUILD_TAG}"
+                sh "docker stop angular-container_${env.BUILD_TAG}"
+                sh "docker rm angular-container_${env.BUILD_TAG}"
                 sh "docker rmi web-test:${env.BUILD_TAG}"
             }
         }
