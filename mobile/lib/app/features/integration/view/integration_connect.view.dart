@@ -28,10 +28,16 @@ class _IntegrationAvailableViewState extends State<IntegrationAvailableView> {
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
-    final Future<List<AvailableIntegration>> integrationsNames =
-        widget.integrationsNames != null
-            ? Future.value(widget.integrationsNames)
-            : integrationMediator.getIntegrations();
+    late Future<List<AvailableIntegration>> integrationsNames;
+    try {
+      integrationsNames = widget.integrationsNames != null
+          ? Future.value(widget.integrationsNames)
+          : integrationMediator.getIntegrations();
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('No integrations found')));
+    }
     return BaseScaffold(
       title:
           widget.type != null ? 'Select an Integration' : 'Connect Integration',

@@ -318,13 +318,23 @@ class _List extends StatelessWidget {
                           final integrationMediator =
                               RepositoryProvider.of<IntegrationMediator>(
                                   context);
-                          final options = await getOptionsFromMediator(
-                              state.dirtyAutomation,
-                              type,
-                              integrationIdentifier,
-                              triggerOrActionIdentifier,
-                              parameterIdentifier,
-                              integrationMediator);
+                          late List<AutomationRadioModel> options;
+                          try {
+                            options = await getOptionsFromMediator(
+                                state.dirtyAutomation,
+                                type,
+                                integrationIdentifier,
+                                triggerOrActionIdentifier,
+                                parameterIdentifier,
+                                integrationMediator);
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                ..removeCurrentSnackBar()
+                                ..showSnackBar(SnackBar(
+                                    content: Text('Error getting options')));
+                            }
+                          }
                           return options;
                         },
                         onSave: (value, humanReadableValue) {
@@ -707,8 +717,12 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           if (parameterIdentifier == 'GuildId') {
             final integrationId = automation.trigger.providers[0];
 
-            return await integrationMediator.discord
-                .getGuildsRadio(integrationId);
+            try {
+              return await integrationMediator.discord
+                  .getGuildsRadio(integrationId);
+            } catch (e) {
+              rethrow;
+            }
           }
           if (parameterIdentifier == 'ChannelId') {
             if (automation.trigger.parameters.isEmpty) {
@@ -728,8 +742,12 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           if (parameterIdentifier == 'DatabaseId') {
             final integrationId = automation.trigger.providers[0];
 
-            return await integrationMediator.notion
-                .getDatabasesRadio(integrationId);
+            try {
+              return await integrationMediator.notion
+                  .getDatabasesRadio(integrationId);
+            } catch (e) {
+              rethrow;
+            }
           }
         }
       }
@@ -741,8 +759,12 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
             final integrationId = automation.trigger.providers[0];
             final guildId = automation.trigger.parameters[0].value;
 
-            return await integrationMediator.discord
-                .getChannelsRadio(integrationId, guildId);
+            try {
+              return await integrationMediator.discord
+                  .getChannelsRadio(integrationId, guildId);
+            } catch (e) {
+              rethrow;
+            }
           }
         }
       }

@@ -21,8 +21,14 @@ class _ProfileViewState extends State<ProfileView> {
         RepositoryProvider.of<UserMediator>(context);
     final AuthenticationMediator authenticationMediator =
         RepositoryProvider.of<AuthenticationMediator>(context);
-    final Future<User> user = userMediator.getUser();
-
+    late Future<User> user;
+    try {
+      user = userMediator.getUser();
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('No user data found')));
+    }
     return BaseScaffold(
       title: 'Profile',
       body: Column(
@@ -43,7 +49,14 @@ class _ProfileViewState extends State<ProfileView> {
                   child: TriggoButton(
                     text: "Logout",
                     onPressed: () {
-                      authenticationMediator.logout();
+                      try {
+                        authenticationMediator.logout();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context)
+                          ..removeCurrentSnackBar()
+                          ..showSnackBar(
+                              SnackBar(content: Text('Could not logout')));
+                      }
                       Navigator.pushNamedAndRemoveUntil(
                           context, RoutesNames.welcome, (route) => false);
                     },
