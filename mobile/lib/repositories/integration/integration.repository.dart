@@ -120,8 +120,8 @@ class IntegrationRepository {
         },
         {
           "name": "LeagueOfLegends",
-          "iconUri": 'assets/icons/riot.svg',
-          "color": "#d53235",
+          "iconUri": 'assets/icons/league_of_legends.svg',
+          "color": "#c89b3c",
           "url": "leagueOfLegends"
         }
       ]
