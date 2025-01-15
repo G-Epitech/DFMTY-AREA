@@ -8,6 +8,26 @@ export class AutomationSchemaModel {
     this.automationServices = services;
   }
 
+  static searchAvailableIntegrations(
+    availableIntegrations: AvailableIntegrationType[],
+    query: string
+  ): AvailableIntegrationType[] {
+    const searchTerm = query.toLowerCase();
+
+    if (!searchTerm) return availableIntegrations;
+
+    return availableIntegrations.filter(
+      integration =>
+        integration.name.toLowerCase().includes(searchTerm) ||
+        integration.triggers.some(trigger =>
+          trigger.toLowerCase().includes(searchTerm)
+        ) ||
+        integration.actions.some(action =>
+          action.toLowerCase().includes(searchTerm)
+        )
+    );
+  }
+
   getAvailableIntegration(): AvailableIntegrationType[] {
     return Object.entries(this.automationServices).map(
       ([name, integration]) => ({

@@ -19,6 +19,7 @@ import { NotionMediator } from '@mediators/integrations';
 import { IntegrationTypeEnum } from '@models/integration';
 import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
 import { AvailableIntegrationType } from '@common/types';
+import { AutomationSchemaModel } from '@models/automation';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -82,20 +83,9 @@ export class IntegrationAddDialogComponent {
   });
 
   filteredIntegrations = computed(() => {
-    const searchTerm = this.#searchTerm().toLowerCase();
-    const integrations = this.availableIntegrations();
-
-    if (!searchTerm) return integrations;
-
-    return integrations.filter(
-      integration =>
-        integration.name.toLowerCase().includes(searchTerm) ||
-        integration.triggers.some(trigger =>
-          trigger.toLowerCase().includes(searchTerm)
-        ) ||
-        integration.actions.some(action =>
-          action.toLowerCase().includes(searchTerm)
-        )
+    return AutomationSchemaModel.searchAvailableIntegrations(
+      this.availableIntegrations(),
+      this.#searchTerm()
     );
   });
 
