@@ -23,7 +23,6 @@ import {
   imports: [
     NgIcon,
     NgStyle,
-    TriggerCardComponent,
     ActionCardComponent,
     TrButtonDirective,
     AddStepButtonComponent,

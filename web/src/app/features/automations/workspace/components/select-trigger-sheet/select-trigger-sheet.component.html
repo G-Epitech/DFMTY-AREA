@@ -2,22 +2,39 @@
   <button brnSheetTrigger class="w-full">
     <tr-trigger-card [trigger]="trigger()" />
   </button>
-  <tr-sheet-content *brnSheetContent="let ctx">
+  <tr-sheet-content *brnSheetContent="let ctx" class="flex flex-col h-full">
     <tr-sheet-header>
-      <h3 trSheetTitle>Choose a trigger</h3>
+      <h3 trSheetTitle>Edit Trigger</h3>
+      <span trSheetDescription>Edit the trigger for this automation</span>
     </tr-sheet-header>
-    <div class="py-4 grid gap-4">
-      <div class="items-center grid grid-cols-4 gap-4">
-        <label trLabel for="name" class="text-right">Name</label>
-        <input trInput id="name" value="Pedro Duarte" class="col-span-3" />
-      </div>
-      <div class="items-center grid grid-cols-4 gap-4">
-        <label trLabel for="username" class="text-right">Username</label>
-        <input trInput id="username" value="@peduarte" class="col-span-3" />
-      </div>
+    @switch (selectionStep()) {
+      @case (TriggerSelectionStep.MAIN) {
+        <div class="grid gap-4">
+          <div>
+            <span class="tr-large">Select Integration</span>
+            <button
+              trBtn
+              class="w-full text-left items-center justify-start gap-1"
+              variant="outline"
+              (click)="selectIntegration()">
+              <ng-icon name="heroBolt" size="1.1rem" />
+              No Integration Selected
+            </button>
+          </div>
+        </div>
+      }
+      @case (TriggerSelectionStep.INTEGRATION) {
+        <tr-integration-selection />
+      }
+    }
+    <div class="mt-auto flex flex-row justify-end">
+      @if (selectionStep() === TriggerSelectionStep.MAIN) {
+        <button trBtn type="submit" class="w-[50%]">Save</button>
+      } @else {
+        <button trBtn class="w-[50%]" variant="outline" (click)="back()">
+          Back
+        </button>
+      }
     </div>
-    <tr-sheet-footer>
-      <button trBtn type="submit">Save</button>
-    </tr-sheet-footer>
   </tr-sheet-content>
 </tr-sheet>
