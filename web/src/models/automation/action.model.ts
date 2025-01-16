@@ -1,11 +1,17 @@
-export class TriggerShortModel {
+export interface ActionParameter {
+  readonly type: string;
   readonly identifier: string;
-  readonly parameters: { identifier: string; value: string }[];
+  readonly value: string;
+}
+
+export class ActionModel {
+  readonly identifier: string;
+  readonly parameters: ActionParameter[];
   readonly dependencies: string[];
 
   constructor(
     identifier: string,
-    parameters: { identifier: string; value: string }[],
+    parameters: ActionParameter[],
     dependencies: string[]
   ) {
     this.identifier = identifier;

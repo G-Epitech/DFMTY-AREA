@@ -2,21 +2,21 @@ import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
 import {
-  ActionShortModel,
+  ActionModel,
   AutomationModel,
   AutomationSchemaDependency,
   AutomationSchemaDependencyRequired,
   AutomationSchemaModel,
   AutomationSchemaService,
   AutomationSchemaTrigger,
-  TriggerShortModel,
+  TriggerModel,
 } from '@models/automation';
 import {
   AutomationSchemaDTO,
-  TriggerDTO,
+  AutomationSchemaTriggerDTO,
+  AutomationSchemaActionDTO,
   ActionDTO,
-  ActionShortDTO,
-  DependencyDTO,
+  AutomationSchemaDependencyDTO,
 } from '@repositories/automations/dto';
 
 @Injectable({
@@ -41,7 +41,7 @@ export class AutomationsMediator {
           dto.updatedAt,
           '#EE883A',
           'chat-bubble-bottom-center-text',
-          new TriggerShortModel(
+          new TriggerModel(
             dto.trigger.identifier,
             dto.trigger.parameters,
             dto.trigger.dependencies
@@ -76,7 +76,7 @@ export class AutomationsMediator {
   }
 
   _mapSchemaServiceTriggers(
-    dtoTriggers: Record<string, TriggerDTO>
+    dtoTriggers: Record<string, AutomationSchemaTriggerDTO>
   ): Record<string, AutomationSchemaTrigger> {
     const schemaTriggers: Record<string, AutomationSchemaTrigger> = {};
 
@@ -94,7 +94,7 @@ export class AutomationsMediator {
   }
 
   _mapSchemaServiceActions(
-    dtoActions: Record<string, ActionDTO>
+    dtoActions: Record<string, AutomationSchemaActionDTO>
   ): Record<string, AutomationSchemaTrigger> {
     const schemaActions: Record<string, AutomationSchemaTrigger> = {};
 
@@ -111,10 +111,10 @@ export class AutomationsMediator {
     return schemaActions;
   }
 
-  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
+  _mapActions(actions: ActionDTO[]): ActionModel[] {
     return actions.map(
       action =>
-        new ActionShortModel(
+        new ActionModel(
           action.identifier,
           action.parameters,
           action.dependencies
@@ -123,7 +123,7 @@ export class AutomationsMediator {
   }
 
   _mapSchemaDependencies(
-    dependencies: Record<string, DependencyDTO>
+    dependencies: Record<string, AutomationSchemaDependencyDTO>
   ): Record<string, AutomationSchemaDependency> {
     const schemaDependencies: Record<string, AutomationSchemaDependency> = {};
 

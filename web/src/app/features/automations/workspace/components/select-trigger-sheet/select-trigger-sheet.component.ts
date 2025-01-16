@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed, effect,
+  computed,
+  effect,
   inject,
   input,
-  OnInit,
 } from '@angular/core';
 import { TrSheetImports } from '@triggo-ui/sheet';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -13,7 +13,7 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
 import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
-  TriggerShortModel,
+  TriggerModel,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
@@ -58,7 +58,7 @@ export class SelectTriggerSheetComponent {
   protected readonly TriggerSelectionStep = TriggerSelectionStep;
   protected readonly state = this.service.state;
 
-  trigger = input.required<TriggerShortModel | null>();
+  trigger = input.required<TriggerModel | null>();
 
   title = computed(() => {
     const step = this.service.state().selectionStep;
@@ -92,7 +92,6 @@ export class SelectTriggerSheetComponent {
     });
   }
 
-
   protected onIntegrationSelected(integration: AvailableIntegrationType): void {
     this.service.selectIntegration(integration);
   }
@@ -104,7 +103,7 @@ export class SelectTriggerSheetComponent {
   }
 
   protected onTriggerSelected(trigger: AutomationSchemaTrigger): void {
-    this.service.selectTrigger(trigger);
+    this.service.selectTrigger(trigger, this.schema);
   }
 
   protected onBack(): void {

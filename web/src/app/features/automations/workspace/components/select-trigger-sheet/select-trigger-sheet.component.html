@@ -55,6 +55,15 @@
               [trigger]="state().selectedTrigger!"
               (click)="service.goToTriggerSelection()" />
           }
+          <div class="flex flex-row gap-3 items-center">
+            <span class="tr-large">Parameters</span>
+            @if (state().selectedTrigger) {
+              <button trBtn size="sm">Edit</button>
+            }
+          </div>
+          @if (!state().selectedTrigger) {
+            <span class="text-muted text-center">No trigger selected</span>
+          }
         }
         @case (TriggerSelectionStep.INTEGRATION) {
           <tr-integration-selection

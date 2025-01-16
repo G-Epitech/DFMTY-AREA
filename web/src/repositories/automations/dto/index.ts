@@ -1,4 +1,4 @@
 export * from './automation.dto';
-export * from './action-short.dto';
-export * from './trigger-short.dto';
+export * from './action.dto';
+export * from './trigger.dto';
 export * from './automation-schema.dto';

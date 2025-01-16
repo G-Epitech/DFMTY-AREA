@@ -158,4 +158,17 @@ export class AutomationSchemaModel {
     }
     return null;
   }
+
+  getTriggerIdentifier(integrationName: string, triggerName: string) {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [key, trigger] of Object.entries(value.triggers)) {
+          if (trigger.name === triggerName) {
+            return key;
+          }
+        }
+      }
+    }
+    return null;
+  }
 }

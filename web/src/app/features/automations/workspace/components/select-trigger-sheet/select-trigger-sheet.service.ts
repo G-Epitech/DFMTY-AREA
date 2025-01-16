@@ -14,7 +14,7 @@ import { IntegrationModel } from '@models/integration';
 import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
-  TriggerShortModel,
+  TriggerModel,
 } from '@models/automation';
 import { Subject, takeUntil } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
@@ -30,6 +30,7 @@ export class SelectTriggerSheetService implements OnDestroy {
     selectedIntegration: null,
     selectedLinkedIntegration: null,
     selectedTrigger: null,
+    trigger: null,
   });
 
   ngOnDestroy() {
@@ -38,7 +39,7 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   initialize(
-    automationTrigger: TriggerShortModel | null,
+    automationTrigger: TriggerModel | null,
     schema: AutomationSchemaModel
   ) {
     if (!automationTrigger) {
@@ -111,9 +112,32 @@ export class SelectTriggerSheetService implements OnDestroy {
     this.back();
   }
 
-  selectTrigger(trigger: AutomationSchemaTrigger) {
+  selectTrigger(
+    trigger: AutomationSchemaTrigger,
+    schema: AutomationSchemaModel | null
+  ) {
     patchState(this.state, stateUpdaterSelectTrigger(trigger));
     this.back();
+    if (!schema) {
+      return;
+    }
+    const currentIntegration = this.state().selectedIntegration!.name;
+    const triggerIdentifer = schema.getTriggerIdentifier(
+      currentIntegration,
+      trigger.name
+    );
+    if (triggerIdentifer) {
+      const dependency = this.state().selectedLinkedIntegration!.id;
+      const triggerShort = new TriggerModel(
+        triggerIdentifer,
+        [],
+        dependency ? [dependency] : []
+      );
+      patchState(this.state, state => ({
+        ...state,
+        trigger: triggerShort,
+      }));
+    }
   }
 
   back() {
