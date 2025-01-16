@@ -1,6 +1,9 @@
-﻿namespace Zeus.Common.Domain.ProvidersSettings;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class ProviderSchema
+namespace Zeus.Common.Domain.ProvidersSettings;
+
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+public sealed class ProviderSchema
 {
     public ProviderSchema(
         string name,

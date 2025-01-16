@@ -7,11 +7,6 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 
 public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
 {
-    public IDiscordSettingsProvider Discord { get; }
-    public INotionSettingsProvider Notion { get; }
-    public IOpenAiSettingsProvider OpenAi { get; }
-    public IRiotSettingsProvider Riot { get; }
-
     public IntegrationsSettingsProvider(IOptions<IntegrationsSettings> settings)
     {
         Discord = new DiscordSettingsProvider(settings.Value.Discord);
@@ -19,4 +14,9 @@ public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
         OpenAi = new OpenAiSettingsProvider(settings.Value.OpenAi);
         Riot = new RiotSettingsProvider(settings.Value.Riot);
     }
+
+    public IDiscordSettingsProvider Discord { get; }
+    public INotionSettingsProvider Notion { get; }
+    public IOpenAiSettingsProvider OpenAi { get; }
+    public IRiotSettingsProvider Riot { get; }
 }

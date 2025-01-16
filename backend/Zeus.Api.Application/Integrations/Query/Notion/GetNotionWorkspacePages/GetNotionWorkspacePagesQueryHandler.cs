@@ -15,8 +15,8 @@ namespace Zeus.Api.Application.Integrations.Query.Notion.GetNotionWorkspacePages
 public class GetNotionWorkspacePagesQueryHandler : IRequestHandler<GetNotionWorkspacePagesQuery,
     ErrorOr<List<GetNotionWorkspacePageQueryResult>>>
 {
-    private readonly INotionService _notionService;
     private readonly IIntegrationReadRepository _integrationReadRepository;
+    private readonly INotionService _notionService;
 
     public GetNotionWorkspacePagesQueryHandler(INotionService notionService,
         IIntegrationReadRepository integrationReadRepository)

@@ -11,8 +11,8 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations.OpenAi;
 [Route("integrations/openai")]
 public class OpenAiCreationController : ApiController
 {
-    private readonly ISender _sender;
     private readonly IAuthUserContext _authUserContext;
+    private readonly ISender _sender;
 
     public OpenAiCreationController(ISender sender, IAuthUserContext authUserContext)
     {

@@ -1,5 +1,4 @@
-﻿using Zeus.Api.Presentation.gRPC.Contracts;
-using Zeus.Common.Domain.AutomationAggregate.Enums;
+﻿using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
@@ -12,9 +11,9 @@ using AutomationTrigger = Zeus.Common.Domain.AutomationAggregate.Entities.Automa
 using AutomationTriggerParameter = Zeus.Common.Domain.AutomationAggregate.ValueObjects.AutomationTriggerParameter;
 using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
 using IntegrationToken = Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationToken;
+using IntegrationTokenUsage = Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums.IntegrationTokenUsage;
 using IntegrationType = Zeus.Common.Domain.Integrations.Common.Enums.IntegrationType;
 using RegistrableAutomation = Zeus.Daemon.Domain.Automations.RegistrableAutomation;
-using IntegrationTokenUsage = Zeus.Common.Domain.Integrations.IntegrationAggregate.Enums.IntegrationTokenUsage;
 
 namespace Zeus.Daemon.Infrastructure.Mapping;
 
@@ -40,7 +39,7 @@ public static class SynchronizationMappers
                 DateTimeOffset.FromUnixTimeSeconds(registrable.Automation.CreatedAt).DateTime,
                 registrable.Automation.Enabled
             ),
-            TriggerIntegrations = registrable.TriggerIntegrations.Select(i => i.MapToIntegration()).ToList()
+            TriggerIntegrations = registrable.TriggerDependencies.Select(i => i.MapToIntegration()).ToList()
         };
     }
 
@@ -52,7 +51,7 @@ public static class SynchronizationMappers
             automationTriggerId,
             trigger.Identifier,
             trigger.Parameters.Select(MapToAutomationTriggerParameter).ToList(),
-            trigger.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
+            trigger.Dependencies.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );
     }
 
@@ -71,9 +70,11 @@ public static class SynchronizationMappers
             action.Rank,
             action.Parameters.Select(p => new AutomationActionParameter
             {
-                Identifier = p.Identifier, Value = p.Value, Type = Enum.Parse<AutomationActionParameterType>(p.Type)
+                Identifier = p.Identifier,
+                Value = p.Value,
+                Type = Enum.Parse<AutomationActionParameterType>(p.Type)
             }).ToList(),
-            action.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
+            action.Dependencies.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );
     }
 

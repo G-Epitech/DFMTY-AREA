@@ -46,6 +46,11 @@
             "Description": "The time when the message was received.",
             "Type": "datetime"
           }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "Multiple"
+          }
         }
       }
     },
@@ -71,6 +76,11 @@
             "Name": "Message id",
             "Description": "The ID of the sent message.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "Single"
           }
         }
       }
@@ -112,6 +122,11 @@
             "Description": "The ID of the parent page of the created database (page id).",
             "Type": "string"
           }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Multiple"
+          }
         }
       },
       "PageCreated": {
@@ -144,6 +159,11 @@
             "Name": "Parent id",
             "Description": "The ID of the parent database of the created page (database or  id).",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Multiple"
           }
         }
       },
@@ -189,6 +209,11 @@
             "Description": "The ID of the parent database of the created row (database id).",
             "Type": "string"
           }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Multiple"
+          }
         }
       },
       "DatabaseRowDeleted": {
@@ -233,6 +258,11 @@
             "Description": "The ID of the parent database of the deleted row (database id).",
             "Type": "string"
           }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Multiple"
+          }
         }
       }
     },
@@ -269,6 +299,11 @@
             "Description": "The ID of the created database.",
             "Type": "string"
           }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Single"
+          }
         }
       },
       "CreatePage": {
@@ -302,6 +337,11 @@
             "Name": "Page id",
             "Description": "The ID of the created page.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Single"
           }
         }
       },
@@ -342,6 +382,11 @@
             "Description": "The ID of the created row.",
             "Type": "string"
           }
+        },
+        "Dependencies": {
+          "Notion": {
+            "Require": "Single"
+          }
         }
       },
       "ArchiveDatabase": {
@@ -355,7 +400,12 @@
             "Type": "string"
           }
         },
-        "Facts": {}
+        "Facts": {},
+        "Dependencies": {
+          "Notion": {
+            "Require": "Single"
+          }
+        }
       },
       "ArchivePage": {
         "Name": "Archive page",
@@ -368,7 +418,12 @@
             "Type": "string"
           }
         },
-        "Facts": {}
+        "Facts": {},
+        "Dependencies": {
+          "Notion": {
+            "Require": "Single"
+          }
+        }
       }
     }
   },
@@ -404,6 +459,11 @@
             "Name": "Completion",
             "Description": "The generated completion.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "OpenAi": {
+            "Require": "Single"
           }
         }
       }

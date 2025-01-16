@@ -1,8 +1,11 @@
-﻿using Zeus.Common.Domain.Common.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Zeus.Common.Domain.Common.Enums;
 
 namespace Zeus.Common.Domain.ProvidersSettings;
 
-public class ParameterSchema
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+public sealed class ParameterSchema
 {
     public ParameterSchema(string name, string description, VariableType type)
     {

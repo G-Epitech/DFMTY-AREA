@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
@@ -9,7 +7,6 @@ using Zeus.Daemon.Domain.Discord.ValueObjects;
 
 namespace Zeus.Daemon.Application.Discord.ActionsHandlers;
 
-[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 public class DiscordSendMessageActionHandler
 {
     private readonly IDiscordApiService _discordApiService;
@@ -24,7 +21,7 @@ public class DiscordSendMessageActionHandler
         AutomationId automationId,
         [FromParameters] string channelId,
         [FromParameters] string content,
-        [FromIntegrations] DiscordIntegration? discordIntegration,
+        [FromIntegrations] NotionIntegration discordIntegration,
         CancellationToken cancellationToken
     )
     {

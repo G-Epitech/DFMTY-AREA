@@ -74,7 +74,7 @@ public class DiscordMessageReceivedTriggerHandler
 
             var received = new TriggerParameters { GuildId = messageCreate.GuildId, ChannelId = messageCreate.ChannelId };
 
-            await LaunchTargetedAutomations(received, facts, cancellationToken);
+            await LaunchTargetedAutomations(received, facts);
         }
         catch (Exception ex)
         {
@@ -92,7 +92,8 @@ public class DiscordMessageReceivedTriggerHandler
         return _triggers.Where(k => TriggerIsTargeted(targeted, k.Value)).Select(t => t.Key).ToList();
     }
 
-    private async Task LaunchTargetedAutomations(TriggerParameters targeted, FactsDictionary facts, CancellationToken cancellationToken)
+    private async Task LaunchTargetedAutomations(TriggerParameters targeted, FactsDictionary facts
+    )
     {
         var res = await _automationsLauncher.LaunchManyAsync(GetTargetedAutomations(targeted), facts);
 
@@ -107,7 +108,7 @@ public class DiscordMessageReceivedTriggerHandler
 
     private struct TriggerParameters
     {
-        public string GuildId { get; set; }
-        public string ChannelId { get; set; }
+        public string GuildId { get; init; }
+        public string ChannelId { get; init; }
     }
 }

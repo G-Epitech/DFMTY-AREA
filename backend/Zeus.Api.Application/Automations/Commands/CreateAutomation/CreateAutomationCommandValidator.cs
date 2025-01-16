@@ -25,7 +25,7 @@ public class CreateAutomationCommandValidator : AbstractValidator<CreateAutomati
                 p.RuleFor(x => x.Identifier).NotEmpty();
                 p.RuleFor(x => x.Value).NotEmpty();
             });
-            RuleForEach(x => x.Providers).ChildRules(g =>
+            RuleForEach(x => x.Dependencies).ChildRules(g =>
             {
                 g.RuleFor(x => x).NotEmpty();
             });
@@ -43,7 +43,7 @@ public class CreateAutomationCommandValidator : AbstractValidator<CreateAutomati
                 p.RuleFor(x => x.Value).NotEmpty();
                 p.RuleFor(x => x.Type).IsInEnum();
             });
-            RuleForEach(x => x.Providers).ChildRules(g =>
+            RuleForEach(x => x.Dependencies).ChildRules(g =>
             {
                 g.RuleFor(x => x).NotEmpty();
             });

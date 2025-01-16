@@ -22,7 +22,7 @@ public class AutomationCreatedEventMapper : IRegister
         config.NewConfig<AutomationAction, AutomationCreatedEventAction>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Parameters, src => src.Parameters)
-            .Map(dest => dest.Providers, src => src.Providers);
+            .Map(dest => dest.Providers, src => src.Dependencies);
 
         config.NewConfig<IntegrationId, Guid>()
             .Map(dest => dest, src => src.Value);
@@ -30,7 +30,7 @@ public class AutomationCreatedEventMapper : IRegister
         config.NewConfig<AutomationTrigger, AutomationCreatedEventTrigger>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Parameters, src => src.Parameters)
-            .Map(dest => dest.Providers, src => src.Providers);
+            .Map(dest => dest.Providers, src => src.Dependencies);
 
         config.NewConfig<AutomationCreatedEvent, Automation>()
             .MapWith(raw => new Automation(

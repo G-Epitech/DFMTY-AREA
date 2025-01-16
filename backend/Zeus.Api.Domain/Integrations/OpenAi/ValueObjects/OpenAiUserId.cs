@@ -4,12 +4,12 @@ namespace Zeus.Api.Domain.Integrations.OpenAi.ValueObjects;
 
 public class OpenAiUserId : ValueObject
 {
-    public string Value { get; }
-
     public OpenAiUserId(string value)
     {
         Value = value;
     }
+
+    public string Value { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

@@ -4,11 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Zeus.Common.Domain.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.ProvidersSettings;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
+using Zeus.Daemon.Application.Utils;
 
 namespace Zeus.Daemon.Application.Services.HandlerProviders;
 
@@ -112,6 +114,10 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
             {
                 CheckOnRegisterMethodTypedParameter(parameter, triggerFullIdentifier, triggerSchema);
             }
+            else if (parameter.HasAttribute<FromIntegrationsAttribute>())
+            {
+                CheckOnRegisterMethodIntegrationsParameter(parameter, triggerFullIdentifier, triggerSchema);
+            }
         }
     }
 
@@ -140,6 +146,23 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
         {
             throw new InvalidOperationException($"Parameter '{parameter.Name}' is not assignable to type '{parameterSchema.Type}'");
         }
+    }
+
+    private static void CheckOnRegisterMethodIntegrationsParameter(ParameterInfo parameter, string triggerFullIdentifier, TriggerSchema schema)
+    {
+        var infos = parameter.GetFromIntegrationsParameterInfo();
+        var allowedTypes = schema.Dependencies.Keys.ToList();
+        var reflectedType = Integration.GetTypeFromImplementation(infos.Type);
+        var matchingType = reflectedType is not null
+            ? (allowedTypes.Contains(reflectedType.Value) ? reflectedType : null)
+            : null;
+
+        if (matchingType is null)
+        {
+            throw new InvalidOperationException(
+                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' trigger '{triggerFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Dependencies)}");
+        }
+        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "trigger", triggerFullIdentifier, matchingType.Value, schema.Dependencies);
     }
 
     private static MethodInfo GetOnRemoveMethod(Type hostingClass, string triggerFullIdentifier)

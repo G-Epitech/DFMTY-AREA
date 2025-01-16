@@ -76,11 +76,11 @@ public sealed class AutomationsRunner : IAutomationsRunner
     private static Dictionary<IntegrationId, Integration> GetAutomationIntegrations(Automation automation, IReadOnlyCollection<Integration> integrations)
     {
         var automationIntegrations = new Dictionary<IntegrationId, Integration>();
-        var providers = automation.Providers;
+        var dependencies = automation.Dependencies;
 
         foreach (var integration in integrations)
         {
-            if (providers.Contains(integration.Id))
+            if (dependencies.Contains(integration.Id))
             {
                 automationIntegrations[integration.Id] = integration;
             }

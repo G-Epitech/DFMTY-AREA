@@ -22,8 +22,7 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
             .HasMaxLength(Automation.LabelMaxLength)
             .IsRequired();
         builder.Property(x => x.Description)
-            .HasMaxLength(Automation.DescriptionMaxLength);
-        builder.Ignore(x => x.Providers);
+            .HasMaxLength(Automation.DescriptionMaxLength); builder.Ignore(x => x.Dependencies);
         builder.Property(x => x.Enabled);
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedNever()
@@ -84,18 +83,18 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
 
     private static void ConfigureAutomationActionProvidersTable(OwnedNavigationBuilder<Automation, AutomationAction> actions)
     {
-        actions.OwnsMany(x => x.Providers, provider =>
+        actions.OwnsMany(x => x.Dependencies, provider =>
         {
-            provider.ToTable("AutomationActionProviders");
+            provider.ToTable("AutomationActionDependencies");
             provider.WithOwner().HasForeignKey("ActionId");
 
             provider.Property(x => x.Value)
-                .HasColumnName("ProviderId")
+                .HasColumnName("DependencyId")
                 .IsRequired();
             provider.HasKey("ActionId", "Value");
         });
-        actions.Navigation(x => x.Providers).Metadata.SetField("_providers");
-        actions.Navigation(x => x.Providers).UsePropertyAccessMode(PropertyAccessMode.Field);
+        actions.Navigation(x => x.Dependencies).Metadata.SetField("_dependencies");
+        actions.Navigation(x => x.Dependencies).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
     private static void ConfigureAutomationTriggersTable(EntityTypeBuilder<Automation> builder)
@@ -119,19 +118,19 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
 
     private static void ConfigureAutomationTriggerProvidersTable(OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
     {
-        trigger.OwnsMany(x => x.Providers, provider =>
+        trigger.OwnsMany(x => x.Dependencies, provider =>
         {
-            provider.ToTable("AutomationTriggerProviders");
+            provider.ToTable("AutomationTriggerDependencies");
             provider.WithOwner().HasForeignKey("TriggerId");
             provider.HasKey("TriggerId");
 
             provider.Property(x => x.Value)
-                .HasColumnName("ProviderId")
+                .HasColumnName("DependencyId")
                 .IsRequired();
             provider.HasKey("TriggerId", "Value");
         });
-        trigger.Navigation(x => x.Providers).Metadata.SetField("_providers");
-        trigger.Navigation(x => x.Providers).UsePropertyAccessMode(PropertyAccessMode.Field);
+        trigger.Navigation(x => x.Dependencies).Metadata.SetField("_dependencies");
+        trigger.Navigation(x => x.Dependencies).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
     private static void ConfigureAutomationTriggerParametersTable(OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)

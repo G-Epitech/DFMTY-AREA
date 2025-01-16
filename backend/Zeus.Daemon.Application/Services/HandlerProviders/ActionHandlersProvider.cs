@@ -4,11 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Zeus.Common.Domain.Common.Enums;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Domain.ProvidersSettings;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
+using Zeus.Daemon.Application.Utils;
 using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services.HandlerProviders;
@@ -139,7 +141,28 @@ public class ActionHandlersProvider : IActionHandlersProvider
             {
                 CheckTypedParameter(parameter, actionFullIdentifier, actionSchema);
             }
+            else if (parameter.HasAttribute<FromIntegrationsAttribute>())
+            {
+                CheckIntegrationParameter(parameter, actionFullIdentifier, actionSchema);
+            }
         }
+    }
+
+    private static void CheckIntegrationParameter(ParameterInfo parameter, string actionFullIdentifier, ActionSchema schema)
+    {
+        var infos = parameter.GetFromIntegrationsParameterInfo();
+        var allowedTypes = schema.Dependencies.Keys.ToList();
+        var reflectedType = Integration.GetTypeFromImplementation(infos.Type);
+        var matchingType = reflectedType is not null
+            ? (allowedTypes.Contains(reflectedType.Value) ? reflectedType : null)
+            : null;
+
+        if (matchingType is null)
+        {
+            throw new InvalidOperationException(
+                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' action '{actionFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Dependencies)}");
+        }
+        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "action", actionFullIdentifier, matchingType.Value, schema.Dependencies);
     }
 
     private static void CheckTypedParameter(ParameterInfo parameter, string actionFullIdentifier, ActionSchema actionSchema)
