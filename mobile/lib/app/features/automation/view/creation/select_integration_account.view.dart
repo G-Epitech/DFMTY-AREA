@@ -14,12 +14,12 @@ import 'package:triggo/models/integrations/discord.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
-class AutomationCreationSelectIntegrationsAccountView extends StatefulWidget {
+class AutomationSelectIntegrationsAccountView extends StatefulWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
 
-  const AutomationCreationSelectIntegrationsAccountView({
+  const AutomationSelectIntegrationsAccountView({
     super.key,
     required this.type,
     required this.integrationIdentifier,
@@ -27,12 +27,12 @@ class AutomationCreationSelectIntegrationsAccountView extends StatefulWidget {
   });
 
   @override
-  State<AutomationCreationSelectIntegrationsAccountView> createState() =>
-      _AutomationCreationSelectIntegrationsAccountViewState();
+  State<AutomationSelectIntegrationsAccountView> createState() =>
+      _AutomationSelectIntegrationsAccountViewState();
 }
 
-class _AutomationCreationSelectIntegrationsAccountViewState
-    extends State<AutomationCreationSelectIntegrationsAccountView> {
+class _AutomationSelectIntegrationsAccountViewState
+    extends State<AutomationSelectIntegrationsAccountView> {
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =

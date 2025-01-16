@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/view/creation/input.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
-class AutomationCreationSettingsView extends StatelessWidget {
-  const AutomationCreationSettingsView({super.key});
+class AutomationSettingsView extends StatelessWidget {
+  const AutomationSettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+    return BlocBuilder<AutomationBloc, AutomationState>(
       builder: (context, state) {
         return BaseScaffold(
           title: 'Settings',
@@ -27,14 +27,14 @@ class AutomationCreationSettingsView extends StatelessWidget {
                   previewData: state.cleanedAutomation.label.isNotEmpty
                       ? state.cleanedAutomation.label
                       : null,
-                  input: AutomationCreationInputView(
+                  input: AutomationInputView(
                     type: AutomationInputEnum.text,
                     label: 'Label',
                     placeholder: 'Enter a label',
                     onSave: (value, humanValue) {
                       context
-                          .read<AutomationCreationBloc>()
-                          .add(AutomationCreationLabelChanged(label: value));
+                          .read<AutomationBloc>()
+                          .add(AutomationLabelChanged(label: value));
                     },
                     value: state.cleanedAutomation.label.isNotEmpty
                         ? state.cleanedAutomation.label
@@ -48,14 +48,13 @@ class AutomationCreationSettingsView extends StatelessWidget {
                   previewData: state.cleanedAutomation.description.isNotEmpty
                       ? state.cleanedAutomation.description
                       : null,
-                  input: AutomationCreationInputView(
+                  input: AutomationInputView(
                     type: AutomationInputEnum.textArea,
                     label: 'Description',
                     placeholder: 'Enter a description',
                     onSave: (value, humanValue) {
-                      context.read<AutomationCreationBloc>().add(
-                          AutomationCreationDescriptionChanged(
-                              description: value));
+                      context.read<AutomationBloc>().add(
+                          AutomationDescriptionChanged(description: value));
                     },
                     value: state.cleanedAutomation.description.isNotEmpty
                         ? state.cleanedAutomation.description

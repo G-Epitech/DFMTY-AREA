@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
@@ -10,12 +10,12 @@ import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-class AutomationCreationAddView extends StatefulWidget {
+class AutomationAddView extends StatefulWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
 
-  const AutomationCreationAddView({
+  const AutomationAddView({
     super.key,
     required this.type,
     required this.integrationIdentifier,
@@ -23,11 +23,10 @@ class AutomationCreationAddView extends StatefulWidget {
   });
 
   @override
-  State<AutomationCreationAddView> createState() =>
-      _AutomationCreationAddViewState();
+  State<AutomationAddView> createState() => _AutomationAddViewState();
 }
 
-class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
+class _AutomationAddViewState extends State<AutomationAddView> {
   @override
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
@@ -64,7 +63,7 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+    return BlocBuilder<AutomationBloc, AutomationState>(
         builder: (context, state) {
       return ListView.builder(
         itemCount: triggersOrActions.length,
@@ -76,20 +75,20 @@ class _List extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               if (type == AutomationChoiceEnum.trigger) {
-                context.read<AutomationCreationBloc>().add(
-                    AutomationCreationTriggerIdentifierChanged(
+                context.read<AutomationBloc>().add(
+                    AutomationTriggerIdentifierChanged(
                         identifier:
                             "$integrationIdentifier.$triggerOrActionIdentifier"));
               } else {
-                context.read<AutomationCreationBloc>().add(
-                    AutomationCreationActionIdentifierChanged(
+                context.read<AutomationBloc>().add(
+                    AutomationActionIdentifierChanged(
                         index: indexOfTheTriggerOrAction,
                         identifier:
                             "$integrationIdentifier.$triggerOrActionIdentifier"));
               }
               Navigator.push(
                   context,
-                  customScreenBuilder(AutomationCreationParametersView(
+                  customScreenBuilder(AutomationParametersView(
                     type: type,
                     integrationIdentifier: integrationIdentifier,
                     triggerOrActionIdentifier: triggerOrActionIdentifier,

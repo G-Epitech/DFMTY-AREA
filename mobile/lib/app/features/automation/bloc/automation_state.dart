@@ -1,26 +1,41 @@
-part of 'automation_creation_bloc.dart';
+part of 'automation_bloc.dart';
 
-class AutomationCreationState extends Equatable {
+final class AutomationState extends Equatable {
   final Automation cleanedAutomation;
   final Automation dirtyAutomation;
   final Map<String, String> previews;
   final FormzSubmissionStatus status;
 
-  const AutomationCreationState(
-    this.cleanedAutomation,
-    this.dirtyAutomation,
-    this.previews,
-    this.status,
-  );
+  const AutomationState({
+    required this.cleanedAutomation,
+    required this.dirtyAutomation,
+    required this.previews,
+    required this.status,
+  });
 
   @override
-  List<Object> get props => [dirtyAutomation, cleanedAutomation, previews];
+  List<Object> get props =>
+      [dirtyAutomation, cleanedAutomation, previews, status];
+
+  AutomationState copyWith({
+    Automation? cleanedAutomation,
+    Automation? dirtyAutomation,
+    Map<String, String>? previews,
+    FormzSubmissionStatus? status,
+  }) {
+    return AutomationState(
+      cleanedAutomation: cleanedAutomation ?? this.cleanedAutomation,
+      dirtyAutomation: dirtyAutomation ?? this.dirtyAutomation,
+      previews: previews ?? this.previews,
+      status: status ?? this.status,
+    );
+  }
 }
 
-final class AutomationCreationInitial extends AutomationCreationState {
-  AutomationCreationInitial()
+final class AutomationInitial extends AutomationState {
+  AutomationInitial()
       : super(
-            Automation(
+            dirtyAutomation: Automation(
               id: '',
               label: '',
               description: '',
@@ -36,7 +51,7 @@ final class AutomationCreationInitial extends AutomationCreationState {
               iconColor: 0,
               iconUri: '',
             ),
-            Automation(
+            cleanedAutomation: Automation(
               id: '',
               label: '',
               description: '',
@@ -52,15 +67,6 @@ final class AutomationCreationInitial extends AutomationCreationState {
               iconColor: 0,
               iconUri: '',
             ),
-            {},
-            FormzSubmissionStatus.initial);
-}
-
-final class AutomationCreationDirty extends AutomationCreationState {
-  const AutomationCreationDirty(
-    super.cleanedAutomation,
-    super.dirtyAutomation,
-    super.previews,
-    super.status,
-  );
+            previews: {},
+            status: FormzSubmissionStatus.initial);
 }

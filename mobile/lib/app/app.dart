@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:triggo/app/bloc/authentication_bloc.dart';
-import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/routes/generate.routes.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/theme.dart';
@@ -89,13 +89,13 @@ class _TriggoAppState extends State<TriggoApp> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => AuthenticationBloc(
+            create: (_) => AuthenticationBloc(
               authenticationMediator: _authenticationMediator,
               userRepository: _userRepository,
             ),
           ),
           BlocProvider(
-            create: (_) => AutomationCreationBloc(
+            create: (_) => AutomationBloc(
               automationMediator: _automationMediator,
             ),
           ),

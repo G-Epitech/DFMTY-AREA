@@ -49,18 +49,15 @@ class AutomationMediator with ChangeNotifier {
   Future<bool> createAutomation(Automation automation) async {
     try {
       final json = automation.toJson();
-      print(json);
       final dto = AutomationDTO.fromJson(json);
       InPostAutomationDTO automationDTO = InPostAutomationDTO(automation: dto);
       final res = await _automationRepository.createAutomation(automationDTO);
-      print('AutomationMediator: ${res.statusCode}');
       if (res.statusCode == Codes.created) {
         return true;
       } else {
         throw Exception(res.message);
       }
     } catch (e) {
-      print(e);
       // Display error message with a snackbar or dialog (something like that)
       return false;
     }
@@ -69,7 +66,6 @@ class AutomationMediator with ChangeNotifier {
   Future<void> _getAutomationSchema() async {
     final res = await _automationRepository.getAutomationSchema();
     if (res.statusCode == Codes.ok && res.data != null) {
-      log('AutomationSchemas: ${res.data!.schema}');
       _automationSchemas = AutomationSchemas.fromDTO(res.data!.schema);
       notifyListeners();
     } else {

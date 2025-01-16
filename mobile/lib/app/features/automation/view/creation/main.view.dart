@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
 import 'package:triggo/app/features/automation/view/creation/select_integration.view.dart';
@@ -18,23 +17,18 @@ import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-class AutomationCreationMainView extends StatefulWidget {
-  const AutomationCreationMainView({super.key});
+class AutomationMainView extends StatefulWidget {
+  const AutomationMainView({super.key});
 
   @override
-  State<AutomationCreationMainView> createState() =>
-      _AutomationCreationMainViewState();
+  State<AutomationMainView> createState() => _AutomationMainViewState();
 }
 
-class _AutomationCreationMainViewState
-    extends State<AutomationCreationMainView> {
+class _AutomationMainViewState extends State<AutomationMainView> {
   @override
   Widget build(BuildContext context) {
-    context.read<AutomationCreationBloc>().add(AutomationCreationReset());
-
-    return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+    return BlocBuilder<AutomationBloc, AutomationState>(
       builder: (context, state) {
-        log('AutomationCreationMainView: ${state.cleanedAutomation.trigger.providers.length}');
         return BaseScaffold(
           title: 'Automation',
           header: _Header(automation: state.cleanedAutomation),
@@ -43,9 +37,8 @@ class _AutomationCreationMainViewState
             padding: const EdgeInsets.all(4.0),
             child: Column(
               children: [
-                _AutomationCreationContainer(
-                    automation: state.cleanedAutomation),
-                _SaveButton(),
+                _AutomationContainer(automation: state.cleanedAutomation),
+                _SaveWidget(),
               ],
             ),
           ),
@@ -113,7 +106,6 @@ class _Header extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              log('Settings button pressed');
               Navigator.of(context).pushNamed(RoutesNames.automationSettings);
             },
             icon: SvgPicture.asset(
@@ -132,21 +124,53 @@ class _Header extends StatelessWidget {
   }
 }
 
+class _SaveWidget extends StatelessWidget {
+  const _SaveWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AutomationBloc, AutomationState>(
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          Navigator.of(context).pop();
+        }
+
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text('Failed to save automation'),
+                backgroundColor: Theme.of(context).colorScheme.onError,
+              ),
+            );
+        }
+      },
+      child: _SaveButton(),
+    );
+  }
+}
+
 class _SaveButton extends StatelessWidget {
   const _SaveButton();
 
   @override
   Widget build(BuildContext context) {
+    final state = context.select((AutomationBloc bloc) => bloc.state);
+
+    if (state.status.isInProgress) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     return Row(
       children: [
         Expanded(
           child: TriggoButton(
             text: 'Save',
             onPressed: () async {
-              log('Save button pressed');
-              context
-                  .read<AutomationCreationBloc>()
-                  .add(AutomationCreationSubmitted());
+              context.read<AutomationBloc>().add(AutomationSubmitted());
             },
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
@@ -164,10 +188,10 @@ class _SaveButton extends StatelessWidget {
   }
 }
 
-class _AutomationCreationContainer extends StatelessWidget {
+class _AutomationContainer extends StatelessWidget {
   final Automation automation;
 
-  const _AutomationCreationContainer({required this.automation});
+  const _AutomationContainer({required this.automation});
 
   @override
   Widget build(BuildContext context) {
@@ -194,12 +218,10 @@ class _AddTriggerEventWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        context
-            .read<AutomationCreationBloc>()
-            .add(AutomationCreationLoadCleanAutomation());
+        context.read<AutomationBloc>().add(AutomationLoadCleanAutomation());
         Navigator.push(
             context,
-            customScreenBuilder(AutomationCreationSelectIntegrationView(
+            customScreenBuilder(AutomationSelectIntegrationView(
               type: AutomationChoiceEnum.trigger,
               indexOfTheTriggerOrAction: 0,
             )));
@@ -319,12 +341,11 @@ class CustomRectangleList extends StatelessWidget {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   context
-                      .read<AutomationCreationBloc>()
-                      .add(AutomationCreationLoadCleanAutomation());
+                      .read<AutomationBloc>()
+                      .add(AutomationLoadCleanAutomation());
                   Navigator.push(
                       context,
-                      customScreenBuilder(
-                          AutomationCreationSelectIntegrationView(
+                      customScreenBuilder(AutomationSelectIntegrationView(
                         type: AutomationChoiceEnum.action,
                         indexOfTheTriggerOrAction: automation.actions.length,
                       )));
@@ -381,12 +402,10 @@ class _TriggerListItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        context
-            .read<AutomationCreationBloc>()
-            .add(AutomationCreationLoadCleanAutomation());
+        context.read<AutomationBloc>().add(AutomationLoadCleanAutomation());
         Navigator.push(
             context,
-            customScreenBuilder(AutomationCreationParametersView(
+            customScreenBuilder(AutomationParametersView(
               type: type,
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,

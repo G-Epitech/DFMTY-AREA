@@ -1,98 +1,103 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-part 'automation_creation_event.dart';
-part 'automation_creation_state.dart';
+part 'automation_event.dart';
+part 'automation_state.dart';
 
-class AutomationCreationBloc
-    extends Bloc<AutomationCreationEvent, AutomationCreationState> {
+class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
   final AutomationMediator _automationMediator;
 
-  AutomationCreationBloc({required AutomationMediator automationMediator})
+  AutomationBloc({required AutomationMediator automationMediator})
       : _automationMediator = automationMediator,
-        super(AutomationCreationInitial()) {
-    on<AutomationCreationLabelChanged>(_onLabelChanged);
-    on<AutomationCreationDescriptionChanged>(_onDescriptionChanged);
-    on<AutomationCreationTriggerProviderChanged>(_onTriggerProviderChanged);
-    on<AutomationCreationTriggerProviderAdded>(_onTriggerProviderAdded);
-    on<AutomationCreationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
-    on<AutomationCreationTriggerParameterChanged>(_onTriggerParameterChanged);
-    on<AutomationCreationActionIdentifierChanged>(_onActionIdentifierChanged);
-    on<AutomationCreationActionProviderAdded>(_onActionProviderAdded);
-    on<AutomationCreationActionParameterChanged>(_onActionParameterChanged);
-    on<AutomationCreationActionDeleted>(_onActionDeleted);
-    on<AutomationCreationResetPending>(_onResetPending);
-    on<AutomationCreationSubmitted>(_onSubmitted);
-    on<AutomationCreationReset>(_onReset);
-    on<AutomationCreationPreviewUpdated>(_onPreviewUpdated);
-    on<AutomationCreationValidatePendingAutomation>(
-        _onValidatePendingAutomation);
-    on<AutomationCreationLoadCleanAutomation>(_onLoadAutomation);
+        super(AutomationInitial()) {
+    on<AutomationSubmitted>(_onSubmitted);
+    on<AutomationReset>(_onReset);
+    on<AutomationLabelChanged>(_onLabelChanged);
+    on<AutomationDescriptionChanged>(_onDescriptionChanged);
+    on<AutomationTriggerProviderChanged>(_onTriggerProviderChanged);
+    on<AutomationTriggerProviderAdded>(_onTriggerProviderAdded);
+    on<AutomationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
+    on<AutomationTriggerParameterChanged>(_onTriggerParameterChanged);
+    on<AutomationActionIdentifierChanged>(_onActionIdentifierChanged);
+    on<AutomationActionProviderAdded>(_onActionProviderAdded);
+    on<AutomationActionParameterChanged>(_onActionParameterChanged);
+    on<AutomationActionDeleted>(_onActionDeleted);
+    on<AutomationResetPending>(_onResetPending);
+    on<AutomationPreviewUpdated>(_onPreviewUpdated);
+    on<AutomationValidatePendingAutomation>(_onValidatePendingAutomation);
+    on<AutomationLoadCleanAutomation>(_onLoadCleanAutomation);
   }
 
-  void _onLabelChanged(AutomationCreationLabelChanged event,
-      Emitter<AutomationCreationState> emit) {
+  Future<void> _onSubmitted(
+    AutomationSubmitted event,
+    Emitter<AutomationState> emit,
+  ) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      final res =
+          await _automationMediator.createAutomation(state.cleanedAutomation);
+
+      if (!res) {
+        throw Exception('Failed to create automation');
+      }
+
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (e) {
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+    }
+  }
+
+  void _onLabelChanged(
+      AutomationLabelChanged event, Emitter<AutomationState> emit) {
     final updatedAutomation =
         state.cleanedAutomation.copyWith(label: event.label);
-    emit(AutomationCreationDirty(
-        updatedAutomation, updatedAutomation, state.previews, state.status));
+    emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 
-  void _onDescriptionChanged(AutomationCreationDescriptionChanged event,
-      Emitter<AutomationCreationState> emit) {
+  void _onDescriptionChanged(
+      AutomationDescriptionChanged event, Emitter<AutomationState> emit) {
     final updatedAutomation =
         state.cleanedAutomation.copyWith(description: event.description);
-    emit(AutomationCreationDirty(
-        updatedAutomation, updatedAutomation, state.previews, state.status));
+    emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 
-  void _onTriggerProviderChanged(AutomationCreationTriggerProviderChanged event,
-      Emitter<AutomationCreationState> emit) {
+  void _onTriggerProviderChanged(
+      AutomationTriggerProviderChanged event, Emitter<AutomationState> emit) {
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       identifier: event.triggerName,
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onTriggerProviderAdded(AutomationCreationTriggerProviderAdded event,
-      Emitter<AutomationCreationState> emit) {
+  void _onTriggerProviderAdded(
+      AutomationTriggerProviderAdded event, Emitter<AutomationState> emit) {
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       providers: List.from(state.dirtyAutomation.trigger.providers)
         ..add(event.provider),
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    log('Trigger provider added: ${updatedAutomation.trigger.providers.length}');
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
   void _onTriggerIdentifierChanged(
-      AutomationCreationTriggerIdentifierChanged event,
-      Emitter<AutomationCreationState> emit) {
+      AutomationTriggerIdentifierChanged event, Emitter<AutomationState> emit) {
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       identifier: event.identifier,
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    log('Trigger identifier changed: ${updatedAutomation.trigger.identifier}');
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
   void _onTriggerParameterChanged(
-      AutomationCreationTriggerParameterChanged event,
-      Emitter<AutomationCreationState> emit) {
+      AutomationTriggerParameterChanged event, Emitter<AutomationState> emit) {
     bool updated = false;
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       parameters: state.dirtyAutomation.trigger.parameters.map((param) {
@@ -112,14 +117,11 @@ class AutomationCreationBloc
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
 
-    log('!===== Trigger parameter changed: ${updatedAutomation.trigger.parameters.length} =====');
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
   void _onActionIdentifierChanged(
-      AutomationCreationActionIdentifierChanged event,
-      Emitter<AutomationCreationState> emit) {
+      AutomationActionIdentifierChanged event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
     if (updatedActions.length <= event.index) {
@@ -136,12 +138,11 @@ class AutomationCreationBloc
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onActionProviderAdded(AutomationCreationActionProviderAdded event,
-      Emitter<AutomationCreationState> emit) {
+  void _onActionProviderAdded(
+      AutomationActionProviderAdded event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
     if (updatedActions.length <= event.index) {
@@ -159,12 +160,11 @@ class AutomationCreationBloc
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onActionParameterChanged(AutomationCreationActionParameterChanged event,
-      Emitter<AutomationCreationState> emit) {
+  void _onActionParameterChanged(
+      AutomationActionParameterChanged event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
     bool updated = false;
@@ -203,12 +203,11 @@ class AutomationCreationBloc
     }
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onResetPending(AutomationCreationResetPending event,
-      Emitter<AutomationCreationState> emit) {
+  void _onResetPending(
+      AutomationResetPending event, Emitter<AutomationState> emit) {
     switch (event.type) {
       case AutomationChoiceEnum.trigger:
         final updatedAutomation = state.dirtyAutomation.copyWith(
@@ -217,8 +216,7 @@ class AutomationCreationBloc
           providers: [],
           parameters: [],
         ));
-        emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
-            state.previews, state.status));
+        emit(state.copyWith(dirtyAutomation: updatedAutomation));
         break;
       case AutomationChoiceEnum.action:
         final updatedActions =
@@ -228,66 +226,36 @@ class AutomationCreationBloc
         }
         final updatedAutomation =
             state.dirtyAutomation.copyWith(actions: updatedActions);
-        emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
-            state.previews, state.status));
+        emit(state.copyWith(dirtyAutomation: updatedAutomation));
         break;
     }
   }
 
-  void _onSubmitted(AutomationCreationSubmitted event,
-      Emitter<AutomationCreationState> emit) async {
-    emit(AutomationCreationState(state.cleanedAutomation, state.dirtyAutomation,
-        state.previews, FormzSubmissionStatus.inProgress));
-    try {
-      final res =
-          await _automationMediator.createAutomation(state.cleanedAutomation);
-
-      print('Response Code: ${res}');
-
-      if (!res) {
-        throw Exception('Failed to create automation');
-      }
-
-      emit(AutomationCreationState(
-          state.cleanedAutomation,
-          state.dirtyAutomation,
-          state.previews,
-          FormzSubmissionStatus.success));
-    } catch (e) {
-      emit(AutomationCreationState(
-          state.cleanedAutomation,
-          state.dirtyAutomation,
-          state.previews,
-          FormzSubmissionStatus.failure));
-    }
-  }
-
-  void _onActionDeleted(AutomationCreationActionDeleted event,
-      Emitter<AutomationCreationState> emit) {
+  void _onActionDeleted(
+      AutomationActionDeleted event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
     updatedActions.removeAt(event.index);
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
-        state.previews, state.status));
+    emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onReset(
-      AutomationCreationReset event, Emitter<AutomationCreationState> emit) {
-    emit(AutomationCreationInitial());
+  void _onReset(AutomationReset event, Emitter<AutomationState> emit) {
+    emit(AutomationInitial());
   }
 
-  void _onPreviewUpdated(AutomationCreationPreviewUpdated event,
-      Emitter<AutomationCreationState> emit) {
+  void _onPreviewUpdated(
+      AutomationPreviewUpdated event, Emitter<AutomationState> emit) {
     final updatedPreviews = Map<String, String>.from(state.previews)
       ..[event.key] = event.value;
     final updatedPreviewsSpecialCases =
         _manageSpecialCasesPreviews(updatedPreviews, event.key);
     final updatedAutomation =
         _manageSpecialCasesAutomation(state.dirtyAutomation, event.key);
-    emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
-        updatedPreviewsSpecialCases, state.status));
+    emit(state.copyWith(
+        dirtyAutomation: updatedAutomation,
+        previews: updatedPreviewsSpecialCases));
   }
 
   Map<String, String> _manageSpecialCasesPreviews(
@@ -308,17 +276,13 @@ class AutomationCreationBloc
     return updatedAutomation;
   }
 
-  void _onValidatePendingAutomation(
-      AutomationCreationValidatePendingAutomation event,
-      Emitter<AutomationCreationState> emit) {
-    log('Validate: ${state.dirtyAutomation.trigger.providers.length}');
-    emit(AutomationCreationState(state.dirtyAutomation, state.dirtyAutomation,
-        state.previews, state.status));
+  void _onValidatePendingAutomation(AutomationValidatePendingAutomation event,
+      Emitter<AutomationState> emit) {
+    emit(state.copyWith(cleanedAutomation: state.dirtyAutomation));
   }
 
-  void _onLoadAutomation(AutomationCreationLoadCleanAutomation event,
-      Emitter<AutomationCreationState> emit) {
-    emit(AutomationCreationState(state.cleanedAutomation,
-        state.cleanedAutomation, state.previews, state.status));
+  void _onLoadCleanAutomation(
+      AutomationLoadCleanAutomation event, Emitter<AutomationState> emit) {
+    emit(state.copyWith(dirtyAutomation: state.cleanedAutomation));
   }
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/integration/view/integration_connect.view.dart';
 
-class AutomationCreationSelectIntegrationView extends StatelessWidget {
+class AutomationSelectIntegrationView extends StatelessWidget {
   final AutomationChoiceEnum type;
   final int indexOfTheTriggerOrAction;
 
-  const AutomationCreationSelectIntegrationView({
+  const AutomationSelectIntegrationView({
     super.key,
     required this.type,
     required this.indexOfTheTriggerOrAction,
