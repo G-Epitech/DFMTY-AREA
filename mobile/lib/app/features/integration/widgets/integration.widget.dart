@@ -136,6 +136,12 @@ Future<void> _customOnTap(
               builder: (context) => LeagueOfLegendsIntegrationView()));
       break;
     default:
-      integrationMediator.launchURLFromIntegration(integration.url);
+      try {
+        integrationMediator.launchURLFromIntegration(integration.url);
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text('Could not open the URL')));
+      }
   }
 }
