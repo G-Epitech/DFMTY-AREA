@@ -27,10 +27,10 @@ class NotionMediator with ChangeNotifier {
     }
   }
 
-  Future<List<NotionPage>> getPages(String id, String guildId) async {
+  Future<List<NotionPage>> getPages(String id) async {
     List<NotionPage> channels = [];
     try {
-      final res = await _notionRepository.getPages(id, guildId);
+      final res = await _notionRepository.getPages(id);
       if (res.statusCode == Codes.ok && res.data != null) {
         for (var integration in res.data!.list) {
           channels.add(NotionPage.fromDTO(integration));
@@ -62,11 +62,10 @@ class NotionMediator with ChangeNotifier {
     }
   }
 
-  Future<List<AutomationRadioModel>> getPagesRadio(
-      String id, String guildId) async {
+  Future<List<AutomationRadioModel>> getPagesRadio(String id) async {
     List<AutomationRadioModel> channelsRadio = [];
     try {
-      final channels = await getPages(id, guildId);
+      final channels = await getPages(id);
       for (var channel in channels) {
         channelsRadio.add(AutomationRadioModel(
           title: channel.title,

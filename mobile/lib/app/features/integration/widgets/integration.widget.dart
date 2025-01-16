@@ -57,8 +57,7 @@ class _CustomWidget extends StatelessWidget {
         if (type != null) {
           Navigator.push(
               context,
-              customScreenBuilder(
-                  AutomationCreationSelectIntegrationsAccountView(
+              customScreenBuilder(AutomationSelectIntegrationsAccountView(
                 type: type!,
                 integrationIdentifier: integration.url,
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,

@@ -50,7 +50,6 @@ class AutomationParameterView extends StatelessWidget {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
 
-    log("automationMediator.automationSchemas");
     if (automationMediator.automationSchemas != null &&
         automationMediator.automationSchemas!.schemas["discord"] != null) {
       log(automationMediator.automationSchemas!.schemas["discord"]!.name);

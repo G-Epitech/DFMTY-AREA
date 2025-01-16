@@ -32,9 +32,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.connectIntegration):
       return customScreenBuilder(const IntegrationAvailableView());
     case (RoutesNames.automationCreation):
-      return customScreenBuilder(const AutomationCreationMainView());
+      return customScreenBuilder(const AutomationMainView());
     case (RoutesNames.automationSettings):
-      return customScreenBuilder(const AutomationCreationSettingsView());
+      return customScreenBuilder(const AutomationSettingsView());
     case (RoutesNames.profile):
       return customScreenBuilder(const ProfileView());
     default:

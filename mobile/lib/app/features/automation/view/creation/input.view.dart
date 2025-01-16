@@ -6,7 +6,7 @@ import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
-class AutomationCreationInputView extends StatefulWidget {
+class AutomationInputView extends StatefulWidget {
   final AutomationInputEnum type;
   final String label;
   final String? placeholder;
@@ -17,7 +17,7 @@ class AutomationCreationInputView extends StatefulWidget {
   final String routeToGoWhenSave;
   final Future<List<AutomationRadioModel>> Function()? getOptions;
 
-  const AutomationCreationInputView({
+  const AutomationInputView({
     super.key,
     required this.type,
     required this.label,
@@ -31,12 +31,10 @@ class AutomationCreationInputView extends StatefulWidget {
   });
 
   @override
-  State<AutomationCreationInputView> createState() =>
-      _AutomationCreationInputViewState();
+  State<AutomationInputView> createState() => _AutomationInputViewState();
 }
 
-class _AutomationCreationInputViewState
-    extends State<AutomationCreationInputView> {
+class _AutomationInputViewState extends State<AutomationInputView> {
   late String localValue;
   late String humanReadableValue;
 
@@ -223,36 +221,39 @@ class _OKButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TriggoButton(
-            text: "OK",
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-            onPressed: () {
-              onSave(value, humanReadableValue);
-              if (routeToGoWhenSave == RoutesNames.popOneTime) {
-                Navigator.of(context).pop();
-              } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
-              } else if (routeToGoWhenSave == RoutesNames.popThreeTimes) {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop()
-                  ..pop();
-              } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  routeToGoWhenSave,
-                  (route) => route.settings.name == routeToGoWhenSave,
-                );
-              }
-            },
+    return Container(
+      margin: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TriggoButton(
+              text: "OK",
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+              onPressed: () {
+                onSave(value, humanReadableValue);
+                if (routeToGoWhenSave == RoutesNames.popOneTime) {
+                  Navigator.of(context).pop();
+                } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                } else if (routeToGoWhenSave == RoutesNames.popThreeTimes) {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop()
+                    ..pop();
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    routeToGoWhenSave,
+                    (route) => route.settings.name == routeToGoWhenSave,
+                  );
+                }
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

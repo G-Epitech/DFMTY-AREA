@@ -31,7 +31,7 @@ class NotionRepository {
   }
 
   Future<Response<OutGetUserIntegrationNotionPagesDTO>> getPages(
-      String id, String guildId) async {
+      String id) async {
     final accessToken = await credentialsRepository.getAccessToken();
     final res = await call(
       method: 'GET',

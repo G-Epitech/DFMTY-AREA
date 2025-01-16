@@ -52,7 +52,7 @@ class _AutomationContainer extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: _AutomationCreationButton(),
+                child: _AutomationButton(),
               ),
             ),
           ],
@@ -63,8 +63,8 @@ class _AutomationContainer extends StatelessWidget {
   }
 }
 
-class _AutomationCreationButton extends StatelessWidget {
-  const _AutomationCreationButton();
+class _AutomationButton extends StatelessWidget {
+  const _AutomationButton();
 
   @override
   Widget build(BuildContext context) {
