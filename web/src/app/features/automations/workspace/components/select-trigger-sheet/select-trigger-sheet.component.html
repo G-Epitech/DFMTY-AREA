@@ -19,9 +19,7 @@
                 variant="outline"
                 (click)="service.goToIntegrationSelection()">
                 <ng-icon name="heroBolt" size="1.4rem" />
-                <span>
-                  No Integration Selected
-                </span>
+                <span> No Integration Selected </span>
               </button>
             } @else {
               <tr-available-integration-list-card
@@ -40,14 +38,26 @@
                 [disabled]="service.state().selectedIntegration === null"
                 (click)="service.goToLinkedInegrationSelection()">
                 <ng-icon name="heroUser" size="1.4rem" />
-                <span>
-                  No Linked Integration Selected
-                </span>
+                <span> No Linked Integration Selected </span>
               </button>
             } @else {
               <tr-linked-integration-button
                 [integration]="service.state().selectedLinkedIntegration!"
                 (click)="service.goToLinkedInegrationSelection()" />
+            }
+          </div>
+          <div>
+            <span class="tr-large">Select Trigger</span>
+            @if (!service.state().selectedTrigger) {
+              <button
+                trBtn
+                class="w-full text-left items-center justify-start gap-3 p-8"
+                variant="outline"
+                [disabled]="service.state().selectedLinkedIntegration === null"
+                (click)="service.goToTriggerSelection()">
+                <ng-icon name="heroRocketLaunch" size="1.4rem" />
+                <span> No Trigger Selected </span>
+              </button>
             }
           </div>
         }
@@ -65,6 +75,9 @@
             (selectedLinkedIntegration)="
               service.selectLinkedIntegration($event)
             " />
+        }
+        @case (TriggerSelectionStep.TRIGGER) {
+          <tr-trigger-selection />
         }
       }
     </div>

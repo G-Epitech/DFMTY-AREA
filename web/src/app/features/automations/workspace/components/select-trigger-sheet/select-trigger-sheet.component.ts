@@ -20,6 +20,9 @@ import {
 import {
   LinkedIntegrationButtonComponent
 } from '@components/linked-integration-button/linked-integration-button.component';
+import {
+  TriggerSelectionComponent
+} from '@features/automations/workspace/components/select-trigger-sheet/trigger-selection/trigger-selection.component';
 
 @Component({
   standalone: true,
@@ -34,6 +37,7 @@ import {
     AvailableIntegrationButtonComponent,
     LinkedIntegrationSelectionComponent,
     LinkedIntegrationButtonComponent,
+    TriggerSelectionComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],
