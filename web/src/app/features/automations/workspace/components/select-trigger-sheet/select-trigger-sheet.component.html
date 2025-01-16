@@ -15,11 +15,13 @@
             @if (!service.state().selectedIntegration) {
               <button
                 trBtn
-                class="w-full text-left items-center justify-start gap-1"
+                class="w-full text-left items-center justify-start gap-3 p-8"
                 variant="outline"
                 (click)="service.goToIntegrationSelection()">
-                <ng-icon name="heroBolt" size="1.1rem" />
-                No Integration Selected
+                <ng-icon name="heroBolt" size="1.4rem" />
+                <span>
+                  No Integration Selected
+                </span>
               </button>
             } @else {
               <tr-available-integration-list-card
@@ -33,12 +35,19 @@
             @if (!service.state().selectedLinkedIntegration) {
               <button
                 trBtn
-                class="w-full text-left items-center justify-start gap-1"
+                class="w-full text-left items-center justify-start gap-3 p-8"
                 variant="outline"
+                [disabled]="service.state().selectedIntegration === null"
                 (click)="service.goToLinkedInegrationSelection()">
-                <ng-icon name="heroUser" size="1.1rem" />
-                No Linked Integration Selected
+                <ng-icon name="heroUser" size="1.4rem" />
+                <span>
+                  No Linked Integration Selected
+                </span>
               </button>
+            } @else {
+              <tr-linked-integration-button
+                [integration]="service.state().selectedLinkedIntegration!"
+                (click)="service.goToLinkedInegrationSelection()" />
             }
           </div>
         }
@@ -48,7 +57,14 @@
             (selectedIntegration)="service.selectIntegration($event)" />
         }
         @case (TriggerSelectionStep.LINKED_INTEGRATION) {
-          <tr-linked-integration-selection class="h-full" />
+          <tr-linked-integration-selection
+            class="h-full"
+            [selectedIntegrationIdentifier]="
+              service.state().selectedIntegration!.identifier
+            "
+            (selectedLinkedIntegration)="
+              service.selectLinkedIntegration($event)
+            " />
         }
       }
     </div>

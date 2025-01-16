@@ -36,6 +36,17 @@ export function stateUpdaterSelectIntegration(
   };
 }
 
+export function stateUpdaterSelectLinkedIntegration(
+  integration: IntegrationModel
+): PartialStateUpdater<SelectTriggerSheetState> {
+  return (state: SelectTriggerSheetState) => {
+    return {
+      ...state,
+      selectedLinkedIntegration: integration,
+    };
+  };
+}
+
 export function stateUpdaterGoTo(
   step: TriggerSelectionStep
 ): PartialStateUpdater<SelectTriggerSheetState> {

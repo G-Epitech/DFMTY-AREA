@@ -3,7 +3,7 @@
     placeholder="Search for an integration"
     class="mb-3"
     (input)="onSearch($event)" />
-  <div class="flex flex-col bg-secondary rounded-md p-4 space-y-2 flex-grow">
+  <div class="flex flex-col bg-secondary rounded-md space-y-3 p-3 flex-grow">
     @for (integration of filteredIntegrations(); track integration.identifier) {
       <tr-available-integration-list-card
         class="w-full"

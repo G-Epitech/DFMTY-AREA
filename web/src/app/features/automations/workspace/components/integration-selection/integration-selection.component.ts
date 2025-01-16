@@ -10,13 +10,13 @@ import {
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import { AvailableIntegrationType } from '@common/types';
 import { SchemaStore } from '@app/store/schema-store';
-import { AvailableIntegrationListCardComponent } from '@components/available-integration-list-card/available-integration-list-card.component';
+import { AvailableIntegrationButtonComponent } from '@components/available-integration-button/available-integration-button.component';
 import { IntegrationTypeEnum } from '@models/integration';
 import { AutomationSchemaModel } from '@models/automation';
 
 @Component({
   selector: 'tr-integration-selection',
-  imports: [TrInputSearchComponent, AvailableIntegrationListCardComponent],
+  imports: [TrInputSearchComponent, AvailableIntegrationButtonComponent],
   templateUrl: './integration-selection.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

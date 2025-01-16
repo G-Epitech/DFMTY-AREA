@@ -6,9 +6,11 @@ import {
   stateUpdaterGoToIntegrationSelection,
   stateUpdaterGoToLinkedIntegrationSelection,
   stateUpdaterSelectIntegration,
+  stateUpdaterSelectLinkedIntegration,
 } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.state';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
 import { AvailableIntegrationType } from '@common/types';
+import { IntegrationModel } from '@models/integration';
 
 @Injectable()
 export class SelectTriggerSheetService {
@@ -29,6 +31,11 @@ export class SelectTriggerSheetService {
 
   selectIntegration(integration: AvailableIntegrationType): void {
     patchState(this.state, stateUpdaterSelectIntegration(integration));
+    this.back();
+  }
+
+  selectLinkedIntegration(integration: IntegrationModel): void {
+    patchState(this.state, stateUpdaterSelectLinkedIntegration(integration));
     this.back();
   }
 
