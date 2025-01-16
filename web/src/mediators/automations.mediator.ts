@@ -4,6 +4,8 @@ import { map, Observable } from 'rxjs';
 import {
   ActionShortModel,
   AutomationModel,
+  AutomationSchemaDependency,
+  AutomationSchemaDependencyRequired,
   AutomationSchemaModel,
   AutomationSchemaService,
   AutomationSchemaTrigger,
@@ -14,6 +16,7 @@ import {
   TriggerDTO,
   ActionDTO,
   ActionShortDTO,
+  DependencyDTO,
 } from '@repositories/automations/dto';
 
 @Injectable({
@@ -84,6 +87,7 @@ export class AutomationsMediator {
         icon: trigger.icon,
         parameters: trigger.parameters,
         facts: trigger.facts,
+        dependencies: this._mapSchemaDependencies(trigger.dependencies),
       };
     }
     return schemaTriggers;
@@ -101,6 +105,7 @@ export class AutomationsMediator {
         icon: action.icon,
         parameters: action.parameters,
         facts: action.facts,
+        dependencies: this._mapSchemaDependencies(action.dependencies),
       };
     }
     return schemaActions;
@@ -115,5 +120,19 @@ export class AutomationsMediator {
           action.dependencies
         )
     );
+  }
+
+  _mapSchemaDependencies(
+    dependencies: Record<string, DependencyDTO>
+  ): Record<string, AutomationSchemaDependency> {
+    const schemaDependencies: Record<string, AutomationSchemaDependency> = {};
+
+    for (const [identifier, dependency] of Object.entries(dependencies)) {
+      schemaDependencies[identifier] = {
+        require: dependency.require as AutomationSchemaDependencyRequired,
+        optional: dependency.optional,
+      };
+    }
+    return schemaDependencies;
   }
 }
