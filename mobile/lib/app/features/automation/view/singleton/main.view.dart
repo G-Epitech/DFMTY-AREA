@@ -6,8 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
-import 'package:triggo/app/features/automation/view/creation/select_integration.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/select_integration.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -18,7 +18,9 @@ import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationMainView extends StatefulWidget {
-  const AutomationMainView({super.key});
+  final Automation? automation;
+
+  const AutomationMainView({super.key, this.automation});
 
   @override
   State<AutomationMainView> createState() => _AutomationMainViewState();
@@ -28,7 +30,14 @@ class _AutomationMainViewState extends State<AutomationMainView> {
   @override
   void initState() {
     super.initState();
-    context.read<AutomationBloc>().add(AutomationReset());
+
+    if (widget.automation != null) {
+      context
+          .read<AutomationBloc>()
+          .add(AutomationLoadExisting(automation: widget.automation!));
+    } else {
+      context.read<AutomationBloc>().add(AutomationReset());
+    }
   }
 
   @override
@@ -235,7 +244,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        context.read<AutomationBloc>().add(AutomationLoadCleanAutomation());
+        context.read<AutomationBloc>().add(AutomationLoadCleanToDirty());
         Navigator.push(
             context,
             customScreenBuilder(AutomationSelectIntegrationView(
@@ -359,7 +368,7 @@ class CustomRectangleList extends StatelessWidget {
                 onTap: () {
                   context
                       .read<AutomationBloc>()
-                      .add(AutomationLoadCleanAutomation());
+                      .add(AutomationLoadCleanToDirty());
                   Navigator.push(
                       context,
                       customScreenBuilder(AutomationSelectIntegrationView(
@@ -419,7 +428,7 @@ class _TriggerListItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        context.read<AutomationBloc>().add(AutomationLoadCleanAutomation());
+        context.read<AutomationBloc>().add(AutomationLoadCleanToDirty());
         Navigator.push(
             context,
             customScreenBuilder(AutomationParametersView(

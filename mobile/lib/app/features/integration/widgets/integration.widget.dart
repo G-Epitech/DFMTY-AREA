@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/select_integration_account.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/select_integration_account.view.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/features/integration/view/integrations/leagueOfLegends.view.dart';
 import 'package:triggo/app/features/integration/view/integrations/openAI.view.dart';

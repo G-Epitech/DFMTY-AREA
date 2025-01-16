@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/parameters.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';

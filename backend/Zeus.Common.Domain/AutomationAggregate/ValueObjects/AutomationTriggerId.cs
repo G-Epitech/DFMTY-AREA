@@ -26,6 +26,11 @@ public sealed class AutomationTriggerId : ValueObject
         return new AutomationTriggerId(Guid.Parse(value));
     }
 
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

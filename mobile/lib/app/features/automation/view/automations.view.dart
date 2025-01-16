@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automation/view/automation.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/main.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -173,7 +173,7 @@ class _AutomationListItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(context,
-            customScreenBuilder(AutomationView(automation: automation)));
+            customScreenBuilder(AutomationMainView(automation: automation)));
       },
       child: TriggoCard(
         customWidget: Row(

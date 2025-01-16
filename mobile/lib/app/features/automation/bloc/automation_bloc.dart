@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
+import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 part 'automation_event.dart';
@@ -10,9 +12,13 @@ part 'automation_state.dart';
 
 class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
   final AutomationMediator _automationMediator;
+  final IntegrationMediator _integrationMediator;
 
-  AutomationBloc({required AutomationMediator automationMediator})
+  AutomationBloc(
+      {required AutomationMediator automationMediator,
+      required IntegrationMediator integrationMediator})
       : _automationMediator = automationMediator,
+        _integrationMediator = integrationMediator,
         super(AutomationInitial()) {
     on<AutomationSubmitted>(_onSubmitted);
     on<AutomationReset>(_onReset);
@@ -27,8 +33,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationActionDeleted>(_onActionDeleted);
     on<AutomationResetPending>(_onResetPending);
     on<AutomationPreviewUpdated>(_onPreviewUpdated);
-    on<AutomationValidatePendingAutomation>(_onValidatePendingAutomation);
-    on<AutomationLoadCleanAutomation>(_onLoadCleanAutomation);
+    on<AutomationLoadDirtyToClean>(_onValidatePendingAutomation);
+    on<AutomationLoadCleanToDirty>(_onLoadCleanAutomation);
+    on<AutomationLoadExisting>(_onLoadExistingAutomation);
   }
 
   Future<void> _onSubmitted(
@@ -273,13 +280,13 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     return updatedAutomation;
   }
 
-  void _onValidatePendingAutomation(AutomationValidatePendingAutomation event,
-      Emitter<AutomationState> emit) {
+  void _onValidatePendingAutomation(
+      AutomationLoadDirtyToClean event, Emitter<AutomationState> emit) {
     emit(state.copyWith(cleanedAutomation: state.dirtyAutomation));
   }
 
   void _onLoadCleanAutomation(
-      AutomationLoadCleanAutomation event, Emitter<AutomationState> emit) {
+      AutomationLoadCleanToDirty event, Emitter<AutomationState> emit) {
     final newPreview = _getCleanPreviews();
     emit(state.copyWith(
         dirtyAutomation: state.cleanedAutomation, previews: newPreview));
@@ -307,6 +314,78 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final previewKey =
             "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
         newPreview[previewKey] = state.previews[previewKey] ?? '';
+      }
+    }
+
+    return newPreview;
+  }
+
+  Future<void> _onLoadExistingAutomation(
+      AutomationLoadExisting event, Emitter<AutomationState> emit) async {
+    final previews = await _previewsFromUnknownAutomation(event.automation);
+
+    emit(state.copyWith(
+      cleanedAutomation: event.automation,
+      dirtyAutomation: event.automation,
+      previews: previews,
+    ));
+  }
+
+  Future<Map<String, String>> _previewsFromUnknownAutomation(
+      Automation automation) async {
+    final Map<String, String> newPreview = {};
+
+    for (final trigger in [automation.trigger]) {
+      for (final param in trigger.parameters) {
+        final index = [automation.trigger].indexOf(trigger);
+        final integrationIdentifier = trigger.identifier.split('.').first;
+        final triggerIdentifier = trigger.identifier.split('.').last;
+        final previewKey =
+            "trigger.$index.$integrationIdentifier.$triggerIdentifier.${param.identifier}";
+        newPreview[previewKey] = param.value;
+
+        final options = await getOptionsFromMediator(
+            automation,
+            AutomationChoiceEnum.trigger,
+            integrationIdentifier,
+            index,
+            triggerIdentifier,
+            param.identifier,
+            _integrationMediator);
+
+        for (final option in options) {
+          if (option.value == param.value) {
+            newPreview[previewKey] = option.title;
+            break;
+          }
+        }
+      }
+    }
+
+    for (final action in automation.actions) {
+      for (final param in action.parameters) {
+        final index = automation.actions.indexOf(action);
+        final integrationIdentifier = action.identifier.split('.').first;
+        final actionIdentifier = action.identifier.split('.').last;
+        final previewKey =
+            "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
+        newPreview[previewKey] = param.value;
+
+        final options = await getOptionsFromMediator(
+            automation,
+            AutomationChoiceEnum.action,
+            integrationIdentifier,
+            index,
+            actionIdentifier,
+            param.identifier,
+            _integrationMediator);
+
+        for (final option in options) {
+          if (option.value == param.value) {
+            newPreview[previewKey] = option.title;
+            break;
+          }
+        }
       }
     }
 

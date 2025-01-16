@@ -140,6 +140,17 @@ final class AutomationReset extends AutomationEvent {
   const AutomationReset();
 }
 
+final class AutomationLoadExisting extends AutomationEvent {
+  final Automation automation;
+
+  const AutomationLoadExisting({
+    required this.automation,
+  });
+
+  @override
+  List<Object> get props => [automation];
+}
+
 final class AutomationPreviewUpdated extends AutomationEvent {
   final String key;
   final String value;
@@ -153,10 +164,10 @@ final class AutomationPreviewUpdated extends AutomationEvent {
   List<Object> get props => [key, value];
 }
 
-final class AutomationValidatePendingAutomation extends AutomationEvent {
-  const AutomationValidatePendingAutomation();
+final class AutomationLoadDirtyToClean extends AutomationEvent {
+  const AutomationLoadDirtyToClean();
 }
 
-final class AutomationLoadCleanAutomation extends AutomationEvent {
-  const AutomationLoadCleanAutomation();
+final class AutomationLoadCleanToDirty extends AutomationEvent {
+  const AutomationLoadCleanToDirty();
 }

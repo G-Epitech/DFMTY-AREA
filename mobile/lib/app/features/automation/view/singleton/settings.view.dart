@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
-import 'package:triggo/app/features/automation/view/creation/input.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
