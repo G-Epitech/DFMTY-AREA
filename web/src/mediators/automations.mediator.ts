@@ -41,7 +41,7 @@ export class AutomationsMediator {
           new TriggerShortModel(
             dto.trigger.identifier,
             dto.trigger.parameters,
-            dto.trigger.providers
+            dto.trigger.dependencies
           ),
           this._mapActions(dto.actions)
         );
@@ -112,7 +112,7 @@ export class AutomationsMediator {
         new ActionShortModel(
           action.identifier,
           action.parameters,
-          action.providers
+          action.dependencies
         )
     );
   }

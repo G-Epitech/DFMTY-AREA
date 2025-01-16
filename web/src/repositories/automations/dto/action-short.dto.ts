@@ -5,5 +5,5 @@ export interface ActionShortDTO {
     identifier: string;
     value: string;
   }[];
-  providers: string[];
+  dependencies: string[];
 }

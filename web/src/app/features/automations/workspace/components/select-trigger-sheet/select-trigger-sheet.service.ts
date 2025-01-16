@@ -48,8 +48,8 @@ export class SelectTriggerSheetService implements OnDestroy {
       automationTrigger.integration
     );
     let linkedIntegration: IntegrationModel | null = null;
-    if (automationTrigger.providers.length > 0) {
-      const id = automationTrigger.providers[0];
+    if (automationTrigger.dependencies.length > 0) {
+      const id = automationTrigger.dependencies[0];
       this.#integrationsMediator
         .getById(id)
         .pipe(takeUntil(this.#destroyRef))
@@ -83,31 +83,30 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   selectIntegration(integration: AvailableIntegrationType): void {
-    const lastSelectedIntegration = this.state().selectedIntegration;
-    patchState(this.state, stateUpdaterSelectIntegration(integration));
-    if (lastSelectedIntegration !== integration) {
+    if (
+      this.state().selectedIntegration?.identifier !== integration.identifier
+    ) {
       patchState(this.state, state => ({
         ...state,
         selectedLinkedIntegration: null,
         selectedTrigger: null,
       }));
     }
+    patchState(this.state, stateUpdaterSelectIntegration(integration));
     this.back();
   }
 
   selectLinkedIntegration(linkedIntegration: IntegrationModel): void {
-    const lastSelectedLinkedIntegration =
-      this.state().selectedLinkedIntegration;
-    patchState(
-      this.state,
-      stateUpdaterSelectLinkedIntegration(linkedIntegration)
-    );
-    if (lastSelectedLinkedIntegration !== linkedIntegration) {
+    if (this.state().selectedLinkedIntegration?.id !== linkedIntegration.id) {
       patchState(this.state, state => ({
         ...state,
         selectedTrigger: null,
       }));
     }
+    patchState(
+      this.state,
+      stateUpdaterSelectLinkedIntegration(linkedIntegration)
+    );
 
     this.back();
   }
