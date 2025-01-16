@@ -98,6 +98,7 @@ class _TriggoAppState extends State<TriggoApp> {
           BlocProvider(
             create: (_) => AutomationBloc(
               automationMediator: _automationMediator,
+              integrationMediator: _integrationMediator,
             ),
           ),
         ],
