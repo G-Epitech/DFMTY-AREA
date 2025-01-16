@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/env.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
@@ -17,6 +18,7 @@ void integrationRepositoryTests() {
   late MockClient mock;
   late IntegrationRepository repository;
   late CredentialsRepository credentialsRepository;
+  late AutomationRepository automationRepository;
   late MockFlutterSecureStorage mockSecureStorage;
 
   setUp(() {
@@ -29,6 +31,8 @@ void integrationRepositoryTests() {
 
     credentialsRepository =
         CredentialsRepository(secureStorage: mockSecureStorage);
+    automationRepository =
+        AutomationRepository(credentialsRepository: credentialsRepository);
 
     when(mock.get(
       Uri.parse('${Env.apiUrl}/user/integrations'),
@@ -104,7 +108,9 @@ void integrationRepositoryTests() {
         ));
 
     repository = IntegrationRepository(
-        client: mock, credentialsRepository: credentialsRepository);
+        client: mock,
+        credentialsRepository: credentialsRepository,
+        automationRepository: automationRepository);
   });
 
   group('IntegrationRepository', () {

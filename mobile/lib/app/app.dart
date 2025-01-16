@@ -43,11 +43,13 @@ class _TriggoAppState extends State<TriggoApp> {
     _credentialsRepository = CredentialsRepository();
     _userRepository =
         UserRepository(credentialsRepository: _credentialsRepository);
-    _integrationRepository =
-        IntegrationRepository(credentialsRepository: _credentialsRepository);
     _automationRepository = AutomationRepository(
       credentialsRepository: _credentialsRepository,
     );
+    _integrationRepository = IntegrationRepository(
+        credentialsRepository: _credentialsRepository,
+        automationRepository: _automationRepository);
+
     _googleRepository = GoogleRepository(
       credentialsRepository: _credentialsRepository,
     );

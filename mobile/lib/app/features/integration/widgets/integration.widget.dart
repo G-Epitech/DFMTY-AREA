@@ -76,7 +76,7 @@ class _CustomWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
-              child: SvgPicture.asset(
+              child: SvgPicture.network(
                 integration.iconUri,
                 width: 26,
                 height: 26,

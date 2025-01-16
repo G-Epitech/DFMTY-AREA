@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/integration/openAI.repository.dart';
+import 'package:triggo/repositories/integration/integrations/openAI.repository.dart';
 
 enum LinkStatus {
   unknown,

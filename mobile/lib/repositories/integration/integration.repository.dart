@@ -2,13 +2,15 @@ import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/repositories/authentication/google.repository.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
-import 'package:triggo/repositories/integration/discord.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
-import 'package:triggo/repositories/integration/leagueOfLegends.repository.dart';
-import 'package:triggo/repositories/integration/notion.repository.dart';
-import 'package:triggo/repositories/integration/openAI.repository.dart';
+import 'package:triggo/repositories/integration/integrations/discord.repository.dart';
+import 'package:triggo/repositories/integration/integrations/leagueOfLegends.repository.dart';
+import 'package:triggo/repositories/integration/integrations/notion.repository.dart';
+import 'package:triggo/repositories/integration/integrations/openAI.repository.dart';
 
 class IntegrationRepository {
   final http.Client? client;
@@ -18,8 +20,12 @@ class IntegrationRepository {
   final NotionRepository notionRepository;
   final OpenAIRepository _openAIRepository;
   final LeagueOfLegendsRepository _leagueOfLegendsRepository;
+  final AutomationRepository automationRepository;
 
-  IntegrationRepository({this.client, required this.credentialsRepository})
+  IntegrationRepository(
+      {this.client,
+      required this.credentialsRepository,
+      required this.automationRepository})
       : discordRepository = DiscordRepository(
           client: client,
           credentialsRepository: credentialsRepository,
@@ -93,60 +99,37 @@ class IntegrationRepository {
     );
   }
 
-  Future<Response<OutGetIntegrationNamesDTO>> getIntegrationNames() async {
-    //    final accessToken = await credentialsRepository.getAccessToken();
-    //     final response = await call(
-    //       method: 'GET',
-    //       endpoint: '/integration',
-    //       headers: {'Authorization': 'Bearer $accessToken'},
-    //       client: client,
-    //     );
-    //
-    //     return Response<OutGetIntegrationNamesDTO>(
-    //       statusCode: response.statusCode,
-    //       message: response.message,
-    //       data: response.data != null
-    //           ? OutGetIntegrationNamesDTO.fromJson(response.data!)
-    //           : null,
-    //       errors: response.errors,
-    //     );
-    final json = {
-      "pageNumber": 1,
-      "pageSize": 10,
-      "totalPages": 1,
-      "totalRecords": 3,
-      "data": [
-        {
-          "name": "Discord",
-          "iconUri": 'assets/icons/discord.svg',
-          "color": "#7289da",
-          "url": "discord"
-        },
-        {
-          "name": "Notion",
-          "iconUri": 'assets/icons/notion.svg',
-          "color": "#000000",
-          "url": "notion"
-        },
-        {
-          "name": "OpenAI",
-          "iconUri": 'assets/icons/openai.svg',
-          "color": "#10a37f",
-          "url": "openAI"
-        },
-        {
-          "name": "LeagueOfLegends",
-          "iconUri": 'assets/icons/league_of_legends.svg',
-          "color": "#c89b3c",
-          "url": "leagueOfLegends"
-        }
-      ]
-    };
-    return Response<OutGetIntegrationNamesDTO>(
-      statusCode: Codes.ok,
-      message: "Ok",
-      data: OutGetIntegrationNamesDTO.fromJson(json),
-    );
+  String _getUrlFromName(String name) {
+    switch (name) {
+      case IntegrationNames.discord:
+        return 'discord';
+      case IntegrationNames.notion:
+        return 'notion';
+      case IntegrationNames.openAI:
+        return 'openAI';
+      case IntegrationNames.leagueOfLegends:
+        return 'leagueOfLegends';
+      default:
+        return '';
+    }
+  }
+
+  Future<List<IntegrationNamesDTO>> getIntegrationNames() async {
+    final response = await automationRepository.getAutomationSchema();
+    List<IntegrationNamesDTO> integrationNames = [];
+
+    if (response.statusCode == Codes.ok) {
+      for (var key in response.data!.schema.keys.toList()) {
+        final integration = response.data!.schema[key];
+        integrationNames.add(IntegrationNamesDTO(
+          name: integration!.name,
+          iconUri: integration.iconUri,
+          color: integration.color,
+          url: _getUrlFromName(integration.name),
+        ));
+      }
+    }
+    return integrationNames;
   }
 
   Future<Response<OutGetIntegrationURIDTO>> getIntegrationURI(

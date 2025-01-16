@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/integration/leagueOfLegends.repository.dart';
+import 'package:triggo/repositories/integration/integrations/leagueOfLegends.repository.dart';
 
 enum LinkStatus {
   unknown,

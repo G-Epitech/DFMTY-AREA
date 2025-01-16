@@ -51,22 +51,19 @@ class IntegrationMediator with ChangeNotifier {
   }
 
   Future<List<AvailableIntegration>> getIntegrations() async {
-    List<AvailableIntegration> integrations = [];
     try {
       final res = await _integrationRepository.getIntegrationNames();
-      if (res.statusCode == Codes.ok && res.data != null) {
-        for (var integration in res.data!.page.data) {
-          integrations.add(AvailableIntegration(
-            name: integration.name,
-            iconUri: integration.iconUri,
-            color: HexColor(integration.color),
-            url: integration.url,
-          ));
-        }
-        return integrations;
-      } else {
-        throw Exception(res.message);
+      List<AvailableIntegration> integrations = [];
+
+      for (var integration in res) {
+        integrations.add(AvailableIntegration(
+          name: integration.name,
+          iconUri: integration.iconUri,
+          color: HexColor(integration.color),
+          url: integration.url,
+        ));
       }
+      return integrations;
     } catch (e) {
       log('Error getting integrations: $e');
       throw Exception('Error getting integrations: $e');
