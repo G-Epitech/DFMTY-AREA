@@ -164,14 +164,18 @@ class _SaveButton extends StatelessWidget {
       );
     }
 
+    final isValid = _isSaveButtonEnabled(state);
+
     return Row(
       children: [
         Expanded(
           child: TriggoButton(
             text: 'Save',
-            onPressed: () async {
-              context.read<AutomationBloc>().add(AutomationSubmitted());
-            },
+            onPressed: isValid
+                ? () async {
+                    context.read<AutomationBloc>().add(AutomationSubmitted());
+                  }
+                : null,
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             style: TextStyle(
@@ -186,6 +190,13 @@ class _SaveButton extends StatelessWidget {
       ],
     );
   }
+}
+
+bool _isSaveButtonEnabled(AutomationState state) {
+  return state.cleanedAutomation.label.isNotEmpty &&
+      state.cleanedAutomation.description.isNotEmpty &&
+      state.cleanedAutomation.trigger.identifier.isNotEmpty &&
+      state.cleanedAutomation.actions.isNotEmpty;
 }
 
 class _AutomationContainer extends StatelessWidget {
