@@ -29,7 +29,7 @@ message GetRegistrableAutomations {
 
 message RegistrableAutomation {
   Automation automation = 1;
-  repeated integrations.Integration triggerIntegrations = 2;
+  repeated integrations.Integration triggerDependencies = 2;
 }
 
 message GetAutomationRequest {
@@ -45,7 +45,7 @@ message AutomationTrigger {
   string id = 1;
   string identifier = 2;
   repeated AutomationTriggerParameter parameters = 3;
-  repeated string providers = 4;
+  repeated string dependencies = 4;
 }
 
 message AutomationActionParameter {
@@ -59,7 +59,7 @@ message AutomationAction {
   string identifier = 2;
   int32 rank = 3;
   repeated AutomationActionParameter parameters = 4;
-  repeated string providers = 5;
+  repeated string dependencies = 5;
 }
 
 message Automation {

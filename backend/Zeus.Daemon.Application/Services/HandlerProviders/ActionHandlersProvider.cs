@@ -151,7 +151,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
     private static void CheckIntegrationParameter(ParameterInfo parameter, string actionFullIdentifier, ActionSchema schema)
     {
         var infos = parameter.GetFromIntegrationsParameterInfo();
-        var allowedTypes = schema.Integrations.Keys.ToList();
+        var allowedTypes = schema.Dependencies.Keys.ToList();
         var reflectedType = Integration.GetTypeFromImplementation(infos.Type);
         var matchingType = reflectedType is not null
             ? (allowedTypes.Contains(reflectedType.Value) ? reflectedType : null)
@@ -160,9 +160,9 @@ public class ActionHandlersProvider : IActionHandlersProvider
         if (matchingType is null)
         {
             throw new InvalidOperationException(
-                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' action '{actionFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Integrations)}");
+                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' action '{actionFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Dependencies)}");
         }
-        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "action", actionFullIdentifier, matchingType.Value, schema.Integrations);
+        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "action", actionFullIdentifier, matchingType.Value, schema.Dependencies);
     }
 
     private static void CheckTypedParameter(ParameterInfo parameter, string actionFullIdentifier, ActionSchema actionSchema)

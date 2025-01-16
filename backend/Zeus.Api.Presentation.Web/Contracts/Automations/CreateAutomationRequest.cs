@@ -13,7 +13,7 @@ public record CreateAutomationRequest(
 public record CreateAutomationTriggerRequest(
     string Identifier,
     CreateAutomationTriggerParameterRequest[] Parameters,
-    Guid[] Providers
+    Guid[] Dependencies
 );
 
 public record CreateAutomationTriggerParameterRequest(
@@ -24,7 +24,7 @@ public record CreateAutomationTriggerParameterRequest(
 public record CreateAutomationActionRequest(
     string Identifier,
     CreateAutomationActionParameterRequest[] Parameters,
-    Guid[] Providers
+    Guid[] Dependencies
 );
 
 public record CreateAutomationActionParameterRequest(

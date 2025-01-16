@@ -151,7 +151,7 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
     private static void CheckOnRegisterMethodIntegrationsParameter(ParameterInfo parameter, string triggerFullIdentifier, TriggerSchema schema)
     {
         var infos = parameter.GetFromIntegrationsParameterInfo();
-        var allowedTypes = schema.Integrations.Keys.ToList();
+        var allowedTypes = schema.Dependencies.Keys.ToList();
         var reflectedType = Integration.GetTypeFromImplementation(infos.Type);
         var matchingType = reflectedType is not null
             ? (allowedTypes.Contains(reflectedType.Value) ? reflectedType : null)
@@ -160,9 +160,9 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
         if (matchingType is null)
         {
             throw new InvalidOperationException(
-                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' trigger '{triggerFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Integrations)}");
+                $"No matching integration type for parameter type '{infos.Type.Name}' in parameter '{parameter.Name}' trigger '{triggerFullIdentifier}'. Allowed are:\n{HandlersValidationUtils.GetAllowedFromIntegrationsFormat(schema.Dependencies)}");
         }
-        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "trigger", triggerFullIdentifier, matchingType.Value, schema.Integrations);
+        HandlersValidationUtils.CheckFromIntegrationsParameterConformity(infos, "trigger", triggerFullIdentifier, matchingType.Value, schema.Dependencies);
     }
 
     private static MethodInfo GetOnRemoveMethod(Type hostingClass, string triggerFullIdentifier)

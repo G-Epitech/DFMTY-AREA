@@ -20,7 +20,7 @@ public record CreateAutomationCommand(
 public record CreateAutomationTriggerCommand(
     string Identifier,
     List<CreateAutomationTriggerParameterCommand> Parameters,
-    List<Guid> Providers
+    List<Guid> Dependencies
 );
 
 public record CreateAutomationTriggerParameterCommand(
@@ -31,7 +31,7 @@ public record CreateAutomationTriggerParameterCommand(
 public record CreateAutomationActionCommand(
     string Identifier,
     List<CreateAutomationActionParameterRequest> Parameters,
-    List<Guid> Providers
+    List<Guid> Dependencies
 );
 
 public record CreateAutomationActionParameterRequest(

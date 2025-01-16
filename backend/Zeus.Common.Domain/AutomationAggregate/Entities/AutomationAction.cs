@@ -10,19 +10,19 @@ namespace Zeus.Common.Domain.AutomationAggregate.Entities;
 public sealed class AutomationAction : Entity<AutomationActionId>
 {
     private readonly List<AutomationActionParameter> _parameters;
-    private readonly List<IntegrationId> _providers;
+    private readonly List<IntegrationId> _dependencies;
 
     public AutomationAction(
         AutomationActionId id,
         string identifier,
         int rank,
         List<AutomationActionParameter> parameters,
-        List<IntegrationId> providers)
+        List<IntegrationId> dependencies)
         : base(id)
     {
         Identifier = identifier;
         _parameters = parameters;
-        _providers = providers;
+        _dependencies = dependencies;
         Rank = rank;
     }
 
@@ -34,16 +34,16 @@ public sealed class AutomationAction : Entity<AutomationActionId>
 
     public string Identifier { get; private set; }
     public IReadOnlyList<AutomationActionParameter> Parameters => _parameters.AsReadOnly();
-    public IReadOnlyList<IntegrationId> Providers => _providers.AsReadOnly();
+    public IReadOnlyList<IntegrationId> Dependencies => _dependencies.AsReadOnly();
     public int Rank { get; private set; }
 
-    public static AutomationAction Create(string identifier, int rank, List<AutomationActionParameter> parameters, List<IntegrationId> providers)
+    public static AutomationAction Create(string identifier, int rank, List<AutomationActionParameter> parameters, List<IntegrationId> dependencies)
     {
         return new AutomationAction(
             AutomationActionId.CreateUnique(),
             identifier,
             rank,
             parameters,
-            providers);
+            dependencies);
     }
 }

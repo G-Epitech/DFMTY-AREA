@@ -11,11 +11,11 @@ public static class HandlersValidationUtils
         string handlerType,
         string handlerIdentifier,
         IntegrationType matchingType,
-        Dictionary<IntegrationType, IntegrationRuleSchema> schema
+        Dictionary<IntegrationType, DependencyRuleSchema> schema
     )
     {
         var rule = schema[matchingType];
-        var isSchemaCollection = rule.Require is IntegrationRequirements.Multiple or IntegrationRequirements.OneOrMore;
+        var isSchemaCollection = rule.Require is DependencyRequirements.Multiple or DependencyRequirements.OneOrMore;
 
         switch (infos.IsCollection)
         {
@@ -33,14 +33,14 @@ public static class HandlersValidationUtils
         }
     }
 
-    public static string GetAllowedFromIntegrationsFormat(Dictionary<IntegrationType, IntegrationRuleSchema> schema)
+    public static string GetAllowedFromIntegrationsFormat(Dictionary<IntegrationType, DependencyRuleSchema> schema)
     {
         var final = string.Empty;
 
-        foreach ((IntegrationType type, IntegrationRuleSchema rule) in schema)
+        foreach ((IntegrationType type, DependencyRuleSchema rule) in schema)
         {
             var impl = Integration.GetImplementationFromType(type)!;
-            if (rule.Require is IntegrationRequirements.Multiple or IntegrationRequirements.OneOrMore)
+            if (rule.Require is DependencyRequirements.Multiple or DependencyRequirements.OneOrMore)
             {
                 final += $"\tIReadOnlyList<{impl.Name}>\n\tIList<{impl.Name}>\n";
             }

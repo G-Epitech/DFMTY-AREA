@@ -56,13 +56,13 @@ public sealed class IntegrationReadRepository : IIntegrationReadRepository
             AutomationIntegrationSource.Trigger => Automations
                 .Include(x => x.Trigger)
                 .Where(a => automationIds.Contains(a.Id))
-                .SelectMany(a => a.Trigger.Providers.Select(p => p)),
+                .SelectMany(a => a.Trigger.Dependencies.Select(p => p)),
             AutomationIntegrationSource.Action => Automations
                 .Where(a => automationIds.Contains(a.Id))
-                .SelectMany(a => a.Actions.SelectMany(i => i.Providers)),
+                .SelectMany(a => a.Actions.SelectMany(i => i.Dependencies)),
             _ => Automations
                 .Where(a => automationIds.Contains(a.Id))
-                .SelectMany(a => a.Trigger.Providers.Select(p => p).Union(a.Actions.SelectMany(ac => ac.Providers)))
+                .SelectMany(a => a.Trigger.Dependencies.Select(p => p).Union(a.Actions.SelectMany(ac => ac.Dependencies)))
         }).Distinct().ToListAsync(cancellationToken: cancellationToken);
 
         var integrations = await Integrations.Where(integration => integrationIds.Contains(integration.Id)).ToListAsync(cancellationToken);

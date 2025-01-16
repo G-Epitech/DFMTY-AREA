@@ -39,7 +39,7 @@ public static class SynchronizationMappers
                 DateTimeOffset.FromUnixTimeSeconds(registrable.Automation.CreatedAt).DateTime,
                 registrable.Automation.Enabled
             ),
-            TriggerIntegrations = registrable.TriggerIntegrations.Select(i => i.MapToIntegration()).ToList()
+            TriggerIntegrations = registrable.TriggerDependencies.Select(i => i.MapToIntegration()).ToList()
         };
     }
 
@@ -51,7 +51,7 @@ public static class SynchronizationMappers
             automationTriggerId,
             trigger.Identifier,
             trigger.Parameters.Select(MapToAutomationTriggerParameter).ToList(),
-            trigger.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
+            trigger.Dependencies.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );
     }
 
@@ -74,7 +74,7 @@ public static class SynchronizationMappers
                 Value = p.Value,
                 Type = Enum.Parse<AutomationActionParameterType>(p.Type)
             }).ToList(),
-            action.Providers.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
+            action.Dependencies.Select(p => new IntegrationId(Guid.Parse(p))).ToList()
         );
     }
 

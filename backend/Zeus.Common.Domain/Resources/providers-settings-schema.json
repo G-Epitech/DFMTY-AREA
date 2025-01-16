@@ -30,21 +30,21 @@
         "object"
       ]
     },
-    "integrations": {
+    "dependencies": {
       "type": "object",
       "properties": {
         "Discord": {
-          "$ref": "#/$defs/integrationRule"
+          "$ref": "#/$defs/dependencyRule"
         },
         "Notion": {
-          "$ref": "#/$defs/integrationRule"
+          "$ref": "#/$defs/dependencyRule"
         },
         "OpenAi": {
-          "$ref": "#/$defs/integrationRule"
+          "$ref": "#/$defs/dependencyRule"
         }
       }
     },
-    "integrationRule": {
+    "dependencyRule": {
       "type": "object",
       "properties": {
         "Optional": {
@@ -146,8 +146,8 @@
             }
           }
         },
-        "Integrations": {
-          "$ref": "#/$defs/integrations"
+        "Dependencies": {
+          "$ref": "#/$defs/dependencies"
         }
       },
       "required": [
@@ -156,7 +156,7 @@
         "Icon",
         "Parameters",
         "Facts",
-        "Integrations"
+        "Dependencies"
       ]
     },
     "action": {
@@ -187,8 +187,8 @@
             }
           }
         },
-        "Integrations": {
-          "$ref": "#/$defs/integrations"
+        "Dependencies": {
+          "$ref": "#/$defs/dependencies"
         }
       },
       "required": [
@@ -197,7 +197,7 @@
         "Icon",
         "Parameters",
         "Facts",
-        "Integrations"
+        "Dependencies"
       ]
     },
     "providerSettings": {

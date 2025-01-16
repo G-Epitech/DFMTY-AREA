@@ -50,9 +50,9 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
 
-    public IReadOnlyList<IntegrationId> Providers => _actions
-        .SelectMany(a => a.Providers)
-        .Union(Trigger.Providers)
+    public IReadOnlyList<IntegrationId> Dependencies => _actions
+        .SelectMany(a => a.Dependencies)
+        .Union(Trigger.Dependencies)
         .Distinct()
         .ToList();
 

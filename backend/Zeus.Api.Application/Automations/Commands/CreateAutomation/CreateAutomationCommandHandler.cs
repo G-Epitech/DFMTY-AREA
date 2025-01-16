@@ -41,16 +41,16 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
     private static AutomationTrigger CreateTrigger(CreateAutomationTriggerCommand trigger)
     {
         var parameters = trigger.Parameters.Select(p => new AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }).ToList();
-        var providers = trigger.Providers.Select(p => new IntegrationId(p)).ToList();
+        var dependencies = trigger.Dependencies.Select(p => new IntegrationId(p)).ToList();
 
-        return AutomationTrigger.Create(trigger.Identifier, parameters, providers);
+        return AutomationTrigger.Create(trigger.Identifier, parameters, dependencies);
     }
 
     private static AutomationAction CreateAction(CreateAutomationActionCommand action, int rank)
     {
         var parameters = action.Parameters.Select(p => new AutomationActionParameter { Identifier = p.Identifier, Value = p.Value, Type = p.Type }).ToList();
-        var providers = action.Providers.Select(p => new IntegrationId(p)).ToList();
+        var dependencies = action.Dependencies.Select(p => new IntegrationId(p)).ToList();
 
-        return AutomationAction.Create(action.Identifier, rank, parameters, providers);
+        return AutomationAction.Create(action.Identifier, rank, parameters, dependencies);
     }
 }
