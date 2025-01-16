@@ -27,8 +27,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationActionDeleted>(_onActionDeleted);
     on<AutomationResetPending>(_onResetPending);
     on<AutomationPreviewUpdated>(_onPreviewUpdated);
-    on<AutomationValidatePendingAutomation>(_onValidatePendingAutomation);
-    on<AutomationLoadCleanAutomation>(_onLoadCleanAutomation);
+    on<AutomationLoadDirtyToClean>(_onValidatePendingAutomation);
+    on<AutomationLoadCleanToDirty>(_onLoadCleanAutomation);
+    on<AutomationLoadExisting>(_onLoadExistingAutomation);
   }
 
   Future<void> _onSubmitted(
@@ -273,13 +274,13 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     return updatedAutomation;
   }
 
-  void _onValidatePendingAutomation(AutomationValidatePendingAutomation event,
-      Emitter<AutomationState> emit) {
+  void _onValidatePendingAutomation(
+      AutomationLoadDirtyToClean event, Emitter<AutomationState> emit) {
     emit(state.copyWith(cleanedAutomation: state.dirtyAutomation));
   }
 
   void _onLoadCleanAutomation(
-      AutomationLoadCleanAutomation event, Emitter<AutomationState> emit) {
+      AutomationLoadCleanToDirty event, Emitter<AutomationState> emit) {
     final newPreview = _getCleanPreviews();
     emit(state.copyWith(
         dirtyAutomation: state.cleanedAutomation, previews: newPreview));
@@ -311,5 +312,13 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     }
 
     return newPreview;
+  }
+
+  void _onLoadExistingAutomation(
+      AutomationLoadExisting event, Emitter<AutomationState> emit) {
+    emit(state.copyWith(
+      cleanedAutomation: event.automation,
+      dirtyAutomation: event.automation,
+    ));
   }
 }

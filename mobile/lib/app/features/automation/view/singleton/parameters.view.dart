@@ -6,8 +6,8 @@ import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/models/radio.model.dart';
-import 'package:triggo/app/features/automation/view/creation/input.view.dart';
-import 'package:triggo/app/features/automation/view/creation/settings.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -126,7 +126,7 @@ class _OKButton extends StatelessWidget {
                 ? () {
                     context
                         .read<AutomationBloc>()
-                        .add(AutomationValidatePendingAutomation());
+                        .add(AutomationLoadDirtyToClean());
                     if (isEdit) {
                       Navigator.of(context).pop();
                     } else {
