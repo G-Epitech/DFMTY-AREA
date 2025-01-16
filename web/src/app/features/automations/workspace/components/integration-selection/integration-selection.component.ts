@@ -10,7 +10,7 @@ import {
 import { TrInputSearchComponent } from '@triggo-ui/input';
 import { AvailableIntegrationType } from '@common/types';
 import { SchemaStore } from '@app/store/schema-store';
-import { AvailableIntegrationButtonComponent } from '@components/available-integration-button/available-integration-button.component';
+import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
 import { IntegrationTypeEnum } from '@models/integration';
 import { AutomationSchemaModel } from '@models/automation';
 
@@ -26,7 +26,7 @@ export class IntegrationSelectionComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   #searchTerm = signal<string>('');
-  selectedIntegration = output<AvailableIntegrationType>();
+  integrationSelected = output<AvailableIntegrationType>();
 
   availableIntegrations = signal<AvailableIntegrationType[]>([]);
   filteredIntegrations = computed(() => {
@@ -57,6 +57,6 @@ export class IntegrationSelectionComponent {
   }
 
   selectIntegration(integration: AvailableIntegrationType): void {
-    this.selectedIntegration.emit(integration);
+    this.integrationSelected.emit(integration);
   }
 }

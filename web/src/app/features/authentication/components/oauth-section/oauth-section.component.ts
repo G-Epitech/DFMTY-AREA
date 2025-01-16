@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { GoogleAuthButtonComponent } from '@components/google-auth-button/google-auth-button.component';
+import { GoogleAuthButtonComponent } from '@components/buttons/google-auth-button/google-auth-button.component';
 
 @Component({
   selector: 'tr-oauth-section',

@@ -4,67 +4,62 @@
   </button>
   <tr-sheet-content *brnSheetContent="let ctx" class="flex flex-col h-full">
     <tr-sheet-header>
-      <h3 trSheetTitle>Edit Trigger</h3>
-      <span trSheetDescription>Edit the trigger for this automation</span>
+      <h3 trSheetTitle>{{ title() }}</h3>
+      <span trSheetDescription>{{ description() }}</span>
     </tr-sheet-header>
     <div class="h-full flex flex-col gap-4">
-      @switch (service.state().selectionStep) {
+      @switch (state().selectionStep) {
         @case (TriggerSelectionStep.MAIN) {
-          <div>
-            <span class="tr-large">Select Integration</span>
-            @if (!service.state().selectedIntegration) {
-              <button
-                trBtn
-                class="w-full text-left items-center justify-start gap-3 p-8"
-                variant="outline"
-                (click)="service.goToIntegrationSelection()">
-                <ng-icon name="heroBolt" size="1.4rem" />
-                <span> No Integration Selected </span>
-              </button>
-            } @else {
-              <tr-available-integration-list-card
-                class="w-full"
-                [integration]="service.state().selectedIntegration!"
-                (click)="service.goToIntegrationSelection()" />
-            }
-          </div>
-          <div>
-            <span class="tr-large">Select Linked Integration</span>
-            @if (!service.state().selectedLinkedIntegration) {
-              <button
-                trBtn
-                class="w-full text-left items-center justify-start gap-3 p-8"
-                variant="outline"
-                [disabled]="service.state().selectedIntegration === null"
-                (click)="service.goToLinkedInegrationSelection()">
-                <ng-icon name="heroUser" size="1.4rem" />
-                <span> No Linked Integration Selected </span>
-              </button>
-            } @else {
-              <tr-linked-integration-button
-                [integration]="service.state().selectedLinkedIntegration!"
-                (click)="service.goToLinkedInegrationSelection()" />
-            }
-          </div>
-          <div>
-            <span class="tr-large">Select Trigger</span>
-            @if (!service.state().selectedTrigger) {
-              <button
-                trBtn
-                class="w-full text-left items-center justify-start gap-3 p-8"
-                variant="outline"
-                [disabled]="service.state().selectedLinkedIntegration === null"
-                (click)="service.goToTriggerSelection()">
-                <ng-icon name="heroRocketLaunch" size="1.4rem" />
-                <span> No Trigger Selected </span>
-              </button>
-            }
-          </div>
+          @if (!state().selectedIntegration) {
+            <button
+              trBtn
+              class="w-full text-left items-center justify-start gap-3 p-8"
+              variant="outline"
+              (click)="service.goToIntegrationSelection()">
+              <ng-icon name="heroBolt" size="1.4rem" />
+              <span> No Integration Selected </span>
+            </button>
+          } @else {
+            <tr-available-integration-list-card
+              class="w-full"
+              [integration]="service.state().selectedIntegration!"
+              (click)="service.goToIntegrationSelection()" />
+          }
+          @if (!state().selectedLinkedIntegration) {
+            <button
+              trBtn
+              class="w-full text-left items-center justify-start gap-3 p-8"
+              variant="outline"
+              [disabled]="state().selectedIntegration === null"
+              (click)="service.goToLinkedInegrationSelection()">
+              <ng-icon name="heroUser" size="1.4rem" />
+              <span> No Linked Integration Selected </span>
+            </button>
+          } @else {
+            <tr-linked-integration-button
+              [integration]="state().selectedLinkedIntegration!"
+              (click)="service.goToLinkedInegrationSelection()" />
+          }
+          @if (!state().selectedTrigger) {
+            <button
+              trBtn
+              class="w-full text-left items-center justify-start gap-3 p-8"
+              variant="outline"
+              [disabled]="state().selectedLinkedIntegration === null"
+              (click)="service.goToTriggerSelection()">
+              <ng-icon name="heroRocketLaunch" size="1.4rem" />
+              <span> No Trigger Selected </span>
+            </button>
+          } @else {
+            <tr-trigger-selection-button
+              [trigger]="state().selectedTrigger!"
+              (click)="service.goToTriggerSelection()" />
+          }
         }
         @case (TriggerSelectionStep.INTEGRATION) {
           <tr-integration-selection
             class="h-full"
-            (selectedIntegration)="service.selectIntegration($event)" />
+            (integrationSelected)="onIntegrationSelected($event)" />
         }
         @case (TriggerSelectionStep.LINKED_INTEGRATION) {
           <tr-linked-integration-selection
@@ -72,24 +67,21 @@
             [selectedIntegrationIdentifier]="
               service.state().selectedIntegration!.identifier
             "
-            (selectedLinkedIntegration)="
-              service.selectLinkedIntegration($event)
-            " />
+            (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
         @case (TriggerSelectionStep.TRIGGER) {
-          <tr-trigger-selection />
+          <tr-trigger-selection
+            class="h-full"
+            [integration]="service.state().selectedIntegration!"
+            (triggerSelected)="onTriggerSelected($event)" />
         }
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
-      @if (service.state().selectionStep === TriggerSelectionStep.MAIN) {
+      @if (state().selectionStep === TriggerSelectionStep.MAIN) {
         <button trBtn type="submit" class="w-[50%]">Save</button>
       } @else {
-        <button
-          trBtn
-          class="w-[50%]"
-          variant="outline"
-          (click)="service.back()">
+        <button trBtn class="w-[50%]" variant="outline" (click)="onBack()">
           Back
         </button>
       }

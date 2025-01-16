@@ -1,5 +1,6 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
 import { AvailableIntegrationType } from '@common/types';
+import { AutomationSchemaTrigger } from '@models/automation';
 
 export class AutomationSchemaModel {
   readonly automationServices: Record<string, AutomationSchemaService>;
@@ -113,5 +114,14 @@ export class AutomationSchemaModel {
       }
     }
     return null;
+  }
+
+  getAvailableTriggers(integrationName: string): AutomationSchemaTrigger[] {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        return Object.values(value.triggers);
+      }
+    }
+    return [];
   }
 }

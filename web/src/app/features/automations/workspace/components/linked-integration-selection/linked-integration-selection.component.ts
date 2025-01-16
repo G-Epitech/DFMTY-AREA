@@ -11,7 +11,7 @@ import { PageModel, PageOptions } from '@models/page';
 import { UsersMediator } from '@mediators/users.mediator';
 import { IntegrationModel } from '@models/integration';
 import { AsyncPipe } from '@angular/common';
-import { LinkedIntegrationButtonComponent } from '@components/linked-integration-button/linked-integration-button.component';
+import { LinkedIntegrationButtonComponent } from '@components/buttons/linked-integration-button/linked-integration-button.component';
 import { finalize, switchMap } from 'rxjs/operators';
 import { integrationTypeFromIdentifier } from '@utils/integration';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
@@ -37,7 +37,7 @@ export class LinkedIntegrationSelectionComponent {
     }
     return null;
   });
-  selectedLinkedIntegration = output<IntegrationModel>();
+  linkedIntegrationSelected = output<IntegrationModel>();
 
   pageOptions$: BehaviorSubject<PageOptions> = new BehaviorSubject<PageOptions>(
     {
@@ -64,6 +64,6 @@ export class LinkedIntegrationSelectionComponent {
     );
 
   selectLinkedIntegration(integration: IntegrationModel) {
-    this.selectedLinkedIntegration.emit(integration);
+    this.linkedIntegrationSelected.emit(integration);
   }
 }

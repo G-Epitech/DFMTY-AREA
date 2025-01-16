@@ -2,14 +2,14 @@ import { AvailableIntegrationType } from '@common/types';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
 import { PartialStateUpdater } from '@ngrx/signals';
 import { IntegrationModel } from '@models/integration';
-import { TriggerShortModel } from '@models/automation';
+import { AutomationSchemaTrigger } from '@models/automation';
 
 export interface SelectTriggerSheetState {
   selectionStep: TriggerSelectionStep;
   stepHistory: TriggerSelectionStep[];
   selectedIntegration: AvailableIntegrationType | null;
   selectedLinkedIntegration: IntegrationModel | null;
-  selectedTrigger: TriggerShortModel | null;
+  selectedTrigger: AutomationSchemaTrigger | null;
 }
 
 export function stateUpdaterBack(): PartialStateUpdater<SelectTriggerSheetState> {
@@ -49,6 +49,17 @@ export function stateUpdaterSelectLinkedIntegration(
   };
 }
 
+export function stateUpdaterSelectTrigger(
+  trigger: AutomationSchemaTrigger
+): PartialStateUpdater<SelectTriggerSheetState> {
+  return (state: SelectTriggerSheetState) => {
+    return {
+      ...state,
+      selectedTrigger: trigger,
+    };
+  };
+}
+
 export function stateUpdaterGoTo(
   step: TriggerSelectionStep
 ): PartialStateUpdater<SelectTriggerSheetState> {
@@ -58,23 +69,5 @@ export function stateUpdaterGoTo(
       selectionStep: step,
       stepHistory: [...state.stepHistory, step],
     };
-  };
-}
-
-export function stateUpdaterGoToIntegrationSelection(): PartialStateUpdater<SelectTriggerSheetState> {
-  return (state: SelectTriggerSheetState) => {
-    return stateUpdaterGoTo(TriggerSelectionStep.INTEGRATION)(state);
-  };
-}
-
-export function stateUpdaterGoToLinkedIntegrationSelection(): PartialStateUpdater<SelectTriggerSheetState> {
-  return (state: SelectTriggerSheetState) => {
-    return stateUpdaterGoTo(TriggerSelectionStep.LINKED_INTEGRATION)(state);
-  };
-}
-
-export function stateUpdaterGoToTriggerSelection(): PartialStateUpdater<SelectTriggerSheetState> {
-  return (state: SelectTriggerSheetState) => {
-    return stateUpdaterGoTo(TriggerSelectionStep.TRIGGER)(state);
   };
 }
