@@ -15,9 +15,10 @@ public sealed class DiscordIntegration : Integration
         IntegrationId id,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
-        : base(id, IntegrationType.Discord, ownerId, clientId, updatedAt, createdAt)
+        : base(id, IntegrationType.Discord, ownerId, clientId, tokens, updatedAt, createdAt)
     {
     }
 
@@ -43,6 +44,7 @@ public sealed class DiscordIntegration : Integration
             IntegrationId.CreateUnique(),
             ownerId,
             clientId,
+            [],
             DateTime.UtcNow,
             DateTime.UtcNow);
     }

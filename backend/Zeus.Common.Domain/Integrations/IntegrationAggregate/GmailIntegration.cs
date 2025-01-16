@@ -14,9 +14,10 @@ public sealed class GmailIntegration : Integration
         IntegrationId id,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
-        : base(id, IntegrationType.Gmail, ownerId, clientId, updatedAt, createdAt)
+        : base(id, IntegrationType.Gmail, ownerId, clientId, tokens, updatedAt, createdAt)
     {
     }
 
@@ -42,6 +43,7 @@ public sealed class GmailIntegration : Integration
             IntegrationId.CreateUnique(),
             ownerId,
             clientId,
+            [],
             DateTime.UtcNow,
             DateTime.UtcNow);
     }

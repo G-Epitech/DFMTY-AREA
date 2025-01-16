@@ -8,16 +8,16 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
-
 public sealed class NotionIntegration : Integration
 {
     public NotionIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
-        : base(id, IntegrationType.Notion, ownerId, clientId, updatedAt, createdAt)
+        : base(id, IntegrationType.Notion, ownerId, clientId, tokens, updatedAt, createdAt)
     {
     }
 
@@ -42,6 +42,7 @@ public sealed class NotionIntegration : Integration
             IntegrationId.CreateUnique(),
             ownerId,
             clientId,
+            [],
             DateTime.UtcNow,
             DateTime.UtcNow);
     }

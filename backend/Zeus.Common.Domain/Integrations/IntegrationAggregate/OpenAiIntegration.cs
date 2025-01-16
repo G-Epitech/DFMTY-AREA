@@ -14,9 +14,10 @@ public sealed class OpenAiIntegration : Integration
         IntegrationId id,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
-        : base(id, IntegrationType.OpenAi, ownerId, clientId, updatedAt, createdAt)
+        : base(id, IntegrationType.OpenAi, ownerId, clientId, tokens, updatedAt, createdAt)
     {
     }
 
@@ -41,6 +42,7 @@ public sealed class OpenAiIntegration : Integration
             IntegrationId.CreateUnique(),
             ownerId,
             clientId,
+            [],
             DateTime.UtcNow,
             DateTime.UtcNow);
     }
