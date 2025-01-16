@@ -124,4 +124,38 @@ export class AutomationSchemaModel {
     }
     return [];
   }
+
+  getTriggerByIdentifier(
+    integrationName: string,
+    triggerIdentifier: string
+  ): AutomationSchemaTrigger | null {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        return value.triggers[triggerIdentifier];
+      }
+    }
+    return null;
+  }
+
+  getAvailableIntegrationByName(
+    integrationName: string
+  ): AvailableIntegrationType | null {
+    for (const [key, value] of Object.entries(this.automationServices)) {
+      if (value.name === integrationName) {
+        return {
+          color: value.color,
+          name: value.name,
+          iconUri: value.iconUri,
+          identifier: key,
+          triggers: Object.entries(value.triggers).map(
+            ([, trigger]) => trigger.name
+          ),
+          actions: Object.entries(value.actions).map(
+            ([, action]) => action.name
+          ),
+        };
+      }
+    }
+    return null;
+  }
 }
