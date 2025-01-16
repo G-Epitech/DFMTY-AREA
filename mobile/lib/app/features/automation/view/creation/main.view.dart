@@ -26,6 +26,12 @@ class AutomationMainView extends StatefulWidget {
 
 class _AutomationMainViewState extends State<AutomationMainView> {
   @override
+  void initState() {
+    super.initState();
+    context.read<AutomationBloc>().add(AutomationReset());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AutomationBloc, AutomationState>(
       builder: (context, state) {

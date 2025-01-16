@@ -33,17 +33,6 @@ final class AutomationDescriptionChanged extends AutomationEvent {
   List<Object> get props => [description];
 }
 
-final class AutomationTriggerProviderChanged extends AutomationEvent {
-  final String triggerName;
-
-  const AutomationTriggerProviderChanged({
-    required this.triggerName,
-  });
-
-  @override
-  List<Object> get props => [triggerName];
-}
-
 final class AutomationResetPending extends AutomationEvent {
   final AutomationChoiceEnum type;
   final int index;

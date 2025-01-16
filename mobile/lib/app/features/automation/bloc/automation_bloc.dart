@@ -18,7 +18,6 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationReset>(_onReset);
     on<AutomationLabelChanged>(_onLabelChanged);
     on<AutomationDescriptionChanged>(_onDescriptionChanged);
-    on<AutomationTriggerProviderChanged>(_onTriggerProviderChanged);
     on<AutomationTriggerProviderAdded>(_onTriggerProviderAdded);
     on<AutomationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
     on<AutomationTriggerParameterChanged>(_onTriggerParameterChanged);
@@ -65,25 +64,19 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 
-  void _onTriggerProviderChanged(
-      AutomationTriggerProviderChanged event, Emitter<AutomationState> emit) {
-    final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
-      identifier: event.triggerName,
-    );
-    final updatedAutomation =
-        state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    emit(state.copyWith(dirtyAutomation: updatedAutomation));
-  }
-
   void _onTriggerProviderAdded(
       AutomationTriggerProviderAdded event, Emitter<AutomationState> emit) {
+    final previews = _getCleanPreviews();
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       providers: List.from(state.dirtyAutomation.trigger.providers)
         ..add(event.provider),
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    emit(state.copyWith(dirtyAutomation: updatedAutomation));
+    emit(state.copyWith(
+      dirtyAutomation: updatedAutomation,
+      previews: previews,
+    ));
   }
 
   void _onTriggerIdentifierChanged(
@@ -143,6 +136,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
   void _onActionProviderAdded(
       AutomationActionProviderAdded event, Emitter<AutomationState> emit) {
+    final previews = _getCleanPreviews();
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
     if (updatedActions.length <= event.index) {
@@ -160,7 +154,10 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(state.copyWith(dirtyAutomation: updatedAutomation));
+    emit(state.copyWith(
+      dirtyAutomation: updatedAutomation,
+      previews: previews,
+    ));
   }
 
   void _onActionParameterChanged(
@@ -283,6 +280,36 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
   void _onLoadCleanAutomation(
       AutomationLoadCleanAutomation event, Emitter<AutomationState> emit) {
-    emit(state.copyWith(dirtyAutomation: state.cleanedAutomation));
+    final newPreview = _getCleanPreviews();
+    emit(state.copyWith(
+        dirtyAutomation: state.cleanedAutomation, previews: newPreview));
+  }
+
+  Map<String, String> _getCleanPreviews() {
+    final Map<String, String> newPreview = {};
+
+    for (final trigger in [state.cleanedAutomation.trigger]) {
+      for (final param in trigger.parameters) {
+        final index = [state.cleanedAutomation.trigger].indexOf(trigger);
+        final integrationIdentifier = trigger.identifier.split('.').first;
+        final triggerIdentifier = trigger.identifier.split('.').last;
+        final previewKey =
+            "trigger.$index.$integrationIdentifier.$triggerIdentifier.${param.identifier}";
+        newPreview[previewKey] = state.previews[previewKey] ?? '';
+      }
+    }
+
+    for (final action in state.cleanedAutomation.actions) {
+      for (final param in action.parameters) {
+        final index = state.cleanedAutomation.actions.indexOf(action);
+        final integrationIdentifier = action.identifier.split('.').first;
+        final actionIdentifier = action.identifier.split('.').last;
+        final previewKey =
+            "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
+        newPreview[previewKey] = state.previews[previewKey] ?? '';
+      }
+    }
+
+    return newPreview;
   }
 }

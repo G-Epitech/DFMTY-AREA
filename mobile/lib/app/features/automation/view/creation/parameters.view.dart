@@ -656,14 +656,14 @@ String? getPreviewData(
         for (final parameter in action.parameters) {
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
-            isNotHumanReadable = parameter.type == 'raw';
+            isNotHumanReadable = parameter.type != 'raw';
             break;
           }
         }
       }
       break;
   }
-  if (humanReadable && isNotHumanReadable) {
+  if (humanReadable || !isNotHumanReadable) {
     return replaceByHumanReadable(
         type,
         integrationIdentifier,
