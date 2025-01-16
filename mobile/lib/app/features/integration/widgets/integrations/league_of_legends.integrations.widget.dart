@@ -64,7 +64,7 @@ class LeagueOfLegendsCustomWidget extends StatelessWidget {
           );
           Navigator.push(
             context,
-            customScreenBuilder(AutomationCreationAddView(
+            customScreenBuilder(AutomationAddView(
               type: type!,
               integrationIdentifier: integrationIdentifier!,
               indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,

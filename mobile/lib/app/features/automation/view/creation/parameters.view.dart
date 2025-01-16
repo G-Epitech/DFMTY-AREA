@@ -402,7 +402,7 @@ class _List extends StatelessWidget {
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: (valueType == 'var'
-                                          ? "$indexVariable."
+                                          ? indexVariable
                                           : "") +
                                       value,
                                   parameterType: valueType,
@@ -422,7 +422,7 @@ class _List extends StatelessWidget {
 
 class AutomationParameterChoice extends StatelessWidget {
   final String title;
-  final void Function(String, String, String, int) onSave;
+  final void Function(String, String, String, String) onSave;
   final AutomationChoiceEnum type;
   final Automation automation;
   final List<AutomationRadioModel>? options;
@@ -469,7 +469,7 @@ class AutomationParameterChoice extends StatelessWidget {
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
-                  onSave(value, 'raw', humanReadableValue, 0);
+                  onSave(value, 'raw', humanReadableValue, "any");
                 },
                 value: selectedValue,
               ),
@@ -485,7 +485,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String, String, String, int) onSave;
+  final void Function(String, String, String, String) onSave;
   final String? value;
 
   const AutomationParameterFromActions({
@@ -556,7 +556,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue, index);
+                        onSave(value, 'var', humanReadableValue, "t.");
                       },
                     ),
                   );
@@ -606,7 +606,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue, index);
+                        onSave(value, 'var', humanReadableValue, "$index.");
                       },
                     ),
                   );
@@ -656,7 +656,7 @@ String? getPreviewData(
         for (final parameter in action.parameters) {
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
-            isNotHumanReadable = parameter.type != 'raw';
+            isNotHumanReadable = parameter.type == 'raw';
             break;
           }
         }
