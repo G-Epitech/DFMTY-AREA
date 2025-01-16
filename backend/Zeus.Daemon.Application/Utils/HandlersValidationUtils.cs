@@ -15,7 +15,7 @@ public static class HandlersValidationUtils
     )
     {
         var rule = schema[matchingType];
-        var isSchemaCollection = rule.Require is DependencyRequirements.Multiple or DependencyRequirements.OneOrMore;
+        var isSchemaCollection = rule.Require is DependencyRequirements.Multiple;
 
         switch (infos.IsCollection)
         {
@@ -40,7 +40,7 @@ public static class HandlersValidationUtils
         foreach ((IntegrationType type, DependencyRuleSchema rule) in schema)
         {
             var impl = Integration.GetImplementationFromType(type)!;
-            if (rule.Require is DependencyRequirements.Multiple or DependencyRequirements.OneOrMore)
+            if (rule.Require is DependencyRequirements.Multiple)
             {
                 final += $"\tIReadOnlyList<{impl.Name}>\n\tIList<{impl.Name}>\n";
             }

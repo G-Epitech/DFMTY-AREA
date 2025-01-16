@@ -5,8 +5,7 @@ namespace Zeus.Common.Domain.ProvidersSettings;
 public enum DependencyRequirements
 {
     Single = 0,
-    OneOrMore = 1,
-    Multiple = 2
+    Multiple = 1
 }
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
