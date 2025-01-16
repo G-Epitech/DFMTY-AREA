@@ -10,11 +10,11 @@ namespace Zeus.Daemon.Runner.Runner;
 
 public class DaemonRunner
 {
+    private const int ThreadSleepTimeMilliseconds = 1000;
     private readonly IConfigurationRoot _configuration;
     private readonly IEnvironmentProvider _environmentProvider;
     private readonly ILogger<DaemonRunner> _logger;
     private readonly IServiceProvider _serviceProvider;
-    private const int ThreadSleepTimeMilliseconds = 1000;
 
     public DaemonRunner(IServiceProvider serviceProvider, IConfigurationRoot configuration)
     {

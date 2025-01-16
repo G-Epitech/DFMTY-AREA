@@ -4,12 +4,12 @@ namespace Zeus.Api.Domain.Integrations.LeagueOfLegends.ValueObjects;
 
 public class LeagueOfLegendsSummonerProfileIconId : ValueObject
 {
-    public uint Value { get; }
-
     public LeagueOfLegendsSummonerProfileIconId(uint value)
     {
         Value = value;
     }
+
+    public uint Value { get; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

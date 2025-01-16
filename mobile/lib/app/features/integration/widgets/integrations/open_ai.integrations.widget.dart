@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/add.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/add.view.dart';
 import 'package:triggo/app/features/integration/utils/automation_update_provider.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
@@ -64,7 +64,7 @@ class OpenAICustomWidget extends StatelessWidget {
           );
           Navigator.push(
             context,
-            customScreenBuilder(AutomationCreationAddView(
+            customScreenBuilder(AutomationAddView(
               type: type!,
               integrationIdentifier: integrationIdentifier!,
               indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,

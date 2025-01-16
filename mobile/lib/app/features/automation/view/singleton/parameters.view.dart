@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:triggo/app/features/automation/bloc/automation_creation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/models/radio.model.dart';
-import 'package:triggo/app/features/automation/view/creation/input.view.dart';
-import 'package:triggo/app/features/automation/view/creation/settings.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -16,14 +16,14 @@ import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
-class AutomationCreationParametersView extends StatefulWidget {
+class AutomationParametersView extends StatefulWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final int indexOfTheTriggerOrAction;
   final bool isEdit;
 
-  const AutomationCreationParametersView({
+  const AutomationParametersView({
     super.key,
     required this.type,
     required this.integrationIdentifier,
@@ -33,12 +33,11 @@ class AutomationCreationParametersView extends StatefulWidget {
   });
 
   @override
-  State<AutomationCreationParametersView> createState() =>
-      _AutomationCreationParametersViewState();
+  State<AutomationParametersView> createState() =>
+      _AutomationParametersViewState();
 }
 
-class _AutomationCreationParametersViewState
-    extends State<AutomationCreationParametersView> {
+class _AutomationParametersViewState extends State<AutomationParametersView> {
   @override
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
@@ -58,7 +57,7 @@ class _AutomationCreationParametersViewState
 }
 
 class _Body extends StatelessWidget {
-  final AutomationCreationParametersView widget;
+  final AutomationParametersView widget;
   final Map<String, AutomationSchemaTriggerActionProperty> properties;
   final bool isEdit;
 
@@ -108,7 +107,7 @@ class _OKButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Automation automation = context.select(
-      (AutomationCreationBloc bloc) => bloc.state.dirtyAutomation,
+      (AutomationBloc bloc) => bloc.state.dirtyAutomation,
     );
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
@@ -126,8 +125,8 @@ class _OKButton extends StatelessWidget {
             onPressed: isValid
                 ? () {
                     context
-                        .read<AutomationCreationBloc>()
-                        .add(AutomationCreationValidatePendingAutomation());
+                        .read<AutomationBloc>()
+                        .add(AutomationLoadDirtyToClean());
                     if (isEdit) {
                       Navigator.of(context).pop();
                     } else {
@@ -263,7 +262,7 @@ class _List extends StatelessWidget {
   Widget build(BuildContext context) {
     if (properties.isEmpty) {
       return Center(
-        child: Text('No need for parameters',
+        child: Text('No need for parameters,\n just click the OK button',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelLarge),
       );
@@ -273,7 +272,7 @@ class _List extends StatelessWidget {
       itemBuilder: (context, index) {
         final parameterIdentifier = properties.keys.elementAt(index);
         final property = properties[parameterIdentifier]!;
-        return BlocBuilder<AutomationCreationBloc, AutomationCreationState>(
+        return BlocBuilder<AutomationBloc, AutomationState>(
           builder: (context, state) {
             final title = property.name;
             final previewData = getPreviewData(
@@ -300,13 +299,12 @@ class _List extends StatelessWidget {
                 integrationIdentifier,
                 triggerOrActionIdentifier,
                 parameterIdentifier);
-            log("Options: $options");
             return AutomationLabelParameterWidget(
                 title: title,
                 previewData: previewData,
                 disabled: options == AutomationParameterNeedOptions.blocked,
                 input: options != AutomationParameterNeedOptions.no
-                    ? AutomationCreationInputView(
+                    ? AutomationInputView(
                         type: options == AutomationParameterNeedOptions.yes
                             ? AutomationInputEnum.radio
                             : AutomationInputEnum.text,
@@ -318,75 +316,80 @@ class _List extends StatelessWidget {
                           final integrationMediator =
                               RepositoryProvider.of<IntegrationMediator>(
                                   context);
-                          final options = await getOptionsFromMediator(
-                              state.dirtyAutomation,
-                              type,
-                              integrationIdentifier,
-                              triggerOrActionIdentifier,
-                              parameterIdentifier,
-                              integrationMediator);
+                          late List<AutomationRadioModel> options;
+                          try {
+                            options = await getOptionsFromMediator(
+                                state.dirtyAutomation,
+                                type,
+                                integrationIdentifier,
+                                indexOfTheTriggerOrAction,
+                                triggerOrActionIdentifier,
+                                parameterIdentifier,
+                                integrationMediator);
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                ..removeCurrentSnackBar()
+                                ..showSnackBar(SnackBar(
+                                    content: Text('Error getting options')));
+                            }
+                          }
                           return options;
                         },
                         onSave: (value, humanReadableValue) {
-                          log("Human: $humanReadableValue");
                           if (type == AutomationChoiceEnum.trigger) {
-                            context.read<AutomationCreationBloc>().add(
-                                AutomationCreationPreviewUpdated(
+                            context.read<AutomationBloc>().add(
+                                AutomationPreviewUpdated(
                                     key:
                                         "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: humanReadableValue));
 
                             context
-                                .read<AutomationCreationBloc>()
-                                .add(AutomationCreationTriggerParameterChanged(
+                                .read<AutomationBloc>()
+                                .add(AutomationTriggerParameterChanged(
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: value,
                                 ));
                           } else {
-                            context.read<AutomationCreationBloc>().add(
-                                AutomationCreationPreviewUpdated(
+                            context.read<AutomationBloc>().add(
+                                AutomationPreviewUpdated(
                                     key:
                                         "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: humanReadableValue));
 
                             context
-                                .read<AutomationCreationBloc>()
-                                .add(AutomationCreationActionParameterChanged(
+                                .read<AutomationBloc>()
+                                .add(AutomationActionParameterChanged(
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: value,
-                                  parameterType: options ==
-                                          AutomationParameterNeedOptions.yes
-                                      ? "var"
-                                      : "raw",
+                                  parameterType: "raw",
                                 ));
                           }
-                          /*context
-                  .read<AutomationCreationBloc>()
-                  .add(AutomationCreationLabelChanged(label: value));*/
                         },
                       )
                     : AutomationParameterChoice(
                         title: title,
                         type: type,
                         automation: state.cleanedAutomation,
-                        onSave: (value, valueType, humanReadableValue) {
+                        onSave: (value, valueType, humanReadableValue,
+                            indexVariable) {
                           if (type == AutomationChoiceEnum.trigger) {
-                            context.read<AutomationCreationBloc>().add(
-                                AutomationCreationPreviewUpdated(
+                            context.read<AutomationBloc>().add(
+                                AutomationPreviewUpdated(
                                     key:
                                         "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: humanReadableValue));
 
                             context
-                                .read<AutomationCreationBloc>()
-                                .add(AutomationCreationTriggerParameterChanged(
+                                .read<AutomationBloc>()
+                                .add(AutomationTriggerParameterChanged(
                                   parameterIdentifier: parameterIdentifier,
                                   parameterValue: value,
                                 ));
                           } else {
-                            context.read<AutomationCreationBloc>().add(
-                                AutomationCreationPreviewUpdated(
+                            context.read<AutomationBloc>().add(
+                                AutomationPreviewUpdated(
                                     key:
                                         "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: valueType == 'var'
@@ -394,11 +397,14 @@ class _List extends StatelessWidget {
                                         : 'Manual input'));
 
                             context
-                                .read<AutomationCreationBloc>()
-                                .add(AutomationCreationActionParameterChanged(
+                                .read<AutomationBloc>()
+                                .add(AutomationActionParameterChanged(
                                   index: indexOfTheTriggerOrAction,
                                   parameterIdentifier: parameterIdentifier,
-                                  parameterValue: value,
+                                  parameterValue: (valueType == 'var'
+                                          ? indexVariable
+                                          : "") +
+                                      value,
                                   parameterType: valueType,
                                 ));
                           }
@@ -416,7 +422,7 @@ class _List extends StatelessWidget {
 
 class AutomationParameterChoice extends StatelessWidget {
   final String title;
-  final void Function(String, String, String) onSave;
+  final void Function(String, String, String, String) onSave;
   final AutomationChoiceEnum type;
   final Automation automation;
   final List<AutomationRadioModel>? options;
@@ -458,12 +464,12 @@ class AutomationParameterChoice extends StatelessWidget {
             AutomationLabelParameterWidget(
               title: "Manual input",
               previewData: "Enter manually a value",
-              input: AutomationCreationInputView(
+              input: AutomationInputView(
                 type: AutomationInputEnum.text,
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
-                  onSave(value, 'raw', humanReadableValue);
+                  onSave(value, 'raw', humanReadableValue, "any");
                 },
                 value: selectedValue,
               ),
@@ -479,7 +485,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String, String, String) onSave;
+  final void Function(String, String, String, String) onSave;
   final String? value;
 
   const AutomationParameterFromActions({
@@ -544,13 +550,13 @@ class AutomationParameterFromActions extends StatelessWidget {
                   return AutomationLabelParameterWidget(
                     title: "Trigger",
                     previewData: integrationName,
-                    input: AutomationCreationInputView(
+                    input: AutomationInputView(
                       type: AutomationInputEnum.radio,
                       label: triggerName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue);
+                        onSave(value, 'var', humanReadableValue, "t.");
                       },
                     ),
                   );
@@ -594,13 +600,13 @@ class AutomationParameterFromActions extends StatelessWidget {
                   return AutomationLabelParameterWidget(
                     title: "Action $index - $actionParameterName",
                     previewData: integrationName,
-                    input: AutomationCreationInputView(
+                    input: AutomationInputView(
                       type: AutomationInputEnum.radio,
                       label: actionsName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue);
+                        onSave(value, 'var', humanReadableValue, "$index.");
                       },
                     ),
                   );
@@ -650,7 +656,6 @@ String? getPreviewData(
         for (final parameter in action.parameters) {
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
-            log("Parameter Type: ${parameter.type}");
             isNotHumanReadable = parameter.type != 'raw';
             break;
           }
@@ -658,7 +663,7 @@ String? getPreviewData(
       }
       break;
   }
-  if (humanReadable && isNotHumanReadable) {
+  if (humanReadable || !isNotHumanReadable) {
     return replaceByHumanReadable(
         type,
         integrationIdentifier,
@@ -667,7 +672,6 @@ String? getPreviewData(
         parameterIdentifier,
         previews);
   }
-  log("NOT HUMAN Value: $value");
   return value;
 }
 
@@ -695,6 +699,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
     Automation automation,
     AutomationChoiceEnum type,
     String integrationName,
+    int indexOfTheTriggerOrAction,
     String propertyIdentifier,
     String parameterIdentifier,
     IntegrationMediator integrationMediator) async {
@@ -746,6 +751,44 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           }
         }
       }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'CreateDatabase' ||
+            propertyIdentifier == 'CreatePage') {
+          if (parameterIdentifier == 'ParentId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getPagesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'CreateDatabaseRow') {
+          if (parameterIdentifier == 'DatabaseId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getDatabasesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'ArchiveDatabase') {
+          if (parameterIdentifier == 'DatabaseId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getDatabasesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'ArchivePage') {
+          if (parameterIdentifier == 'PageId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getPagesRadio(integrationId);
+          }
+        }
+      }
       break;
   }
   return options;
@@ -786,6 +829,32 @@ AutomationParameterNeedOptions haveOptions(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'ChannelId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+      }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'CreateDatabase' ||
+            propertyIdentifier == 'CreatePage') {
+          if (parameterIdentifier == 'ParentId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'CreateDatabaseRow') {
+          if (parameterIdentifier == 'DatabaseId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'ArchiveDatabase') {
+          if (parameterIdentifier == 'DatabaseId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'ArchivePage') {
+          if (parameterIdentifier == 'PageId') {
             return AutomationParameterNeedOptions.yes;
           }
         }

@@ -297,17 +297,19 @@ namespace Zeus.Api.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AutomationId");
 
-                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Dependencies", b2 =>
                                 {
                                     b2.Property<Guid>("ActionId")
                                         .HasColumnType("uuid");
 
-                                    b2.Property<Guid>("ProviderId")
-                                        .HasColumnType("uuid");
+                                    b2.Property<Guid>("Value")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("uuid")
+                                        .HasColumnName("DependencyId");
 
-                                    b2.HasKey("ActionId", "ProviderId");
+                                    b2.HasKey("ActionId", "Value");
 
-                                    b2.ToTable("AutomationActionProviders", (string)null);
+                                    b2.ToTable("AutomationActionDependencies", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ActionId");
@@ -337,9 +339,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                                         .HasForeignKey("ActionId");
                                 });
 
-                            b1.Navigation("Parameters");
+                            b1.Navigation("Dependencies");
 
-                            b1.Navigation("Providers");
+                            b1.Navigation("Parameters");
                         });
 
                     b.OwnsOne("Zeus.Common.Domain.AutomationAggregate.Entities.AutomationTrigger", "Trigger", b1 =>
@@ -366,17 +368,19 @@ namespace Zeus.Api.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AutomationId");
 
-                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Providers", b2 =>
+                            b1.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationId", "Dependencies", b2 =>
                                 {
                                     b2.Property<Guid>("TriggerId")
                                         .HasColumnType("uuid");
 
-                                    b2.Property<Guid>("ProviderId")
-                                        .HasColumnType("uuid");
+                                    b2.Property<Guid>("Value")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("uuid")
+                                        .HasColumnName("DependencyId");
 
-                                    b2.HasKey("TriggerId");
+                                    b2.HasKey("TriggerId", "Value");
 
-                                    b2.ToTable("AutomationTriggerProviders", (string)null);
+                                    b2.ToTable("AutomationTriggerDependencies", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("TriggerId");
@@ -403,9 +407,9 @@ namespace Zeus.Api.Infrastructure.Migrations
                                         .HasForeignKey("TriggerId");
                                 });
 
-                            b1.Navigation("Parameters");
+                            b1.Navigation("Dependencies");
 
-                            b1.Navigation("Providers");
+                            b1.Navigation("Parameters");
                         });
 
                     b.Navigation("Actions");

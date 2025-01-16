@@ -44,7 +44,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
       rethrow;
     }
@@ -66,7 +65,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
       rethrow;
     }
@@ -91,7 +89,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
     }
   }
@@ -101,7 +98,7 @@ class AuthenticationMediator with ChangeNotifier {
       await _credentialsRepository.deleteTokens();
       _controller.add(AuthenticationStatus.unauthenticated);
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
+      rethrow;
     }
   }
 
@@ -132,7 +129,6 @@ class AuthenticationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(AuthenticationStatus.unauthenticated);
       return false;
     }

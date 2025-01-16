@@ -5,18 +5,6 @@ namespace Zeus.Api.Domain.Integrations.Notion;
 
 public class NotionPage : Entity<NotionPageId>
 {
-    public string? Icon { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public NotionUserId CreatedBy { get; private set; }
-    public DateTime LastEditedAt { get; private set; }
-    public NotionUserId LastEditedBy { get; private set; }
-    public string Title { get; private set; }
-    public string? Description { get; private set; }
-    public NotionParent Parent { get; private set; }
-    public Uri Uri { get; private set; }
-    public bool Archived { get; private set; }
-    public bool InTrash { get; private set; }
-
     public NotionPage(NotionPageId id,
         string? icon,
         DateTime createdAt,
@@ -42,4 +30,16 @@ public class NotionPage : Entity<NotionPageId>
         Archived = archived;
         InTrash = inTrash;
     }
+
+    public string? Icon { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public NotionUserId CreatedBy { get; private set; }
+    public DateTime LastEditedAt { get; private set; }
+    public NotionUserId LastEditedBy { get; private set; }
+    public string Title { get; private set; }
+    public string? Description { get; private set; }
+    public NotionParent Parent { get; private set; }
+    public Uri Uri { get; private set; }
+    public bool Archived { get; private set; }
+    public bool InTrash { get; private set; }
 }

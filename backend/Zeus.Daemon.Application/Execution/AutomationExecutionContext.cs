@@ -109,7 +109,7 @@ public sealed class AutomationExecutionContext
     {
         var parameters = method.GetParameters();
         var result = new object?[parameters.Length];
-        var providers = GetActionProviders(action);
+        var dependencies = GetActionDependencies(action);
 
         foreach (var parameter in parameters)
         {
@@ -122,7 +122,7 @@ public sealed class AutomationExecutionContext
             }
             else if (fromIntegrationAttribute is not null)
             {
-                result[parameter.Position] = StepUtils.GetFromIntegrationsValue(parameter, providers);
+                result[parameter.Position] = StepUtils.GetFromIntegrationsValue(parameter, dependencies);
             }
             else if (parameter.ParameterType.IsAssignableTo(typeof(CancellationToken)))
             {
@@ -188,8 +188,8 @@ public sealed class AutomationExecutionContext
         }
     }
 
-    private List<Integration> GetActionProviders(AutomationAction step)
+    private List<Integration> GetActionDependencies(AutomationAction step)
     {
-        return step.Providers.Select(p => _integrations[p]).ToList();
+        return step.Dependencies.Select(p => _integrations[p]).ToList();
     }
 }

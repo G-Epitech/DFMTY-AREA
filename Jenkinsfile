@@ -67,7 +67,7 @@ podTemplate(containers: [
             container('docker') {
                 sh "docker build -f ${MOBILE_PATH}/Dockerfile.base -t mobile-base ${MOBILE_PATH}"
                 def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_TAG}"
-                sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH}"
+                sh "docker build -f ${MOBILE_PATH}/Dockerfile -t ${MOBILE_IMAGE_TEST} ${MOBILE_PATH} --no-cache"
             }
         }
 

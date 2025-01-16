@@ -7,16 +7,17 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
-[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class OpenAiIntegration : Integration
 {
     public OpenAiIntegration(
         IntegrationId id,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
-        : base(id, IntegrationType.OpenAi, ownerId, clientId, updatedAt, createdAt)
+        : base(id, IntegrationType.OpenAi, ownerId, clientId, tokens, updatedAt, createdAt)
     {
     }
 
@@ -41,6 +42,7 @@ public sealed class OpenAiIntegration : Integration
             IntegrationId.CreateUnique(),
             ownerId,
             clientId,
+            [],
             DateTime.UtcNow,
             DateTime.UtcNow);
     }

@@ -18,10 +18,10 @@ using Integration = Common.Domain.Integrations.IntegrationAggregate.Integration;
 public class IntegrationService : IIntegrationService
 {
     private readonly IDiscordService _discordService;
-    private readonly IOpenAiService _openAiService;
+    private readonly ILeagueOfLegendsService _leagueOfLegendsService;
     private readonly IMapper _mapper;
     private readonly INotionService _notionService;
-    private readonly ILeagueOfLegendsService _leagueOfLegendsService;
+    private readonly IOpenAiService _openAiService;
 
     public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper,
         IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService)

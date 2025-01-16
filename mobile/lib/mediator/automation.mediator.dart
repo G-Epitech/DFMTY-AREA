@@ -7,6 +7,7 @@ import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/automation/dtos/automation.dtos.dart';
+import 'package:triggo/repositories/automation/models/automation.repository.model.dart';
 
 class AutomationMediator with ChangeNotifier {
   final AutomationRepository _automationRepository;
@@ -23,7 +24,7 @@ class AutomationMediator with ChangeNotifier {
       await _getAutomationSchema();
     } catch (e) {
       log('Error initializing AutomationMediator: $e');
-      // Display error message with a snackbar or dialog (something like that)
+      throw Exception('Error initializing AutomationMediator');
     }
   }
 
@@ -40,22 +41,22 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting user automations');
     }
   }
 
-  Future<bool> createAutomation() async {
+  Future<bool> createAutomation(Automation automation) async {
     try {
-      InPostAutomationDTO automation = InPostAutomationDTO();
-      final res = await _automationRepository.createAutomation(automation);
+      final json = automation.toJson();
+      final dto = AutomationDTO.fromJson(json);
+      InPostAutomationDTO automationDTO = InPostAutomationDTO(automation: dto);
+      final res = await _automationRepository.createAutomation(automationDTO);
       if (res.statusCode == Codes.created) {
         return true;
       } else {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       return false;
     }
   }
@@ -63,7 +64,6 @@ class AutomationMediator with ChangeNotifier {
   Future<void> _getAutomationSchema() async {
     final res = await _automationRepository.getAutomationSchema();
     if (res.statusCode == Codes.ok && res.data != null) {
-      log('AutomationSchemas: ${res.data!.schema}');
       _automationSchemas = AutomationSchemas.fromDTO(res.data!.schema);
       notifyListeners();
     } else {

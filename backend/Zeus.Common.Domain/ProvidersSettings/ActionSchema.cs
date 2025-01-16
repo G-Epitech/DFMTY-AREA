@@ -1,13 +1,19 @@
-﻿namespace Zeus.Common.Domain.ProvidersSettings;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class ActionSchema
+using Zeus.Common.Domain.Integrations.Common.Enums;
+
+namespace Zeus.Common.Domain.ProvidersSettings;
+
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+public sealed class ActionSchema
 {
     public ActionSchema(
         string name,
         string description,
         string icon,
         Dictionary<string, ParameterSchema> parameters,
-        Dictionary<string, FactSchema> facts
+        Dictionary<string, FactSchema> facts,
+        Dictionary<IntegrationType, DependencyRuleSchema> dependencies
     )
     {
         Name = name;
@@ -15,6 +21,7 @@ public class ActionSchema
         Icon = icon;
         Parameters = parameters;
         Facts = facts;
+        Dependencies = dependencies;
     }
 
     public string Name { get; }
@@ -22,4 +29,5 @@ public class ActionSchema
     public string Icon { get; }
     public Dictionary<string, ParameterSchema> Parameters { get; }
     public Dictionary<string, FactSchema> Facts { get; }
+    public Dictionary<IntegrationType, DependencyRuleSchema> Dependencies { get; }
 }

@@ -27,9 +27,6 @@ public class OpenAiService : IOpenAiService
         _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
     }
 
-    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
-        new AuthenticationHeaderValue("Bearer", accessToken.Value);
-
     public async Task<ErrorOr<List<OpenAiModel>>> GetModelsAsync(AccessToken accessToken)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
@@ -79,4 +76,7 @@ public class OpenAiService : IOpenAiService
             user.Role,
             DateTimeOffset.FromUnixTimeSeconds(user.AddedAt).DateTime)).ToList();
     }
+
+    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue("Bearer", accessToken.Value);
 }

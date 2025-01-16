@@ -9,12 +9,12 @@ namespace Zeus.Daemon.Infrastructure.Services.Api;
 
 public class SynchronizationService : IDaemonService
 {
-    private readonly IAutomationsRegistry _automationsRegistry;
-    private readonly ILogger _logger;
-    private readonly IAutomationsService _automationService;
-    private CancellationTokenSource? _currentSyncingToken;
     private const int MaxRetries = 3;
     private const int RetryDelayMilliseconds = 5000;
+    private readonly IAutomationsService _automationService;
+    private readonly IAutomationsRegistry _automationsRegistry;
+    private readonly ILogger _logger;
+    private CancellationTokenSource? _currentSyncingToken;
 
     public SynchronizationService(IAutomationsService automationService,
         IAutomationsRegistry automationsRegistry, ILogger<SynchronizationService> logger)
@@ -22,6 +22,16 @@ public class SynchronizationService : IDaemonService
         _automationService = automationService;
         _automationsRegistry = automationsRegistry;
         _logger = logger;
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        return SyncAutomationsAsync();
+    }
+
+    public Task StopAsync()
+    {
+        return Task.CompletedTask;
     }
 
     public async Task CancelPendingSyncAsync()
@@ -89,15 +99,5 @@ public class SynchronizationService : IDaemonService
             await Task.Delay(RetryDelayMilliseconds, _currentSyncingToken.Token);
         }
         _currentSyncingToken = null;
-    }
-
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        return SyncAutomationsAsync();
-    }
-
-    public Task StopAsync()
-    {
-        return Task.CompletedTask;
     }
 }

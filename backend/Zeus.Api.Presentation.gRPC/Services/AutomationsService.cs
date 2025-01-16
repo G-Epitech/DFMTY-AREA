@@ -68,10 +68,10 @@ public class AutomationsService : Contracts.AutomationsService.AutomationsServic
             await responseStream.WriteAsync(new RegistrableAutomation
             {
                 Automation = _mapper.Map<Automation>(automation),
-                TriggerIntegrations =
+                TriggerDependencies =
                 {
                     triggersMap
-                        .Where(p => automation.Trigger.Providers.Contains(p.Key))
+                        .Where(p => automation.Trigger.Dependencies.Contains(p.Key))
                         .Select(p => _mapper.Map<Contracts.Integration>(p.Value))
                         .ToList()
                 }

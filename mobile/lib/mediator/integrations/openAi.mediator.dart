@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/repositories/integration/openAI.repository.dart';
+import 'package:triggo/repositories/integration/integrations/openAI.repository.dart';
 
 enum LinkStatus {
   unknown,
@@ -35,7 +35,6 @@ class OpenAIMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       _controller.add(LinkStatus.notLinked);
       rethrow;
     }

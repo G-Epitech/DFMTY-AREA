@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triggo/app/features/automation/view/automation.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/main.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -22,8 +22,14 @@ class _IntegrationPageState extends State<AutomationsView> {
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
-    final Future<List<Automation>> automations =
-        automationMediator.getUserAutomations();
+    late Future<List<Automation>> automations;
+    try {
+      automations = automationMediator.getUserAutomations();
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('No automation data found')));
+    }
     return BaseScaffold(
       title: 'Automations',
       body: _AutomationContainer(automations: automations),
@@ -46,7 +52,7 @@ class _AutomationContainer extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: _AutomationCreationButton(),
+                child: _AutomationButton(),
               ),
             ),
           ],
@@ -57,8 +63,8 @@ class _AutomationContainer extends StatelessWidget {
   }
 }
 
-class _AutomationCreationButton extends StatelessWidget {
-  const _AutomationCreationButton();
+class _AutomationButton extends StatelessWidget {
+  const _AutomationButton();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +73,14 @@ class _AutomationCreationButton extends StatelessWidget {
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
-        // automationMediator.createAutomation();
+        try {
+          // automationMediator.createAutomation();
+        } catch (e) {
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+                SnackBar(content: Text('Could not create automation')));
+        }
         Navigator.pushNamed(context, RoutesNames.automationCreation);
       },
     );
@@ -160,7 +173,7 @@ class _AutomationListItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(context,
-            customScreenBuilder(AutomationView(automation: automation)));
+            customScreenBuilder(AutomationMainView(automation: automation)));
       },
       child: TriggoCard(
         customWidget: Row(

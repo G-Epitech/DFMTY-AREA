@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/view/automations.view.dart';
-import 'package:triggo/app/features/automation/view/creation/main.view.dart';
-import 'package:triggo/app/features/automation/view/creation/settings.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/main.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/features/home/home.dart';
 import 'package:triggo/app/features/integration/view/integration_connect.view.dart';
 import 'package:triggo/app/features/integration/view/integrations.view.dart';
@@ -32,9 +32,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.connectIntegration):
       return customScreenBuilder(const IntegrationAvailableView());
     case (RoutesNames.automationCreation):
-      return customScreenBuilder(const AutomationCreationMainView());
+      return customScreenBuilder(const AutomationMainView());
     case (RoutesNames.automationSettings):
-      return customScreenBuilder(const AutomationCreationSettingsView());
+      return customScreenBuilder(const AutomationSettingsView());
     case (RoutesNames.profile):
       return customScreenBuilder(const ProfileView());
     default:

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
-import 'package:triggo/app/features/automation/view/creation/select_integration_account.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/select_integration_account.view.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/view/integrations/leagueOfLegends.view.dart';
 import 'package:triggo/app/features/integration/view/integrations/openAI.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -56,8 +57,7 @@ class _CustomWidget extends StatelessWidget {
         if (type != null) {
           Navigator.push(
               context,
-              customScreenBuilder(
-                  AutomationCreationSelectIntegrationsAccountView(
+              customScreenBuilder(AutomationSelectIntegrationsAccountView(
                 type: type!,
                 integrationIdentifier: integration.url,
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,
@@ -76,7 +76,7 @@ class _CustomWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
-              child: SvgPicture.asset(
+              child: SvgPicture.network(
                 integration.iconUri,
                 width: 26,
                 height: 26,
@@ -123,12 +123,24 @@ Future<void> _customOnTap(
     BuildContext context,
     AvailableIntegration integration,
     IntegrationMediator integrationMediator) async {
-  if (integration.name == IntegrationNames.openAI) {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OpenAIIntegrationView()),
-    );
-  } else {
-    integrationMediator.launchURLFromIntegration(integration.url);
+  switch (integration.name) {
+    case IntegrationNames.openAI:
+      await Navigator.push(context,
+          MaterialPageRoute(builder: (context) => OpenAIIntegrationView()));
+      break;
+    case IntegrationNames.leagueOfLegends:
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LeagueOfLegendsIntegrationView()));
+      break;
+    default:
+      try {
+        integrationMediator.launchURLFromIntegration(integration.url);
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text('Could not open the URL')));
+      }
   }
 }

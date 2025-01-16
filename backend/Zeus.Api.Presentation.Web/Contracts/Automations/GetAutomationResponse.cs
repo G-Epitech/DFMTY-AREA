@@ -13,7 +13,7 @@ public record GetAutomationResponse(
 public record GetAutomationTriggerResponse(
     string Identifier,
     GetAutomationTriggerParameterResponse[] Parameters,
-    string[] Providers);
+    Guid[] Dependencies);
 
 public record GetAutomationTriggerParameterResponse(
     string Identifier,
@@ -22,7 +22,7 @@ public record GetAutomationTriggerParameterResponse(
 public record GetAutomationActionResponse(
     string Identifier,
     GetAutomationActionParameterResponse[] Parameters,
-    string[] Providers);
+    Guid[] Dependencies);
 
 public record GetAutomationActionParameterResponse(
     GetAutomationActionParameterTypeResponse Type,

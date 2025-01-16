@@ -17,6 +17,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
         IntegrationType type,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
         : base(id, updatedAt, createdAt)
@@ -24,6 +25,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
         Type = type;
         OwnerId = ownerId;
         ClientId = clientId;
+        _tokens = tokens;
     }
 
 #pragma warning disable CS8618
@@ -80,5 +82,31 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     public void RemoveToken(IntegrationToken token)
     {
         _tokens.Remove(token);
+    }
+
+    public static Type? GetImplementationFromType(IntegrationType type)
+    {
+        return type switch
+        {
+            IntegrationType.Discord => typeof(DiscordIntegration),
+            IntegrationType.Gmail => typeof(GmailIntegration),
+            IntegrationType.Notion => typeof(NotionIntegration),
+            IntegrationType.OpenAi => typeof(OpenAiIntegration),
+            IntegrationType.LeagueOfLegends => typeof(LeagueOfLegendsIntegration),
+            _ => null
+        };
+    }
+
+    public static IntegrationType? GetTypeFromImplementation(Type type)
+    {
+        return type switch
+        {
+            not null when type == typeof(DiscordIntegration) => IntegrationType.Discord,
+            not null when type == typeof(GmailIntegration) => IntegrationType.Gmail,
+            not null when type == typeof(NotionIntegration) => IntegrationType.Notion,
+            not null when type == typeof(OpenAiIntegration) => IntegrationType.OpenAi,
+            not null when type == typeof(LeagueOfLegendsIntegration) => IntegrationType.LeagueOfLegends,
+            _ => null
+        };
     }
 }

@@ -31,7 +31,7 @@ public class AutomationMapper : IRegister
                             action.Parameters.Select(p =>
                                 new AutomationActionParameter { Identifier = p.Identifier, Type = p.Type.ToString(), Value = p.Value })
                         },
-                        Providers = { action.Providers.Select(p => p.Value.ToString()) },
+                        Dependencies = { action.Dependencies.Select(p => p.Value.ToString()) },
                         Rank = action.Rank,
                     })
                 },
@@ -40,7 +40,7 @@ public class AutomationMapper : IRegister
                     Id = a.Trigger.Id.Value.ToString(),
                     Identifier = a.Trigger.Identifier,
                     Parameters = { a.Trigger.Parameters.Select(p => new AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }) },
-                    Providers = { a.Trigger.Providers.Select(p => p.Value.ToString()) }
+                    Dependencies = { a.Trigger.Dependencies.Select(p => p.Value.ToString()) }
                 }
             });
     }

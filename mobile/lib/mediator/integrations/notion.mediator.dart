@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
 import 'package:triggo/app/features/automation/models/radio.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
-import 'package:triggo/repositories/integration/notion.repository.dart';
+import 'package:triggo/repositories/integration/integrations/notion.repository.dart';
 
 class NotionMediator with ChangeNotifier {
   final NotionRepository _notionRepository;
@@ -23,15 +23,14 @@ class NotionMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting databases: $e');
     }
   }
 
-  Future<List<NotionPage>> getPages(String id, String guildId) async {
+  Future<List<NotionPage>> getPages(String id) async {
     List<NotionPage> channels = [];
     try {
-      final res = await _notionRepository.getPages(id, guildId);
+      final res = await _notionRepository.getPages(id);
       if (res.statusCode == Codes.ok && res.data != null) {
         for (var integration in res.data!.list) {
           channels.add(NotionPage.fromDTO(integration));
@@ -42,8 +41,7 @@ class NotionMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting channels: $e');
     }
   }
 
@@ -60,16 +58,14 @@ class NotionMediator with ChangeNotifier {
       }
       return guildsRadio;
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting databases: $e');
     }
   }
 
-  Future<List<AutomationRadioModel>> getPagesRadio(
-      String id, String guildId) async {
+  Future<List<AutomationRadioModel>> getPagesRadio(String id) async {
     List<AutomationRadioModel> channelsRadio = [];
     try {
-      final channels = await getPages(id, guildId);
+      final channels = await getPages(id);
       for (var channel in channels) {
         channelsRadio.add(AutomationRadioModel(
           title: channel.title,
@@ -79,8 +75,7 @@ class NotionMediator with ChangeNotifier {
       }
       return channelsRadio;
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting channels: $e');
     }
   }
 }

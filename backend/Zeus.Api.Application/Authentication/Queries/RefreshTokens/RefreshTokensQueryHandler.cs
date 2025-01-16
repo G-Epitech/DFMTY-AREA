@@ -10,8 +10,8 @@ namespace Zeus.Api.Application.Authentication.Queries.RefreshTokens;
 
 public class RefreshTokensQueryHandler : IRequestHandler<RefreshTokensQuery, ErrorOr<RefreshTokensQueryResult>>
 {
-    private readonly IUserReadRepository _userReadRepository;
     private readonly IJwtGenerator _jwtGenerator;
+    private readonly IUserReadRepository _userReadRepository;
 
     public RefreshTokensQueryHandler(IUserReadRepository userReadRepository, IJwtGenerator jwtGenerator)
     {

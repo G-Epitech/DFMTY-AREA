@@ -30,6 +30,39 @@
         "object"
       ]
     },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "Discord": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "Notion": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "OpenAi": {
+          "$ref": "#/$defs/dependencyRule"
+        }
+      }
+    },
+    "dependencyRule": {
+      "type": "object",
+      "properties": {
+        "Optional": {
+          "type": "boolean",
+          "default": false
+        },
+        "Require": {
+          "type": "string",
+          "enum": [
+            "Single",
+            "Multiple"
+          ]
+        }
+      },
+      "required": [
+        "Require"
+      ]
+    },
     "parameter": {
       "type": "object",
       "properties": {
@@ -111,6 +144,9 @@
               ]
             }
           }
+        },
+        "Dependencies": {
+          "$ref": "#/$defs/dependencies"
         }
       },
       "required": [
@@ -118,7 +154,8 @@
         "Description",
         "Icon",
         "Parameters",
-        "Facts"
+        "Facts",
+        "Dependencies"
       ]
     },
     "action": {
@@ -148,6 +185,9 @@
               "$ref": "#/$defs/fact"
             }
           }
+        },
+        "Dependencies": {
+          "$ref": "#/$defs/dependencies"
         }
       },
       "required": [
@@ -155,7 +195,8 @@
         "Description",
         "Icon",
         "Parameters",
-        "Facts"
+        "Facts",
+        "Dependencies"
       ]
     },
     "providerSettings": {

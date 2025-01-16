@@ -1,20 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Zeus.Common.Domain.ProvidersSettings;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 public class ProvidersSettings
 {
-    [JsonIgnore]
-    private List<string>? _cachedActionsIdentifiers;
+    [JsonIgnore] private List<string>? _cachedActionsIdentifiers;
 
-    [JsonIgnore]
-    private List<string>? _cachedTriggersIdentifiers;
+    [JsonIgnore] private List<string>? _cachedTriggersIdentifiers;
 
-    [JsonIgnore]
-    public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
+    [JsonIgnore] public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
 
-    [JsonIgnore]
-    public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
+    [JsonIgnore] public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
 
     public required ProviderSchema Discord { get; set; }
     public required ProviderSchema Notion { get; set; }
