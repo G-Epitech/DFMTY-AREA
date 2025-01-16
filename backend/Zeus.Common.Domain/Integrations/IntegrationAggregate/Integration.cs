@@ -17,6 +17,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
         IntegrationType type,
         UserId ownerId,
         string clientId,
+        List<IntegrationToken> tokens,
         DateTime updatedAt,
         DateTime createdAt)
         : base(id, updatedAt, createdAt)
@@ -24,6 +25,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
         Type = type;
         OwnerId = ownerId;
         ClientId = clientId;
+        _tokens = tokens;
     }
 
 #pragma warning disable CS8618

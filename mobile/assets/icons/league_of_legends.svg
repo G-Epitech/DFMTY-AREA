@@ -1,0 +1,19 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408 435" width="408" height="435">
+	<title>league_of_legends</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m-0.28-0.32h408v435.2h-408z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #c28f2b } 
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<g>
+			<path class="s0" d="m24.3 132.3c-15.7 28.4-24.6 60.9-24.6 95.4 0 34.6 8.9 67.1 24.6 95.5z"/>
+			<path class="s0" d="m203.7 27.2c-16.5 0-32.6 2-48 5.6v31.6c15.3-4.3 31.4-6.7 48-6.7 95.5 0 173 75.9 173 169.5 0 42.2-15.8 80.7-41.8 110.4l-4.9 17.3-10.9 38.3c53.5-36.2 88.7-96.8 88.7-165.4-0.1-110.8-91.4-200.6-204.1-200.6z"/>
+			<path class="s0" d="m155.7 331.8h156.5 3.4c26.5-27.2 42.8-64 42.8-104.6 0-83.7-69.3-151.6-154.7-151.6-16.7 0-32.9 2.7-48 7.5z"/>
+			<path class="s0" d="m137.2-0.3h-116.4l22 44.8v345.5l-22 44.9h267.1l24.3-84.9h-175z"/>
+		</g>
+	</g>
+</svg>

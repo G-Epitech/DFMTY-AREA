@@ -22,8 +22,14 @@ class _IntegrationPageState extends State<AutomationsView> {
   Widget build(BuildContext context) {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
-    final Future<List<Automation>> automations =
-        automationMediator.getUserAutomations();
+    late Future<List<Automation>> automations;
+    try {
+      automations = automationMediator.getUserAutomations();
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('No automation data found')));
+    }
     return BaseScaffold(
       title: 'Automations',
       body: _AutomationContainer(automations: automations),
@@ -67,7 +73,14 @@ class _AutomationButton extends StatelessWidget {
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
-        // automationMediator.createAutomation();
+        try {
+          // automationMediator.createAutomation();
+        } catch (e) {
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+                SnackBar(content: Text('Could not create automation')));
+        }
         Navigator.pushNamed(context, RoutesNames.automationCreation);
       },
     );

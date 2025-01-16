@@ -86,8 +86,16 @@ class _GuildConnectionButton extends StatelessWidget {
     return TriggoButton(
       text: 'Link a Guild',
       onPressed: () async {
-        await launchURL(
-            "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");
+        try {
+          await launchURL(
+              "https://discord.com/oauth2/authorize?client_id=1313818262806462464&permissions=8&integration_type=0&scope=bot");
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(content: Text('Failed to Link a Guild')));
+          }
+        }
       },
     );
   }

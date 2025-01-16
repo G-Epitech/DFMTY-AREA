@@ -4,11 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
-
 public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automation>
 {
     private const int ParameterIdentifierMaxLength = 300;
@@ -86,15 +84,18 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
 
     private static void ConfigureAutomationActionProvidersTable(OwnedNavigationBuilder<Automation, AutomationAction> actions)
     {
-        actions.OwnsMany(x => x.Providers, providers =>
+        actions.OwnsMany(x => x.Providers, provider =>
         {
-            providers.ToTable("AutomationActionProviders");
-            providers.WithOwner().HasForeignKey("ActionId");
-            providers.Property<IntegrationId>("ProviderId")
-                .HasConversion(x => x.Value, x => new IntegrationId(x))
+            provider.ToTable("AutomationActionProviders");
+            provider.WithOwner().HasForeignKey("ActionId");
+
+            provider.Property(x => x.Value)
+                .HasColumnName("ProviderId")
                 .IsRequired();
-            providers.HasKey("ActionId", "ProviderId");
+            provider.HasKey("ActionId", "Value");
         });
+        actions.Navigation(x => x.Providers).Metadata.SetField("_providers");
+        actions.Navigation(x => x.Providers).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
     private static void ConfigureAutomationTriggersTable(EntityTypeBuilder<Automation> builder)
@@ -118,14 +119,16 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
 
     private static void ConfigureAutomationTriggerProvidersTable(OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
     {
-        trigger.OwnsMany(x => x.Providers, providers =>
+        trigger.OwnsMany(x => x.Providers, provider =>
         {
-            providers.ToTable("AutomationTriggerProviders");
-            providers.WithOwner().HasForeignKey("TriggerId");
-            providers.HasKey("TriggerId");
-            providers.Property<IntegrationId>("ProviderId")
-                .HasConversion(x => x.Value, x => new IntegrationId(x))
+            provider.ToTable("AutomationTriggerProviders");
+            provider.WithOwner().HasForeignKey("TriggerId");
+            provider.HasKey("TriggerId");
+
+            provider.Property(x => x.Value)
+                .HasColumnName("ProviderId")
                 .IsRequired();
+            provider.HasKey("TriggerId", "Value");
         });
         trigger.Navigation(x => x.Providers).Metadata.SetField("_providers");
         trigger.Navigation(x => x.Providers).UsePropertyAccessMode(PropertyAccessMode.Field);

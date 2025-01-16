@@ -2,15 +2,18 @@ import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
 import {
+  ActionShortModel,
   AutomationModel,
   AutomationSchemaModel,
   AutomationSchemaService,
   AutomationSchemaTrigger,
+  TriggerShortModel,
 } from '@models/automation';
 import {
   AutomationSchemaDTO,
   TriggerDTO,
   ActionDTO,
+  ActionShortDTO,
 } from '@repositories/automations/dto';
 
 @Injectable({
@@ -35,8 +38,12 @@ export class AutomationsMediator {
           dto.updatedAt,
           '#EE883A',
           'chat-bubble-bottom-center-text',
-          dto.trigger,
-          dto.actions
+          new TriggerShortModel(
+            dto.trigger.identifier,
+            dto.trigger.parameters,
+            dto.trigger.providers
+          ),
+          this._mapActions(dto.actions)
         );
       })
     );
@@ -97,5 +104,16 @@ export class AutomationsMediator {
       };
     }
     return schemaActions;
+  }
+
+  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
+    return actions.map(
+      action =>
+        new ActionShortModel(
+          action.identifier,
+          action.parameters,
+          action.providers
+        )
+    );
   }
 }

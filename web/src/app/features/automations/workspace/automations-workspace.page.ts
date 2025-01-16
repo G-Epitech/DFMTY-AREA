@@ -3,20 +3,24 @@ import { AutomationModel } from '@models/automation';
 import { iconName } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
 import { AsyncPipe, NgStyle } from '@angular/common';
-import { ContextMenuComponent } from '@features/automations/workspace/components/context-menu/context-menu.component';
 import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
 import { AutomationsMediator } from '@mediators/automations.mediator';
 import { ActivatedRoute } from '@angular/router';
+import { TriggerCardComponent } from '@features/automations/workspace/components/trigger-card/trigger-card.component';
+import { ActionCardComponent } from '@features/automations/workspace/components/action-card/action-card.component';
+import { TrButtonDirective } from '@triggo-ui/button';
+import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
 
 @Component({
   selector: 'tr-automations-workspace',
   imports: [
     NgIcon,
     NgStyle,
-    ContextMenuComponent,
     AsyncPipe,
+    TriggerCardComponent,
     ActionCardComponent,
+    TrButtonDirective,
+    AddStepButtonComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],
@@ -28,8 +32,6 @@ export class AutomationsWorkspacePageComponent {
   readonly #route = inject(ActivatedRoute);
 
   private destory$ = new Subject<void>();
-
-  readonly steps = ['Message received in channel', 'Send message to channel'];
 
   automation$: Observable<AutomationModel> = this.#route.params.pipe(
     takeUntil(this.destory$),

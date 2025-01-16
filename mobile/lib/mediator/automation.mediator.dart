@@ -24,7 +24,7 @@ class AutomationMediator with ChangeNotifier {
       await _getAutomationSchema();
     } catch (e) {
       log('Error initializing AutomationMediator: $e');
-      // Display error message with a snackbar or dialog (something like that)
+      throw Exception('Error initializing AutomationMediator');
     }
   }
 
@@ -41,8 +41,7 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
-      return [];
+      throw Exception('Error getting user automations');
     }
   }
 
@@ -58,7 +57,6 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       return false;
     }
   }

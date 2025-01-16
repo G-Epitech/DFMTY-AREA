@@ -26,14 +26,9 @@ import {
   heroChatBubbleOvalLeftEllipsis,
   heroPlus,
   heroArrowLeftStartOnRectangle,
+  heroCog6Tooth,
 } from '@ng-icons/heroicons/outline';
-import {
-  heroSparklesSolid,
-  heroChatBubbleBottomCenterTextSolid,
-  heroBoltSolid,
-  heroChartBarSquareSolid,
-  heroArrowPathRoundedSquareSolid,
-} from '@ng-icons/heroicons/solid';
+import * as heroiconsSolid from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -62,15 +57,12 @@ export const appConfig: ApplicationConfig = {
       heroArrowRight,
       heroArrowLeft,
       heroCheck,
-      heroSparklesSolid,
-      heroChatBubbleBottomCenterTextSolid,
-      heroBoltSolid,
       heroInformationCircle,
       heroChatBubbleOvalLeftEllipsis,
       heroPlus,
-      heroChartBarSquareSolid,
-      heroArrowPathRoundedSquareSolid,
       heroArrowLeftStartOnRectangle,
+      heroCog6Tooth,
+      ...heroiconsSolid,
     }),
     provideAnimations(),
     provideToastr({

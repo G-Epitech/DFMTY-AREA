@@ -302,10 +302,12 @@ namespace Zeus.Api.Infrastructure.Migrations
                                     b2.Property<Guid>("ActionId")
                                         .HasColumnType("uuid");
 
-                                    b2.Property<Guid>("ProviderId")
-                                        .HasColumnType("uuid");
+                                    b2.Property<Guid>("Value")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("uuid")
+                                        .HasColumnName("ProviderId");
 
-                                    b2.HasKey("ActionId", "ProviderId");
+                                    b2.HasKey("ActionId", "Value");
 
                                     b2.ToTable("AutomationActionProviders", (string)null);
 
@@ -371,10 +373,12 @@ namespace Zeus.Api.Infrastructure.Migrations
                                     b2.Property<Guid>("TriggerId")
                                         .HasColumnType("uuid");
 
-                                    b2.Property<Guid>("ProviderId")
-                                        .HasColumnType("uuid");
+                                    b2.Property<Guid>("Value")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("uuid")
+                                        .HasColumnName("ProviderId");
 
-                                    b2.HasKey("TriggerId");
+                                    b2.HasKey("TriggerId", "Value");
 
                                     b2.ToTable("AutomationTriggerProviders", (string)null);
 
@@ -424,10 +428,8 @@ namespace Zeus.Api.Infrastructure.Migrations
 
                     b.OwnsMany("Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects.IntegrationToken", "Tokens", b1 =>
                         {
-                            b1.Property<string>("Value")
-                                .HasMaxLength(255)
-                                .HasColumnType("character varying(255)")
-                                .HasColumnName("TokenValue");
+                            b1.Property<Guid>("IntegrationId")
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("Type")
                                 .HasMaxLength(100)
@@ -438,12 +440,13 @@ namespace Zeus.Api.Infrastructure.Migrations
                                 .HasColumnType("\"IntegrationTokenUsage\"")
                                 .HasColumnName("TokenUsage");
 
-                            b1.Property<Guid>("IntegrationId")
-                                .HasColumnType("uuid");
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)")
+                                .HasColumnName("TokenValue");
 
-                            b1.HasKey("Value", "Type", "Usage");
-
-                            b1.HasIndex("IntegrationId");
+                            b1.HasKey("IntegrationId", "Type", "Usage");
 
                             b1.ToTable("IntegrationTokens", (string)null);
 
