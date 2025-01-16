@@ -11,9 +11,12 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
 import { TriggerShortModel } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
-import { IntegrationSelectionComponent } from '@features/automations/workspace/components/select-trigger-sheet/integration-selection/integration-selection.component';
+import { IntegrationSelectionComponent } from '@features/automations/workspace/components/integration-selection/integration-selection.component';
 import { AvailableIntegrationListCardComponent } from '@components/available-integration-list-card/available-integration-list-card.component';
 import { SelectTriggerSheetService } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.service';
+import {
+  LinkedIntegrationSelectionComponent
+} from '@features/automations/workspace/components/linked-integration-selection/linked-integration-selection.component';
 
 @Component({
   standalone: true,
@@ -26,6 +29,7 @@ import { SelectTriggerSheetService } from '@features/automations/workspace/compo
     NgIcon,
     IntegrationSelectionComponent,
     AvailableIntegrationListCardComponent,
+    LinkedIntegrationSelectionComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],

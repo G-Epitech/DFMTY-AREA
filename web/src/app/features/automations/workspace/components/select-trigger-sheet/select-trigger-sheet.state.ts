@@ -1,11 +1,13 @@
 import { AvailableIntegrationType } from '@common/types';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
 import { PartialStateUpdater } from '@ngrx/signals';
+import { IntegrationModel } from '@models/integration';
 
 export interface SelectTriggerSheetState {
   selectionStep: TriggerSelectionStep;
   stepHistory: TriggerSelectionStep[];
   selectedIntegration: AvailableIntegrationType | null;
+  selectedLinkedIntegration: IntegrationModel | null;
 }
 
 export function stateUpdaterBack(): PartialStateUpdater<SelectTriggerSheetState> {
@@ -34,12 +36,26 @@ export function stateUpdaterSelectIntegration(
   };
 }
 
-export function stateUpdaterGoToIntegrationSelection(): PartialStateUpdater<SelectTriggerSheetState> {
+export function stateUpdaterGoTo(
+  step: TriggerSelectionStep
+): PartialStateUpdater<SelectTriggerSheetState> {
   return (state: SelectTriggerSheetState) => {
     return {
       ...state,
-      selectionStep: TriggerSelectionStep.INTEGRATION,
-      stepHistory: [...state.stepHistory, TriggerSelectionStep.INTEGRATION],
+      selectionStep: step,
+      stepHistory: [...state.stepHistory, step],
     };
+  };
+}
+
+export function stateUpdaterGoToIntegrationSelection(): PartialStateUpdater<SelectTriggerSheetState> {
+  return (state: SelectTriggerSheetState) => {
+    return stateUpdaterGoTo(TriggerSelectionStep.INTEGRATION)(state);
+  };
+}
+
+export function stateUpdaterGoToLinkedIntegrationSelection(): PartialStateUpdater<SelectTriggerSheetState> {
+  return (state: SelectTriggerSheetState) => {
+    return stateUpdaterGoTo(TriggerSelectionStep.LINKED_INTEGRATION)(state);
   };
 }

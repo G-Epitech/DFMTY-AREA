@@ -4,6 +4,7 @@ import {
   SelectTriggerSheetState,
   stateUpdaterBack,
   stateUpdaterGoToIntegrationSelection,
+  stateUpdaterGoToLinkedIntegrationSelection,
   stateUpdaterSelectIntegration,
 } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.state';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
@@ -15,10 +16,15 @@ export class SelectTriggerSheetService {
     selectionStep: TriggerSelectionStep.MAIN,
     stepHistory: [TriggerSelectionStep.MAIN],
     selectedIntegration: null,
+    selectedLinkedIntegration: null,
   });
 
   goToIntegrationSelection() {
     patchState(this.state, stateUpdaterGoToIntegrationSelection());
+  }
+
+  goToLinkedInegrationSelection() {
+    patchState(this.state, stateUpdaterGoToLinkedIntegrationSelection());
   }
 
   selectIntegration(integration: AvailableIntegrationType): void {

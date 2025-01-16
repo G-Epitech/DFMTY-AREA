@@ -7,7 +7,7 @@
       <h3 trSheetTitle>Edit Trigger</h3>
       <span trSheetDescription>Edit the trigger for this automation</span>
     </tr-sheet-header>
-    <div class="h-full">
+    <div class="h-full flex flex-col gap-4">
       @switch (service.state().selectionStep) {
         @case (TriggerSelectionStep.MAIN) {
           <div>
@@ -28,11 +28,27 @@
                 (click)="service.goToIntegrationSelection()" />
             }
           </div>
+          <div>
+            <span class="tr-large">Select Linked Integration</span>
+            @if (!service.state().selectedLinkedIntegration) {
+              <button
+                trBtn
+                class="w-full text-left items-center justify-start gap-1"
+                variant="outline"
+                (click)="service.goToLinkedInegrationSelection()">
+                <ng-icon name="heroUser" size="1.1rem" />
+                No Linked Integration Selected
+              </button>
+            }
+          </div>
         }
         @case (TriggerSelectionStep.INTEGRATION) {
           <tr-integration-selection
             class="h-full"
             (selectedIntegration)="service.selectIntegration($event)" />
+        }
+        @case (TriggerSelectionStep.LINKED_INTEGRATION) {
+          <tr-linked-integration-selection class="h-full" />
         }
       }
     </div>
@@ -40,7 +56,11 @@
       @if (service.state().selectionStep === TriggerSelectionStep.MAIN) {
         <button trBtn type="submit" class="w-[50%]">Save</button>
       } @else {
-        <button trBtn class="w-[50%]" variant="outline" (click)="service.back()">
+        <button
+          trBtn
+          class="w-[50%]"
+          variant="outline"
+          (click)="service.back()">
           Back
         </button>
       }
