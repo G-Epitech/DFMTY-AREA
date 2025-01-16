@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/mediator/integrations/discord.mediator.dart';
 import 'package:triggo/mediator/integrations/leagueOfLegends.mediator.dart';
 import 'package:triggo/mediator/integrations/notion.mediator.dart';
 import 'package:triggo/mediator/integrations/openAi.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
+import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/integration/integration.repository.dart';
 import 'package:triggo/utils/launch_url.dart';
 
@@ -17,8 +19,9 @@ class IntegrationMediator with ChangeNotifier {
   final NotionMediator _notionMediator;
   final OpenAIMediator _openAIMediator;
   final LeagueOfLegendsMediator _leagueOfLegendsMediator;
+  final AutomationRepository _automationRepository;
 
-  IntegrationMediator(this._integrationRepository)
+  IntegrationMediator(this._integrationRepository, this._automationRepository)
       : _discordMediator = DiscordMediator(_integrationRepository.discord),
         _notionMediator = NotionMediator(_integrationRepository.notion),
         _openAIMediator = OpenAIMediator(_integrationRepository.openAI),
@@ -50,20 +53,38 @@ class IntegrationMediator with ChangeNotifier {
     }
   }
 
+  String _getUrlFromName(String name) {
+    switch (name) {
+      case IntegrationNames.discord:
+        return 'discord';
+      case IntegrationNames.notion:
+        return 'notion';
+      case IntegrationNames.openAI:
+        return 'openAI';
+      case IntegrationNames.leagueOfLegends:
+        return 'leagueOfLegends';
+      default:
+        return '';
+    }
+  }
+
   Future<List<AvailableIntegration>> getIntegrations() async {
     try {
-      final res = await _integrationRepository.getIntegrationNames();
-      List<AvailableIntegration> integrations = [];
+      final response = await _automationRepository.getAutomationSchema();
+      List<AvailableIntegration> integrationNames = [];
 
-      for (var integration in res) {
-        integrations.add(AvailableIntegration(
-          name: integration.name,
-          iconUri: integration.iconUri,
-          color: HexColor(integration.color),
-          url: integration.url,
-        ));
+      if (response.statusCode == Codes.ok) {
+        for (String key in response.data!.schema.keys.toList()) {
+          final integration = response.data!.schema[key];
+          integrationNames.add(AvailableIntegration(
+            name: integration!.name,
+            iconUri: integration.iconUri,
+            color: HexColor(integration.color),
+            url: _getUrlFromName(integration.name),
+          ));
+        }
       }
-      return integrations;
+      return integrationNames;
     } catch (e) {
       log('Error getting integrations: $e');
       throw Exception('Error getting integrations: $e');

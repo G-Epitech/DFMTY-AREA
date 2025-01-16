@@ -1,10 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:triggo/api/call.dart';
-import 'package:triggo/api/codes.dart';
 import 'package:triggo/api/response.dart';
-import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/repositories/authentication/google.repository.dart';
-import 'package:triggo/repositories/automation/automation.repository.dart';
 import 'package:triggo/repositories/credentials/credentials.repository.dart';
 import 'package:triggo/repositories/integration/dtos/integration.dtos.dart';
 import 'package:triggo/repositories/integration/integrations/discord.repository.dart';
@@ -20,12 +17,8 @@ class IntegrationRepository {
   final NotionRepository notionRepository;
   final OpenAIRepository _openAIRepository;
   final LeagueOfLegendsRepository _leagueOfLegendsRepository;
-  final AutomationRepository automationRepository;
 
-  IntegrationRepository(
-      {this.client,
-      required this.credentialsRepository,
-      required this.automationRepository})
+  IntegrationRepository({this.client, required this.credentialsRepository})
       : discordRepository = DiscordRepository(
           client: client,
           credentialsRepository: credentialsRepository,
@@ -97,39 +90,6 @@ class IntegrationRepository {
           : null,
       errors: response.errors,
     );
-  }
-
-  String _getUrlFromName(String name) {
-    switch (name) {
-      case IntegrationNames.discord:
-        return 'discord';
-      case IntegrationNames.notion:
-        return 'notion';
-      case IntegrationNames.openAI:
-        return 'openAI';
-      case IntegrationNames.leagueOfLegends:
-        return 'leagueOfLegends';
-      default:
-        return '';
-    }
-  }
-
-  Future<List<IntegrationNamesDTO>> getIntegrationNames() async {
-    final response = await automationRepository.getAutomationSchema();
-    List<IntegrationNamesDTO> integrationNames = [];
-
-    if (response.statusCode == Codes.ok) {
-      for (var key in response.data!.schema.keys.toList()) {
-        final integration = response.data!.schema[key];
-        integrationNames.add(IntegrationNamesDTO(
-          name: integration!.name,
-          iconUri: integration.iconUri,
-          color: integration.color,
-          url: _getUrlFromName(integration.name),
-        ));
-      }
-    }
-    return integrationNames;
   }
 
   Future<Response<OutGetIntegrationURIDTO>> getIntegrationURI(

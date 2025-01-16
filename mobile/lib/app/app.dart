@@ -46,9 +46,8 @@ class _TriggoAppState extends State<TriggoApp> {
     _automationRepository = AutomationRepository(
       credentialsRepository: _credentialsRepository,
     );
-    _integrationRepository = IntegrationRepository(
-        credentialsRepository: _credentialsRepository,
-        automationRepository: _automationRepository);
+    _integrationRepository =
+        IntegrationRepository(credentialsRepository: _credentialsRepository);
 
     _googleRepository = GoogleRepository(
       credentialsRepository: _credentialsRepository,
@@ -59,7 +58,10 @@ class _TriggoAppState extends State<TriggoApp> {
       _credentialsRepository,
       _googleRepository,
     );
-    _integrationMediator = IntegrationMediator(_integrationRepository);
+    _integrationMediator = IntegrationMediator(
+      _integrationRepository,
+      _automationRepository,
+    );
     try {
       _automationMediator = AutomationMediator(_automationRepository);
     } catch (e) {
