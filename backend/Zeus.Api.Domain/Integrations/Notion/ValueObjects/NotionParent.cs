@@ -26,14 +26,14 @@ public class NotionParentWorkspace : NotionParent
 
 public class NotionParentPage : NotionParent
 {
-    public override NotionParentType Type => NotionParentType.Page;
-
-    public NotionPageId Id { get; }
-
     public NotionParentPage(NotionPageId id)
     {
         Id = id;
     }
+
+    public override NotionParentType Type => NotionParentType.Page;
+
+    public NotionPageId Id { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {
@@ -43,14 +43,14 @@ public class NotionParentPage : NotionParent
 
 public class NotionParentDatabase : NotionParent
 {
-    public override NotionParentType Type => NotionParentType.Database;
-
-    public NotionDatabaseId Id { get; }
-
     public NotionParentDatabase(NotionDatabaseId id)
     {
         Id = id;
     }
+
+    public override NotionParentType Type => NotionParentType.Database;
+
+    public NotionDatabaseId Id { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

@@ -14,11 +14,11 @@ namespace Zeus.Api.Infrastructure.Services.Integrations.LeagueOfLegends;
 
 public class LeagueOfLegendsService : ILeagueOfLegendsService
 {
+    private readonly Uri _dataDragonApiEndpoint;
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly Uri _platformApiEndpoint;
     private readonly Uri _regionalApiEndpoint;
-    private readonly Uri _dataDragonApiEndpoint;
 
     public LeagueOfLegendsService(IIntegrationsSettingsProvider integrationsSettingsProvider)
     {

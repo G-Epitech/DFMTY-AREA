@@ -4,12 +4,12 @@ namespace Zeus.Api.Domain.Integrations.Notion.ValueObjects;
 
 public class NotionPageId : ValueObject
 {
-    public string Value { get; }
-
     public NotionPageId(string value)
     {
         Value = value;
     }
+
+    public string Value { get; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

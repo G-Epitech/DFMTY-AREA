@@ -15,13 +15,7 @@ public static class DependencyInjection
     private const string ProvidersSettingsResourceName = "Resources/providers-settings.json";
     private static readonly Assembly Assembly = typeof(DependencyInjection).Assembly;
 
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
-    {
-        Converters =
-        {
-            new JsonStringEnumConverter()
-        }
-    };
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { Converters = { new JsonStringEnumConverter() } };
 
     private static async Task<JsonSchema> GetSchemaAsync()
     {
@@ -77,6 +71,7 @@ public static class DependencyInjection
             }
         }
         Console.ForegroundColor = currentColor;
+        Environment.Exit(1);
     }
 
     private static async Task<JsonNode> GetSettingsAsync()

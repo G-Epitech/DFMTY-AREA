@@ -8,7 +8,7 @@ public class ProviderSchema
         string color,
         Dictionary<string, TriggerSchema> triggers,
         Dictionary<string, ActionSchema> actions
-    )
+)
     {
         Name = name;
         IconUri = iconUri;

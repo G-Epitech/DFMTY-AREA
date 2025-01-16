@@ -34,6 +34,21 @@ public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
         _logger = logger;
     }
 
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        return ConnectAsync(cancellationToken);
+    }
+
+    public Task StopAsync()
+    {
+        return _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+    }
+
+    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
+    {
+        _eventHandlers.Add((eventType, handler));
+    }
+
     public async Task ConnectAsync(CancellationToken cancellationToken)
     {
         var uri = new Uri(_integrationsSettingsProvider.Discord.WebsocketEndpoint + "?v=10&encoding=json");
@@ -43,11 +58,6 @@ public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
         _logger.LogInformation("Discord WebSocket connected.");
 
         await ListenAsync(_cancellationToken ?? CancellationToken.None);
-    }
-
-    public void Register(DiscordGatewayEventType eventType, Func<JsonNode, CancellationToken, Task> handler)
-    {
-        _eventHandlers.Add((eventType, handler));
     }
 
     private async Task ListenAsync(CancellationToken cancellationToken)
@@ -151,15 +161,5 @@ public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
         var messageBytes = Encoding.UTF8.GetBytes(message);
         await _webSocket.SendAsync(new ArraySegment<byte>(messageBytes), WebSocketMessageType.Text, true,
             _cancellationToken ?? CancellationToken.None);
-    }
-
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        return ConnectAsync(cancellationToken);
-    }
-
-    public Task StopAsync()
-    {
-        return _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
     }
 }

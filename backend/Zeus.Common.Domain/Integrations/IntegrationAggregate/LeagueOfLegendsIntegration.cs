@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 public sealed class LeagueOfLegendsIntegration : Integration
 {
     public LeagueOfLegendsIntegration(

@@ -1,4 +1,6 @@
-﻿namespace Zeus.Common.Domain.ProvidersSettings;
+﻿using Zeus.Common.Domain.Integrations.Common.Enums;
+
+namespace Zeus.Common.Domain.ProvidersSettings;
 
 public class ActionSchema
 {
@@ -7,7 +9,8 @@ public class ActionSchema
         string description,
         string icon,
         Dictionary<string, ParameterSchema> parameters,
-        Dictionary<string, FactSchema> facts
+        Dictionary<string, FactSchema> facts,
+        Dictionary<IntegrationType, IntegrationRuleSchema> integrations
     )
     {
         Name = name;
@@ -15,6 +18,7 @@ public class ActionSchema
         Icon = icon;
         Parameters = parameters;
         Facts = facts;
+        Integrations = integrations;
     }
 
     public string Name { get; }
@@ -22,4 +26,5 @@ public class ActionSchema
     public string Icon { get; }
     public Dictionary<string, ParameterSchema> Parameters { get; }
     public Dictionary<string, FactSchema> Facts { get; }
+    public Dictionary<IntegrationType, IntegrationRuleSchema> Integrations { get; }
 }

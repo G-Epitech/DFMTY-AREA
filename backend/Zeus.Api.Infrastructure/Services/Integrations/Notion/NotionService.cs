@@ -43,9 +43,6 @@ public class NotionService : INotionService
         Convert.ToBase64String(Encoding.UTF8.GetBytes(
             $"{_integrationsSettingsProvider.Notion.ClientId}:{_integrationsSettingsProvider.Notion.ClientSecret}")));
 
-    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
-        new AuthenticationHeaderValue("Bearer", accessToken.Value);
-
     public async Task<ErrorOr<NotionWorkspaceTokens>> GetTokensFromOauth2Async(string code)
     {
         _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderClientValue;
@@ -162,4 +159,7 @@ public class NotionService : INotionService
 
         return responseContent.Results.Select(database => _mapper.Map<NotionPage>(database)).ToList();
     }
+
+    private AuthenticationHeaderValue GetAuthHeaderBearerValue(AccessToken accessToken) =>
+        new AuthenticationHeaderValue("Bearer", accessToken.Value);
 }

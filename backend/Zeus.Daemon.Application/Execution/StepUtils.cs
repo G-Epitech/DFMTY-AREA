@@ -3,6 +3,7 @@ using System.Reflection;
 
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Common.Extensions.Type;
+using Zeus.Daemon.Application.Utils;
 
 namespace Zeus.Daemon.Application.Execution;
 
@@ -10,15 +11,10 @@ public static class StepUtils
 {
     public static object? GetFromIntegrationsValue(ParameterInfo parameterInfo, IReadOnlyCollection<Integration> integrations)
     {
-        var genericType = parameterInfo.ParameterType.IsGenericType ? parameterInfo.ParameterType.GetGenericTypeDefinition() : null;
-        var genericArg = parameterInfo.ParameterType.GetGenericArguments().FirstOrDefault();
-        var genericList = genericType is not null ? typeof(IList<>).MakeGenericType(genericArg!) : null;
-        var genericReadOnlyList = genericType is not null ? typeof(IReadOnlyList<>).MakeGenericType(genericArg!) : null;
-        var isGenericCollection = genericList is not null && genericReadOnlyList is not null &&
-                                  (genericList.IsAssignableTo(parameterInfo.ParameterType) || genericReadOnlyList.IsAssignableTo(parameterInfo.ParameterType));
+        var attributeInfo = parameterInfo.GetFromIntegrationsParameterInfo();
 
-        return isGenericCollection
-            ? GetIntegrationsCollection(parameterInfo.ParameterType, integrations)
+        return attributeInfo.IsCollection
+            ? GetIntegrationsCollection(attributeInfo.Type, integrations)
             : GetIntegrationValue(parameterInfo, integrations);
     }
 

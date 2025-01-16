@@ -14,9 +14,9 @@ namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Notion;
 [Route("integrations/{integrationId}/notion")]
 public class NotionPropsController : ApiController
 {
-    private readonly ISender _sender;
-    private readonly IMapper _mapper;
     private readonly IAuthUserContext _authUserContext;
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
 
     public NotionPropsController(ISender sender, IMapper mapper, IAuthUserContext authUserContext)
     {

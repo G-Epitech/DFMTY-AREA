@@ -7,7 +7,7 @@ using Zeus.Common.Domain.UserAggregate.ValueObjects;
 
 namespace Zeus.Common.Domain.Integrations.IntegrationAggregate;
 
-[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors)]
 public sealed class OpenAiIntegration : Integration
 {
     public OpenAiIntegration(

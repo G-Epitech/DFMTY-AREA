@@ -83,4 +83,30 @@ public abstract class Integration : AggregateRoot<IntegrationId>
     {
         _tokens.Remove(token);
     }
+
+    public static Type? GetImplementationFromType(IntegrationType type)
+    {
+        return type switch
+        {
+            IntegrationType.Discord => typeof(DiscordIntegration),
+            IntegrationType.Gmail => typeof(GmailIntegration),
+            IntegrationType.Notion => typeof(NotionIntegration),
+            IntegrationType.OpenAi => typeof(OpenAiIntegration),
+            IntegrationType.LeagueOfLegends => typeof(LeagueOfLegendsIntegration),
+            _ => null
+        };
+    }
+
+    public static IntegrationType? GetTypeFromImplementation(Type type)
+    {
+        return type switch
+        {
+            not null when type == typeof(DiscordIntegration) => IntegrationType.Discord,
+            not null when type == typeof(GmailIntegration) => IntegrationType.Gmail,
+            not null when type == typeof(NotionIntegration) => IntegrationType.Notion,
+            not null when type == typeof(OpenAiIntegration) => IntegrationType.OpenAi,
+            not null when type == typeof(LeagueOfLegendsIntegration) => IntegrationType.LeagueOfLegends,
+            _ => null
+        };
+    }
 }

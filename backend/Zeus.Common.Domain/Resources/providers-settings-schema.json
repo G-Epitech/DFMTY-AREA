@@ -30,6 +30,40 @@
         "object"
       ]
     },
+    "integrations": {
+      "type": "object",
+      "properties": {
+        "Discord": {
+          "$ref": "#/$defs/integrationRule"
+        },
+        "Notion": {
+          "$ref": "#/$defs/integrationRule"
+        },
+        "OpenAi": {
+          "$ref": "#/$defs/integrationRule"
+        }
+      }
+    },
+    "integrationRule": {
+      "type": "object",
+      "properties": {
+        "Optional": {
+          "type": "boolean",
+          "default": false
+        },
+        "Require": {
+          "type": "string",
+          "enum": [
+            "Single",
+            "OneOrMore",
+            "Multiple"
+          ]
+        }
+      },
+      "required": [
+        "Require"
+      ]
+    },
     "parameter": {
       "type": "object",
       "properties": {
@@ -111,6 +145,9 @@
               ]
             }
           }
+        },
+        "Integrations": {
+          "$ref": "#/$defs/integrations"
         }
       },
       "required": [
@@ -118,7 +155,8 @@
         "Description",
         "Icon",
         "Parameters",
-        "Facts"
+        "Facts",
+        "Integrations"
       ]
     },
     "action": {
@@ -148,6 +186,9 @@
               "$ref": "#/$defs/fact"
             }
           }
+        },
+        "Integrations": {
+          "$ref": "#/$defs/integrations"
         }
       },
       "required": [
@@ -155,7 +196,8 @@
         "Description",
         "Icon",
         "Parameters",
-        "Facts"
+        "Facts",
+        "Integrations"
       ]
     },
     "providerSettings": {

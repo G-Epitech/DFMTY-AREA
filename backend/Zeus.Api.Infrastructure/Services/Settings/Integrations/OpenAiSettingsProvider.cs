@@ -5,10 +5,10 @@ namespace Zeus.Api.Infrastructure.Services.Settings.Integrations;
 
 public class OpenAiSettingsProvider : IOpenAiSettingsProvider
 {
-    public string ApiEndpoint { get; }
-
     public OpenAiSettingsProvider(OpenAiSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
     }
+
+    public string ApiEndpoint { get; }
 }
