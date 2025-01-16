@@ -22,7 +22,6 @@ class UserMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
-      // Display error message with a snackbar or dialog (something like that)
       throw Exception(e);
     }
   }
