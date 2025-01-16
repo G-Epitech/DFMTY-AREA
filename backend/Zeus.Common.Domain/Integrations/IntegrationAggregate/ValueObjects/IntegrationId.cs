@@ -38,4 +38,9 @@ public sealed class IntegrationId : ValueObject
     {
         return new IntegrationId(Guid.Parse(value));
     }
+
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
 }

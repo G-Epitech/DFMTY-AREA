@@ -34,6 +34,11 @@ public sealed class UserId : ValueObject
         return new UserId(Guid.Parse(value));
     }
 
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
