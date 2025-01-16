@@ -55,7 +55,6 @@ class AutomationCreationBloc
 
   void _onTriggerProviderChanged(AutomationCreationTriggerProviderChanged event,
       Emitter<AutomationCreationState> emit) {
-    log("Trigger name changed: ${event.triggerName}");
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       identifier: event.triggerName,
     );
@@ -95,7 +94,6 @@ class AutomationCreationBloc
       AutomationCreationTriggerParameterChanged event,
       Emitter<AutomationCreationState> emit) {
     bool updated = false;
-    log('!===== dirtyAutomation Trigger parameter base: ${state.dirtyAutomation.trigger.parameters.length} =====');
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
       parameters: state.dirtyAutomation.trigger.parameters.map((param) {
         if (param.identifier == event.parameterIdentifier) {
@@ -106,7 +104,6 @@ class AutomationCreationBloc
       }).toList(),
     );
     if (!updated) {
-      log('!===== Parameter not found, Should add it =====');
       updatedTrigger.parameters.add(AutomationTriggerParameter(
         identifier: event.parameterIdentifier,
         value: event.parameterValue,
@@ -159,7 +156,6 @@ class AutomationCreationBloc
           ..add(event.provider),
       );
     }
-    log('Action provider added: ${updatedActions[event.index].providers.length}');
 
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
@@ -171,8 +167,6 @@ class AutomationCreationBloc
       Emitter<AutomationCreationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.dirtyAutomation.actions);
-    log('/!\\ Action parameter changed: ${event.parameterIdentifier}');
-    log('/!\\ Action parameter changed to value: ${event.parameterValue}');
     bool updated = false;
     if (event.index < updatedActions.length) {
       updatedActions[event.index] = updatedActions[event.index].copyWith(
@@ -207,9 +201,6 @@ class AutomationCreationBloc
         ],
       ));
     }
-    log('Action length: ${updatedActions.length}');
-    log('Action index: ${event.index}');
-    log('Action parameter changed: ${updatedActions[event.index].parameters.length}');
     final updatedAutomation =
         state.dirtyAutomation.copyWith(actions: updatedActions);
     emit(AutomationCreationDirty(state.cleanedAutomation, updatedAutomation,
@@ -220,7 +211,6 @@ class AutomationCreationBloc
       Emitter<AutomationCreationState> emit) {
     switch (event.type) {
       case AutomationChoiceEnum.trigger:
-        log('Resetting trigger');
         final updatedAutomation = state.dirtyAutomation.copyWith(
             trigger: AutomationTrigger(
           identifier: '',
@@ -296,7 +286,6 @@ class AutomationCreationBloc
         _manageSpecialCasesPreviews(updatedPreviews, event.key);
     final updatedAutomation =
         _manageSpecialCasesAutomation(state.dirtyAutomation, event.key);
-    log('Preview key: ${event.key}');
     emit(AutomationCreationState(state.cleanedAutomation, updatedAutomation,
         updatedPreviewsSpecialCases, state.status));
   }

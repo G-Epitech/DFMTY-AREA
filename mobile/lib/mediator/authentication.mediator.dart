@@ -76,7 +76,7 @@ class AuthenticationMediator with ChangeNotifier {
     try {
       _controller.add(AuthenticationStatus.authenticating);
       final refreshToken = await _credentialsRepository.getRefreshToken();
-      print('Refresh token: $refreshToken');
+      print(refreshToken);
       if (refreshToken == null) {
         _controller.add(AuthenticationStatus.unauthenticated);
         throw Exception('No refresh token found');

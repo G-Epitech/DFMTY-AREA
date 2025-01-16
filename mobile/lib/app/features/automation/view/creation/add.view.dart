@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,8 +35,6 @@ class _AutomationCreationAddViewState extends State<AutomationCreationAddView> {
     final Map<String, AutomationSchemaTriggerAction> triggersOrActions =
         automationMediator.getTriggersOrActions(
             widget.integrationIdentifier, widget.type);
-    log("Triggers or actions: $triggersOrActions");
-    log("Integration name: ${widget.integrationIdentifier}");
     return BaseScaffold(
       title:
           'Add a${widget.type == AutomationChoiceEnum.trigger ? ' Trigger' : 'n Action'}',
@@ -79,8 +75,6 @@ class _List extends StatelessWidget {
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              // Navigate to the next screen
-              log("Go to parameters screen");
               if (type == AutomationChoiceEnum.trigger) {
                 context.read<AutomationCreationBloc>().add(
                     AutomationCreationTriggerIdentifierChanged(

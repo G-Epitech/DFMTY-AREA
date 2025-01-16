@@ -223,36 +223,39 @@ class _OKButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TriggoButton(
-            text: "OK",
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-            onPressed: () {
-              onSave(value, humanReadableValue);
-              if (routeToGoWhenSave == RoutesNames.popOneTime) {
-                Navigator.of(context).pop();
-              } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
-              } else if (routeToGoWhenSave == RoutesNames.popThreeTimes) {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop()
-                  ..pop();
-              } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  routeToGoWhenSave,
-                  (route) => route.settings.name == routeToGoWhenSave,
-                );
-              }
-            },
+    return Container(
+      margin: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TriggoButton(
+              text: "OK",
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+              onPressed: () {
+                onSave(value, humanReadableValue);
+                if (routeToGoWhenSave == RoutesNames.popOneTime) {
+                  Navigator.of(context).pop();
+                } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                } else if (routeToGoWhenSave == RoutesNames.popThreeTimes) {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop()
+                    ..pop();
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    routeToGoWhenSave,
+                    (route) => route.settings.name == routeToGoWhenSave,
+                  );
+                }
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

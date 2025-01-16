@@ -263,7 +263,7 @@ class _List extends StatelessWidget {
   Widget build(BuildContext context) {
     if (properties.isEmpty) {
       return Center(
-        child: Text('No need for parameters',
+        child: Text('No need for parameters,\n just click the OK button',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelLarge),
       );
@@ -300,7 +300,6 @@ class _List extends StatelessWidget {
                 integrationIdentifier,
                 triggerOrActionIdentifier,
                 parameterIdentifier);
-            log("Options: $options");
             return AutomationLabelParameterWidget(
                 title: title,
                 previewData: previewData,
@@ -322,13 +321,13 @@ class _List extends StatelessWidget {
                               state.dirtyAutomation,
                               type,
                               integrationIdentifier,
+                              indexOfTheTriggerOrAction,
                               triggerOrActionIdentifier,
                               parameterIdentifier,
                               integrationMediator);
                           return options;
                         },
                         onSave: (value, humanReadableValue) {
-                          log("Human: $humanReadableValue");
                           if (type == AutomationChoiceEnum.trigger) {
                             context.read<AutomationCreationBloc>().add(
                                 AutomationCreationPreviewUpdated(
@@ -649,8 +648,7 @@ String? getPreviewData(
         for (final parameter in action.parameters) {
           if (parameter.identifier == parameterIdentifier) {
             value = parameter.value;
-            log("Parameter Type: ${parameter.type}");
-            isNotHumanReadable = parameter.type != 'var';
+            isNotHumanReadable = parameter.type != 'raw';
             break;
           }
         }
@@ -666,7 +664,6 @@ String? getPreviewData(
         parameterIdentifier,
         previews);
   }
-  log("NOT HUMAN Value: $value");
   return value;
 }
 
@@ -694,6 +691,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
     Automation automation,
     AutomationChoiceEnum type,
     String integrationName,
+    int indexOfTheTriggerOrAction,
     String propertyIdentifier,
     String parameterIdentifier,
     IntegrationMediator integrationMediator) async {
@@ -745,6 +743,44 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           }
         }
       }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'CreateDatabase' ||
+            propertyIdentifier == 'CreatePage') {
+          if (parameterIdentifier == 'ParentId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getPagesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'CreateDatabaseRow') {
+          if (parameterIdentifier == 'DatabaseId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getDatabasesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'ArchiveDatabase') {
+          if (parameterIdentifier == 'DatabaseId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getDatabasesRadio(integrationId);
+          }
+        }
+
+        if (propertyIdentifier == 'ArchivePage') {
+          if (parameterIdentifier == 'PageId') {
+            final integrationId =
+                automation.actions[indexOfTheTriggerOrAction].providers[0];
+            return await integrationMediator.notion
+                .getPagesRadio(integrationId);
+          }
+        }
+      }
       break;
   }
   return options;
@@ -785,6 +821,32 @@ AutomationParameterNeedOptions haveOptions(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'ChannelId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+      }
+      if (integrationName == 'notion') {
+        if (propertyIdentifier == 'CreateDatabase' ||
+            propertyIdentifier == 'CreatePage') {
+          if (parameterIdentifier == 'ParentId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'CreateDatabaseRow') {
+          if (parameterIdentifier == 'DatabaseId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'ArchiveDatabase') {
+          if (parameterIdentifier == 'DatabaseId') {
+            return AutomationParameterNeedOptions.yes;
+          }
+        }
+
+        if (propertyIdentifier == 'ArchivePage') {
+          if (parameterIdentifier == 'PageId') {
             return AutomationParameterNeedOptions.yes;
           }
         }
