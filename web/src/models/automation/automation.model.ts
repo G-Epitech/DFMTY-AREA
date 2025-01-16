@@ -1,5 +1,6 @@
 import { TriggerShortModel } from '@models/automation/trigger-short.model';
 import { ActionShortModel } from '@models/automation/action-short.model';
+import { iconNameFromIdentifier } from '@utils/icon';
 
 export class AutomationModel {
   readonly id: string;
@@ -9,8 +10,8 @@ export class AutomationModel {
   readonly enabled: boolean;
   readonly updatedAt: Date;
   readonly color: string;
-  readonly iconName: string;
-  readonly trigger: TriggerShortModel;
+  readonly #iconName: string;
+  readonly trigger: TriggerShortModel | null;
   readonly actions: ActionShortModel[];
 
   constructor(
@@ -22,7 +23,7 @@ export class AutomationModel {
     updatedAt: Date,
     color: string,
     iconName: string,
-    trigger: TriggerShortModel,
+    trigger: TriggerShortModel | null,
     actions: ActionShortModel[]
   ) {
     this.id = id;
@@ -32,7 +33,7 @@ export class AutomationModel {
     this.enabled = enabled;
     this.updatedAt = updatedAt;
     this.color = color;
-    this.iconName = iconName;
+    this.#iconName = iconName;
     this.trigger = trigger;
     this.actions = actions;
   }
@@ -40,4 +41,23 @@ export class AutomationModel {
   get hasTrigger(): boolean {
     return !!this.trigger;
   }
+
+  get iconName(): string {
+    return iconNameFromIdentifier(this.#iconName);
+  }
+}
+
+export function newDefaultAutomationModel(): AutomationModel {
+  return new AutomationModel(
+    '',
+    '',
+    'New Automation',
+    'New Automation Description',
+    true,
+    new Date(),
+    '#EE883A',
+    'bolt',
+    null,
+    []
+  );
 }

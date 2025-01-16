@@ -115,6 +115,9 @@ importers:
       '@ng-icons/heroicons':
         specifier: ^29.10.0
         version: 29.10.0
+      '@ng-icons/lucide':
+        specifier: ^26.3.0
+        version: 26.5.0
       '@ngrx/operators':
         specifier: ^18.1.1
         version: 18.1.1(rxjs@7.8.0)
@@ -136,6 +139,9 @@ importers:
       '@spartan-ng/ui-label-brain':
         specifier: 0.0.1-alpha.356
         version: 0.0.1-alpha.356(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@angular/forms@19.0.0(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@angular/platform-browser@19.0.0(@angular/animations@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0)))(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0)))(rxjs@7.8.0))
+      '@spartan-ng/ui-sheet-brain':
+        specifier: 0.0.1-alpha.356
+        version: 0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@spartan-ng/ui-core@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(@spartan-ng/ui-dialog-brain@0.0.1-alpha.356(@angular/cdk@19.0.1(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@spartan-ng/ui-core@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2)))))
       class-variance-authority:
         specifier: ^0.6.0
         version: 0.6.0(typescript@5.6.2)
@@ -1777,6 +1783,9 @@ packages:
   '@ng-icons/heroicons@29.10.0':
     resolution: {integrity: sha512-xUUXUYFL42eO0J14JOWoom/hxvBZr6E5H34icVNIThX022SjIArFYUQ21U5pf9KMoUDp9wxQJCKAGK1ZJbtmTA==}
 
+  '@ng-icons/lucide@26.5.0':
+    resolution: {integrity: sha512-rW6iZo2LBlFvnpBLWs400mrKn/34PKt5R+Yfd6ZJz9lxq2TMJfNeJv/V4ylG9vYG3RkPa+KEJ+Q6/8IOceT0NA==}
+
   '@ngrx/operators@18.1.1':
     resolution: {integrity: sha512-RB156PouKI/E79jxvJLaDFYMHz9JVFR8f4ogfAeT7sh2dDGoK4A+B0n1Cl0iYW9fpcJCdfB/mu7TkH6auFv1aQ==}
     peerDependencies:
@@ -2248,6 +2257,13 @@ packages:
       '@angular/common': ^18.0.0
       '@angular/core': ^18.0.0
       '@angular/forms': ^18.0.0
+
+  '@spartan-ng/ui-sheet-brain@0.0.1-alpha.356':
+    resolution: {integrity: sha512-piktu3L/ZSVgYvq4cioEIi8ObcPTDj9lGoLWKs0LPyrqE/9Gv2q6eK/IreoeFQAQdYgv3q4CdYDcNWfIpccUhg==}
+    peerDependencies:
+      '@angular/core': ^18.0.0
+      '@spartan-ng/ui-core': 0.0.1-alpha.356
+      '@spartan-ng/ui-dialog-brain': 0.0.1-alpha.356
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -8281,6 +8297,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@ng-icons/lucide@26.5.0':
+    dependencies:
+      tslib: 2.8.1
+
   '@ngrx/operators@18.1.1(rxjs@7.8.0)':
     dependencies:
       rxjs: 7.8.0
@@ -9125,6 +9145,13 @@ snapshots:
       '@angular/common': 19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0)
       '@angular/core': 19.0.0(rxjs@7.8.0)(zone.js@0.15.0)
       '@angular/forms': 19.0.0(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@angular/platform-browser@19.0.0(@angular/animations@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0)))(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0)))(rxjs@7.8.0)
+      tslib: 2.8.1
+
+  '@spartan-ng/ui-sheet-brain@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@spartan-ng/ui-core@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(@spartan-ng/ui-dialog-brain@0.0.1-alpha.356(@angular/cdk@19.0.1(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@spartan-ng/ui-core@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2)))))':
+    dependencies:
+      '@angular/core': 19.0.0(rxjs@7.8.0)(zone.js@0.15.0)
+      '@spartan-ng/ui-core': 0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2)))
+      '@spartan-ng/ui-dialog-brain': 0.0.1-alpha.356(@angular/cdk@19.0.1(@angular/common@19.0.0(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(rxjs@7.8.0))(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(@spartan-ng/ui-core@0.0.1-alpha.356(@angular/core@19.0.0(rxjs@7.8.0)(zone.js@0.15.0))(clsx@2.1.1)(rxjs@7.8.0)(tailwind-merge@2.5.5)(tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))(tailwindcss@3.4.15(ts-node@10.9.1(@types/node@22.10.0)(typescript@5.6.2))))
       tslib: 2.8.1
 
   '@trysound/sax@0.2.0': {}

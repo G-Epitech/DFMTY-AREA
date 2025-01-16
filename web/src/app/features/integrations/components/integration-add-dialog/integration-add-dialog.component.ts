@@ -14,13 +14,12 @@ import { TrInputDirective } from '@triggo-ui/input';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { IntegrationsMediator } from '@mediators/integrations/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
-import {
-  IntegrationAvailableProps,
-  LinkFunction,
-} from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
+import { LinkFunction } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
 import { NotionMediator } from '@mediators/integrations';
 import { IntegrationTypeEnum } from '@models/integration';
 import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
+import { AvailableIntegrationType } from '@common/types';
+import { AutomationSchemaModel } from '@models/automation';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -75,8 +74,8 @@ export class IntegrationAddDialogComponent {
 
   #searchTerm = signal('');
 
-  selectedIntegration = signal<IntegrationAvailableProps | null>(null);
-  availableIntegrations = signal<IntegrationAvailableProps[]>([]);
+  selectedIntegration = signal<AvailableIntegrationType | null>(null);
+  availableIntegrations = signal<AvailableIntegrationType[]>([]);
 
   linkFn = computed(() => {
     const selected = this.selectedIntegration();
@@ -84,46 +83,20 @@ export class IntegrationAddDialogComponent {
   });
 
   filteredIntegrations = computed(() => {
-    const searchTerm = this.#searchTerm().toLowerCase();
-    const integrations = this.availableIntegrations();
-
-    if (!searchTerm) return integrations;
-
-    return integrations.filter(
-      integration =>
-        integration.name.toLowerCase().includes(searchTerm) ||
-        integration.triggers.some(trigger =>
-          trigger.toLowerCase().includes(searchTerm)
-        ) ||
-        integration.actions.some(action =>
-          action.toLowerCase().includes(searchTerm)
-        )
+    return AutomationSchemaModel.searchAvailableIntegrations(
+      this.availableIntegrations(),
+      this.#searchTerm()
     );
   });
 
   constructor() {
     effect(() => {
-      const schema = this.#schemaStore.getSchema();
-      if (!schema) {
+      const availableIntegrations =
+        this.#schemaStore.getAvailableIntegrations();
+      if (!availableIntegrations) {
         return;
       }
-
-      const integrations = Object.entries(schema.automationServices).map(
-        ([name, integration]) => ({
-          color: integration.color,
-          name: integration.name,
-          iconUri: integration.iconUri,
-          identifier: name,
-          triggers: Object.entries(integration.triggers).map(
-            ([, trigger]) => trigger.name
-          ),
-          actions: Object.entries(integration.actions).map(
-            ([, action]) => action.name
-          ),
-        })
-      );
-
-      this.availableIntegrations.set(integrations);
+      this.availableIntegrations.set(availableIntegrations);
     });
   }
 
@@ -132,7 +105,7 @@ export class IntegrationAddDialogComponent {
     this.#searchTerm.set(input.value);
   }
 
-  selectIntegration(integrationProps: IntegrationAvailableProps): void {
+  selectIntegration(integrationProps: AvailableIntegrationType): void {
     this.selectedIntegration.set(integrationProps);
   }
 
@@ -145,7 +118,7 @@ export class IntegrationAddDialogComponent {
     if (fn) fn();
   }
 
-  forceWhite(integration: IntegrationAvailableProps): boolean {
+  forceWhite(integration: AvailableIntegrationType): boolean {
     return integration.name === IntegrationTypeEnum.OPENAI;
   }
 

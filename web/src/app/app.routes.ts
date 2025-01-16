@@ -58,7 +58,15 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'automations/:id',
+        path: 'automations/workspace',
+        loadComponent: () =>
+          import(
+            '@features/automations/workspace/automations-workspace.page'
+          ).then(m => m.AutomationsWorkspacePageComponent),
+        pathMatch: 'full',
+      },
+      {
+        path: 'automations/workspace/:id',
         loadComponent: () =>
           import(
             '@features/automations/workspace/automations-workspace.page'

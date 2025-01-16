@@ -2,32 +2,22 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   signal,
 } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { PaginationComponent } from '@app/components';
 import { TrInputSearchComponent } from '@triggo-ui/input';
-import {
-  Observable,
-  Subject,
-  of,
-  switchMap,
-  takeUntil,
-  tap,
-  BehaviorSubject,
-} from 'rxjs';
+import { Observable, of, switchMap, tap, BehaviorSubject } from 'rxjs';
 import { PageModel, PageOptions } from '@models/page';
 import { AutomationModel } from '@models/automation/automation.model';
 import { AsyncPipe } from '@angular/common';
 import { AutomationCardComponent } from '@features/automations/listing/components/automation-card/automation-card.component';
 import { UsersMediator } from '@mediators/users.mediator';
 import { TrSkeletonComponent } from '@triggo-ui/skeleton';
-import { AutomationsMediator } from '@mediators/automations.mediator';
-import { ToastrService } from 'ngx-toastr';
 import { NgIcon } from '@ng-icons/core';
 import { PagerCacheService } from '@common/cache/pager-cache.service';
 import { AUTOMATION_CACHE_SERVICE } from '@common/cache/injection-tokens';
+import { AppRouter } from '@app/app.router';
 
 @Component({
   selector: 'tr-automations-list',
@@ -45,15 +35,12 @@ import { AUTOMATION_CACHE_SERVICE } from '@common/cache/injection-tokens';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AutomationsListPageComponent implements OnDestroy {
+export class AutomationsListPageComponent {
   readonly #usersMediator = inject(UsersMediator);
-  readonly #automationsMediator = inject(AutomationsMediator);
-  readonly #toastr = inject(ToastrService);
   readonly #cacheService: PagerCacheService<AutomationModel> = inject(
     AUTOMATION_CACHE_SERVICE
   );
-
-  private destroy$ = new Subject<void>();
+  readonly #appRouter = inject(AppRouter);
 
   pageOptions$: BehaviorSubject<PageOptions> = new BehaviorSubject<PageOptions>(
     {
@@ -91,23 +78,6 @@ export class AutomationsListPageComponent implements OnDestroy {
   }
 
   createAutomation(): void {
-    this.#automationsMediator
-      .create()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        error: () => {
-          this.#toastr.error('Error creating automation');
-        },
-        next: () => {
-          this.#toastr.success('Automation created');
-          window.location.reload();
-        },
-      });
-    this.#cacheService.clearLastPage();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.#appRouter.redirectToAutomationWorkspace();
   }
 }

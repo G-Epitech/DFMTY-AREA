@@ -1,4 +1,4 @@
-export function iconName(iconId: string) {
+export function iconNameFromIdentifier(iconId: string) {
   const words = iconId.split('-');
 
   const camelCase = words

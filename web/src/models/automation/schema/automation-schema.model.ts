@@ -1,10 +1,48 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
+import { AvailableIntegrationType } from '@common/types';
 
 export class AutomationSchemaModel {
   readonly automationServices: Record<string, AutomationSchemaService>;
 
   constructor(services: Record<string, AutomationSchemaService>) {
     this.automationServices = services;
+  }
+
+  static searchAvailableIntegrations(
+    availableIntegrations: AvailableIntegrationType[],
+    query: string
+  ): AvailableIntegrationType[] {
+    const searchTerm = query.toLowerCase();
+
+    if (!searchTerm) return availableIntegrations;
+
+    return availableIntegrations.filter(
+      integration =>
+        integration.name.toLowerCase().includes(searchTerm) ||
+        integration.triggers.some(trigger =>
+          trigger.toLowerCase().includes(searchTerm)
+        ) ||
+        integration.actions.some(action =>
+          action.toLowerCase().includes(searchTerm)
+        )
+    );
+  }
+
+  getAvailableIntegration(): AvailableIntegrationType[] {
+    return Object.entries(this.automationServices).map(
+      ([name, integration]) => ({
+        color: integration.color,
+        name: integration.name,
+        iconUri: integration.iconUri,
+        identifier: name,
+        triggers: Object.entries(integration.triggers).map(
+          ([, trigger]) => trigger.name
+        ),
+        actions: Object.entries(integration.actions).map(
+          ([, action]) => action.name
+        ),
+      })
+    );
   }
 
   getIntegrationIconUri(integrationName: string) {
