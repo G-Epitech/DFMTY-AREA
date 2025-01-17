@@ -1,3 +1,8 @@
+export interface DependencyDTO {
+  require: string;
+  optional: boolean;
+}
+
 export interface AutomationParameterDTO {
   name: string;
   description: string;
@@ -16,6 +21,7 @@ export interface TriggerDTO {
   icon: string;
   parameters: Record<string, AutomationParameterDTO>;
   facts: Record<string, AutomationFactDTO>;
+  dependencies: Record<string, DependencyDTO>;
 }
 
 export interface ActionDTO {
@@ -24,6 +30,7 @@ export interface ActionDTO {
   icon: string;
   parameters: Record<string, AutomationParameterDTO>;
   facts: Record<string, AutomationFactDTO>;
+  dependencies: Record<string, DependencyDTO>;
 }
 
 export interface AutomationServiceDTO {

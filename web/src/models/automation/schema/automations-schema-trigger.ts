@@ -1,4 +1,5 @@
 import {
+  AutomationSchemaDependency,
   AutomationSchemaFactModel,
   AutomationSchemaParameterModel,
 } from '@models/automation';
@@ -9,4 +10,5 @@ export interface AutomationSchemaTrigger {
   icon: string;
   parameters: Record<string, AutomationSchemaParameterModel>;
   facts: Record<string, AutomationSchemaFactModel>;
+  dependencies: Record<string, AutomationSchemaDependency>;
 }

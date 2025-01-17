@@ -1,12 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { DiscordRepository } from '@repositories/integrations';
+import {
+  DiscordRepository,
+  IntegrationsRepository,
+} from '@repositories/integrations';
 import { map, Observable } from 'rxjs';
-import { DiscordGuildModel } from '@models/integration';
+import { DiscordGuildModel, IntegrationModel } from '@models/integration';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IntegrationsMediator {
+  readonly #integrationsRepository = inject(IntegrationsRepository);
   readonly #discordRepository = inject(DiscordRepository);
 
   get discordRepository(): DiscordRepository {
@@ -25,6 +29,20 @@ export class IntegrationsMediator {
             guild.linked
           );
         });
+      })
+    );
+  }
+
+  getById(id: string): Observable<IntegrationModel> {
+    return this.#integrationsRepository.getById(id).pipe(
+      map(dto => {
+        return new IntegrationModel(
+          dto.id,
+          dto.ownerId,
+          dto.isValid,
+          dto.type,
+          dto.properties
+        );
       })
     );
   }

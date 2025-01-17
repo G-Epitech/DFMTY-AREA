@@ -1,0 +1,32 @@
+<div class="flex flex-col h-full">
+  <div class="bg-secondary flex-grow rounded-md">
+    <div class="flex flex-col space-y-3 p-3">
+      @if (loading()) {
+        @for (_ of [].constructor(5); track $index) {
+          <div class="bg-white rounded-md p-2">
+            <div class="space-y-2">
+              <tr-skeleton class="h-4 w-[200px] bg-secondary" />
+              <tr-skeleton class="h-4 w-[200px] bg-secondary" />
+            </div>
+          </div>
+        }
+      }
+      @if (integrations$ | async; as page) {
+        @if (!loading()) {
+          @for (integration of page.data; track integration.id) {
+            <tr-linked-integration-button
+              [integration]="integration"
+              (selectLinkedIntegration)="
+                selectLinkedIntegration(integration)
+              " />
+          } @empty {
+            <span class="text-center"
+              >No linked integrations found for
+              {{ selectedIntegrationType()?.toString() }}</span
+            >
+          }
+        }
+      }
+    </div>
+  </div>
+</div>
