@@ -56,11 +56,15 @@
               [integration]="state().selectedLinkedIntegration!"
               (click)="service.goToLinkedInegrationSelection()" />
           }
-          @if (state().selectedTrigger) {
+          @if (state().selectedTrigger && state().selectedLinkedIntegration) {
             <tr-automation-parameter-list
               class="mt-4"
               [parameters]="state().trigger!.parameters"
               (editParameter)="onParameterEdit($event)" />
+          } @else {
+            <span class="text-muted tr-medium">
+              Select a Trigger and Linked Integration to view parameters
+            </span>
           }
         }
         @case (TriggerSelectionStep.INTEGRATION) {
@@ -84,6 +88,7 @@
         }
         @case (TriggerSelectionStep.PARAMETER) {
           <tr-automation-parameter-edit
+            [integrationId]="service.state().selectedLinkedIntegration!.id"
             [automationStepIdentifier]="service.state().trigger!.nameIdentifier"
             [parameter]="service.state().selectedParameter!"
             [parameterType]="service.state().selecterParameterType!" />

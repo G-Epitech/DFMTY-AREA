@@ -9,9 +9,7 @@ import {
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
 import { AutomationParameterType } from '@models/automation';
 import { TrInputDirective } from '@triggo-ui/input';
-import {
-  NumericOnlyDirective
-} from '@app/directives/numeric-only.directive';
+import { NumericOnlyDirective } from '@app/directives/numeric-only.directive';
 
 @Component({
   selector: 'tr-automation-parameter-edit-integer',

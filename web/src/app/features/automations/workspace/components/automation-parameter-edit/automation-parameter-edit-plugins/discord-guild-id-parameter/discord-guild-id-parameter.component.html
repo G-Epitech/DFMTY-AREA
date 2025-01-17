@@ -1,0 +1,26 @@
+@if (integrationId) {
+  @if (discordGuilds$ | async; as guilds) {
+    <div
+      class="flex flex-col overflow-y-auto max-h-96 bg-secondary rounded-md p-3 space-y-3 border">
+      @for (guild of guilds; track guild.id) {
+        <button
+          trBtn
+          variant="outline"
+          class="flex flex-row bg-white items-center p-7"
+          (click)="selectGuild(guild)">
+          @if (guild.iconUri) {
+            <img
+              [ngSrc]="guild.iconUri"
+              alt="Discord Logo"
+              class="rounded-full mr-4"
+              [width]="20"
+              [height]="20" />
+          }
+          <div class="flex flex-col mr-auto">
+            <span class="tr-large">{{ guild.name }}</span>
+          </div>
+        </button>
+      }
+    </div>
+  }
+}

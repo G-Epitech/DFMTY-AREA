@@ -14,15 +14,10 @@ import { NgIcon } from '@ng-icons/core';
 import { TrTabsImports } from '@triggo-ui/tabs';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { NgClass } from '@angular/common';
-import { ParameterEditOutput } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
-
-interface DynamicComponent {
-  parameter: { identifier: string; value: string | null };
-  parameterType: AutomationParameterType;
-  valueChange?: {
-    subscribe: (callback: (value: ParameterEditOutput) => void) => void;
-  };
-}
+import {
+  ParameterEditDynamicComponent,
+  ParameterEditOutput,
+} from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
 
 @Component({
   standalone: true,
@@ -37,6 +32,7 @@ export class AutomationParameterEditComponent {
   private readonly editService = inject(AutomationParameterEditService);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
+  readonly integrationId = input.required<string>();
   readonly automationStepIdentifier = input.required<string>();
   readonly parameter = input.required<{
     identifier: string;
@@ -78,7 +74,7 @@ export class AutomationParameterEditComponent {
       this.parameterType()
     );
     const componentRef =
-      this.viewContainerRef.createComponent<DynamicComponent>(component);
+      this.viewContainerRef.createComponent<ParameterEditDynamicComponent>(component);
     if (!componentRef.instance) {
       return;
     }
@@ -91,9 +87,11 @@ export class AutomationParameterEditComponent {
     );
   }
 
-  private setupDynamicComponent(instance: DynamicComponent) {
+  private setupDynamicComponent(instance: ParameterEditDynamicComponent) {
     instance.parameter = this.parameter();
     instance.parameterType = this.parameterType();
+    console.log(this.integrationId());
+    instance.integrationId = this.integrationId();
 
     if (instance.valueChange) {
       instance.valueChange.subscribe(value => {
