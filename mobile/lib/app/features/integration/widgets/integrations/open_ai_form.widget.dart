@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:triggo/app/features/integration/bloc/integrations/openAI/open_ai_bloc.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
+import 'package:triggo/utils/launch_url.dart';
 
 class OpenAIIntegrationForm extends StatelessWidget {
   const OpenAIIntegrationForm({super.key});
@@ -21,6 +22,7 @@ class OpenAIIntegrationForm extends StatelessWidget {
               _Label(),
               const SizedBox(height: 12),
               _ApiTokenInput(),
+              _TokenLink(),
               const SizedBox(height: 12),
               _AdminApiTokenInput(),
               const SizedBox(height: 12),
@@ -52,6 +54,24 @@ class _ApiTokenInput extends StatelessWidget {
         context.read<OpenAIIntegrationBloc>().add(OpenAIAPIKeyChanged(apiKey));
       },
     );
+  }
+}
+
+class _TokenLink extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          launchURL(
+              'https://platform.openai.com/settings/organization/admin-keys');
+        },
+        child: Text(
+          'Get your API key',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            decoration: TextDecoration.underline,
+          ),
+        ));
   }
 }
 
