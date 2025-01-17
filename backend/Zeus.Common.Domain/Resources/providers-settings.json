@@ -49,7 +49,7 @@
         },
         "Dependencies": {
           "Discord": {
-            "Require": "Multiple"
+            "Require": "Single"
           }
         }
       }
@@ -212,7 +212,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "Single"
           }
         }
       },
@@ -261,7 +261,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "Single"
           }
         }
       }
