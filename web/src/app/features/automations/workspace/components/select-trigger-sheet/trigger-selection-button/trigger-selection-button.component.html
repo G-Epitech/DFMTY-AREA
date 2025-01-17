@@ -2,8 +2,7 @@
   class="p-3 rounded-md bg-white hover:bg-accent hover:text-primary transition-colors flex flex-row gap-2 items-center w-full"
   [ngStyle]="{
     border: color() ? '2px solid ' + color() : 'none',
-  }"
->
+  }">
   @if (trigger()) {
     <div
       [style.background-color]="color()"

@@ -6,7 +6,7 @@ export interface TriggerParameter {
 export class TriggerModel {
   readonly identifier: string;
   readonly parameters: TriggerParameter[];
-  readonly dependencies: string[];
+  dependencies: string[];
 
   constructor(
     identifier: string,
@@ -24,5 +24,9 @@ export class TriggerModel {
 
   get nameIdentifier(): string {
     return this.identifier.split('.')[1];
+  }
+
+  addDependency(dependency: string): void {
+    this.dependencies.push(dependency);
   }
 }

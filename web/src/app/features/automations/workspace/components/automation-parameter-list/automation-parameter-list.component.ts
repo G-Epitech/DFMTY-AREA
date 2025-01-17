@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { PascalToPhrasePipe } from '@app/pipes';
 import { NgIcon } from '@ng-icons/core';
-import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-automation-parameter-list',
-  imports: [PascalToPhrasePipe, NgIcon, TrButtonDirective],
+  imports: [PascalToPhrasePipe, NgIcon],
   templateUrl: './automation-parameter-list.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

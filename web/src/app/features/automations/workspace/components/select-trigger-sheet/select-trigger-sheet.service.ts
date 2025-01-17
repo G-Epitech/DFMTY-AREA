@@ -100,17 +100,15 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   selectLinkedIntegration(linkedIntegration: IntegrationModel): void {
-    if (this.state().selectedLinkedIntegration?.id !== linkedIntegration.id) {
-      patchState(this.state, state => ({
-        ...state,
-        selectedTrigger: null,
-      }));
-    }
     patchState(
       this.state,
       stateUpdaterSelectLinkedIntegration(linkedIntegration)
     );
-
+    patchState(this.state, state => {
+      state.trigger!.addDependency(linkedIntegration.id);
+      return state;
+    });
+    console.log(this.state().trigger);
     this.back();
   }
 
@@ -118,6 +116,12 @@ export class SelectTriggerSheetService implements OnDestroy {
     trigger: AutomationSchemaTrigger,
     schema: AutomationSchemaModel | null
   ) {
+    if (this.state().selectedTrigger?.name !== trigger.name) {
+      patchState(this.state, state => ({
+        ...state,
+        selectedLinkedIntegration: null,
+      }));
+    }
     patchState(this.state, stateUpdaterSelectTrigger(trigger));
     this.back();
     if (!schema) {
@@ -135,12 +139,7 @@ export class SelectTriggerSheetService implements OnDestroy {
       })
     );
     if (triggerIdentifer) {
-      const dependency = this.state().selectedLinkedIntegration!.id;
-      const triggerShort = new TriggerModel(
-        triggerIdentifer,
-        params,
-        dependency ? [dependency] : []
-      );
+      const triggerShort = new TriggerModel(triggerIdentifer, params, []);
       patchState(this.state, state => ({
         ...state,
         trigger: triggerShort,
