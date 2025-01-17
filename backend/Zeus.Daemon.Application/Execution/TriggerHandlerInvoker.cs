@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
@@ -57,8 +58,8 @@ public class TriggerHandlerInvoker
                 _ when destType.IsAssignableTo(typeof(int)) => int.Parse(parameter.Value),
                 _ when destType.IsAssignableTo(typeof(string)) => parameter.Value,
                 _ when destType.IsAssignableTo(typeof(bool)) => bool.Parse(parameter.Value),
-                _ when destType.IsAssignableTo(typeof(DateTime)) => DateTime.Parse(parameter.Value),
-                _ when destType.IsAssignableTo(typeof(float)) => float.Parse(parameter.Value),
+                _ when destType.IsAssignableTo(typeof(DateTime)) => DateTime.Parse(parameter.Value, CultureInfo.InvariantCulture),
+                _ when destType.IsAssignableTo(typeof(float)) => float.Parse(parameter.Value, CultureInfo.InvariantCulture),
                 _ when destType.IsAssignableTo(typeof(object)) => Convert.ChangeType(parameter.Value, destType),
                 _ => throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value")
             };

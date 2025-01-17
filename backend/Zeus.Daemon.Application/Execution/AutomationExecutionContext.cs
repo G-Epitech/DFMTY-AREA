@@ -1,5 +1,7 @@
 using System.Reflection;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
@@ -57,6 +59,7 @@ public sealed class AutomationExecutionContext
         {
             facts[$"{trigger.Identifier}.{fact.Key}"] = fact.Value;
         }
+
         return facts;
     }
 
@@ -70,12 +73,19 @@ public sealed class AutomationExecutionContext
 
     private async Task RunDetachedAsync()
     {
-        foreach (var action in _actions)
+        try
         {
-            if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            foreach (var action in _actions)
             {
-                await RunActionAsync(action);
+                if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    await RunActionAsync(action);
+                }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
     }
 
@@ -118,7 +128,8 @@ public sealed class AutomationExecutionContext
 
             if (fromParametersAttributeIdentifier is not null)
             {
-                result[parameter.Position] = GetParameterValue(fromParametersAttributeIdentifier, parameter.ParameterType, action);
+                result[parameter.Position] =
+                    GetParameterValue(fromParametersAttributeIdentifier, parameter.ParameterType, action);
             }
             else if (fromIntegrationAttribute is not null)
             {
@@ -137,6 +148,7 @@ public sealed class AutomationExecutionContext
                 result[parameter.Position] = 0;
             }
         }
+
         return result;
     }
 
@@ -161,7 +173,8 @@ public sealed class AutomationExecutionContext
                     _ when destType.IsAssignableTo(typeof(DateTime)) => DateTime.Parse(parameter.Value),
                     _ when destType.IsAssignableTo(typeof(float)) => float.Parse(parameter.Value),
                     _ when destType.IsAssignableTo(typeof(object)) => Convert.ChangeType(parameter.Value, destType),
-                    _ => throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value")
+                    _ => throw new InvalidOperationException(
+                        $"Parameter with identifier '{identifier}' has invalid value")
                 };
             }
 
@@ -169,8 +182,10 @@ public sealed class AutomationExecutionContext
 
             if (value is null)
             {
-                throw new InvalidOperationException($"Unable to find value for parameter with identifier '{identifier}'");
+                throw new InvalidOperationException(
+                    $"Unable to find value for parameter with identifier '{identifier}'");
             }
+
             return value switch
             {
                 Fact<int> fact => fact.Value,

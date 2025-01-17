@@ -13,17 +13,18 @@ using Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
 
 namespace Zeus.Daemon.Application.Providers.LeagueOfLegends.TriggerHandlers;
 
-[TriggerHandler("LeagueOfLegends.MatchFinished")]
-public class LeagueOfLegendsMatchFinishedTrigger
+[TriggerHandler("LeagueOfLegends.MatchFinishedWithKdaLowerThan")]
+public class LeagueOfLegendsMatchFinishedWithKdaLowerThanTrigger
 {
     private readonly IAutomationsLauncher _automationsLauncher;
     private readonly ILogger _logger;
-    private readonly Dictionary<RiotAccountId, List<AutomationId>> _triggers = new();
+    private readonly Dictionary<RiotAccountId, Dictionary<AutomationId, float>> _triggers = new();
     private readonly ILeagueOfLegendsPollingService _pollingService;
 
-    public LeagueOfLegendsMatchFinishedTrigger(
+    public LeagueOfLegendsMatchFinishedWithKdaLowerThanTrigger(
         IAutomationsLauncher automationsLauncher,
-        ILogger<LeagueOfLegendsMatchFinishedTrigger> logger, ILeagueOfLegendsPollingService pollingService)
+        ILogger<LeagueOfLegendsMatchFinishedWithKdaLowerThanTrigger> logger,
+        ILeagueOfLegendsPollingService pollingService)
     {
         _automationsLauncher = automationsLauncher;
         _logger = logger;
@@ -36,6 +37,7 @@ public class LeagueOfLegendsMatchFinishedTrigger
     public async Task<bool> OnRegisterAsync(
         AutomationId automationId,
         [FromIntegrations] IList<LeagueOfLegendsIntegration> integrations,
+        [FromParameters] float kdaThreshold,
         CancellationToken cancellationToken = default)
     {
         foreach (var integration in integrations)
@@ -45,10 +47,11 @@ public class LeagueOfLegendsMatchFinishedTrigger
             if (!_triggers.ContainsKey(accountId))
             {
                 _triggers[accountId] = [];
+
                 await _pollingService.RegisterRiotAccount(accountId, cancellationToken);
             }
 
-            _triggers[accountId].Add(automationId);
+            _triggers[accountId].Add(automationId, kdaThreshold);
         }
 
         return true;
@@ -76,14 +79,17 @@ public class LeagueOfLegendsMatchFinishedTrigger
     private async Task OnMatchFinished(RiotAccountId accountId, LeagueOfLegendsMatch match,
         CancellationToken cancellationToken)
     {
-        if (!_triggers.TryGetValue(accountId, out List<AutomationId>? automationIds))
+        if (!_triggers.TryGetValue(accountId, out var automations))
         {
+            _logger.LogWarning("No triggers found for account {accountId}", accountId.Value);
             return;
         }
 
         var participant = match.Participants.FirstOrDefault(p => p.Id == accountId);
         if (participant is null)
         {
+            _logger.LogWarning("No participant found for account {accountId} in match {matchId}", accountId.Value,
+                match.Id.Value);
             return;
         }
 
@@ -97,20 +103,25 @@ public class LeagueOfLegendsMatchFinishedTrigger
             { "SummonerChampion", Fact.Create(participant.ChampionName) }
         };
 
-        await LaunchTargetedAutomations(automationIds, facts);
+        foreach (var automation in automations)
+        {
+            var kda = automation.Value;
+
+            if (participant.Kda < kda)
+            {
+                await LaunchTargetedAutomation(automation.Key, facts);
+            }
+        }
     }
 
-    private async Task LaunchTargetedAutomations(List<AutomationId> automationIds, FactsDictionary facts
+    private async Task LaunchTargetedAutomation(AutomationId automationId, FactsDictionary facts
     )
     {
-        var res = await _automationsLauncher.LaunchManyAsync(automationIds, facts);
+        var res = await _automationsLauncher.LaunchAsync(automationId, facts);
 
-        foreach ((AutomationId automationId, bool started) in res)
+        if (!res)
         {
-            if (!started)
-            {
-                _logger.LogError("Automation {id} failed to launch", automationId.Value);
-            }
+            _logger.LogWarning("Failed to launch automation {automationId}", automationId.Value);
         }
     }
 }

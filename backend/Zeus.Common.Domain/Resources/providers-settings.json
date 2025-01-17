@@ -503,7 +503,7 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "float"
+            "Type": "string"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
@@ -525,7 +525,7 @@
           "KdaThreshold": {
             "Name": "KDA threshold",
             "Description": "The KDA threshold to trigger the action.",
-            "Type": "integer"
+            "Type": "float"
           }
         },
         "Facts": {
@@ -552,7 +552,7 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "float"
+            "Type": "string"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
@@ -574,7 +574,7 @@
           "KdaThreshold": {
             "Name": "KDA threshold",
             "Description": "The KDA threshold to trigger the action.",
-            "Type": "integer"
+            "Type": "float"
           }
         },
         "Facts": {
@@ -601,7 +601,7 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "float"
+            "Type": "string"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
