@@ -326,6 +326,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
       cleanedAutomation: event.automation,
       dirtyAutomation: event.automation,
       previews: previews,
+      status: FormzSubmissionStatus.initial,
     ));
   }
 

@@ -371,6 +371,7 @@ class _List extends StatelessWidget {
                         title: title,
                         type: type,
                         automation: state.cleanedAutomation,
+                        value: selectedValue,
                         onSave: (value, valueType, humanReadableValue,
                             indexVariable) {
                           if (type == AutomationChoiceEnum.trigger) {
@@ -554,8 +555,9 @@ class AutomationParameterFromActions extends StatelessWidget {
                       label: triggerName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
+                      value: value?.split('.').last,
                       onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue, "t.");
+                        onSave(value, 'var', humanReadableValue, "T.");
                       },
                     ),
                   );
@@ -604,6 +606,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                       label: actionsName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
+                      value: value?.split('.').last,
                       onSave: (value, humanReadableValue) {
                         onSave(value, 'var', humanReadableValue, "$index.");
                       },
