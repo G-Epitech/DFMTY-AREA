@@ -16,7 +16,7 @@ class OpenAIIntegration extends Integration {
   static OpenAIIntegration fromDTO(IntegrationDTO dto) {
     OpenAIPropertiesDTO properties = dto.properties as OpenAIPropertiesDTO;
     return OpenAIIntegration(
-      name: 'OpenAI',
+      name: 'OpenAi',
       id: dto.id,
       ownerName: properties.ownerName,
       ownerEmail: properties.ownerEmail,
