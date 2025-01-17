@@ -11,8 +11,10 @@ public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
     {
         Discord = new DiscordSettingsProvider(settings.Value.Discord);
         Notion = new NotionSettingsProvider(settings.Value.Notion);
+        Riot = new RiotSettingsProvider(settings.Value.Riot);
     }
 
     public IDiscordSettingsProvider Discord { get; }
     public INotionSettingsProvider Notion { get; }
+    public IRiotSettingsProvider Riot { get; }
 }

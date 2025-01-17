@@ -10,13 +10,16 @@ public class ProvidersSettings
 
     [JsonIgnore] private List<string>? _cachedTriggersIdentifiers;
 
-    [JsonIgnore] public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
+    [JsonIgnore]
+    public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
 
-    [JsonIgnore] public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
+    [JsonIgnore]
+    public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
 
     public required ProviderSchema Discord { get; set; }
     public required ProviderSchema Notion { get; set; }
     public required ProviderSchema OpenAi { get; set; }
+    public required ProviderSchema LeagueOfLegends { get; set; }
 
     private List<string> CacheTriggersIdentifiers()
     {
@@ -24,6 +27,7 @@ public class ProvidersSettings
         _cachedTriggersIdentifiers.AddRange(Discord.Triggers.Keys.Select(k => $"{nameof(Discord)}.{k}"));
         _cachedTriggersIdentifiers.AddRange(Notion.Triggers.Keys.Select(k => $"{nameof(Notion)}.{k}"));
         _cachedTriggersIdentifiers.AddRange(Notion.Triggers.Keys.Select(k => $"{nameof(OpenAi)}.{k}"));
+        _cachedTriggersIdentifiers.AddRange(Notion.Triggers.Keys.Select(k => $"{nameof(LeagueOfLegends)}.{k}"));
         return _cachedTriggersIdentifiers;
     }
 
@@ -33,6 +37,7 @@ public class ProvidersSettings
         _cachedActionsIdentifiers.AddRange(Discord.Actions.Keys.Select(k => $"{nameof(Discord)}.{k}"));
         _cachedActionsIdentifiers.AddRange(Notion.Actions.Keys.Select(k => $"{nameof(Notion)}.{k}"));
         _cachedActionsIdentifiers.AddRange(Notion.Actions.Keys.Select(k => $"{nameof(OpenAi)}.{k}"));
+        _cachedActionsIdentifiers.AddRange(Notion.Actions.Keys.Select(k => $"{nameof(LeagueOfLegends)}.{k}"));
         return _cachedActionsIdentifiers;
     }
 
@@ -43,6 +48,7 @@ public class ProvidersSettings
             nameof(Discord) => Discord,
             nameof(Notion) => Notion,
             nameof(OpenAi) => OpenAi,
+            nameof(LeagueOfLegends) => LeagueOfLegends,
             _ => throw new InvalidOperationException($"Provider '{providerName}' not found")
         };
     }
