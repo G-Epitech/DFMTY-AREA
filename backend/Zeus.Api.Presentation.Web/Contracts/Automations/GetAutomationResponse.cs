@@ -8,7 +8,8 @@ public record GetAutomationResponse(
     GetAutomationTriggerResponse Trigger,
     GetAutomationActionResponse[] Actions,
     bool Enabled,
-    DateTime UpdatedAt);
+    DateTime UpdatedAt,
+    DateTime CreatedAt);
 
 public record GetAutomationTriggerResponse(
     string Identifier,

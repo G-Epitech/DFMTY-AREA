@@ -2,6 +2,7 @@ using Mapster;
 
 using Zeus.Api.Presentation.Web.Contracts.Automations;
 using Zeus.Common.Domain.AutomationAggregate;
+using Zeus.Common.Domain.AutomationAggregate.Entities;
 
 namespace Zeus.Api.Presentation.Web.Mapping;
 
@@ -18,5 +19,11 @@ public class AutomationMappingConfig : IRegister
             .Map(dest => dest.UpdatedAt, src => src.UpdatedAt)
             .Map(dest => dest.Trigger, src => src.Trigger)
             .Map(dest => dest.Actions, src => src.Actions);
+
+        config.NewConfig<AutomationTrigger, GetAutomationTriggerResponse>()
+            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
+        
+        config.NewConfig<AutomationAction, GetAutomationActionResponse>()
+            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
     }
 }
