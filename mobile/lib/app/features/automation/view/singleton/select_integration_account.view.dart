@@ -432,13 +432,11 @@ class _ItemWidget extends StatefulWidget {
 class _ItemWidgetState extends State<_ItemWidget> {
   @override
   Widget build(BuildContext context) {
-    print(widget.selected);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         setState(() {
           widget.onTap(widget.id);
-          print(widget.selected);
         });
       },
       child: Container(

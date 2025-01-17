@@ -65,8 +65,6 @@ class AutomationMediator with ChangeNotifier {
     final res = await _automationRepository.getAutomationSchema();
     if (res.statusCode == Codes.ok && res.data != null) {
       _automationSchemas = AutomationSchemas.fromDTO(res.data!.schema);
-      print(_automationSchemas!
-          .schemas.values.first.triggers.values.first.dependencies.length);
       notifyListeners();
     } else {
       throw Exception(res.message);

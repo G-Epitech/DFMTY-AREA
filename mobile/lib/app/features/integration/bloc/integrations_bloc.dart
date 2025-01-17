@@ -17,7 +17,6 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
     emit(IntegrationsLoading());
     try {
       final integrations = await _integrationMediator.getUserIntegrations();
-      print(integrations.length);
       if (event.integrationIdentifier != null) {
         final lowerCaseIntegrationIdentifier = event.integrationIdentifier!
             .map((integration) => integration.toLowerCase())
@@ -26,7 +25,6 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
             !lowerCaseIntegrationIdentifier
                 .contains(integration.name.toLowerCase()));
       }
-      print(integrations.length);
       emit(IntegrationsLoaded(integrations));
     } catch (e) {
       emit(IntegrationsError(e.toString()));
