@@ -39,6 +39,12 @@ InPostAutomationDTO _$InPostAutomationDTOFromJson(Map<String, dynamic> json) =>
           AutomationDTO.fromJson(json['automation'] as Map<String, dynamic>),
     );
 
+Map<String, dynamic> _$InPostAutomationDTOToJson(
+        InPostAutomationDTO instance) =>
+    <String, dynamic>{
+      'automation': instance.automation,
+    };
+
 OutPostAutomationDTO _$OutPostAutomationDTOFromJson(
         Map<String, dynamic> json) =>
     OutPostAutomationDTO();

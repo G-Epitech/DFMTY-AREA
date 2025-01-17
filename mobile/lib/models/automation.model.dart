@@ -288,6 +288,7 @@ class AutomationSchemaTriggerAction {
   final String icon;
   final Map<String, AutomationSchemaTriggerActionProperty> parameters;
   final Map<String, AutomationSchemaTriggerActionProperty> facts;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   AutomationSchemaTriggerAction({
     required this.name,
@@ -295,6 +296,7 @@ class AutomationSchemaTriggerAction {
     required this.icon,
     required this.parameters,
     required this.facts,
+    required this.dependencies,
   });
 
   factory AutomationSchemaTriggerAction.fromDTO(
@@ -307,6 +309,8 @@ class AutomationSchemaTriggerAction {
           MapEntry(key, AutomationSchemaTriggerActionProperty.fromDTO(value))),
       facts: json.facts.map((key, value) =>
           MapEntry(key, AutomationSchemaTriggerActionProperty.fromDTO(value))),
+      dependencies: json.dependencies.map((key, value) =>
+          MapEntry(key, AutomationSchemaDependenciesProperty.fromDTO(value))),
     );
   }
 }
@@ -328,6 +332,24 @@ class AutomationSchemaTriggerActionProperty {
       name: json.name,
       description: json.description,
       type: json.type,
+    );
+  }
+}
+
+class AutomationSchemaDependenciesProperty {
+  final String require;
+  final bool optional;
+
+  AutomationSchemaDependenciesProperty({
+    required this.require,
+    required this.optional,
+  });
+
+  factory AutomationSchemaDependenciesProperty.fromDTO(
+      AutomationSchemaDependenciesPropertyDTO json) {
+    return AutomationSchemaDependenciesProperty(
+      require: json.require,
+      optional: json.optional,
     );
   }
 }
