@@ -34,35 +34,35 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
         {
             ActionSchema _ => Errors.Automations.Action.MissingSingleDependency(dependency),
             TriggerSchema _ => Errors.Automations.Trigger.MissingSingleDependency(dependency),
-            _ => throw new NotImplementedException()
+            _ => throw new IndexOutOfRangeException()
         };
 
         public static Error MissingMultipleDependency(IHasDependenciesSchema source, string dependency) => source switch
         {
             ActionSchema _ => Errors.Automations.Action.MissingMultipleDependency(dependency),
             TriggerSchema _ => Errors.Automations.Trigger.MissingMultipleDependency(dependency),
-            _ => throw new NotImplementedException()
+            _ => throw new IndexOutOfRangeException()
         };
 
         public static Error TooManyDependencies(IHasDependenciesSchema source, string dependency) => source switch
         {
             ActionSchema _ => Errors.Automations.Action.TooManyDependencies(dependency),
             TriggerSchema _ => Errors.Automations.Trigger.TooManyDependencies(dependency),
-            _ => throw new NotImplementedException()
+            _ => throw new IndexOutOfRangeException()
         };
 
         public static Error NotFoundDependency(IHasDependenciesSchema source, IntegrationId dependency) => source switch
         {
             ActionSchema _ => Errors.Automations.Action.NotFoundDependency(dependency),
             TriggerSchema _ => Errors.Automations.Trigger.NotFoundDependency(dependency),
-            _ => throw new NotImplementedException()
+            _ => throw new IndexOutOfRangeException()
         };
 
         public static Error InvalidDependencyType(IHasDependenciesSchema source, IntegrationId dependency, IntegrationType type) => source switch
         {
             ActionSchema _ => Errors.Automations.Action.InvalidDependencyType(dependency, type),
             TriggerSchema _ => Errors.Automations.Trigger.InvalidDependencyType(dependency, type),
-            _ => throw new NotImplementedException()
+            _ => throw new IndexOutOfRangeException()
         };
     }
 
