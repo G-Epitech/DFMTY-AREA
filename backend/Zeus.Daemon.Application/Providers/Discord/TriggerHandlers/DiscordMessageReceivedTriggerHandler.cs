@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
-using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces;
+using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
 using Zeus.Daemon.Domain.Discord.Enums;
 using Zeus.Daemon.Domain.Discord.Events;
 
-namespace Zeus.Daemon.Application.Discord.TriggerHandlers;
+namespace Zeus.Daemon.Application.Providers.Discord.TriggerHandlers;
 
 [TriggerHandler("Discord.MessageReceivedInChannel")]
 public class DiscordMessageReceivedTriggerHandler
@@ -72,7 +72,8 @@ public class DiscordMessageReceivedTriggerHandler
                 { "ReceptionTime", Fact.Create(DateTimeOffset.Parse(messageCreate.Timestamp).UtcDateTime) }
             };
 
-            var received = new TriggerParameters { GuildId = messageCreate.GuildId, ChannelId = messageCreate.ChannelId };
+            var received =
+                new TriggerParameters { GuildId = messageCreate.GuildId, ChannelId = messageCreate.ChannelId };
 
             await LaunchTargetedAutomations(received, facts);
         }

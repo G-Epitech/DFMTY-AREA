@@ -54,8 +54,7 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
             actions.ToTable("AutomationActions");
             actions.WithOwner().HasForeignKey("AutomationId");
             actions.HasKey("Id");
-            actions.Property(x => x.Id)
-                .HasColumnName("ActionId")
+            RelationalPropertyBuilderExtensions.HasColumnName(actions.Property(x => x.Id), "ActionId")
                 .ValueGeneratedNever()
                 .HasConversion(x => x.Value, x => new AutomationActionId(x));
             actions.Property(x => x.Identifier)
@@ -104,8 +103,7 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
             trigger.ToTable("AutomationTriggers");
             trigger.WithOwner().HasForeignKey("AutomationId");
             trigger.HasKey("Id");
-            trigger.Property(x => x.Id)
-                .HasColumnName("TriggerId")
+            RelationalPropertyBuilderExtensions.HasColumnName(trigger.Property(x => x.Id), "TriggerId")
                 .ValueGeneratedNever()
                 .HasConversion(x => x.Value, x => new AutomationTriggerId(x));
             trigger.Property(x => x.Identifier)

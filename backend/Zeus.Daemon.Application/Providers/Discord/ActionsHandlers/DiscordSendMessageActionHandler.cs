@@ -1,11 +1,11 @@
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
-using Zeus.Daemon.Application.Discord.Services;
+using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
 
-namespace Zeus.Daemon.Application.Discord.ActionsHandlers;
+namespace Zeus.Daemon.Application.Providers.Discord.ActionsHandlers;
 
 public class DiscordSendMessageActionHandler
 {
@@ -21,7 +21,7 @@ public class DiscordSendMessageActionHandler
         AutomationId automationId,
         [FromParameters] string channelId,
         [FromParameters] string content,
-        [FromIntegrations] NotionIntegration discordIntegration,
+        [FromIntegrations] DiscordIntegration discordIntegration,
         CancellationToken cancellationToken
     )
     {

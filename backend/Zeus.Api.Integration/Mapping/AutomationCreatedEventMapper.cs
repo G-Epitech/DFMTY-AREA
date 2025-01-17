@@ -41,10 +41,10 @@ public class AutomationCreatedEventMapper : IRegister
                 new AutomationTrigger(
                     new AutomationTriggerId(raw.Trigger.Id),
                     raw.Trigger.Identifier,
-                    raw.Trigger.Parameters.Select(p => new AutomationTriggerParameter { Value = p.Value, Identifier = p.Identifier }).ToList(),
-                    raw.Trigger.Providers.Select(p => new IntegrationId(p)).ToList()
+                    Enumerable.Select<AutomationCreatedEventTrigger.Parameter, AutomationTriggerParameter>(raw.Trigger.Parameters, p => new AutomationTriggerParameter { Value = p.Value, Identifier = p.Identifier }).ToList(),
+                    Enumerable.Select<Guid, IntegrationId>(raw.Trigger.Providers, p => new IntegrationId(p)).ToList()
                 ),
-                raw.Actions.Select(a => new AutomationAction(
+                Enumerable.Select(raw.Actions, a => new AutomationAction(
                     new AutomationActionId(a.Id),
                     a.Identifier,
                     a.Rank,
