@@ -22,10 +22,18 @@ class OpenAIIntegrationForm extends StatelessWidget {
               _Label(),
               const SizedBox(height: 12),
               _ApiTokenInput(),
-              _TokenLink(),
-              const SizedBox(height: 12),
+              _TokenLink(
+                text: 'You can get your API key from ',
+                url: 'https://platform.openai.com/api-keys',
+              ),
+              const SizedBox(height: 18),
               _AdminApiTokenInput(),
-              const SizedBox(height: 12),
+              _TokenLink(
+                text: 'You can get your Admin API key from ',
+                url:
+                    'https://platform.openai.com/settings/organization/admin-keys',
+              ),
+              const SizedBox(height: 18),
               _LinkAccountButton(),
             ],
           ),
@@ -58,19 +66,37 @@ class _ApiTokenInput extends StatelessWidget {
 }
 
 class _TokenLink extends StatelessWidget {
+  final String text;
+  final String url;
+
+  const _TokenLink({required this.text, required this.url});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          launchURL(
-              'https://platform.openai.com/settings/organization/admin-keys');
-        },
-        child: Text(
-          'Get your API key',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            decoration: TextDecoration.underline,
-          ),
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.grey[400],
+              ),
+            ),
+            GestureDetector(
+                onTap: () {
+                  launchURL(url);
+                },
+                child: Text(
+                  'this link',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )),
+            Text('.',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                )),
+          ],
         ));
   }
 }
