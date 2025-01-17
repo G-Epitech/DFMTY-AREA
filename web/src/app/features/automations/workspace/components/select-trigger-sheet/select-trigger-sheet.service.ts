@@ -171,6 +171,12 @@ export class SelectTriggerSheetService implements OnDestroy {
     }
   }
 
+  getSelectedParameterDescription(): string | undefined {
+    return this.state().selectedTrigger?.parameters[
+      this.state().selectedParameter!.identifier
+    ].description;
+  }
+
   back() {
     patchState(this.state, stateUpdaterBack());
   }

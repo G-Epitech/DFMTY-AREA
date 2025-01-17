@@ -31,32 +31,22 @@ import {
 export class AutomationParameterEditComponent {
   private readonly editService = inject(AutomationParameterEditService);
   private readonly viewContainerRef = inject(ViewContainerRef);
+  readonly #editService = inject(AutomationParameterEditService);
 
   readonly integrationId = input.required<string>();
-  readonly automationStepIdentifier = input.required<string>();
   readonly parameter = input.required<{
     identifier: string;
     value: string | null;
   }>();
+  readonly parameterDescription = input.required<string | undefined>();
   readonly parameterType = input.required<AutomationParameterType>();
   readonly displayPrevious = input<boolean>(false);
 
   readonly activeTab = signal<string>('raw');
 
-  readonly parameterChange = signal<ParameterEditOutput>({
-    rawValue: '',
-  });
   readonly parameterChangeEmitter = output<ParameterEditOutput>();
 
   constructor() {
-    effect(() => {
-      if (this.parameter()) {
-        this.parameterChange.set({
-          rawValue: this.parameter()?.value || '',
-        });
-      }
-    });
-
     effect(() => {
       this.createDynamicComponentIfNeeded();
     });
@@ -94,7 +84,20 @@ export class AutomationParameterEditComponent {
 
     if (instance.valueChange) {
       instance.valueChange.subscribe(value => {
-        this.parameterChange.set(value);
+        this.#editService.currentParameters.update(parameters => {
+          const index = parameters.findIndex(
+            ({ identifier }) => identifier === this.parameter().identifier
+          );
+          if (index === -1) {
+            parameters.push({
+              identifier: this.parameter().identifier,
+              value: value.rawValue,
+            });
+          } else {
+            parameters[index].value = value.rawValue;
+          }
+          return parameters;
+        });
         this.parameterChangeEmitter.emit(value);
       });
     }

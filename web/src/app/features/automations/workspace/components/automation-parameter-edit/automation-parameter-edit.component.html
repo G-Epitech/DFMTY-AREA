@@ -6,16 +6,16 @@
 
   <div class="flex flex-col space-y-3">
     <div class="flex flex-col">
-      <span class="text-sm text-muted">Parameter</span>
+      <span class="text-sm text-muted">Name</span>
       <span class="text-base font-medium text-gray-900">
         {{ parameter().identifier | pascalToPhrase }}
       </span>
     </div>
 
     <div class="flex flex-col">
-      <span class="text-sm text-muted">Current Value</span>
+      <span class="text-sm text-muted">Description</span>
       <span class="text-base font-medium text-gray-900">
-        {{ parameterChange().rawValue || 'Undefined' }}
+        {{ parameterDescription() || 'No description available' }}
       </span>
     </div>
   </div>

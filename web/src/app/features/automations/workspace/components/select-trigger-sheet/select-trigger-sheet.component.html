@@ -89,8 +89,8 @@
         @case (TriggerSelectionStep.PARAMETER) {
           <tr-automation-parameter-edit
             [integrationId]="service.state().selectedLinkedIntegration!.id"
-            [automationStepIdentifier]="service.state().trigger!.nameIdentifier"
             [parameter]="service.state().selectedParameter!"
+            [parameterDescription]="service.getSelectedParameterDescription()"
             [parameterType]="service.state().selecterParameterType!" />
         }
       }
