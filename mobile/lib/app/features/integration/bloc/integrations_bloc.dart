@@ -18,8 +18,12 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
     try {
       final integrations = await _integrationMediator.getUserIntegrations();
       if (event.integrationIdentifier != null) {
-        integrations.removeWhere((element) =>
-            element.name.toLowerCase() != event.integrationIdentifier);
+        final lowerCaseIntegrationIdentifier = event.integrationIdentifier!
+            .map((integration) => integration.toLowerCase())
+            .toList();
+        integrations.removeWhere((integration) =>
+            !lowerCaseIntegrationIdentifier
+                .contains(integration.name.toLowerCase()));
       }
       emit(IntegrationsLoaded(integrations));
     } catch (e) {

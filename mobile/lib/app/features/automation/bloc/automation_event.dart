@@ -46,15 +46,15 @@ final class AutomationResetPending extends AutomationEvent {
   List<Object> get props => [type, index];
 }
 
-final class AutomationTriggerProviderAdded extends AutomationEvent {
-  final String provider;
+final class AutomationTriggerDependenciesUpdated extends AutomationEvent {
+  final List<String> dependencies;
 
-  const AutomationTriggerProviderAdded({
-    required this.provider,
+  const AutomationTriggerDependenciesUpdated({
+    required this.dependencies,
   });
 
   @override
-  List<Object> get props => [provider];
+  List<Object> get props => [dependencies];
 }
 
 final class AutomationTriggerIdentifierChanged extends AutomationEvent {
@@ -81,17 +81,17 @@ final class AutomationTriggerParameterChanged extends AutomationEvent {
   List<Object> get props => [parameterIdentifier, parameterValue];
 }
 
-final class AutomationActionProviderAdded extends AutomationEvent {
+final class AutomationActionDependenciesUpdated extends AutomationEvent {
   final int index;
-  final String provider;
+  final List<String> dependencies;
 
-  const AutomationActionProviderAdded({
+  const AutomationActionDependenciesUpdated({
     required this.index,
-    required this.provider,
+    required this.dependencies,
   });
 
   @override
-  List<Object> get props => [index, provider];
+  List<Object> get props => [index, dependencies];
 }
 
 final class AutomationActionIdentifierChanged extends AutomationEvent {

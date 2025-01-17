@@ -8,7 +8,7 @@ abstract class IntegrationsEvent extends Equatable {
 }
 
 class LoadIntegrations extends IntegrationsEvent {
-  final String? integrationIdentifier;
+  final List<String>? integrationIdentifier;
 
   const LoadIntegrations({this.integrationIdentifier});
 }

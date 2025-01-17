@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/api/codes.dart';
-import 'package:triggo/app/features/automation/models/radio.model.dart';
+import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 import 'package:triggo/repositories/integration/integrations/discord.repository.dart';
 
