@@ -17,10 +17,16 @@ class IntegrationsBloc extends Bloc<IntegrationsEvent, IntegrationsState> {
     emit(IntegrationsLoading());
     try {
       final integrations = await _integrationMediator.getUserIntegrations();
+      print(integrations.length);
       if (event.integrationIdentifier != null) {
-        integrations.removeWhere((element) =>
-            element.name.toLowerCase() != event.integrationIdentifier);
+        final lowerCaseIntegrationIdentifier = event.integrationIdentifier!
+            .map((integration) => integration.toLowerCase())
+            .toList();
+        integrations.removeWhere((integration) =>
+            !lowerCaseIntegrationIdentifier
+                .contains(integration.name.toLowerCase()));
       }
+      print(integrations.length);
       emit(IntegrationsLoaded(integrations));
     } catch (e) {
       emit(IntegrationsError(e.toString()));

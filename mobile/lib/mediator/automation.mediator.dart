@@ -107,4 +107,15 @@ class AutomationMediator with ChangeNotifier {
           .schemas[integration]!.actions[identifier]!.parameters;
     }
   }
+
+  Map<String, AutomationSchemaDependenciesProperty> getDependencies(
+      String integration, AutomationChoiceEnum type, String identifier) {
+    if (type == AutomationChoiceEnum.trigger) {
+      return _automationSchemas!
+          .schemas[integration]!.triggers[identifier]!.dependencies;
+    } else {
+      return _automationSchemas!
+          .schemas[integration]!.actions[identifier]!.dependencies;
+    }
+  }
 }

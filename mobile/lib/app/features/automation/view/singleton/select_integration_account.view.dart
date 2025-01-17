@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,9 +12,9 @@ import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/features/integration/utils/automation_update_provider.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
-import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
+import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
@@ -23,6 +25,7 @@ class AutomationSelectIntegrationsAccountView extends StatefulWidget {
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   const AutomationSelectIntegrationsAccountView({
     super.key,
@@ -30,6 +33,7 @@ class AutomationSelectIntegrationsAccountView extends StatefulWidget {
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
     required this.triggerOrActionIdentifier,
+    required this.dependencies,
   });
 
   @override
@@ -45,11 +49,11 @@ class _AutomationSelectIntegrationsAccountViewState
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
+    final List<String> needIntegrations = widget.dependencies.keys.toList();
     return BlocProvider(
       create: (context) => IntegrationsBloc(
         integrationMediator,
-      )..add(LoadIntegrations(
-          integrationIdentifier: widget.integrationIdentifier)),
+      )..add(LoadIntegrations(integrationIdentifier: needIntegrations)),
       child: BaseScaffold(
         title: 'Integrations',
         getBack: true,
@@ -62,6 +66,7 @@ class _AutomationSelectIntegrationsAccountViewState
             integrationIdentifier: widget.integrationIdentifier,
             indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
             triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
+            dependencies: widget.dependencies,
             onTap: (integrationId) {
               if (selectedIntegrations.contains(integrationId)) {
                 setState(() {
@@ -88,6 +93,7 @@ class _StateManager extends StatelessWidget {
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
   final void Function(String) onTap;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   const _StateManager({
     required this.values,
@@ -97,6 +103,7 @@ class _StateManager extends StatelessWidget {
     required this.indexOfTheTriggerOrAction,
     required this.triggerOrActionIdentifier,
     required this.onTap,
+    required this.dependencies,
   });
 
   @override
@@ -118,6 +125,7 @@ class _StateManager extends StatelessWidget {
         indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
         triggerOrActionIdentifier: triggerOrActionIdentifier,
         onTap: onTap,
+        dependencies: dependencies,
       );
     } else {
       return const _NoDataView();
@@ -133,6 +141,7 @@ class _IntegrationList extends StatelessWidget {
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
   final void Function(String) onTap;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   const _IntegrationList({
     required this.values,
@@ -142,6 +151,7 @@ class _IntegrationList extends StatelessWidget {
     required this.indexOfTheTriggerOrAction,
     required this.triggerOrActionIdentifier,
     required this.onTap,
+    required this.dependencies,
   });
 
   @override
@@ -161,10 +171,12 @@ class _IntegrationList extends StatelessWidget {
         )),
         _OKButton(
           values: values,
+          integrations: integrations,
           type: type,
           integrationIdentifier: integrationIdentifier,
           indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
           triggerOrActionIdentifier: triggerOrActionIdentifier,
+          dependencies: dependencies,
         )
       ],
     );
@@ -173,17 +185,21 @@ class _IntegrationList extends StatelessWidget {
 
 class _OKButton extends StatelessWidget {
   final List<String> values;
+  final List<Integration> integrations;
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   const _OKButton({
     required this.values,
+    required this.integrations,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
     required this.triggerOrActionIdentifier,
+    required this.dependencies,
   });
 
   @override
@@ -198,26 +214,82 @@ class _OKButton extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
               onPressed: () {
-                automationUpdateDependencies(
-                  context,
-                  type,
-                  values,
-                  indexOfTheTriggerOrAction,
-                );
-                Navigator.push(
+                try {
+                  _isValid();
+                  automationUpdateDependencies(
                     context,
-                    customScreenBuilder(AutomationParametersView(
-                      type: type,
-                      integrationIdentifier: integrationIdentifier,
-                      triggerOrActionIdentifier: triggerOrActionIdentifier,
-                      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
-                    )));
+                    type,
+                    values,
+                    indexOfTheTriggerOrAction,
+                  );
+                  Navigator.push(
+                      context,
+                      customScreenBuilder(AutomationParametersView(
+                        type: type,
+                        integrationIdentifier: integrationIdentifier,
+                        triggerOrActionIdentifier: triggerOrActionIdentifier,
+                        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                      )));
+                } catch (e) {
+                  final error = e.toString();
+
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                          content: Text(error),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onError),
+                    );
+                }
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _isValid() {
+    final Map<String, int> selectedIntegrations = {};
+
+    for (final integration in integrations) {
+      for (final value in values) {
+        if (integration.id == value) {
+          final integrationName = integration.name.toLowerCase();
+          selectedIntegrations[integrationName] =
+              (selectedIntegrations[integrationName] ?? 0) + 1;
+        }
+      }
+    }
+
+    if (dependencies.length != selectedIntegrations.length) {
+      log("Dependencies length is not equal to selected integrations length");
+      final List<String> missingIntegrations = [];
+      for (final dependency in dependencies.entries) {
+        final dependencyName = dependency.key.toLowerCase();
+        if (selectedIntegrations[dependencyName] == null) {
+          missingIntegrations.add(dependencyName);
+        }
+      }
+      throw "You must select at least one of each of the following integrations: ${missingIntegrations.join(", ")}";
+    }
+
+    for (final dependency in dependencies.entries) {
+      final dependencyName = dependency.key.toLowerCase();
+      if (dependency.value.optional) {
+        continue;
+      }
+      if (selectedIntegrations[dependencyName] == null) {
+        log("Dependency $dependencyName is not met");
+        throw "You must select $dependencyName";
+      }
+      if (dependency.value.require == "Single" &&
+          selectedIntegrations[dependencyName] != 1) {
+        log("Single dependency $dependencyName is not met");
+        throw "You must select one $dependencyName";
+      }
+    }
   }
 }
 
@@ -340,90 +412,108 @@ class _ItemWidgetState extends State<_ItemWidget> {
           selected = !selected;
         });
       },
-      child: TriggoCard(
-        customWidget: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                value: selected,
-                onChanged: (_) {
-                  widget.onTap(widget.id);
-                  setState(() {
-                    selected = !selected;
-                  });
-                }),
-            SizedBox(width: 10),
-            Stack(
-              children: [
-                if (widget.avatarUri == null)
-                  CircleAvatar(
-                    backgroundColor: Color(0xFF10a37f),
-                    radius: 25,
-                    child: SvgPicture.asset(
-                      widget.integrationSvg,
-                      width: 30,
-                      height: 30,
-                      colorFilter: ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
+      child: Container(
+          margin: EdgeInsets.only(bottom: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border.all(
+              color: selected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.transparent,
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 20,
+                child: Checkbox(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5.0),
                       ),
                     ),
-                  ),
-                if (widget.avatarUri != null)
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(widget.avatarUri!),
-                    radius: 25,
-                  ),
-                if (widget.avatarUri != null)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Color(0xFF5865F2),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    value: selected,
+                    onChanged: (_) {
+                      widget.onTap(widget.id);
+                      setState(() {
+                        selected = !selected;
+                      });
+                    }),
+              ),
+              SizedBox(width: 10),
+              Stack(
+                children: [
+                  if (widget.avatarUri == null)
+                    CircleAvatar(
+                      backgroundColor: Color(0xFF10a37f),
+                      radius: 25,
                       child: SvgPicture.asset(
                         widget.integrationSvg,
-                        width: 15,
-                        height: 15,
+                        width: 30,
+                        height: 30,
                         colorFilter: ColorFilter.mode(
                           Colors.white,
                           BlendMode.srcIn,
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          height: 1.1,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
+                  if (widget.avatarUri != null)
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(widget.avatarUri!),
+                      radius: 25,
+                    ),
+                  if (widget.avatarUri != null)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Color(0xFF5865F2),
+                        child: SvgPicture.asset(
+                          widget.integrationSvg,
+                          width: 15,
+                          height: 15,
+                          colorFilter: ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
                         ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    widget.description,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                      ),
+                    ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+              SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            height: 1.1,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      widget.description,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
