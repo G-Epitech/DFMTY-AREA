@@ -2,7 +2,12 @@ import { AvailableIntegrationType } from '@common/types';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
 import { PartialStateUpdater } from '@ngrx/signals';
 import { IntegrationModel } from '@models/integration';
-import { AutomationSchemaTrigger, TriggerModel } from '@models/automation';
+import {
+  AutomationParameterType,
+  AutomationSchemaTrigger,
+  TriggerModel,
+  TriggerParameter,
+} from '@models/automation';
 
 export interface SelectTriggerSheetState {
   selectionStep: TriggerSelectionStep;
@@ -11,6 +16,8 @@ export interface SelectTriggerSheetState {
   selectedLinkedIntegration: IntegrationModel | null;
   selectedTrigger: AutomationSchemaTrigger | null;
   trigger: TriggerModel | null;
+  selectedParameter: TriggerParameter | null;
+  selecterParameterType: AutomationParameterType | null;
 }
 
 export function stateUpdaterBack(): PartialStateUpdater<SelectTriggerSheetState> {

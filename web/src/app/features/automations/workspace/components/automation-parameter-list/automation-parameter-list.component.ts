@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { PascalToPhrasePipe } from '@app/pipes';
 import { NgIcon } from '@ng-icons/core';
 
@@ -17,4 +22,6 @@ export class AutomationParameterListComponent {
       value: string | null;
     }[]
   >();
+
+  editParameter = output<{ identifier: string; value: string | null }>();
 }

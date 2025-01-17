@@ -14,6 +14,7 @@ import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
   TriggerModel,
+  TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
@@ -28,6 +29,7 @@ import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { SchemaStore } from '@app/store/schema-store';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
+import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
 
 @Component({
   standalone: true,
@@ -45,6 +47,7 @@ import { AutomationParameterListComponent } from '@features/automations/workspac
     TriggerSelectionComponent,
     TriggerSelectionButtonComponent,
     AutomationParameterListComponent,
+    AutomationParameterEditComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],
@@ -69,6 +72,7 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Select Integration',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select Linked Integration',
       [TriggerSelectionStep.TRIGGER]: 'Select Trigger',
+      [TriggerSelectionStep.PARAMETER]: 'Edit Parameter',
     };
     return titles[step];
   });
@@ -80,6 +84,7 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Choose an integration to use',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select a linked account',
       [TriggerSelectionStep.TRIGGER]: 'Choose a trigger event',
+      [TriggerSelectionStep.PARAMETER]: 'Edit the parameters for this trigger',
     };
     return descriptions[step];
   });
@@ -106,6 +111,11 @@ export class SelectTriggerSheetComponent {
 
   protected onTriggerSelected(trigger: AutomationSchemaTrigger): void {
     this.service.selectTrigger(trigger, this.schema);
+  }
+
+  protected onParameterEdit(param: TriggerParameter): void {
+    this.service.goToParameterEdit();
+    this.service.selectParameter(param, this.schema);
   }
 
   protected onBack(): void {

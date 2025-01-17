@@ -32,6 +32,8 @@ export class SelectTriggerSheetService implements OnDestroy {
     selectedLinkedIntegration: null,
     selectedTrigger: null,
     trigger: null,
+    selectedParameter: null,
+    selecterParameterType: null,
   });
 
   ngOnDestroy() {
@@ -83,6 +85,29 @@ export class SelectTriggerSheetService implements OnDestroy {
 
   goToTriggerSelection() {
     patchState(this.state, stateUpdaterGoTo(TriggerSelectionStep.TRIGGER));
+  }
+
+  goToParameterEdit() {
+    patchState(this.state, stateUpdaterGoTo(TriggerSelectionStep.PARAMETER));
+  }
+
+  selectParameter(
+    parameter: TriggerParameter,
+    schema: AutomationSchemaModel | null
+  ) {
+    if (!schema) {
+      return;
+    }
+    const parameterType = schema.getTriggerParameterType(
+      this.state().selectedIntegration!.name,
+      this.state().selectedTrigger!.name,
+      parameter.identifier
+    );
+    patchState(this.state, state => ({
+      ...state,
+      selectedParameter: parameter,
+      selecterParameterType: parameterType,
+    }));
   }
 
   selectIntegration(integration: AvailableIntegrationType): void {

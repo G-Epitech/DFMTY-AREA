@@ -2,28 +2,20 @@ import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
 import {
-  ActionModel,
   AutomationModel,
-  AutomationSchemaDependency,
-  AutomationSchemaDependencyRequired,
   AutomationSchemaModel,
   AutomationSchemaService,
-  AutomationSchemaTrigger,
   TriggerModel,
 } from '@models/automation';
-import {
-  AutomationSchemaDTO,
-  AutomationSchemaTriggerDTO,
-  AutomationSchemaActionDTO,
-  ActionDTO,
-  AutomationSchemaDependencyDTO,
-} from '@repositories/automations/dto';
+import { AutomationSchemaDTO } from '@repositories/automations/dto';
+import { AutomationMapperService } from '@mediators/mappers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutomationsMediator {
   readonly #automationsRepository = inject(AutomationsRepository);
+  readonly #automationMapper = inject(AutomationMapperService);
 
   create(): Observable<string> {
     return this.#automationsRepository.post();
@@ -46,7 +38,7 @@ export class AutomationsMediator {
             dto.trigger.parameters,
             dto.trigger.dependencies
           ),
-          this._mapActions(dto.actions)
+          this.#automationMapper.mapActions(dto.actions)
         );
       })
     );
@@ -58,10 +50,11 @@ export class AutomationsMediator {
         const services: Record<string, AutomationSchemaService> = {};
         for (const serviceName in dto) {
           const service = dto[serviceName];
-          const schemaTriggers = this._mapSchemaServiceTriggers(
-            service.triggers
+          const schemaTriggers =
+            this.#automationMapper.mapSchemaServiceTriggers(service.triggers);
+          const schemaActions = this.#automationMapper.mapSchemaServiceActions(
+            service.actions
           );
-          const schemaActions = this._mapSchemaServiceActions(service.actions);
           services[serviceName] = {
             name: service.name,
             color: service.color,
@@ -73,66 +66,5 @@ export class AutomationsMediator {
         return new AutomationSchemaModel(services);
       })
     );
-  }
-
-  _mapSchemaServiceTriggers(
-    dtoTriggers: Record<string, AutomationSchemaTriggerDTO>
-  ): Record<string, AutomationSchemaTrigger> {
-    const schemaTriggers: Record<string, AutomationSchemaTrigger> = {};
-
-    for (const [identifier, trigger] of Object.entries(dtoTriggers)) {
-      schemaTriggers[identifier] = {
-        name: trigger.name,
-        description: trigger.description,
-        icon: trigger.icon,
-        parameters: trigger.parameters,
-        facts: trigger.facts,
-        dependencies: this._mapSchemaDependencies(trigger.dependencies),
-      };
-    }
-    return schemaTriggers;
-  }
-
-  _mapSchemaServiceActions(
-    dtoActions: Record<string, AutomationSchemaActionDTO>
-  ): Record<string, AutomationSchemaTrigger> {
-    const schemaActions: Record<string, AutomationSchemaTrigger> = {};
-
-    for (const [identifier, action] of Object.entries(dtoActions)) {
-      schemaActions[identifier] = {
-        name: action.name,
-        description: action.description,
-        icon: action.icon,
-        parameters: action.parameters,
-        facts: action.facts,
-        dependencies: this._mapSchemaDependencies(action.dependencies),
-      };
-    }
-    return schemaActions;
-  }
-
-  _mapActions(actions: ActionDTO[]): ActionModel[] {
-    return actions.map(
-      action =>
-        new ActionModel(
-          action.identifier,
-          action.parameters,
-          action.dependencies
-        )
-    );
-  }
-
-  _mapSchemaDependencies(
-    dependencies: Record<string, AutomationSchemaDependencyDTO>
-  ): Record<string, AutomationSchemaDependency> {
-    const schemaDependencies: Record<string, AutomationSchemaDependency> = {};
-
-    for (const [identifier, dependency] of Object.entries(dependencies)) {
-      schemaDependencies[identifier] = {
-        require: dependency.require as AutomationSchemaDependencyRequired,
-        optional: dependency.optional,
-      };
-    }
-    return schemaDependencies;
   }
 }

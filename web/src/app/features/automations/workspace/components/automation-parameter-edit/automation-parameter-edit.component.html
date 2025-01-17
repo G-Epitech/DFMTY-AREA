@@ -1,0 +1,29 @@
+<div class="flex flex-col space-y-4 p-4 rounded-lg border bg-white">
+  <div class="flex items-center gap-2 pb-3 border-b">
+    <ng-icon name="heroInformationCircle" size="1.3rem" class="text-primary" />
+    <span class="font-medium text-gray-900">Parameter Details</span>
+  </div>
+
+  <div class="flex flex-col space-y-3">
+    <div class="flex flex-col">
+      <span class="text-sm text-muted">Parameter</span>
+      <span class="text-base font-medium text-gray-900">
+        {{ parameter().identifier | pascalToPhrase }}
+      </span>
+    </div>
+
+    <div class="flex flex-col">
+      <span class="text-sm text-muted">Current Value</span>
+      <span class="text-base font-medium text-gray-900">
+        {{ parameter().value || 'Undefined' }}
+      </span>
+    </div>
+
+    <div class="flex flex-col">
+      <span class="text-sm text-muted">Parameter Type</span>
+      <span class="text-base font-medium text-gray-900">
+        {{ paramterType().toString() }}
+      </span>
+    </div>
+  </div>
+</div>

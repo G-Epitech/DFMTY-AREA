@@ -3,19 +3,16 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import {
-  ActionModel,
-  AutomationModel,
-  TriggerModel,
-} from '@models/automation';
+import { AutomationModel, TriggerModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
-import { ActionDTO } from '@repositories/automations/dto';
+import { AutomationMapperService } from '@mediators/mappers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersMediator {
   readonly #usersRepository = inject(UsersRepository);
+  readonly #automationMapper = inject(AutomationMapperService);
 
   getById(id: string): Observable<UserModel> {
     return this.#usersRepository
@@ -93,21 +90,10 @@ export class UsersMediator {
                 automation.trigger.parameters,
                 automation.trigger.dependencies
               ),
-              this._mapActions(automation.actions)
+              this.#automationMapper.mapActions(automation.actions)
             )
         ),
       }))
-    );
-  }
-
-  _mapActions(actions: ActionDTO[]): ActionModel[] {
-    return actions.map(
-      action =>
-        new ActionModel(
-          action.identifier,
-          action.parameters,
-          action.dependencies
-        )
     );
   }
 }

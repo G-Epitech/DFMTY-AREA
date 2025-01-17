@@ -59,7 +59,8 @@
           @if (state().selectedTrigger) {
             <tr-automation-parameter-list
               class="mt-4"
-              [parameters]="state().trigger!.parameters" />
+              [parameters]="state().trigger!.parameters"
+              (editParameter)="onParameterEdit($event)" />
           }
         }
         @case (TriggerSelectionStep.INTEGRATION) {
@@ -80,6 +81,11 @@
             class="h-full"
             [integration]="service.state().selectedIntegration!"
             (triggerSelected)="onTriggerSelected($event)" />
+        }
+        @case (TriggerSelectionStep.PARAMETER) {
+          <tr-automation-parameter-edit
+            [parameter]="service.state().selectedParameter!"
+            [paramterType]="service.state().selecterParameterType!" />
         }
       }
     </div>
