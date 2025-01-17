@@ -28,5 +28,5 @@ export const PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP: Record<
   string,
   Type<ParameterEditDynamicComponent>
 > = {
-  MessageReceivedInChannel: AutomationParameterEditStringComponent,
+  MessageReceivedInChannel: AutomationParameterEditIntegerComponent,
 };
