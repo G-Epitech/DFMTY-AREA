@@ -32,7 +32,7 @@ public sealed class AutomationExecutionContext
         _handlersProvider = actionHandlersProvider;
         _actions = automation.Actions;
         _integrations = integrations;
-        _facts = FillFactsFromTrigger(automation.Trigger, facts);
+        _facts = FillFactsFromTrigger(facts);
 
         AutomationId = automation.Id;
     }
@@ -49,13 +49,13 @@ public sealed class AutomationExecutionContext
         _mainTask = RunDetachedAsync();
     }
 
-    private static FactsDictionary FillFactsFromTrigger(AutomationTrigger trigger, FactsDictionary triggerFacts)
+    private static FactsDictionary FillFactsFromTrigger(FactsDictionary triggerFacts)
     {
         var facts = new FactsDictionary();
 
         foreach (var fact in triggerFacts)
         {
-            facts[$"{trigger.Identifier}.{fact.Key}"] = fact.Value;
+            facts[$"T.{fact.Key}"] = fact.Value;
         }
         return facts;
     }
@@ -64,7 +64,7 @@ public sealed class AutomationExecutionContext
     {
         foreach (var fact in facts)
         {
-            _facts[$"{action.Identifier}.{fact.Key}"] = fact.Value;
+            _facts[$"{action.Rank}.{fact.Key}"] = fact.Value;
         }
     }
 

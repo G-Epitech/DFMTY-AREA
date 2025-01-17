@@ -5,7 +5,7 @@ using Zeus.Common.Domain.Integrations.Common.Enums;
 namespace Zeus.Common.Domain.ProvidersSettings;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-public class TriggerSchema
+public class TriggerSchema : IHasDependenciesSchema
 {
     public TriggerSchema(
         string name,

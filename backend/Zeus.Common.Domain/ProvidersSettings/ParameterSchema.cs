@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 using Zeus.Common.Domain.Common.Enums;
 
@@ -17,4 +18,23 @@ public sealed class ParameterSchema
     public string Name { get; }
     public string Description { get; }
     public VariableType Type { get; }
+
+    public bool IsValidValue(string value)
+    {
+        return Type switch
+        {
+            VariableType.String => !string.IsNullOrWhiteSpace(value),
+            VariableType.Integer => int.TryParse(value, CultureInfo.InvariantCulture, out _),
+            VariableType.Boolean => bool.TryParse(value, out _),
+            VariableType.Float => float.TryParse(value, CultureInfo.InvariantCulture, out _),
+            VariableType.Datetime => DateTime.TryParse(value, CultureInfo.InvariantCulture, out _),
+            VariableType.Object => true,
+            _ => false
+        };
+    }
+
+    public bool IsValidRef(FactSchema refSchema)
+    {
+        return refSchema.Type == Type;
+    }
 }
