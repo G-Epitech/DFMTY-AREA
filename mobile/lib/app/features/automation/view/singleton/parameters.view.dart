@@ -372,6 +372,7 @@ class _List extends StatelessWidget {
                         type: type,
                         automation: state.cleanedAutomation,
                         value: selectedValue,
+                        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
                         onSave: (value, valueType, humanReadableValue,
                             indexVariable) {
                           if (type == AutomationChoiceEnum.trigger) {
@@ -428,6 +429,7 @@ class AutomationParameterChoice extends StatelessWidget {
   final List<AutomationRadioModel>? options;
   final String? value;
   final String? selectedValue;
+  final int indexOfTheTriggerOrAction;
 
   const AutomationParameterChoice({
     super.key,
@@ -438,6 +440,7 @@ class AutomationParameterChoice extends StatelessWidget {
     this.options,
     this.value,
     this.selectedValue,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -458,6 +461,7 @@ class AutomationParameterChoice extends StatelessWidget {
                 onSave: onSave,
                 options: options,
                 value: value,
+                indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -487,6 +491,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final List<AutomationRadioModel>? options;
   final void Function(String, String, String, String) onSave;
   final String? value;
+  final int indexOfTheTriggerOrAction;
 
   const AutomationParameterFromActions({
     super.key,
@@ -497,6 +502,7 @@ class AutomationParameterFromActions extends StatelessWidget {
     this.options,
     required this.onSave,
     this.value,
+    required this.indexOfTheTriggerOrAction,
   });
 
   @override
@@ -572,6 +578,10 @@ class AutomationParameterFromActions extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: actions.length,
                 itemBuilder: (context, index) {
+                  if (indexOfTheTriggerOrAction >= index) {
+                    return const SizedBox();
+                  }
+
                   final action = actions[index];
                   final integrationIdentifier =
                       action.identifier.split('.').first;
