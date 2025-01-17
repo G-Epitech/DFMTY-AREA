@@ -43,21 +43,21 @@ podTemplate(containers: [
                     container('docker') {
                         def ZEUS_API_WEB_IMAGE_TEST = "zeus-api-web-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_API_WEB_PATH}/Dockerfile -t ${ZEUS_API_WEB_IMAGE_TEST} ${BACKEND_PATH}"
-                        sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST}"
+                        sh "docker rmi ${ZEUS_API_WEB_IMAGE_TEST} || true"
                     }
                 },
                 'Zeus Api gRPC': {
                     container('docker') {
                         def ZEUS_API_GRPC_IMAGE_TEST = "zeus-api-grpc-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_API_GRPC_PATH}/Dockerfile -t ${ZEUS_API_GRPC_IMAGE_TEST} ${BACKEND_PATH}"
-                        sh "docker rmi ${ZEUS_API_GRPC_IMAGE_TEST}"
+                        sh "docker rmi ${ZEUS_API_GRPC_IMAGE_TEST} || true"
                     }
                 },
                 'Zeus Daemon Runner': {
                     container('docker') {
                         def ZEUS_DAEMON_RUNNER_IMAGE_TEST = "zeus-daemon-runner-test:${env.BUILD_TAG}"
                         sh "docker build -f ${ZEUS_DAEMON_RUNNER_PATH}/Dockerfile -t ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} ${BACKEND_PATH}"
-                        sh "docker rmi ${ZEUS_DAEMON_RUNNER_IMAGE_TEST}"
+                        sh "docker rmi ${ZEUS_DAEMON_RUNNER_IMAGE_TEST} || true"
                     }
                 }
             )
@@ -75,7 +75,7 @@ podTemplate(containers: [
             container('docker') {
                 def MOBILE_IMAGE_TEST = "mobile-test:${env.BUILD_TAG}"
                 def runStatus = sh(script: "docker run --rm ${MOBILE_IMAGE_TEST}", returnStatus: true)
-                sh "docker rmi ${MOBILE_IMAGE_TEST}"
+                sh "docker rmi ${MOBILE_IMAGE_TEST} || true"
                 if (runStatus != 0) {
                     error 'Docker run failed for Mobile App'
                 }
@@ -114,7 +114,7 @@ podTemplate(containers: [
             container('docker') {
                 sh "docker stop angular-container_${env.BUILD_TAG}"
                 sh "docker rm angular-container_${env.BUILD_TAG}"
-                sh "docker rmi web-test:${env.BUILD_TAG}"
+                sh "docker rmi web-test:${env.BUILD_TAG} || true"
             }
         }
 
@@ -147,7 +147,7 @@ def shInContainer(String containerName, String imageName, String command) {
     if (returnStatus != 0) {
         sh "docker stop ${containerName}"
         sh "docker rm ${containerName}"
-        sh "docker rmi ${imageName}"
+        sh "docker rmi ${imageName} || true"
         error "Command failed in container ${containerName}: ${command}"
     }
 }

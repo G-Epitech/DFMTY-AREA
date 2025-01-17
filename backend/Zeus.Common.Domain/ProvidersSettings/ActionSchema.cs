@@ -5,7 +5,7 @@ using Zeus.Common.Domain.Integrations.Common.Enums;
 namespace Zeus.Common.Domain.ProvidersSettings;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-public sealed class ActionSchema
+public sealed class ActionSchema : IHasDependenciesSchema
 {
     public ActionSchema(
         string name,

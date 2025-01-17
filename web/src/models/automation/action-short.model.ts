@@ -1,16 +1,16 @@
 export class ActionShortModel {
   readonly identifier: string;
   readonly parameters: { type: string; identifier: string; value: string }[];
-  readonly providers: string[];
+  readonly dependencies: string[];
 
   constructor(
     identifier: string,
     parameters: { type: string; identifier: string; value: string }[],
-    providers: string[]
+    dependencies: string[]
   ) {
     this.identifier = identifier;
     this.parameters = parameters;
-    this.providers = providers;
+    this.dependencies = dependencies;
   }
 
   get integration(): string {

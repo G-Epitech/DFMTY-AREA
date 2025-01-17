@@ -27,6 +27,8 @@ import {
   heroPlus,
   heroArrowLeftStartOnRectangle,
   heroCog6Tooth,
+  heroUser,
+  heroRocketLaunch,
 } from '@ng-icons/heroicons/outline';
 import * as heroiconsSolid from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
@@ -49,6 +51,7 @@ export const appConfig: ApplicationConfig = {
       useValue: environment.apiUrl,
     },
     provideIcons({
+      ...heroiconsSolid,
       heroHome,
       heroLink,
       heroBolt,
@@ -62,7 +65,8 @@ export const appConfig: ApplicationConfig = {
       heroPlus,
       heroArrowLeftStartOnRectangle,
       heroCog6Tooth,
-      ...heroiconsSolid,
+      heroUser,
+      heroRocketLaunch,
     }),
     provideAnimations(),
     provideToastr({

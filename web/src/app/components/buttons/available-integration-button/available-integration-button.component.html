@@ -1,0 +1,16 @@
+<button
+  trBtn
+  variant="outline"
+  class="flex flex-row gap-2 w-full justify-start bg-white p-8 px-3">
+  <div
+    class="w-10 h-10 rounded-md flex flex-col items-center justify-center"
+    [ngStyle]="{ 'background-color': integration().color }">
+    <img
+      [ngSrc]="integration().iconUri"
+      alt="Integration Logo"
+      [width]="24"
+      [height]="24"
+      [style.filter]="forceWhite() ? 'brightness(0) invert(1)' : 'none'" />
+  </div>
+  <span class="tr-large">{{ integration().name }}</span>
+</button>

@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
+using Humanizer;
+
 namespace Zeus.Common.Domain.ProvidersSettings;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -51,6 +53,20 @@ public class ProvidersSettings
             nameof(LeagueOfLegends) => LeagueOfLegends,
             _ => throw new InvalidOperationException($"Provider '{providerName}' not found")
         };
+    }
+
+    public ProviderSchema? GetProviderSchemaFromIdentifier(string identifier)
+    {
+        var providerName = identifier.Split('.').FirstOrDefault();
+
+        return providerName is not null ? GetProviderSchema(providerName) : null;
+    }
+
+    public static (string?, string?) ExplodeIdentifier(string identifier)
+    {
+        var parts = identifier.Split('.');
+
+        return parts.Length == 2 ? (parts[0].Pascalize(), parts[1].Pascalize()) : (null, null);
     }
 
     public bool IsTriggerIdentifierValid(string identifier)

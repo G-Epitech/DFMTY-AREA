@@ -114,7 +114,8 @@ class AuthenticationMediator with ChangeNotifier {
 
         final credentials = await _googleRepository.getGoogleOAuth2Credentials(
             googleAuth?.accessToken ?? '', '.', 'Bearer');
-        if (credentials.statusCode == Codes.ok) {
+        if (credentials.statusCode == Codes.ok ||
+            credentials.statusCode == Codes.created) {
           await _credentialsRepository
               .saveAccessToken(credentials.data!.accessToken);
           await _credentialsRepository

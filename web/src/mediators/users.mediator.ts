@@ -91,7 +91,7 @@ export class UsersMediator {
               new TriggerShortModel(
                 automation.trigger.identifier,
                 automation.trigger.parameters,
-                automation.trigger.providers
+                automation.trigger.dependencies
               ),
               this._mapActions(automation.actions)
             )
@@ -106,7 +106,7 @@ export class UsersMediator {
         new ActionShortModel(
           action.identifier,
           action.parameters,
-          action.providers
+          action.dependencies
         )
     );
   }
