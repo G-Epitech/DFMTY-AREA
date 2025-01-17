@@ -60,6 +60,12 @@ void automationRepositoryTests() {
                       "description": "The content of the message.",
                       "type": "string"
                     }
+                  },
+                  "dependencies": {
+                    "discord": {
+                      "require": "discord-integration",
+                      "optional": false
+                    }
                   }
                 }
               },
@@ -88,7 +94,7 @@ void automationRepositoryTests() {
               "parameters": [
                 {"identifier": "channel-id", "value": "789"}
               ],
-              "providers": ["discord-integration"]
+              "dependencies": ["discord-integration"]
             },
             "actions": [
               {
@@ -100,7 +106,7 @@ void automationRepositoryTests() {
                     "value": "Hello, World!"
                   }
                 ],
-                "providers": ["discord-integration"]
+                "dependencies": ["discord-integration"]
               }
             ],
             "enabled": true,
@@ -187,8 +193,8 @@ void automationRepositoryTests() {
           equals('channel-id'));
       expect(
           response.data!.automation.trigger.parameters[0].value, equals('789'));
-      expect(response.data!.automation.trigger.providers.length, equals(1));
-      expect(response.data!.automation.trigger.providers[0],
+      expect(response.data!.automation.trigger.dependencies.length, equals(1));
+      expect(response.data!.automation.trigger.dependencies[0],
           equals('discord-integration'));
       expect(response.data!.automation.actions.length, equals(1));
       expect(response.data!.automation.actions[0].identifier,
@@ -200,8 +206,9 @@ void automationRepositoryTests() {
           equals('message'));
       expect(response.data!.automation.actions[0].parameters[0].value,
           equals('Hello, World!'));
-      expect(response.data!.automation.actions[0].providers.length, equals(1));
-      expect(response.data!.automation.actions[0].providers[0],
+      expect(
+          response.data!.automation.actions[0].dependencies.length, equals(1));
+      expect(response.data!.automation.actions[0].dependencies[0],
           equals('discord-integration'));
       expect(response.data!.automation.enabled, equals(true));
       expect(response.data!.automation.updatedAt,

@@ -126,8 +126,9 @@ AutomationTriggerDTO _$AutomationTriggerDTOFromJson(
           .map((e) =>
               AutomationTriggerParameterDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      providers:
-          (json['providers'] as List<dynamic>).map((e) => e as String).toList(),
+      dependencies: (json['dependencies'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AutomationTriggerDTOToJson(
@@ -135,7 +136,7 @@ Map<String, dynamic> _$AutomationTriggerDTOToJson(
     <String, dynamic>{
       'identifier': instance.identifier,
       'parameters': instance.parameters,
-      'providers': instance.providers,
+      'dependencies': instance.dependencies,
     };
 
 AutomationActionParameterDTO _$AutomationActionParameterDTOFromJson(
@@ -161,8 +162,9 @@ AutomationActionDTO _$AutomationActionDTOFromJson(Map<String, dynamic> json) =>
           .map((e) =>
               AutomationActionParameterDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      providers:
-          (json['providers'] as List<dynamic>).map((e) => e as String).toList(),
+      dependencies: (json['dependencies'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AutomationActionDTOToJson(
@@ -170,7 +172,7 @@ Map<String, dynamic> _$AutomationActionDTOToJson(
     <String, dynamic>{
       'identifier': instance.identifier,
       'parameters': instance.parameters,
-      'providers': instance.providers,
+      'dependencies': instance.dependencies,
     };
 
 AutomationDTO _$AutomationDTOFromJson(Map<String, dynamic> json) =>

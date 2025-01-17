@@ -108,12 +108,12 @@ class AutomationTriggerParameterDTO {
 class AutomationTriggerDTO {
   final String identifier;
   final List<AutomationTriggerParameterDTO> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   AutomationTriggerDTO({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationTriggerDTO.fromJson(Map<String, dynamic> json) =>
@@ -143,12 +143,12 @@ class AutomationActionParameterDTO extends AutomationTriggerParameterDTO {
 class AutomationActionDTO {
   final String identifier;
   final List<AutomationActionParameterDTO> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   AutomationActionDTO({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationActionDTO.fromJson(Map<String, dynamic> json) =>

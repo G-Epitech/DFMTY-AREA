@@ -24,12 +24,10 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationReset>(_onReset);
     on<AutomationLabelChanged>(_onLabelChanged);
     on<AutomationDescriptionChanged>(_onDescriptionChanged);
-    on<AutomationTriggerProviderAdded>(_onTriggerProviderAdded);
     on<AutomationTriggerDependenciesUpdated>(_onTriggerDependenciesUpdated);
     on<AutomationTriggerIdentifierChanged>(_onTriggerIdentifierChanged);
     on<AutomationTriggerParameterChanged>(_onTriggerParameterChanged);
     on<AutomationActionIdentifierChanged>(_onActionIdentifierChanged);
-    on<AutomationActionProviderAdded>(_onActionProviderAdded);
     on<AutomationActionDependenciesUpdated>(_onActionDependenciesUpdated);
     on<AutomationActionParameterChanged>(_onActionParameterChanged);
     on<AutomationActionDeleted>(_onActionDeleted);
@@ -73,26 +71,11 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 
-  void _onTriggerProviderAdded(
-      AutomationTriggerProviderAdded event, Emitter<AutomationState> emit) {
-    final previews = _getCleanPreviews();
-    final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
-      providers: List.from(state.dirtyAutomation.trigger.providers)
-        ..add(event.provider),
-    );
-    final updatedAutomation =
-        state.dirtyAutomation.copyWith(trigger: updatedTrigger);
-    emit(state.copyWith(
-      dirtyAutomation: updatedAutomation,
-      previews: previews,
-    ));
-  }
-
   void _onTriggerDependenciesUpdated(AutomationTriggerDependenciesUpdated event,
       Emitter<AutomationState> emit) {
     final previews = _getCleanPreviews();
     final updatedTrigger = state.dirtyAutomation.trigger.copyWith(
-      providers: event.dependencies,
+      dependencies: event.dependencies,
     );
     final updatedAutomation =
         state.dirtyAutomation.copyWith(trigger: updatedTrigger);
@@ -143,7 +126,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     if (updatedActions.length <= event.index) {
       updatedActions.add(AutomationAction(
         identifier: event.identifier,
-        providers: [],
+        dependencies: [],
         parameters: [],
       ));
     } else {
@@ -157,32 +140,6 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     emit(state.copyWith(dirtyAutomation: updatedAutomation));
   }
 
-  void _onActionProviderAdded(
-      AutomationActionProviderAdded event, Emitter<AutomationState> emit) {
-    final previews = _getCleanPreviews();
-    final List<AutomationAction> updatedActions =
-        List.from(state.dirtyAutomation.actions);
-    if (updatedActions.length <= event.index) {
-      updatedActions.add(AutomationAction(
-        identifier: '',
-        providers: [event.provider],
-        parameters: [],
-      ));
-    } else {
-      updatedActions[event.index] = updatedActions[event.index].copyWith(
-        providers: List.from(updatedActions[event.index].providers)
-          ..add(event.provider),
-      );
-    }
-
-    final updatedAutomation =
-        state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(state.copyWith(
-      dirtyAutomation: updatedAutomation,
-      previews: previews,
-    ));
-  }
-
   void _onActionDependenciesUpdated(AutomationActionDependenciesUpdated event,
       Emitter<AutomationState> emit) {
     final previews = _getCleanPreviews();
@@ -191,12 +148,12 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     if (updatedActions.length <= event.index) {
       updatedActions.add(AutomationAction(
         identifier: '',
-        providers: event.dependencies,
+        dependencies: event.dependencies,
         parameters: [],
       ));
     } else {
       updatedActions[event.index] = updatedActions[event.index].copyWith(
-        providers: event.dependencies,
+        dependencies: event.dependencies,
       );
     }
 
@@ -236,7 +193,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     } else {
       updatedActions.add(AutomationAction(
         identifier: '',
-        providers: [],
+        dependencies: [],
         parameters: [
           AutomationActionParameter(
             identifier: event.parameterIdentifier,
@@ -258,7 +215,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final updatedAutomation = state.dirtyAutomation.copyWith(
             trigger: AutomationTrigger(
           identifier: '',
-          providers: [],
+          dependencies: [],
           parameters: [],
         ));
         emit(state.copyWith(dirtyAutomation: updatedAutomation));
