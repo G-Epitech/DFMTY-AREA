@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
-import 'package:triggo/app/features/automation/models/radio.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';

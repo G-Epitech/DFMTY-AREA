@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_bloc.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
-import 'package:triggo/app/features/integration/widgets/integrations/notion.integrations.widget.dart';
-import 'package:triggo/app/features/integration/widgets/integrations/open_ai.integrations.widget.dart';
+import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
@@ -18,12 +18,14 @@ class AutomationSelectIntegrationsAccountView extends StatefulWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
+  final String triggerOrActionIdentifier;
 
   const AutomationSelectIntegrationsAccountView({
     super.key,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
+    required this.triggerOrActionIdentifier,
   });
 
   @override
@@ -33,6 +35,8 @@ class AutomationSelectIntegrationsAccountView extends StatefulWidget {
 
 class _AutomationSelectIntegrationsAccountViewState
     extends State<AutomationSelectIntegrationsAccountView> {
+  late List<String> selectedIntegrations = [];
+
   @override
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
@@ -52,6 +56,17 @@ class _AutomationSelectIntegrationsAccountViewState
             type: widget.type,
             integrationIdentifier: widget.integrationIdentifier,
             indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
+            onTap: (integrationId) {
+              if (selectedIntegrations.contains(integrationId)) {
+                setState(() {
+                  selectedIntegrations.remove(integrationId);
+                });
+              } else {
+                setState(() {
+                  selectedIntegrations.add(integrationId);
+                });
+              }
+            },
           );
         }),
       ),
@@ -64,12 +79,14 @@ class _StateManager extends StatelessWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
+  final void Function(String) onTap;
 
   const _StateManager({
     required this.state,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
+    required this.onTap,
   });
 
   @override
@@ -83,6 +100,7 @@ class _StateManager extends StatelessWidget {
         type: type,
         integrationIdentifier: integrationIdentifier,
         indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        onTap: onTap,
       );
     } else if (state is IntegrationsError) {
       return _ErrorView(error: (state as IntegrationsError).message);
@@ -97,12 +115,14 @@ class _IntegrationList extends StatelessWidget {
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
+  final void Function(String) onTap;
 
   const _IntegrationList({
     required this.integrations,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
+    required this.onTap,
   });
 
   @override
@@ -116,9 +136,7 @@ class _IntegrationList extends StatelessWidget {
             final integration = integrations[index];
             return _IntegrationListItem(
               integration: integration,
-              type: type,
-              integrationIdentifier: integrationIdentifier,
-              indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+              onTap: onTap,
             );
           },
         )),
@@ -153,40 +171,45 @@ class _NoDataView extends StatelessWidget {
 
 class _IntegrationListItem extends StatelessWidget {
   final Integration integration;
-  final AutomationChoiceEnum type;
-  final String integrationIdentifier;
-  final int indexOfTheTriggerOrAction;
+  final void Function(String) onTap;
 
   const _IntegrationListItem({
     required this.integration,
-    required this.type,
-    required this.integrationIdentifier,
-    required this.indexOfTheTriggerOrAction,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     switch (integration.name) {
       case IntegrationNames.discord:
-        return DiscordIntegrationListItemWidget(
-          integration: integration as DiscordIntegration,
-          type: type,
-          integrationIdentifier: integrationIdentifier,
-          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        final discord = integration as DiscordIntegration;
+        return _ItemWidget(
+          id: discord.id,
+          title: discord.displayName,
+          description: "${discord.username} - ${discord.email}",
+          avatarUri: discord.avatarUri,
+          integrationSvg: "assets/icons/discord.svg",
+          onTap: onTap,
         );
+
       case IntegrationNames.notion:
-        return NotionIntegrationListItemWidget(
-          integration: integration as NotionIntegration,
-          type: type,
-          integrationIdentifier: integrationIdentifier,
-          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        final notion = integration as NotionIntegration;
+        return _ItemWidget(
+          id: notion.id,
+          title: notion.workspaceName,
+          description: notion.email,
+          avatarUri: notion.avatarUri,
+          integrationSvg: "assets/icons/notion.svg",
+          onTap: onTap,
         );
       case IntegrationNames.openAI:
-        return OpenAIIntegrationListItemWidget(
-          integration: integration as OpenAIIntegration,
-          type: type,
-          integrationIdentifier: integrationIdentifier,
-          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        final openAI = integration as OpenAIIntegration;
+        return _ItemWidget(
+          id: openAI.id,
+          title: openAI.ownerName,
+          description: openAI.ownerName,
+          integrationSvg: "assets/icons/openai.svg",
+          onTap: onTap,
         );
       default:
         return _DefaultIntegrationListItem(integration: integration);
@@ -203,6 +226,129 @@ class _DefaultIntegrationListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(integration.name),
+    );
+  }
+}
+
+class _ItemWidget extends StatefulWidget {
+  final String id;
+  final String title;
+  final String description;
+  final String? avatarUri;
+  final String integrationSvg;
+  final void Function(String) onTap;
+
+  const _ItemWidget({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.description,
+    this.avatarUri,
+    required this.integrationSvg,
+    required this.onTap,
+  });
+
+  @override
+  State<_ItemWidget> createState() => _ItemWidgetState();
+}
+
+class _ItemWidgetState extends State<_ItemWidget> {
+  bool selected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        widget.onTap(widget.id);
+        setState(() {
+          selected = !selected;
+        });
+      },
+      child: TriggoCard(
+        customWidget: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: selected,
+                onChanged: (_) {
+                  widget.onTap(widget.id);
+                  setState(() {
+                    selected = !selected;
+                  });
+                }),
+            SizedBox(width: 10),
+            Stack(
+              children: [
+                if (widget.avatarUri == null)
+                  CircleAvatar(
+                    backgroundColor: Color(0xFF10a37f),
+                    radius: 25,
+                    child: SvgPicture.asset(
+                      widget.integrationSvg,
+                      width: 30,
+                      height: 30,
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                if (widget.avatarUri != null)
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.avatarUri!),
+                    radius: 25,
+                  ),
+                if (widget.avatarUri != null)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Color(0xFF5865F2),
+                      child: SvgPicture.asset(
+                        widget.integrationSvg,
+                        width: 15,
+                        height: 15,
+                        colorFilter: ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.title,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          height: 1.1,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    widget.description,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
