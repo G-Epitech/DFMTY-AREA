@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+} from '@angular/core';
+import {
+  ParameterEditDynamicComponent,
+  ParameterEditOutput,
+} from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
+import { AutomationParameterType } from '@models/automation';
 
 @Component({
   selector: 'tr-automation-parameter-edit-integer',
@@ -8,4 +17,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AutomationParameterEditIntegerComponent {}
+export class AutomationParameterEditIntegerComponent
+  implements ParameterEditDynamicComponent
+{
+  parameter!: { identifier: string; value: string | null };
+  parameterType!: AutomationParameterType;
+  valueChange = new EventEmitter<ParameterEditOutput>();
+}

@@ -1,1 +1,4 @@
-<p>automation-parameter-edit-string works!</p>
+<input
+  trInput
+  [value]="parameter.value || ''"
+  (input)="onValueChange($event)" />
