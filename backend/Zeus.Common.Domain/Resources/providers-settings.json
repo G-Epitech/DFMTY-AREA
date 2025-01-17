@@ -88,7 +88,7 @@
   },
   "Notion": {
     "Name": "Notion",
-    "IconUri": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/200px-Notion-logo.svg.png",
+    "IconUri": "https://www.svgrepo.com/show/361558/notion-logo.svg",
     "Color": "#373530",
     "Triggers": {
       "DatabaseCreated": {
@@ -468,5 +468,139 @@
         }
       }
     }
+  },
+  "LeagueOfLegends": {
+    "Name": "League of Legends",
+    "IconUri": "https://wiki.leagueoflegends.com/en-us/images/League_of_Legends_icon.svg",
+    "Color": "#C89B3C",
+    "Triggers": {
+      "MatchFinished": {
+        "Name": "Match finished",
+        "Description": "Trigger when a match is finished.",
+        "Icon": "flag",
+        "Parameters": {},
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "timespan"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "integer"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        }
+      },
+      "MatchFinishedWithKdaLowerThan": {
+        "Name": "Match finished with KDA lower than",
+        "Description": "Trigger when a match is finished with a KDA lower than a specified value.",
+        "Icon": "arrow-down-right",
+        "Parameters": {
+          "KdaThreshold": {
+            "Name": "KDA threshold",
+            "Description": "The KDA threshold to trigger the action.",
+            "Type": "integer"
+          }
+        },
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "timespan"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "integer"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        }
+      },
+      "MatchFinishedWithKdaUpperThan": {
+        "Name": "Match finished with KDA upper than",
+        "Description": "Trigger when a match is finished with a KDA upper than a specified value.",
+        "Icon": "arrow-up-right",
+        "Parameters": {
+          "KdaThreshold": {
+            "Name": "KDA threshold",
+            "Description": "The KDA threshold to trigger the action.",
+            "Type": "integer"
+          }
+        },
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "timespan"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "integer"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        }
+      }
+    },
+    "Actions": {}
   }
 }
