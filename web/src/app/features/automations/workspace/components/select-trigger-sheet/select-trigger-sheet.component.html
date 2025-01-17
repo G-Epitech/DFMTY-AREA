@@ -84,8 +84,9 @@
         }
         @case (TriggerSelectionStep.PARAMETER) {
           <tr-automation-parameter-edit
+            [automationStepIdentifier]="service.state().trigger!.nameIdentifier"
             [parameter]="service.state().selectedParameter!"
-            [paramterType]="service.state().selecterParameterType!" />
+            [parameterType]="service.state().selecterParameterType!" />
         }
       }
     </div>

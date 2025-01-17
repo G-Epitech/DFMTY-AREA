@@ -72,7 +72,7 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Select Integration',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select Linked Integration',
       [TriggerSelectionStep.TRIGGER]: 'Select Trigger',
-      [TriggerSelectionStep.PARAMETER]: 'Edit Parameter',
+      [TriggerSelectionStep.PARAMETER]: '',
     };
     return titles[step];
   });
@@ -84,7 +84,7 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Choose an integration to use',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select a linked account',
       [TriggerSelectionStep.TRIGGER]: 'Choose a trigger event',
-      [TriggerSelectionStep.PARAMETER]: 'Edit the parameters for this trigger',
+      [TriggerSelectionStep.PARAMETER]: '',
     };
     return descriptions[step];
   });

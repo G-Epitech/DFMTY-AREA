@@ -22,20 +22,23 @@
     <div class="flex flex-col">
       <span class="text-sm text-muted">Parameter Type</span>
       <span class="text-base font-medium text-gray-900">
-        {{ paramterType().toString() }}
+        {{ parameterType().toString() }}
       </span>
     </div>
   </div>
 </div>
 <div class="mt-3">
-  <tr-tabs tab="account" class="block max-w-3xl mx-auto">
+  <tr-tabs tab="raw" class="block max-w-3xl mx-auto">
     <tr-tabs-list class="w-full grid grid-cols-2" aria-label="tabs example">
-      <button trTabsTrigger="account">Account</button>
-      <button trTabsTrigger="password">Password</button>
+      <button trTabsTrigger="raw">Manual</button>
+      <button trTabsTrigger="variable">Facts</button>
     </tr-tabs-list>
     <div class="p-4">
-      <div trTabsContent="account">Make your account here</div>
-      <div trTabsContent="password">Change your password here</div>
+      <div trTabsContent="raw">
+        <span>Enter the value</span>
+        <div class="flex flex-col space-y-3"><ng-container ##dynamicComponentsContainer></ng-container></div>
+      </div>
+      <div trTabsContent="variable">Use a previous Automation fact</div>
     </div>
   </tr-tabs>
 </div>
