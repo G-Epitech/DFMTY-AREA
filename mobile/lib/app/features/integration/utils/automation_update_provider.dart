@@ -19,3 +19,22 @@ void automationUpdateProvider(BuildContext context, AutomationChoiceEnum type,
       break;
   }
 }
+
+void automationUpdateDependencies(
+    BuildContext context,
+    AutomationChoiceEnum type,
+    List<String> integrationProviders,
+    int indexOfTheTriggerOrAction) {
+  switch (type) {
+    case AutomationChoiceEnum.trigger:
+      context.read<AutomationBloc>().add(AutomationTriggerDependenciesUpdated(
+          dependencies: integrationProviders));
+      break;
+    case AutomationChoiceEnum.action:
+      context.read<AutomationBloc>().add(AutomationActionDependenciesUpdated(
+            index: indexOfTheTriggerOrAction,
+            dependencies: integrationProviders,
+          ));
+      break;
+  }
+}

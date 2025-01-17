@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_bloc.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_event.dart';
 import 'package:triggo/app/features/integration/bloc/integrations_state.dart';
 import 'package:triggo/app/features/integration/integration.names.dart';
+import 'package:triggo/app/features/integration/utils/automation_update_provider.dart';
+import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
@@ -52,10 +56,12 @@ class _AutomationSelectIntegrationsAccountViewState
         body: BlocBuilder<IntegrationsBloc, IntegrationsState>(
             builder: (context, state) {
           return _StateManager(
+            values: selectedIntegrations,
             state: state,
             type: widget.type,
             integrationIdentifier: widget.integrationIdentifier,
             indexOfTheTriggerOrAction: widget.indexOfTheTriggerOrAction,
+            triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
             onTap: (integrationId) {
               if (selectedIntegrations.contains(integrationId)) {
                 setState(() {
@@ -75,17 +81,21 @@ class _AutomationSelectIntegrationsAccountViewState
 }
 
 class _StateManager extends StatelessWidget {
+  final List<String> values;
   final IntegrationsState state;
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
+  final String triggerOrActionIdentifier;
   final void Function(String) onTap;
 
   const _StateManager({
+    required this.values,
     required this.state,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
+    required this.triggerOrActionIdentifier,
     required this.onTap,
   });
 
@@ -93,17 +103,22 @@ class _StateManager extends StatelessWidget {
   Widget build(BuildContext context) {
     if (state is IntegrationsLoading) {
       return const Center(child: CircularProgressIndicator());
-    } else if (state is IntegrationsLoaded &&
+    }
+    if (state is IntegrationsError) {
+      return _ErrorView(error: (state as IntegrationsError).message);
+    }
+
+    if (state is IntegrationsLoaded &&
         (state as IntegrationsLoaded).integrations.isNotEmpty) {
       return _IntegrationList(
+        values: values,
         integrations: (state as IntegrationsLoaded).integrations,
         type: type,
         integrationIdentifier: integrationIdentifier,
         indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        triggerOrActionIdentifier: triggerOrActionIdentifier,
         onTap: onTap,
       );
-    } else if (state is IntegrationsError) {
-      return _ErrorView(error: (state as IntegrationsError).message);
     } else {
       return const _NoDataView();
     }
@@ -111,17 +126,21 @@ class _StateManager extends StatelessWidget {
 }
 
 class _IntegrationList extends StatelessWidget {
+  final List<String> values;
   final List<Integration> integrations;
   final AutomationChoiceEnum type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
+  final String triggerOrActionIdentifier;
   final void Function(String) onTap;
 
   const _IntegrationList({
+    required this.values,
     required this.integrations,
     required this.type,
     required this.integrationIdentifier,
     required this.indexOfTheTriggerOrAction,
+    required this.triggerOrActionIdentifier,
     required this.onTap,
   });
 
@@ -140,7 +159,64 @@ class _IntegrationList extends StatelessWidget {
             );
           },
         )),
+        _OKButton(
+          values: values,
+          type: type,
+          integrationIdentifier: integrationIdentifier,
+          indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+          triggerOrActionIdentifier: triggerOrActionIdentifier,
+        )
       ],
+    );
+  }
+}
+
+class _OKButton extends StatelessWidget {
+  final List<String> values;
+  final AutomationChoiceEnum type;
+  final String integrationIdentifier;
+  final int indexOfTheTriggerOrAction;
+  final String triggerOrActionIdentifier;
+
+  const _OKButton({
+    required this.values,
+    required this.type,
+    required this.integrationIdentifier,
+    required this.indexOfTheTriggerOrAction,
+    required this.triggerOrActionIdentifier,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TriggoButton(
+              text: "OK",
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+              onPressed: () {
+                automationUpdateDependencies(
+                  context,
+                  type,
+                  values,
+                  indexOfTheTriggerOrAction,
+                );
+                Navigator.push(
+                    context,
+                    customScreenBuilder(AutomationParametersView(
+                      type: type,
+                      integrationIdentifier: integrationIdentifier,
+                      triggerOrActionIdentifier: triggerOrActionIdentifier,
+                      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                    )));
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -239,7 +315,6 @@ class _ItemWidget extends StatefulWidget {
   final void Function(String) onTap;
 
   const _ItemWidget({
-    super.key,
     required this.id,
     required this.title,
     required this.description,

@@ -57,6 +57,17 @@ final class AutomationTriggerProviderAdded extends AutomationEvent {
   List<Object> get props => [provider];
 }
 
+final class AutomationTriggerDependenciesUpdated extends AutomationEvent {
+  final List<String> dependencies;
+
+  const AutomationTriggerDependenciesUpdated({
+    required this.dependencies,
+  });
+
+  @override
+  List<Object> get props => [dependencies];
+}
+
 final class AutomationTriggerIdentifierChanged extends AutomationEvent {
   final String identifier;
 
@@ -92,6 +103,19 @@ final class AutomationActionProviderAdded extends AutomationEvent {
 
   @override
   List<Object> get props => [index, provider];
+}
+
+final class AutomationActionDependenciesUpdated extends AutomationEvent {
+  final int index;
+  final List<String> dependencies;
+
+  const AutomationActionDependenciesUpdated({
+    required this.index,
+    required this.dependencies,
+  });
+
+  @override
+  List<Object> get props => [index, dependencies];
 }
 
 final class AutomationActionIdentifierChanged extends AutomationEvent {
