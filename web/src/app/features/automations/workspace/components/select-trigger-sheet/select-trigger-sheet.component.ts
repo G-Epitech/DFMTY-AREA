@@ -27,6 +27,7 @@ import { TriggerSelectionButtonComponent } from '@features/automations/workspace
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { SchemaStore } from '@app/store/schema-store';
+import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
 
 @Component({
   standalone: true,
@@ -43,6 +44,7 @@ import { SchemaStore } from '@app/store/schema-store';
     LinkedIntegrationButtonComponent,
     TriggerSelectionComponent,
     TriggerSelectionButtonComponent,
+    AutomationParameterListComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],

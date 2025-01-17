@@ -1,6 +1,6 @@
 export interface TriggerParameter {
   identifier: string;
-  value: string;
+  value: string | null;
 }
 
 export class TriggerModel {

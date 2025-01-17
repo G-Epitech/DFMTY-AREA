@@ -15,6 +15,7 @@ import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
   TriggerModel,
+  TriggerParameter,
 } from '@models/automation';
 import { Subject, takeUntil } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
@@ -65,6 +66,7 @@ export class SelectTriggerSheetService implements OnDestroy {
       selectedIntegration: integration,
       selectedLinkedIntegration: linkedIntegration,
       selectedTrigger: trigger,
+      trigger: automationTrigger,
     }));
   }
 
@@ -126,11 +128,17 @@ export class SelectTriggerSheetService implements OnDestroy {
       currentIntegration,
       trigger.name
     );
+    const params: TriggerParameter[] = Object.keys(trigger.parameters).map(
+      key => ({
+        identifier: key,
+        value: null,
+      })
+    );
     if (triggerIdentifer) {
       const dependency = this.state().selectedLinkedIntegration!.id;
       const triggerShort = new TriggerModel(
         triggerIdentifer,
-        [],
+        params,
         dependency ? [dependency] : []
       );
       patchState(this.state, state => ({
