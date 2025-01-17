@@ -60,7 +60,7 @@ class IntegrationMediator with ChangeNotifier {
       case IntegrationNames.notion:
         return 'notion';
       case IntegrationNames.openAI:
-        return 'openAI';
+        return 'openai';
       case IntegrationNames.leagueOfLegends:
         return 'leagueOfLegends';
       default:
