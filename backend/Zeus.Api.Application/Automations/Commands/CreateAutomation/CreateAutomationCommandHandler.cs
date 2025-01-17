@@ -108,8 +108,9 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         (string? provider, string? trigger) = ProvidersSettings.ExplodeIdentifier(command.Identifier);
         var schema = provider is not null ? _providersSettings.GetProviderSchema(provider) : null;
+        var identifier = $"{provider}.{trigger}";
 
-        if (!_providersSettings.IsTriggerIdentifierValid($"{provider}.{trigger}") || schema is null || provider is null || trigger is null)
+        if (!_providersSettings.IsTriggerIdentifierValid(identifier) || schema is null || provider is null || trigger is null)
         {
             return Errors.Automations.Trigger.InvalidIdentifier;
         }
@@ -148,7 +149,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         #endregion
 
-        return AutomationTrigger.Create(command.Identifier, parameters.Value, dependencies.Value);
+        return AutomationTrigger.Create(identifier, parameters.Value, dependencies.Value);
     }
 
     private static ErrorOr<List<AutomationTriggerParameter>> CreateTriggerParameters(CreateAutomationTriggerCommand command, TriggerSchema schema)
@@ -209,8 +210,9 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         (string? provider, string? action) = ProvidersSettings.ExplodeIdentifier(command.Identifier);
         var schema = provider is not null ? _providersSettings.GetProviderSchema(provider) : null;
+        var identifier = $"{provider}.{action}";
 
-        if (!_providersSettings.IsActionIdentifierValid($"{provider}.{action}") || schema is null || provider is null || action is null)
+        if (!_providersSettings.IsActionIdentifierValid(identifier) || schema is null || provider is null || action is null)
         {
             return Errors.Automations.Action.InvalidIdentifier;
         }
@@ -249,7 +251,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         #endregion
 
-        return AutomationAction.Create(command.Identifier, rank, parameters.Value, dependencies.Value);
+        return AutomationAction.Create(identifier, rank, parameters.Value, dependencies.Value);
     }
 
     private static ErrorOr<List<AutomationActionParameter>> CreateActionParameters(CreateAutomationActionCommand command, ActionSchema schema, CreationContext ctx)
