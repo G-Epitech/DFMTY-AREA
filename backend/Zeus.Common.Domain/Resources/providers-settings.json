@@ -493,7 +493,7 @@
           "MatchDuration": {
             "Name": "Match duration",
             "Description": "The duration of the finished match.",
-            "Type": "timespan"
+            "Type": "float"
           },
           "MatchWon": {
             "Name": "Match won",
@@ -503,12 +503,17 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "integer"
+            "Type": "float"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
             "Description": "The champion played by the summoner in the match.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "Multiple"
           }
         }
       },
@@ -537,7 +542,7 @@
           "MatchDuration": {
             "Name": "Match duration",
             "Description": "The duration of the finished match.",
-            "Type": "timespan"
+            "Type": "float"
           },
           "MatchWon": {
             "Name": "Match won",
@@ -547,12 +552,17 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "integer"
+            "Type": "float"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
             "Description": "The champion played by the summoner in the match.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "Multiple"
           }
         }
       },
@@ -581,7 +591,7 @@
           "MatchDuration": {
             "Name": "Match duration",
             "Description": "The duration of the finished match.",
-            "Type": "timespan"
+            "Type": "float"
           },
           "MatchWon": {
             "Name": "Match won",
@@ -591,12 +601,17 @@
           "SummonerKda": {
             "Name": "Summoner KDA",
             "Description": "The KDA of the summoner in the match.",
-            "Type": "integer"
+            "Type": "float"
           },
           "SummonerChampion": {
             "Name": "Summoner champion",
             "Description": "The champion played by the summoner in the match.",
             "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "Multiple"
           }
         }
       }

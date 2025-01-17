@@ -2,11 +2,11 @@ using System.Net.Http.Headers;
 
 using Microsoft.Extensions.Logging;
 
-using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
+using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
 
-namespace Zeus.Daemon.Infrastructure.Services.Discord;
+namespace Zeus.Daemon.Infrastructure.Services.Providers.Discord;
 
 public class DiscordApiService : IDiscordApiService
 {

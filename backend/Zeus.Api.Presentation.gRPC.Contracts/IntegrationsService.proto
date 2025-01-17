@@ -23,6 +23,8 @@ enum IntegrationType {
   Discord = 0;
   Gmail = 1;
   Notion = 2;
+  OpenAi = 3;
+  LeagueOfLegends = 4;
 }
 
 message Integration {
