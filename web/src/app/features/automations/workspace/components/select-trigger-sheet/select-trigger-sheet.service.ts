@@ -97,12 +97,6 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   selectLinkedIntegration(linkedIntegration: IntegrationModel): void {
-    if (this.state().selectedLinkedIntegration?.id !== linkedIntegration.id) {
-      patchState(this.state, state => ({
-        ...state,
-        selectedTrigger: null,
-      }));
-    }
     patchState(
       this.state,
       stateUpdaterSelectLinkedIntegration(linkedIntegration)
@@ -112,6 +106,12 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   selectTrigger(trigger: AutomationSchemaTrigger) {
+    if (this.state().selectedTrigger?.name !== trigger.name) {
+      patchState(this.state, state => ({
+        ...state,
+        selectedLinkedIntegration: null,
+      }));
+    }
     patchState(this.state, stateUpdaterSelectTrigger(trigger));
     this.back();
   }

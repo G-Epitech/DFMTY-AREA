@@ -14,10 +14,11 @@ import {
   IntegrationTypeEnum,
 } from '@models/integration';
 import { TrButtonDirective } from '@triggo-ui/button';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'tr-linked-integration-button',
-  imports: [TrButtonDirective],
+  imports: [TrButtonDirective, NgIcon],
   templateUrl: './linked-integration-button.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,11 +26,10 @@ import { TrButtonDirective } from '@triggo-ui/button';
 })
 export class LinkedIntegrationButtonComponent {
   integration = input.required<IntegrationModel>();
+  displayIcon = input<boolean>(false);
 
   header = signal<string>('');
   subheader = signal<string>('');
-  iconUri = signal<string>('');
-  color = signal<string>('');
 
   selectLinkedIntegration = output<IntegrationModel>();
 

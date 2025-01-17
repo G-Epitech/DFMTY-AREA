@@ -25,27 +25,12 @@
               [integration]="service.state().selectedIntegration!"
               (click)="service.goToIntegrationSelection()" />
           }
-          @if (!state().selectedLinkedIntegration) {
-            <button
-              trBtn
-              class="w-full text-left items-center justify-start gap-3 p-8"
-              variant="outline"
-              [disabled]="state().selectedIntegration === null"
-              (click)="service.goToLinkedInegrationSelection()">
-              <ng-icon name="heroUser" size="1.4rem" />
-              <span> No Linked Integration Selected </span>
-            </button>
-          } @else {
-            <tr-linked-integration-button
-              [integration]="state().selectedLinkedIntegration!"
-              (click)="service.goToLinkedInegrationSelection()" />
-          }
           @if (!state().selectedTrigger) {
             <button
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
               variant="outline"
-              [disabled]="state().selectedLinkedIntegration === null"
+              [disabled]="state().selectedIntegration === null"
               (click)="service.goToTriggerSelection()">
               <ng-icon name="heroRocketLaunch" size="1.4rem" />
               <span> No Trigger Selected </span>
@@ -54,6 +39,22 @@
             <tr-trigger-selection-button
               [trigger]="state().selectedTrigger!"
               (click)="service.goToTriggerSelection()" />
+          }
+          @if (!state().selectedLinkedIntegration) {
+            <button
+              trBtn
+              class="w-full text-left items-center justify-start gap-3 p-8"
+              variant="outline"
+              [disabled]="state().selectedTrigger === null"
+              (click)="service.goToLinkedInegrationSelection()">
+              <ng-icon name="heroUser" size="1.4rem" />
+              <span> No Linked Integration Selected </span>
+            </button>
+          } @else {
+            <tr-linked-integration-button
+              [displayIcon]="true"
+              [integration]="state().selectedLinkedIntegration!"
+              (click)="service.goToLinkedInegrationSelection()" />
           }
         }
         @case (TriggerSelectionStep.INTEGRATION) {

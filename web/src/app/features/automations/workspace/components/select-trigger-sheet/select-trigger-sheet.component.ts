@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed, effect,
+  computed,
+  effect,
   inject,
   input,
-  OnInit,
 } from '@angular/core';
 import { TrSheetImports } from '@triggo-ui/sheet';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -91,7 +91,6 @@ export class SelectTriggerSheetComponent {
       }
     });
   }
-
 
   protected onIntegrationSelected(integration: AvailableIntegrationType): void {
     this.service.selectIntegration(integration);

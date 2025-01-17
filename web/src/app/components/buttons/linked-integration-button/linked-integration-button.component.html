@@ -1,8 +1,13 @@
 <button
   trBtn
   variant="outline"
-  class="flex flex-col items-start bg-white w-full justify-center p-8 px-4"
+  class="flex flex-row bg-white w-full p-8 px-4 justify-start"
   (click)="selectIntegration()">
-  <span class="tr-large">{{ header() }}</span>
-  <span class="text-muted tr-medium">{{ subheader() }}</span>
+  @if (displayIcon()) {
+    <ng-icon name="heroUser" size="1.4rem" class="mr-3 ml-3" />
+  }
+  <div class="flex flex-col items-start">
+    <span class="tr-large">{{ header() }}</span>
+    <span class="text-muted tr-medium">{{ subheader() }}</span>
+  </div>
 </button>

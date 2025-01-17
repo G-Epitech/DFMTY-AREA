@@ -3,10 +3,11 @@ import {
   Component,
   computed,
   inject,
-  input, output,
+  input,
+  output,
   signal,
 } from '@angular/core';
-import { BehaviorSubject, map, Observable, startWith, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { PageModel, PageOptions } from '@models/page';
 import { UsersMediator } from '@mediators/users.mediator';
 import { IntegrationModel } from '@models/integration';
@@ -60,7 +61,7 @@ export class LinkedIntegrationSelectionComponent {
           tap(() => this.loading.set(false)),
           finalize(() => this.loading.set(false))
         )
-      ),
+      )
     );
 
   selectLinkedIntegration(integration: IntegrationModel) {

@@ -9,14 +9,11 @@ import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { TriggerCardComponent } from '@features/automations/workspace/components/cards/trigger-card/trigger-card.component';
 import { ActionCardComponent } from '@features/automations/workspace/components/cards/action-card/action-card.component';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
 import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
-import {
-  SelectTriggerSheetComponent
-} from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.component';
+import { SelectTriggerSheetComponent } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.component';
 
 @Component({
   selector: 'tr-automations-workspace',
