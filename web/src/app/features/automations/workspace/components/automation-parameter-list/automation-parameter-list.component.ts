@@ -9,10 +9,11 @@ import {
 import { PascalToPhrasePipe } from '@app/pipes';
 import { NgIcon } from '@ng-icons/core';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
   selector: 'tr-automation-parameter-list',
-  imports: [PascalToPhrasePipe, NgIcon],
+  imports: [PascalToPhrasePipe, NgIcon, TrButtonDirective],
   templateUrl: './automation-parameter-list.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

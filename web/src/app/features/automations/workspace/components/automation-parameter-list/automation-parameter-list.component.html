@@ -7,20 +7,17 @@
     </span>
   </div>
 
-  <div class="flex flex-col rounded-md border bg-secondary">
+  <div class="flex flex-col rounded-md border bg-secondary space-y-3 p-3">
     @if (parameterEditService.currentParameters().length > 0) {
-      <div class="grid grid-cols-2 py-3 px-2 border-b border-secondary">
-        <span class="text-sm font-semibold text-muted">Parameter</span>
-        <span class="text-sm font-semibold text-muted">Value</span>
-      </div>
-
       @for (
         param of parameterEditService.currentParameters();
         track param.identifier
       ) {
-        <div
-          class="grid grid-cols-2 py-3 px-2 border-b bg-white items-center relative group cursor-pointer"
-          (click)="editParameter.emit(param)">
+        <button
+          class="py-3 px-2 border-b bg-white items-center justify-start relative group cursor-pointer"
+          (click)="editParameter.emit(param)"
+          trBtn
+          variant="outline">
           <div
             class="absolute inset-0 bg-secondary/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all gap-1">
             <span class="tr-large text-primary">Edit</span>
@@ -30,11 +27,7 @@
             class="tr-medium text-gray-700 group-hover:opacity-0 transition-all"
             >{{ param.identifier | pascalToPhrase }}</span
           >
-          <span
-            class="tr-medium text-gray-900 group-hover:opacity-0 transition-all"
-            >{{ param.value || 'Undefined' }}</span
-          >
-        </div>
+        </button>
       }
     } @else {
       <div class="flex items-center justify-center p-6 bg-secondary">

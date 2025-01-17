@@ -15,12 +15,13 @@ import { IntegrationsMediator } from '@mediators/integrations';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { Observable } from 'rxjs';
 import { DiscordChannelModel } from '@models/integration';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'tr-discord-channel-id-parameter',
-  imports: [AsyncPipe, TrButtonDirective],
+  imports: [AsyncPipe, TrButtonDirective, NgClass, NgIcon],
   templateUrl: './discord-channel-id-parameter.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,5 +58,9 @@ export class DiscordChannelIdParameterComponent
 
   selectChannel(channelId: string): void {
     this.valueChange.emit({ rawValue: channelId });
+  }
+
+  isChannelSelected(channelId: string): boolean {
+    return this.parameter.value === channelId;
   }
 }

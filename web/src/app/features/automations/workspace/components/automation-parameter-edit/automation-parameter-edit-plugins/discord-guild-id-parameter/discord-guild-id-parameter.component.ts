@@ -13,15 +13,16 @@ import { AutomationParameterType } from '@models/automation';
 import { IntegrationsMediator } from '@mediators/integrations';
 import { map, Observable } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { filter } from 'rxjs/operators';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   standalone: true,
   selector: 'tr-discord-guild-id-parameter',
-  imports: [AsyncPipe, NgOptimizedImage, TrButtonDirective],
+  imports: [AsyncPipe, NgOptimizedImage, TrButtonDirective, NgClass, NgIcon],
   templateUrl: './discord-guild-id-parameter.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,6 +50,10 @@ export class DiscordGuildIdParameterComponent
   }
 
   selectGuild(guild: DiscordGuildModel): void {
-    this.valueChange.emit({ rawValue: guild.id});
+    this.valueChange.emit({ rawValue: guild.id });
+  }
+
+  isGuildSelected(guild: DiscordGuildModel): boolean {
+    return guild.id === this.parameter.value;
   }
 }

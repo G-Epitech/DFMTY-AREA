@@ -13,8 +13,16 @@
             variant="outline"
             class="flex flex-row bg-white items-center p-7"
             (click)="selectChannel(channel.id)">
-            <div class="flex flex-col mr-auto">
-              <span class="tr-large">{{ channel.name }}</span>
+            <div
+              class="flex flex-row items-center justify-start gap-3 w-full"
+              [ngClass]="
+                isChannelSelected(channel.id) ? 'text-primary' : 'text-gray-900'
+              ">
+              <ng-icon name="heroHashtag" size="1.3rem" />
+              <span class="tr-large">{{ channel.name }} </span>
+              @if (isChannelSelected(channel.id)) {
+                <ng-icon name="heroCheckCircle" size="1.3rem" />
+              }
             </div>
           </button>
         }

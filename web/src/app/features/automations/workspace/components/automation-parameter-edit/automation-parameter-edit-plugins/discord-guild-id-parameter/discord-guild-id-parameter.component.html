@@ -7,7 +7,8 @@
           trBtn
           variant="outline"
           class="flex flex-row bg-white items-center p-7"
-          (click)="selectGuild(guild)">
+          (click)="selectGuild(guild)"
+          [ngClass]="isGuildSelected(guild) ? 'text-primary' : 'text-gray-900'">
           @if (guild.iconUri) {
             <img
               [ngSrc]="guild.iconUri"
@@ -19,6 +20,9 @@
           <div class="flex flex-col mr-auto">
             <span class="tr-large">{{ guild.name }}</span>
           </div>
+          @if (isGuildSelected(guild)) {
+            <ng-icon name="heroCheckCircle" size="1.3rem" />
+          }
         </button>
       }
     </div>
