@@ -1,4 +1,4 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable, signal, Type } from '@angular/core';
 import { AutomationParameterType } from '@models/automation';
 import {
   PARAMETER_EDIT_COMPONENT_MAP,
@@ -6,8 +6,15 @@ import {
   ParameterEditDynamicComponent,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AutomationParameterEditService {
+  currentParameters = signal<
+    {
+      identifier: string;
+      value: string | null;
+    }[]
+  >([]);
+
   getParameterEditComponents(
     parameterIdentifier: string,
     parameterType: AutomationParameterType

@@ -28,7 +28,6 @@ export class AutomationParameterEditDatetimeComponent
   onValueChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     const isoString = new Date(value).toISOString();
-    const userFriendlyString = new Date(value).toLocaleString();
-    this.valueChange.emit({ rawValue: isoString, displayValue: userFriendlyString });
+    this.valueChange.emit({ rawValue: isoString });
   }
 }

@@ -26,7 +26,7 @@ import {
   templateUrl: './automation-parameter-edit.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AutomationParameterEditService],
+  providers: [],
 })
 export class AutomationParameterEditComponent {
   private readonly editService = inject(AutomationParameterEditService);
@@ -44,7 +44,6 @@ export class AutomationParameterEditComponent {
   readonly activeTab = signal<string>('raw');
 
   readonly parameterChange = signal<ParameterEditOutput>({
-    displayValue: '',
     rawValue: '',
   });
   readonly parameterChangeEmitter = output<ParameterEditOutput>();
@@ -53,7 +52,6 @@ export class AutomationParameterEditComponent {
     effect(() => {
       if (this.parameter()) {
         this.parameterChange.set({
-          displayValue: this.parameter()?.value || '',
           rawValue: this.parameter()?.value || '',
         });
       }
@@ -70,11 +68,13 @@ export class AutomationParameterEditComponent {
       return;
     }
     const component = this.editService.getParameterEditComponents(
-      this.automationStepIdentifier(),
+      this.parameter().identifier,
       this.parameterType()
     );
     const componentRef =
-      this.viewContainerRef.createComponent<ParameterEditDynamicComponent>(component);
+      this.viewContainerRef.createComponent<ParameterEditDynamicComponent>(
+        component
+      );
     if (!componentRef.instance) {
       return;
     }
@@ -90,7 +90,6 @@ export class AutomationParameterEditComponent {
   private setupDynamicComponent(instance: ParameterEditDynamicComponent) {
     instance.parameter = this.parameter();
     instance.parameterType = this.parameterType();
-    console.log(this.integrationId());
     instance.integrationId = this.integrationId();
 
     if (instance.valueChange) {

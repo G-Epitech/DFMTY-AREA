@@ -16,6 +16,7 @@ import { DiscordGuildModel } from '@models/integration';
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { filter } from 'rxjs/operators';
+import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 
 @Component({
   standalone: true,
@@ -28,12 +29,12 @@ import { filter } from 'rxjs/operators';
 export class DiscordGuildIdParameterComponent
   implements ParameterEditDynamicComponent
 {
-  readonly #integrationsMediator = inject(IntegrationsMediator);
-
   parameter!: { identifier: string; value: string | null };
   parameterType!: AutomationParameterType;
   valueChange = new EventEmitter<ParameterEditOutput>();
   integrationId: string | undefined;
+
+  readonly #integrationsMediator = inject(IntegrationsMediator);
 
   discordGuilds$: Observable<DiscordGuildModel[]> | undefined;
 
@@ -48,6 +49,6 @@ export class DiscordGuildIdParameterComponent
   }
 
   selectGuild(guild: DiscordGuildModel): void {
-    this.valueChange.emit({ rawValue: guild.id, displayValue: guild.name });
+    this.valueChange.emit({ rawValue: guild.id});
   }
 }

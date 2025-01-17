@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
 } from '@angular/core';
 import { TrInputDirective } from '@triggo-ui/input';
 import {
@@ -28,6 +27,6 @@ export class AutomationParameterEditStringComponent
 
   onValueChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.valueChange.emit({ rawValue: value, displayValue: value });
+    this.valueChange.emit({ rawValue: value });
   }
 }

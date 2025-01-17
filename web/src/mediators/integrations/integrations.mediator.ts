@@ -5,6 +5,9 @@ import {
 } from '@repositories/integrations';
 import { map, Observable } from 'rxjs';
 import { DiscordGuildModel, IntegrationModel } from '@models/integration';
+import {
+  DiscordChannelModel
+} from '@models/integration/discord/discord-channel.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +31,16 @@ export class IntegrationsMediator {
             guild.approximateMemberCount,
             guild.linked
           );
+        });
+      })
+    );
+  }
+
+  getDiscordChannels(integrationId: string, guildId: string): Observable<DiscordChannelModel[]> {
+    return this.#discordRepository.getChannels(integrationId, guildId).pipe(
+      map(dto => {
+        return dto.map(channel => {
+          return new DiscordChannelModel(channel.id, channel.name);
         });
       })
     );

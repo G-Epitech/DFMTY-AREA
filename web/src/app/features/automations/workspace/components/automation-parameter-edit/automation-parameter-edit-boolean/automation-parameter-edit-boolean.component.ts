@@ -29,6 +29,6 @@ export class AutomationParameterEditBooleanComponent
   onValueChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     const rawValue = value === 'off' ? 'false' : 'true';
-    this.valueChange.emit({ rawValue: rawValue, displayValue: value });
+    this.valueChange.emit({ rawValue: rawValue});
   }
 }

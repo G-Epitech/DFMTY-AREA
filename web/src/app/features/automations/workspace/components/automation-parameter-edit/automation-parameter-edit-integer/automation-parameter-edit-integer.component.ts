@@ -28,6 +28,6 @@ export class AutomationParameterEditIntegerComponent
 
   onValueChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.valueChange.emit({ rawValue: value, displayValue: value });
+    this.valueChange.emit({ rawValue: value });
   }
 }
