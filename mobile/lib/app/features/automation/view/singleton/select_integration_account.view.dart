@@ -50,6 +50,7 @@ class _AutomationSelectIntegrationsAccountViewState
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
     final List<String> needIntegrations = widget.dependencies.keys.toList();
+    final isRadio = _isRadio(widget.dependencies);
     return BlocProvider(
       create: (context) => IntegrationsBloc(
         integrationMediator,
@@ -68,14 +69,21 @@ class _AutomationSelectIntegrationsAccountViewState
             triggerOrActionIdentifier: widget.triggerOrActionIdentifier,
             dependencies: widget.dependencies,
             onTap: (integrationId) {
-              if (selectedIntegrations.contains(integrationId)) {
+              if (isRadio) {
                 setState(() {
-                  selectedIntegrations.remove(integrationId);
+                  selectedIntegrations = [integrationId];
                 });
+                return;
               } else {
-                setState(() {
-                  selectedIntegrations.add(integrationId);
-                });
+                if (selectedIntegrations.contains(integrationId)) {
+                  setState(() {
+                    selectedIntegrations.remove(integrationId);
+                  });
+                } else {
+                  setState(() {
+                    selectedIntegrations.add(integrationId);
+                  });
+                }
               }
             },
           );
@@ -166,6 +174,8 @@ class _IntegrationList extends StatelessWidget {
             return _IntegrationListItem(
               integration: integration,
               onTap: onTap,
+              isRadio: _isRadio(dependencies),
+              selected: values,
             );
           },
         )),
@@ -181,6 +191,12 @@ class _IntegrationList extends StatelessWidget {
       ],
     );
   }
+}
+
+bool _isRadio(Map<String, AutomationSchemaDependenciesProperty> dependencies) {
+  return dependencies.length == 1 &&
+      dependencies.values.first.require == "Single" &&
+      dependencies.values.first.optional == false;
 }
 
 class _OKButton extends StatelessWidget {
@@ -320,10 +336,14 @@ class _NoDataView extends StatelessWidget {
 class _IntegrationListItem extends StatelessWidget {
   final Integration integration;
   final void Function(String) onTap;
+  final List<String> selected;
+  final bool isRadio;
 
   const _IntegrationListItem({
     required this.integration,
     required this.onTap,
+    required this.selected,
+    required this.isRadio,
   });
 
   @override
@@ -338,6 +358,8 @@ class _IntegrationListItem extends StatelessWidget {
           avatarUri: discord.avatarUri,
           integrationSvg: "assets/icons/discord.svg",
           onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
         );
 
       case IntegrationNames.notion:
@@ -349,6 +371,8 @@ class _IntegrationListItem extends StatelessWidget {
           avatarUri: notion.avatarUri,
           integrationSvg: "assets/icons/notion.svg",
           onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
         );
       case IntegrationNames.openAI:
         final openAI = integration as OpenAIIntegration;
@@ -358,6 +382,8 @@ class _IntegrationListItem extends StatelessWidget {
           description: openAI.ownerName,
           integrationSvg: "assets/icons/openai.svg",
           onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
         );
       default:
         return _DefaultIntegrationListItem(integration: integration);
@@ -385,6 +411,8 @@ class _ItemWidget extends StatefulWidget {
   final String? avatarUri;
   final String integrationSvg;
   final void Function(String) onTap;
+  final List<String> selected;
+  final bool isRadio;
 
   const _ItemWidget({
     required this.id,
@@ -393,6 +421,8 @@ class _ItemWidget extends StatefulWidget {
     this.avatarUri,
     required this.integrationSvg,
     required this.onTap,
+    required this.selected,
+    required this.isRadio,
   });
 
   @override
@@ -400,16 +430,15 @@ class _ItemWidget extends StatefulWidget {
 }
 
 class _ItemWidgetState extends State<_ItemWidget> {
-  bool selected = false;
-
   @override
   Widget build(BuildContext context) {
+    print(widget.selected);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        widget.onTap(widget.id);
         setState(() {
-          selected = !selected;
+          widget.onTap(widget.id);
+          print(widget.selected);
         });
       },
       child: Container(
@@ -418,7 +447,7 @@ class _ItemWidgetState extends State<_ItemWidget> {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             border: Border.all(
-              color: selected
+              color: widget.selected.contains(widget.id)
                   ? Theme.of(context).colorScheme.primary
                   : Colors.transparent,
             ),
@@ -427,24 +456,48 @@ class _ItemWidgetState extends State<_ItemWidget> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 20,
-                child: Checkbox(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0),
-                      ),
+              if (widget.isRadio)
+                Container(
+                  height: 22,
+                  width: 22,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: widget.selected.contains(widget.id)
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.grey.shade400,
+                      width: 2,
                     ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    value: selected,
-                    onChanged: (_) {
-                      widget.onTap(widget.id);
-                      setState(() {
-                        selected = !selected;
-                      });
-                    }),
-              ),
-              SizedBox(width: 10),
+                  ),
+                  child: widget.selected.contains(widget.id)
+                      ? Center(
+                          child: Container(
+                            height: 12,
+                            width: 12,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        )
+                      : null,
+                ),
+              if (!widget.isRadio)
+                SizedBox(
+                  width: 20,
+                  child: Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5.0),
+                        ),
+                      ),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      value: widget.selected.contains(widget.id),
+                      onChanged: (_) {
+                        widget.onTap(widget.id);
+                      }),
+                ),
+              SizedBox(width: 16),
               Stack(
                 children: [
                   if (widget.avatarUri == null)
