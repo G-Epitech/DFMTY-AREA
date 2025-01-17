@@ -51,6 +51,7 @@ class _CustomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final IntegrationMediator integrationMediator =
         RepositoryProvider.of<IntegrationMediator>(context);
+    final Widget picture = _GetPictureFromIntegration(integration: integration);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -76,15 +77,7 @@ class _CustomWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
-              child: SvgPicture.network(
-                integration.iconUri,
-                width: 26,
-                height: 26,
-                colorFilter: ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
-                ),
-              ),
+              child: picture,
             ),
           ),
           SizedBox(width: 10),
@@ -116,6 +109,37 @@ class _CustomWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _GetPictureFromIntegration extends StatelessWidget {
+  final AvailableIntegration integration;
+
+  const _GetPictureFromIntegration({required this.integration});
+
+  @override
+  Widget build(BuildContext context) {
+    if (integration.name == IntegrationNames.discord) {
+      return SvgPicture.asset(
+        'assets/icons/discord.svg',
+        width: 26,
+        height: 26,
+        colorFilter: ColorFilter.mode(
+          Colors.white,
+          BlendMode.srcIn,
+        ),
+      );
+    } else {
+      return SvgPicture.network(
+        integration.iconUri,
+        width: 26,
+        height: 26,
+        colorFilter: ColorFilter.mode(
+          Colors.white,
+          BlendMode.srcIn,
+        ),
+      );
+    }
   }
 }
 
