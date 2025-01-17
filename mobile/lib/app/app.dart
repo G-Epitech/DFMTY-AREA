@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +39,9 @@ class _TriggoAppState extends State<TriggoApp> {
   late final AutomationRepository _automationRepository;
   late final UserMediator _userMediator;
 
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +77,28 @@ class _TriggoAppState extends State<TriggoApp> {
             SnackBar(content: Text('Error initializing Automation')));
     }
     _userMediator = UserMediator(_userRepository);
+    _initDeepLinks();
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+
+    super.dispose();
+  }
+
+  Future<void> _initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      openAppLink(uri);
+    });
+  }
+
+  void openAppLink(Uri uri) {
+    if (uri.toString() == 'com.triggo://redirect') {
+      Navigator.of(context).pushNamed(RoutesNames.connectIntegration);
+    }
   }
 
   @override

@@ -26,6 +26,7 @@ dependencies:
   dotted_border: ^2.1.0
   dotted_line: ^3.2.3
   google_sign_in: ^6.2.2
+  app_links: ^6.3.3
 
 dev_dependencies:
   mockito: 5.4.4
@@ -338,6 +339,7 @@ flutter:
     - ./assets/icons/x-circle.svg
     - ./assets/icons/x-mark.svg
     - ./assets/icons/league_of_legends.svg
+    - ./assets/icons/info_regular.svg
 
   uses-material-design: true
 

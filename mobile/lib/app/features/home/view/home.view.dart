@@ -64,7 +64,7 @@ class _DocumentationTitle extends StatelessWidget {
     return Row(
       children: [
         SvgPicture.asset(
-          "./assets/icons/information-circle.svg",
+          './assets/icons/info_regular.svg',
           height: 40.0,
           width: 40.0,
           colorFilter: ColorFilter.mode(
