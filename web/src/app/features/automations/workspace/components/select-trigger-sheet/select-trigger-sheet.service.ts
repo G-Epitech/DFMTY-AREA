@@ -108,7 +108,6 @@ export class SelectTriggerSheetService implements OnDestroy {
       state.trigger!.addDependency(linkedIntegration.id);
       return state;
     });
-    console.log(this.state().trigger);
     this.back();
   }
 
