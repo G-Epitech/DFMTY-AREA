@@ -4,6 +4,7 @@ using Zeus.Api.Application.Interfaces.Repositories;
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
+using Zeus.Common.Domain.Integrations.Common.Enums;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate.ValueObjects;
 using Zeus.Common.Extensions.Queryable;
@@ -68,5 +69,17 @@ public sealed class IntegrationReadRepository : IIntegrationReadRepository
         var integrations = await Integrations.Where(integration => integrationIds.Contains(integration.Id)).ToListAsync(cancellationToken);
 
         return new Page<Integration>(0, integrations.Count, 1, integrations.Count, integrations);
+    }
+
+    public async Task<Dictionary<IntegrationId, IntegrationType>> GetIntegrationTypesByIdsAsync(
+        UserId ownerId,
+        IReadOnlyList<IntegrationId> integrationIds,
+        CancellationToken cancellationToken = default)
+    {
+        return await Integrations
+            .Where(i => integrationIds.Contains(i.Id))
+            .Where(i => i.OwnerId == ownerId)
+            .Select(i => new { i.Id, i.Type })
+            .ToDictionaryAsync(i => i.Id, i => i.Type, cancellationToken);
     }
 }

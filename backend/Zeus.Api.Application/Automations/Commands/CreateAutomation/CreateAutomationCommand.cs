@@ -30,11 +30,11 @@ public record CreateAutomationTriggerParameterCommand(
 
 public record CreateAutomationActionCommand(
     string Identifier,
-    List<CreateAutomationActionParameterRequest> Parameters,
+    List<CreateAutomationActionParameterCommand> Parameters,
     List<Guid> Dependencies
 );
 
-public record CreateAutomationActionParameterRequest(
+public record CreateAutomationActionParameterCommand(
     string Identifier,
     string Value,
     AutomationActionParameterType Type
