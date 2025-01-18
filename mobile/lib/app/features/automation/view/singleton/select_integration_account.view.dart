@@ -17,6 +17,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/leagueOfLegends.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
@@ -357,6 +358,7 @@ class _IntegrationListItem extends StatelessWidget {
           description: "${discord.username} - ${discord.email}",
           avatarUri: discord.avatarUri,
           integrationSvg: "assets/icons/discord.svg",
+          color: 0xFF5865F2,
           onTap: onTap,
           selected: selected,
           isRadio: isRadio,
@@ -370,6 +372,7 @@ class _IntegrationListItem extends StatelessWidget {
           description: notion.email,
           avatarUri: notion.avatarUri,
           integrationSvg: "assets/icons/notion.svg",
+          color: 0xFF4E4E4E,
           onTap: onTap,
           selected: selected,
           isRadio: isRadio,
@@ -381,6 +384,20 @@ class _IntegrationListItem extends StatelessWidget {
           title: openAI.ownerName,
           description: openAI.ownerName,
           integrationSvg: "assets/icons/openai.svg",
+          color: 0xFF10a37f,
+          onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
+        );
+      case IntegrationNames.leagueOfLegends:
+        final leagueOfLegends = integration as LeagueOfLegendsIntegration;
+        return _ItemWidget(
+          id: leagueOfLegends.id,
+          title: leagueOfLegends.riotGameName,
+          description: leagueOfLegends.riotTagLine,
+          avatarUri: leagueOfLegends.summonerProfileIcon,
+          integrationSvg: "assets/icons/league_of_legends.svg",
+          color: 0xFFc89b3c,
           onTap: onTap,
           selected: selected,
           isRadio: isRadio,
@@ -413,6 +430,7 @@ class _ItemWidget extends StatefulWidget {
   final void Function(String) onTap;
   final List<String> selected;
   final bool isRadio;
+  final int? color;
 
   const _ItemWidget({
     required this.id,
@@ -423,6 +441,7 @@ class _ItemWidget extends StatefulWidget {
     required this.onTap,
     required this.selected,
     required this.isRadio,
+    this.color,
   });
 
   @override
@@ -500,7 +519,9 @@ class _ItemWidgetState extends State<_ItemWidget> {
                 children: [
                   if (widget.avatarUri == null)
                     CircleAvatar(
-                      backgroundColor: Color(0xFF10a37f),
+                      backgroundColor: widget.color != null
+                          ? Color(widget.color!)
+                          : Theme.of(context).colorScheme.primary,
                       radius: 25,
                       child: SvgPicture.asset(
                         widget.integrationSvg,
@@ -523,7 +544,9 @@ class _ItemWidgetState extends State<_ItemWidget> {
                       right: 0,
                       child: CircleAvatar(
                         radius: 10,
-                        backgroundColor: Color(0xFF5865F2),
+                        backgroundColor: widget.color != null
+                            ? Color(widget.color!)
+                            : Theme.of(context).colorScheme.primary,
                         child: SvgPicture.asset(
                           widget.integrationSvg,
                           width: 15,
