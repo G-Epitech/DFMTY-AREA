@@ -1,6 +1,6 @@
 using Zeus.Daemon.Domain.Discord.ValueObjects;
 
-namespace Zeus.Daemon.Application.Discord.Services;
+namespace Zeus.Daemon.Application.Providers.Discord.Services;
 
 public interface IDiscordApiService
 {

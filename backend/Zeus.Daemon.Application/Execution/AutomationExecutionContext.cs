@@ -32,7 +32,7 @@ public sealed class AutomationExecutionContext
         _handlersProvider = actionHandlersProvider;
         _actions = automation.Actions;
         _integrations = integrations;
-        _facts = FillFactsFromTrigger(automation.Trigger, facts);
+        _facts = FillFactsFromTrigger(facts);
 
         AutomationId = automation.Id;
     }
@@ -49,14 +49,15 @@ public sealed class AutomationExecutionContext
         _mainTask = RunDetachedAsync();
     }
 
-    private static FactsDictionary FillFactsFromTrigger(AutomationTrigger trigger, FactsDictionary triggerFacts)
+    private static FactsDictionary FillFactsFromTrigger(FactsDictionary triggerFacts)
     {
         var facts = new FactsDictionary();
 
         foreach (var fact in triggerFacts)
         {
-            facts[$"{trigger.Identifier}.{fact.Key}"] = fact.Value;
+            facts[$"T.{fact.Key}"] = fact.Value;
         }
+
         return facts;
     }
 
@@ -64,18 +65,25 @@ public sealed class AutomationExecutionContext
     {
         foreach (var fact in facts)
         {
-            _facts[$"{action.Identifier}.{fact.Key}"] = fact.Value;
+            _facts[$"{action.Rank}.{fact.Key}"] = fact.Value;
         }
     }
 
     private async Task RunDetachedAsync()
     {
-        foreach (var action in _actions)
+        try
         {
-            if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            foreach (var action in _actions)
             {
-                await RunActionAsync(action);
+                if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    await RunActionAsync(action);
+                }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
     }
 
@@ -118,7 +126,8 @@ public sealed class AutomationExecutionContext
 
             if (fromParametersAttributeIdentifier is not null)
             {
-                result[parameter.Position] = GetParameterValue(fromParametersAttributeIdentifier, parameter.ParameterType, action);
+                result[parameter.Position] =
+                    GetParameterValue(fromParametersAttributeIdentifier, parameter.ParameterType, action);
             }
             else if (fromIntegrationAttribute is not null)
             {
@@ -137,6 +146,7 @@ public sealed class AutomationExecutionContext
                 result[parameter.Position] = 0;
             }
         }
+
         return result;
     }
 
@@ -161,7 +171,8 @@ public sealed class AutomationExecutionContext
                     _ when destType.IsAssignableTo(typeof(DateTime)) => DateTime.Parse(parameter.Value),
                     _ when destType.IsAssignableTo(typeof(float)) => float.Parse(parameter.Value),
                     _ when destType.IsAssignableTo(typeof(object)) => Convert.ChangeType(parameter.Value, destType),
-                    _ => throw new InvalidOperationException($"Parameter with identifier '{identifier}' has invalid value")
+                    _ => throw new InvalidOperationException(
+                        $"Parameter with identifier '{identifier}' has invalid value")
                 };
             }
 
@@ -169,8 +180,10 @@ public sealed class AutomationExecutionContext
 
             if (value is null)
             {
-                throw new InvalidOperationException($"Unable to find value for parameter with identifier '{identifier}'");
+                throw new InvalidOperationException(
+                    $"Unable to find value for parameter with identifier '{identifier}'");
             }
+
             return value switch
             {
                 Fact<int> fact => fact.Value,

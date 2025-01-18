@@ -15,8 +15,6 @@ import { map, Observable } from 'rxjs';
 import { DiscordGuildModel } from '@models/integration';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { TrButtonDirective } from '@triggo-ui/button';
-import { filter } from 'rxjs/operators';
-import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { NgIcon } from '@ng-icons/core';
 
 @Component({

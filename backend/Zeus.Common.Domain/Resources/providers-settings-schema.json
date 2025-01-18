@@ -10,13 +10,17 @@
     },
     "OpenAi": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "LeagueOfLegends": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
   "required": [
     "Discord",
     "Notion",
-    "OpenAi"
+    "OpenAi",
+    "LeagueOfLegends"
   ],
   "$defs": {
     "varType": {
@@ -54,8 +58,8 @@
         "Require": {
           "type": "string",
           "enum": [
-            "Single",
-            "Multiple"
+            "single",
+            "multiple"
           ]
         }
       },

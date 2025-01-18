@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
-import 'package:triggo/app/features/automation/models/radio.model.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
@@ -11,11 +10,16 @@ class AutomationInputView extends StatefulWidget {
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
-  final void Function(String, String) onSave;
+  final List<AutomationCheckboxModel>? checkboxes;
+  final void Function(String, String)? onSave;
+  final void Function(List<String>, List<String>)? onCheckboxesSave;
   final String? value;
+  final List<String>? checkboxesValues;
   final String? humanReadableValue;
+  final List<String>? humanReadableCheckboxesValues;
   final String routeToGoWhenSave;
   final Future<List<AutomationRadioModel>> Function()? getOptions;
+  final Future<List<AutomationCheckboxModel>> Function()? getCheckboxes;
 
   const AutomationInputView({
     super.key,
@@ -23,11 +27,16 @@ class AutomationInputView extends StatefulWidget {
     required this.label,
     this.placeholder,
     this.options,
-    required this.onSave,
+    this.checkboxes,
+    this.onSave,
+    this.onCheckboxesSave,
     this.value,
+    this.checkboxesValues,
     this.humanReadableValue,
+    this.humanReadableCheckboxesValues,
     required this.routeToGoWhenSave,
     this.getOptions,
+    this.getCheckboxes,
   });
 
   @override
@@ -36,13 +45,17 @@ class AutomationInputView extends StatefulWidget {
 
 class _AutomationInputViewState extends State<AutomationInputView> {
   late String localValue;
+  late List<String> checkboxesValues;
   late String humanReadableValue;
+  late List<String> humanReadableCheckboxesValues;
 
   @override
   void initState() {
     super.initState();
     localValue = widget.value ?? "";
+    checkboxesValues = widget.checkboxesValues ?? [];
     humanReadableValue = widget.humanReadableValue ?? "";
+    humanReadableCheckboxesValues = widget.humanReadableCheckboxesValues ?? [];
   }
 
   @override
@@ -57,8 +70,11 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             Expanded(child: _buildInput()),
             _OKButton(
               onSave: widget.onSave,
+              onCheckboxesSave: widget.onCheckboxesSave,
               value: localValue,
+              checkboxesValues: checkboxesValues,
               humanReadableValue: humanReadableValue,
+              humanReadableCheckboxesValues: humanReadableCheckboxesValues,
               routeToGoWhenSave: widget.routeToGoWhenSave,
             ),
           ],
@@ -207,15 +223,21 @@ class _TextAreaInputState extends State<_TextAreaInput> {
 }
 
 class _OKButton extends StatelessWidget {
-  final void Function(String, String) onSave;
+  final void Function(String, String)? onSave;
+  final void Function(List<String>, List<String>)? onCheckboxesSave;
   final String value;
+  final List<String> checkboxesValues;
   final String humanReadableValue;
+  final List<String> humanReadableCheckboxesValues;
   final String routeToGoWhenSave;
 
   const _OKButton({
     required this.onSave,
+    required this.onCheckboxesSave,
     required this.value,
+    required this.checkboxesValues,
     required this.humanReadableValue,
+    required this.humanReadableCheckboxesValues,
     required this.routeToGoWhenSave,
   });
 
@@ -231,7 +253,12 @@ class _OKButton extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
               onPressed: () {
-                onSave(value, humanReadableValue);
+                if (onCheckboxesSave != null) {
+                  onCheckboxesSave!(
+                      checkboxesValues, humanReadableCheckboxesValues);
+                } else {
+                  onSave!(value, humanReadableValue);
+                }
                 if (routeToGoWhenSave == RoutesNames.popOneTime) {
                   Navigator.of(context).pop();
                 } else if (routeToGoWhenSave == RoutesNames.popTwoTimes) {

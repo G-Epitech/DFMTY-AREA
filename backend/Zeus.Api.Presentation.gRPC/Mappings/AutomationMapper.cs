@@ -1,8 +1,10 @@
 ﻿using Mapster;
 
 using Zeus.Api.Presentation.gRPC.Contracts;
+using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 
 using Automation = Zeus.Common.Domain.AutomationAggregate.Automation;
+using AutomationTriggerParameter = Zeus.Common.Domain.AutomationAggregate.ValueObjects.AutomationTriggerParameter;
 
 namespace Zeus.Api.Presentation.gRPC.Mappings;
 
@@ -22,7 +24,7 @@ public class AutomationMapper : IRegister
                 OwnerId = a.OwnerId.Value.ToString(),
                 Actions =
                 {
-                    a.Actions.Select(action => new AutomationAction
+                    Enumerable.Select(a.Actions, action => new AutomationAction
                     {
                         Id = action.Id.Value.ToString(),
                         Identifier = action.Identifier,
@@ -39,8 +41,8 @@ public class AutomationMapper : IRegister
                 {
                     Id = a.Trigger.Id.Value.ToString(),
                     Identifier = a.Trigger.Identifier,
-                    Parameters = { a.Trigger.Parameters.Select(p => new AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }) },
-                    Dependencies = { a.Trigger.Dependencies.Select(p => p.Value.ToString()) }
+                    Parameters = { Enumerable.Select<AutomationTriggerParameter, Contracts.AutomationTriggerParameter>(a.Trigger.Parameters, p => new Contracts.AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }) },
+                    Dependencies = { Enumerable.Select<IntegrationId, string>(a.Trigger.Dependencies, p => p.Value.ToString()) }
                 }
             });
     }

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
+import 'package:triggo/app/features/automation/view/singleton/select_integration_account.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -63,6 +64,9 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AutomationMediator automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+
     return BlocBuilder<AutomationBloc, AutomationState>(
         builder: (context, state) {
       return ListView.builder(
@@ -86,14 +90,28 @@ class _List extends StatelessWidget {
                         identifier:
                             "$integrationIdentifier.$triggerOrActionIdentifier"));
               }
-              Navigator.push(
-                  context,
-                  customScreenBuilder(AutomationParametersView(
-                    type: type,
-                    integrationIdentifier: integrationIdentifier,
-                    triggerOrActionIdentifier: triggerOrActionIdentifier,
-                    indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
-                  )));
+              final dependencies = automationMediator.getDependencies(
+                  integrationIdentifier, type, triggerOrActionIdentifier);
+              if (dependencies.isEmpty) {
+                Navigator.push(
+                    context,
+                    customScreenBuilder(AutomationParametersView(
+                      type: type,
+                      integrationIdentifier: integrationIdentifier,
+                      triggerOrActionIdentifier: triggerOrActionIdentifier,
+                      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                    )));
+              } else {
+                Navigator.push(
+                    context,
+                    customScreenBuilder(AutomationSelectIntegrationsAccountView(
+                      type: type,
+                      integrationIdentifier: integrationIdentifier,
+                      triggerOrActionIdentifier: triggerOrActionIdentifier,
+                      indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                      dependencies: dependencies,
+                    )));
+              }
             },
             child: TriggoCard(
               customWidget: Row(

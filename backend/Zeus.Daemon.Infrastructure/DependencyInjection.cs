@@ -4,13 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Zeus.Api.Integration.Mapping;
 using Zeus.Api.Presentation.gRPC.SDK;
 using Zeus.Common.Extensions.DependencyInjection;
-using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
+using Zeus.Daemon.Application.Providers.Discord.Services;
+using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
+using Zeus.Daemon.Application.Providers.OpenAi.Services;
 using Zeus.Daemon.Infrastructure.Integrations;
 using Zeus.Daemon.Infrastructure.Integrations.Api;
 using Zeus.Daemon.Infrastructure.Services.Api;
-using Zeus.Daemon.Infrastructure.Services.Discord;
+using Zeus.Daemon.Infrastructure.Services.Providers.Discord;
+using Zeus.Daemon.Infrastructure.Services.Providers.LeagueOfLegends;
+using Zeus.Daemon.Infrastructure.Services.Providers.OpenAi;
 using Zeus.Daemon.Infrastructure.Services.Settings;
 using Zeus.Daemon.Infrastructure.Services.Settings.Integrations;
 using Zeus.Daemon.Infrastructure.Settings.Integrations;
@@ -19,7 +23,8 @@ namespace Zeus.Daemon.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+        IConfigurationManager configuration)
     {
         services.Configure<IntegrationsSettings>(configuration.GetSection(IntegrationsSettings.SectionName));
         services.AddSingleton<IIntegrationsSettingsProvider, IntegrationsSettingsProvider>();
@@ -29,8 +34,23 @@ public static class DependencyInjection
 
         #region Discord
 
-        services.AddService<DiscordWebSocketService, IDiscordWebSocketService, IDaemonService>(ServiceLifetime.Singleton);
+        services.AddService<DiscordWebSocketService, IDiscordWebSocketService, IDaemonService>(
+            ServiceLifetime.Singleton);
         services.AddSingleton<IDiscordApiService, DiscordApiService>();
+
+        #endregion
+
+        #region OpenAi
+
+        services.AddSingleton<IOpenAiApiService, OpenAiApiService>();
+
+        #endregion OpenAi
+
+        #region LeagueOfLegends
+
+        services.AddService<LeagueOfLegendsPollingService, ILeagueOfLegendsPollingService, IDaemonService>(
+            ServiceLifetime.Singleton);
+        services.AddSingleton<ILeagueOfLegendsApiService, LeagueOfLegendsApiService>();
 
         #endregion
 

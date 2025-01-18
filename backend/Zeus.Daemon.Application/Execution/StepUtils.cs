@@ -31,8 +31,7 @@ public static class StepUtils
 
     private static IList GetIntegrationsCollection(Type destType, IReadOnlyCollection<Integration> integrations)
     {
-        var collectionType = destType.GetGenericArguments()[0];
-        var collection = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(collectionType));
+        var collection = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(destType));
 
         if (collection is null)
         {
@@ -41,7 +40,7 @@ public static class StepUtils
 
         foreach (var integration in integrations)
         {
-            if (integration.GetType().IsAssignableTo(collectionType))
+            if (integration.GetType().IsAssignableTo(destType))
             {
                 collection.Add(integration);
             }

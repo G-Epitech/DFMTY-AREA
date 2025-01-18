@@ -20,7 +20,7 @@ public class IntegrationMapper : IRegister
                 OwnerId = i.OwnerId.Value.ToString(),
                 ClientId = i.ClientId,
                 Type = MapIntegrationType(i.Type),
-                Tokens = { i.Tokens.Select(t => new IntegrationToken { Value = t.Value, Type = t.Type, Usage = MapTokenUsage(t.Usage) }).ToList() },
+                Tokens = { Enumerable.Select(i.Tokens, t => new IntegrationToken { Value = t.Value, Type = t.Type, Usage = MapTokenUsage(t.Usage) }).ToList() },
                 CreatedAt = new DateTimeOffset(i.CreatedAt.ToUniversalTime()).ToUnixTimeSeconds(),
                 UpdatedAt = new DateTimeOffset(i.UpdatedAt.ToUniversalTime()).ToUnixTimeSeconds()
             });
@@ -43,6 +43,8 @@ public class IntegrationMapper : IRegister
             IntegrationType.Discord => Contracts.IntegrationType.Discord,
             IntegrationType.Gmail => Contracts.IntegrationType.Gmail,
             IntegrationType.Notion => Contracts.IntegrationType.Notion,
+            IntegrationType.OpenAi => Contracts.IntegrationType.OpenAi,
+            IntegrationType.LeagueOfLegends => Contracts.IntegrationType.LeagueOfLegends,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

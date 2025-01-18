@@ -28,9 +28,7 @@ import { IntegrationModel } from '@models/integration';
 import { SchemaStore } from '@app/store/schema-store';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
 import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
-import {
-  AutomationWorkspaceStore
-} from '@features/automations/workspace/automation-workspace.store';
+import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
 
 @Component({
   standalone: true,
@@ -92,11 +90,11 @@ export class SelectTriggerSheetComponent {
   });
 
   constructor() {
-    effect(() => {
+    effect(async () => {
       const schema = this.#schemaStore.getSchema();
       if (schema) {
         this.schema = schema;
-        this.service.initialize(this.trigger(), schema);
+        await this.service.initialize(this.trigger(), schema);
       }
     });
   }

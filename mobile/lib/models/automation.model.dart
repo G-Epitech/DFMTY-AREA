@@ -83,12 +83,12 @@ class Automation {
 class AutomationTrigger {
   final String identifier;
   final List<AutomationTriggerParameter> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   const AutomationTrigger({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationTrigger.fromDTO(AutomationTriggerDTO json) {
@@ -97,7 +97,7 @@ class AutomationTrigger {
       parameters: json.parameters
           .map((e) => AutomationTriggerParameter.fromDTO(e))
           .toList(),
-      providers: List<String>.from(json.providers),
+      dependencies: List<String>.from(json.dependencies),
     );
   }
 
@@ -105,19 +105,19 @@ class AutomationTrigger {
     return {
       'identifier': identifier,
       'parameters': parameters.map((e) => e.toJson()).toList(),
-      'providers': providers,
+      'dependencies': dependencies,
     };
   }
 
   AutomationTrigger copyWith({
     String? identifier,
     List<AutomationTriggerParameter>? parameters,
-    List<String>? providers,
+    List<String>? dependencies,
   }) {
     return AutomationTrigger(
       identifier: identifier ?? this.identifier,
       parameters: parameters ?? this.parameters,
-      providers: providers ?? this.providers,
+      dependencies: dependencies ?? this.dependencies,
     );
   }
 }
@@ -160,12 +160,12 @@ class AutomationTriggerParameter {
 class AutomationAction {
   final String identifier;
   final List<AutomationActionParameter> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   AutomationAction({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationAction.fromDTO(AutomationActionDTO json) {
@@ -174,7 +174,7 @@ class AutomationAction {
       parameters: json.parameters
           .map((e) => AutomationActionParameter.fromDTO(e))
           .toList(),
-      providers: List<String>.from(json.providers),
+      dependencies: List<String>.from(json.dependencies),
     );
   }
 
@@ -182,19 +182,19 @@ class AutomationAction {
     return {
       'identifier': identifier,
       'parameters': parameters.map((e) => e.toJson()).toList(),
-      'providers': providers,
+      'dependencies': dependencies,
     };
   }
 
   AutomationAction copyWith({
     String? identifier,
     List<AutomationActionParameter>? parameters,
-    List<String>? providers,
+    List<String>? dependencies,
   }) {
     return AutomationAction(
       identifier: identifier ?? this.identifier,
       parameters: parameters ?? this.parameters,
-      providers: providers ?? this.providers,
+      dependencies: dependencies ?? this.dependencies,
     );
   }
 }
@@ -288,6 +288,7 @@ class AutomationSchemaTriggerAction {
   final String icon;
   final Map<String, AutomationSchemaTriggerActionProperty> parameters;
   final Map<String, AutomationSchemaTriggerActionProperty> facts;
+  final Map<String, AutomationSchemaDependenciesProperty> dependencies;
 
   AutomationSchemaTriggerAction({
     required this.name,
@@ -295,6 +296,7 @@ class AutomationSchemaTriggerAction {
     required this.icon,
     required this.parameters,
     required this.facts,
+    required this.dependencies,
   });
 
   factory AutomationSchemaTriggerAction.fromDTO(
@@ -307,6 +309,8 @@ class AutomationSchemaTriggerAction {
           MapEntry(key, AutomationSchemaTriggerActionProperty.fromDTO(value))),
       facts: json.facts.map((key, value) =>
           MapEntry(key, AutomationSchemaTriggerActionProperty.fromDTO(value))),
+      dependencies: json.dependencies.map((key, value) =>
+          MapEntry(key, AutomationSchemaDependenciesProperty.fromDTO(value))),
     );
   }
 }
@@ -328,6 +332,24 @@ class AutomationSchemaTriggerActionProperty {
       name: json.name,
       description: json.description,
       type: json.type,
+    );
+  }
+}
+
+class AutomationSchemaDependenciesProperty {
+  final String require;
+  final bool optional;
+
+  AutomationSchemaDependenciesProperty({
+    required this.require,
+    required this.optional,
+  });
+
+  factory AutomationSchemaDependenciesProperty.fromDTO(
+      AutomationSchemaDependenciesPropertyDTO json) {
+    return AutomationSchemaDependenciesProperty(
+      require: json.require,
+      optional: json.optional,
     );
   }
 }

@@ -49,7 +49,7 @@
         },
         "Dependencies": {
           "Discord": {
-            "Require": "Multiple"
+            "Require": "single"
           }
         }
       }
@@ -80,7 +80,7 @@
         },
         "Dependencies": {
           "Discord": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       }
@@ -88,7 +88,7 @@
   },
   "Notion": {
     "Name": "Notion",
-    "IconUri": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/200px-Notion-logo.svg.png",
+    "IconUri": "https://www.svgrepo.com/show/361558/notion-logo.svg",
     "Color": "#373530",
     "Triggers": {
       "DatabaseCreated": {
@@ -125,7 +125,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "multiple"
           }
         }
       },
@@ -163,7 +163,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "multiple"
           }
         }
       },
@@ -212,7 +212,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "single"
           }
         }
       },
@@ -261,7 +261,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Multiple"
+            "Require": "single"
           }
         }
       }
@@ -302,7 +302,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       },
@@ -341,7 +341,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       },
@@ -385,7 +385,7 @@
         },
         "Dependencies": {
           "Notion": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       },
@@ -403,7 +403,7 @@
         "Facts": {},
         "Dependencies": {
           "Notion": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       },
@@ -421,7 +421,7 @@
         "Facts": {},
         "Dependencies": {
           "Notion": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       }
@@ -443,15 +443,15 @@
             "Description": "The model to use for the completion.",
             "Type": "string"
           },
+          "Context": {
+            "Name": "Context",
+            "Description": "The context to generate the completion from.",
+            "Type": "string"
+          },
           "Prompt": {
             "Name": "Prompt",
             "Description": "The prompt to generate the completion from.",
             "Type": "string"
-          },
-          "MaxTokens": {
-            "Name": "Max tokens",
-            "Description": "The maximum number of tokens to generate.",
-            "Type": "integer"
           }
         },
         "Facts": {
@@ -463,10 +463,159 @@
         },
         "Dependencies": {
           "OpenAi": {
-            "Require": "Single"
+            "Require": "single"
           }
         }
       }
     }
+  },
+  "LeagueOfLegends": {
+    "Name": "League of Legends",
+    "IconUri": "https://wiki.leagueoflegends.com/en-us/images/League_of_Legends_icon.svg",
+    "Color": "#C89B3C",
+    "Triggers": {
+      "MatchFinished": {
+        "Name": "Match finished",
+        "Description": "Trigger when a match is finished.",
+        "Icon": "flag",
+        "Parameters": {},
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "float"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "string"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "multiple"
+          }
+        }
+      },
+      "MatchFinishedWithKdaLowerThan": {
+        "Name": "Match finished with KDA lower than",
+        "Description": "Trigger when a match is finished with a KDA lower than a specified value.",
+        "Icon": "arrow-down-right",
+        "Parameters": {
+          "KdaThreshold": {
+            "Name": "KDA threshold",
+            "Description": "The KDA threshold to trigger the action.",
+            "Type": "float"
+          }
+        },
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "float"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "string"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "multiple"
+          }
+        }
+      },
+      "MatchFinishedWithKdaUpperThan": {
+        "Name": "Match finished with KDA upper than",
+        "Description": "Trigger when a match is finished with a KDA upper than a specified value.",
+        "Icon": "arrow-up-right",
+        "Parameters": {
+          "KdaThreshold": {
+            "Name": "KDA threshold",
+            "Description": "The KDA threshold to trigger the action.",
+            "Type": "float"
+          }
+        },
+        "Facts": {
+          "MatchId": {
+            "Name": "Match id",
+            "Description": "The ID of the finished match.",
+            "Type": "string"
+          },
+          "MatchType": {
+            "Name": "Match type",
+            "Description": "The type of the finished match.",
+            "Type": "string"
+          },
+          "MatchDuration": {
+            "Name": "Match duration",
+            "Description": "The duration of the finished match.",
+            "Type": "float"
+          },
+          "MatchWon": {
+            "Name": "Match won",
+            "Description": "Boolean value indicating if the match was won.",
+            "Type": "boolean"
+          },
+          "SummonerKda": {
+            "Name": "Summoner KDA",
+            "Description": "The KDA of the summoner in the match.",
+            "Type": "string"
+          },
+          "SummonerChampion": {
+            "Name": "Summoner champion",
+            "Description": "The champion played by the summoner in the match.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "LeagueOfLegends": {
+            "Require": "multiple"
+          }
+        }
+      }
+    },
+    "Actions": {}
   }
 }

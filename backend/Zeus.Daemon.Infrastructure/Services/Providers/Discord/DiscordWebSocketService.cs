@@ -5,12 +5,12 @@ using System.Text.Json.Nodes;
 
 using Microsoft.Extensions.Logging;
 
-using Zeus.Daemon.Application.Discord.Services;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
+using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Discord.Enums;
 
-namespace Zeus.Daemon.Infrastructure.Services.Discord;
+namespace Zeus.Daemon.Infrastructure.Services.Providers.Discord;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
 public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
@@ -23,7 +23,6 @@ public class DiscordWebSocketService : IDiscordWebSocketService, IDaemonService
     private readonly ClientWebSocket _webSocket;
     private CancellationToken? _cancellationToken;
     private int _heartbeatInterval;
-
 
     public DiscordWebSocketService(
         IIntegrationsSettingsProvider integrationsSettingsProvider,

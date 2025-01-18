@@ -42,7 +42,7 @@ final class AutomationInitial extends AutomationState {
               trigger: AutomationTrigger(
                 identifier: '',
                 parameters: [],
-                providers: [],
+                dependencies: [],
               ),
               actions: [],
               ownerId: '',
@@ -58,7 +58,7 @@ final class AutomationInitial extends AutomationState {
               trigger: AutomationTrigger(
                 identifier: '',
                 parameters: [],
-                providers: [],
+                dependencies: [],
               ),
               actions: [],
               ownerId: '',

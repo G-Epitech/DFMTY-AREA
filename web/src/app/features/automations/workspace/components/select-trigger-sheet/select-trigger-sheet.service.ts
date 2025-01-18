@@ -17,7 +17,7 @@ import {
   TriggerModel,
   TriggerParameter,
 } from '@models/automation';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
@@ -70,11 +70,10 @@ export class SelectTriggerSheetService implements OnDestroy {
     this.#destroyRef.complete();
   }
 
-  initialize(
+  async initialize(
     automationTrigger: TriggerModel | null,
     schema: AutomationSchemaModel
   ) {
-    console.log('init trigger', automationTrigger);
     if (!automationTrigger) {
       return;
     }
@@ -84,18 +83,15 @@ export class SelectTriggerSheetService implements OnDestroy {
     let linkedIntegration: IntegrationModel | null = null;
     if (automationTrigger.dependencies.length > 0) {
       const id = automationTrigger.dependencies[0];
-      this.#integrationsMediator
-        .getById(id)
-        .pipe(takeUntil(this.#destroyRef))
-        .subscribe(integration => (linkedIntegration = integration));
+      linkedIntegration = await firstValueFrom(
+        this.#integrationsMediator.getById(id)
+      );
     }
-    console.log('init linked integration', linkedIntegration);
 
     const trigger = schema.getTriggerByIdentifier(
       automationTrigger.integration,
       automationTrigger.nameIdentifier
     );
-    console.log('init trigger', trigger);
 
     patchState(this.state, state => ({
       ...state,
@@ -104,7 +100,6 @@ export class SelectTriggerSheetService implements OnDestroy {
       selectedTrigger: trigger,
       trigger: automationTrigger,
     }));
-    console.log('init', this.state());
   }
 
   goToIntegrationSelection() {

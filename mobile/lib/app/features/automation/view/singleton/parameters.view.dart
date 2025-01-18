@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
-import 'package:triggo/app/features/automation/models/radio.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';
@@ -163,8 +162,8 @@ class _OKButton extends StatelessWidget {
       return false;
     }
 
-    if (trigger.providers.isEmpty) {
-      log("Trigger providers is empty");
+    if (trigger.dependencies.isEmpty) {
+      log("Trigger depencencies is empty");
       return false;
     }
 
@@ -212,8 +211,8 @@ class _OKButton extends StatelessWidget {
       return false;
     }
 
-    if (action.providers.isEmpty) {
-      log("Action providers is empty");
+    if (action.dependencies.isEmpty) {
+      log("Action dependencies is empty");
       return false;
     }
 
@@ -710,7 +709,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'MessageReceivedInChannel') {
           if (parameterIdentifier == 'GuildId') {
-            final integrationId = automation.trigger.providers[0];
+            final integrationId = automation.trigger.dependencies[0];
 
             return await integrationMediator.discord
                 .getGuildsRadio(integrationId);
@@ -719,7 +718,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
             if (automation.trigger.parameters.isEmpty) {
               return [];
             }
-            final integrationId = automation.trigger.providers[0];
+            final integrationId = automation.trigger.dependencies[0];
             final guildId = automation.trigger.parameters[0].value;
 
             return await integrationMediator.discord
@@ -731,7 +730,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
         if (propertyIdentifier == 'DatabaseRowCreated' ||
             propertyIdentifier == 'DatabaseRowDeleted') {
           if (parameterIdentifier == 'DatabaseId') {
-            final integrationId = automation.trigger.providers[0];
+            final integrationId = automation.trigger.dependencies[0];
 
             return await integrationMediator.notion
                 .getDatabasesRadio(integrationId);
@@ -743,7 +742,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
       if (integrationName == 'discord') {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'ChannelId') {
-            final integrationId = automation.trigger.providers[0];
+            final integrationId = automation.trigger.dependencies[0];
             final guildId = automation.trigger.parameters[0].value;
 
             return await integrationMediator.discord
@@ -756,7 +755,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
             propertyIdentifier == 'CreatePage') {
           if (parameterIdentifier == 'ParentId') {
             final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].providers[0];
+                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
             return await integrationMediator.notion
                 .getPagesRadio(integrationId);
           }
@@ -765,7 +764,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
         if (propertyIdentifier == 'CreateDatabaseRow') {
           if (parameterIdentifier == 'DatabaseId') {
             final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].providers[0];
+                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
             return await integrationMediator.notion
                 .getDatabasesRadio(integrationId);
           }
@@ -774,7 +773,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
         if (propertyIdentifier == 'ArchiveDatabase') {
           if (parameterIdentifier == 'DatabaseId') {
             final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].providers[0];
+                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
             return await integrationMediator.notion
                 .getDatabasesRadio(integrationId);
           }
@@ -783,7 +782,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
         if (propertyIdentifier == 'ArchivePage') {
           if (parameterIdentifier == 'PageId') {
             final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].providers[0];
+                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
             return await integrationMediator.notion
                 .getPagesRadio(integrationId);
           }

@@ -10,11 +10,11 @@ export function integrationTypeFromIdentifier(
   identifier: string
 ): IntegrationTypeEnum {
   switch (identifier) {
-    case 'notion':
+    case 'Notion':
       return IntegrationTypeEnum.NOTION;
-    case 'discord':
+    case 'Discord':
       return IntegrationTypeEnum.DISCORD;
-    case 'openAi':
+    case 'OpenAi':
       return IntegrationTypeEnum.OPENAI;
     default:
       throw new Error(`Unsupported integration type: ${identifier}`);

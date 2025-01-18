@@ -23,12 +23,31 @@ class AutomationSchemaTriggerActionPropertyDTO {
 }
 
 @JsonSerializable()
+class AutomationSchemaDependenciesPropertyDTO {
+  final String require;
+  final bool optional;
+
+  AutomationSchemaDependenciesPropertyDTO({
+    required this.require,
+    required this.optional,
+  });
+
+  factory AutomationSchemaDependenciesPropertyDTO.fromJson(
+          Map<String, dynamic> json) =>
+      _$AutomationSchemaDependenciesPropertyDTOFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$AutomationSchemaDependenciesPropertyDTOToJson(this);
+}
+
+@JsonSerializable()
 class AutomationSchemaTriggerActionDTO {
   final String name;
   final String description;
   final String icon;
   final Map<String, AutomationSchemaTriggerActionPropertyDTO> parameters;
   final Map<String, AutomationSchemaTriggerActionPropertyDTO> facts;
+  final Map<String, AutomationSchemaDependenciesPropertyDTO> dependencies;
 
   AutomationSchemaTriggerActionDTO({
     required this.name,
@@ -36,6 +55,7 @@ class AutomationSchemaTriggerActionDTO {
     required this.icon,
     required this.parameters,
     required this.facts,
+    required this.dependencies,
   });
 
   factory AutomationSchemaTriggerActionDTO.fromJson(
@@ -88,12 +108,12 @@ class AutomationTriggerParameterDTO {
 class AutomationTriggerDTO {
   final String identifier;
   final List<AutomationTriggerParameterDTO> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   AutomationTriggerDTO({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationTriggerDTO.fromJson(Map<String, dynamic> json) =>
@@ -123,12 +143,12 @@ class AutomationActionParameterDTO extends AutomationTriggerParameterDTO {
 class AutomationActionDTO {
   final String identifier;
   final List<AutomationActionParameterDTO> parameters;
-  final List<String> providers;
+  final List<String> dependencies;
 
   AutomationActionDTO({
     required this.identifier,
     required this.parameters,
-    required this.providers,
+    required this.dependencies,
   });
 
   factory AutomationActionDTO.fromJson(Map<String, dynamic> json) =>
