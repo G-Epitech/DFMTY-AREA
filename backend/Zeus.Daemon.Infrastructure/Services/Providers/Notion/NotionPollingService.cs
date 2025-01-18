@@ -17,23 +17,26 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     private readonly Timer _timer;
     private readonly ILogger _logger;
     private readonly Dictionary<AccessToken, List<AutomationId>> _registeredPollingDatabasesTokens = new();
-    private readonly Dictionary<AccessToken, List<NotionDatabaseId>> _cachedDatabases = new();
+    private readonly Dictionary<AccessToken, List<NotionDatabase>> _cachedDatabases = new();
 
     private readonly Dictionary<AutomationId, Func<AutomationId, NotionDatabase, CancellationToken, Task>>
-        _registeredDatabaseHandlers = new();
+        _registeredNewDatabaseHandlers = new();
 
     private readonly Dictionary<AccessToken, List<AutomationId>> _registeredPollingPagesTokens = new();
-    private readonly Dictionary<AccessToken, List<NotionPageId>> _cachedPages = new();
+    private readonly Dictionary<AccessToken, List<NotionPage>> _cachedPages = new();
 
     private readonly Dictionary<AutomationId, Func<AutomationId, NotionPage, CancellationToken, Task>>
-        _registeredPageHandlers = new();
+        _registeredNewPageHandlers = new();
+
+    private readonly Dictionary<AutomationId, Func<AutomationId, NotionPage, CancellationToken, Task>>
+        _registeredRemovePageHandlers = new();
 
     public NotionPollingService(INotionApiService apiService, ILogger<NotionPollingService> logger)
     {
         _apiService = apiService;
         _logger = logger;
 
-        _timer = new Timer(TimeSpan.FromSeconds(10));
+        _timer = new Timer(TimeSpan.FromSeconds(5));
         _timer.Elapsed += (sender, e) => _ = PollDatabases();
         _timer.Elapsed += (sender, e) => _ = PollPages();
         _timer.AutoReset = true;
@@ -50,7 +53,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
         }
 
         automations.Add(automationId);
-        _registeredDatabaseHandlers.Add(automationId, handler);
+        _registeredNewDatabaseHandlers.Add(automationId, handler);
 
         if (_cachedDatabases.ContainsKey(accessToken))
         {
@@ -63,7 +66,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
             return false;
         }
 
-        _cachedDatabases.Add(accessToken, databases.Value.Select(x => x.Id).ToList());
+        _cachedDatabases.Add(accessToken, databases.Value);
 
         return true;
     }
@@ -78,7 +81,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
         }
 
         automations.Add(automationId);
-        _registeredPageHandlers.Add(automationId, handler);
+        _registeredNewPageHandlers.Add(automationId, handler);
 
         if (_cachedPages.ContainsKey(accessToken))
         {
@@ -91,14 +94,43 @@ public class NotionPollingService : INotionPollingService, IDaemonService
             return false;
         }
 
-        _cachedPages.Add(accessToken, pages.Value.Select(x => x.Id).ToList());
+        _cachedPages.Add(accessToken, pages.Value);
+
+        return true;
+    }
+
+    public async Task<bool> RegisterRemovePageDetected(AutomationId automationId, AccessToken accessToken,
+        Func<AutomationId, NotionPage, CancellationToken, Task> handler,
+        CancellationToken cancellationToken)
+    {
+        if (!_registeredPollingPagesTokens.TryGetValue(accessToken, out List<AutomationId>? automations))
+        {
+            automations = ( []);
+            _registeredPollingPagesTokens.Add(accessToken, automations);
+        }
+
+        automations.Add(automationId);
+        _registeredRemovePageHandlers.Add(automationId, handler);
+
+        if (_cachedPages.ContainsKey(accessToken))
+        {
+            return true;
+        }
+
+        var pages = await _apiService.GetWorkspacePagesAsync(accessToken, cancellationToken);
+        if (pages.IsError)
+        {
+            return false;
+        }
+
+        _cachedPages.Add(accessToken, pages.Value);
 
         return true;
     }
 
     public void UnregisterNewDatabaseDetected(AutomationId automationId)
     {
-        _registeredDatabaseHandlers.Remove(automationId);
+        _registeredNewDatabaseHandlers.Remove(automationId);
 
         foreach (var pollingDatabasesToken in _registeredPollingDatabasesTokens)
         {
@@ -116,7 +148,25 @@ public class NotionPollingService : INotionPollingService, IDaemonService
 
     public void UnregisterNewPageDetected(AutomationId automationId)
     {
-        _registeredPageHandlers.Remove(automationId);
+        _registeredNewPageHandlers.Remove(automationId);
+
+        foreach (var pollingPagesToken in _registeredPollingPagesTokens)
+        {
+            pollingPagesToken.Value.Remove(automationId);
+
+            if (pollingPagesToken.Value.Count != 0)
+            {
+                continue;
+            }
+
+            _cachedDatabases.Remove(pollingPagesToken.Key);
+            _registeredPollingDatabasesTokens.Remove(pollingPagesToken.Key);
+        }
+    }
+
+    public void UnregisterRemovePageDetected(AutomationId automationId)
+    {
+        _registeredRemovePageHandlers.Remove(automationId);
 
         foreach (var pollingPagesToken in _registeredPollingPagesTokens)
         {
@@ -136,26 +186,27 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     {
         foreach (var databasesToken in _registeredPollingDatabasesTokens)
         {
-            var databases = await _apiService.GetWorkspaceDatabasesAsync(databasesToken.Key);
-            if (databases.IsError)
+            var loadedDatabases = await _apiService.GetWorkspaceDatabasesAsync(databasesToken.Key);
+            if (loadedDatabases.IsError)
             {
-                _logger.LogError("Error polling databases: {error}", databases.Errors);
+                _logger.LogError("Error polling databases: {error}", loadedDatabases.Errors);
                 continue;
             }
 
-            var newDatabases = databases.Value.Where(x => !_cachedDatabases[databasesToken.Key].Contains(x.Id))
+            var newDatabases = loadedDatabases.Value.Where(x => !_cachedDatabases[databasesToken.Key].Contains(x))
                 .ToList();
 
             foreach (var newDatabase in newDatabases)
             {
                 foreach (var automationId in databasesToken.Value)
                 {
-                    var handler = _registeredDatabaseHandlers[automationId];
-                    _ = handler(automationId, newDatabase, CancellationToken.None);
+                    var handler = _registeredNewDatabaseHandlers[automationId];
+
+                    await handler(automationId, newDatabase, CancellationToken.None);
                 }
             }
 
-            _cachedDatabases[databasesToken.Key] = databases.Value.Select(x => x.Id).ToList();
+            _cachedDatabases[databasesToken.Key] = loadedDatabases.Value;
         }
     }
 
@@ -163,25 +214,38 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     {
         foreach (var pagesToken in _registeredPollingPagesTokens)
         {
-            var pages = await _apiService.GetWorkspacePagesAsync(pagesToken.Key);
-            if (pages.IsError)
+            var loadedPages = await _apiService.GetWorkspacePagesAsync(pagesToken.Key);
+            if (loadedPages.IsError)
             {
-                _logger.LogError("Error polling pages: {error}", pages.Errors);
+                _logger.LogError("Error polling pages: {error}", loadedPages.Errors);
                 continue;
             }
 
-            var newPages = pages.Value.Where(x => !_cachedPages[pagesToken.Key].Contains(x.Id)).ToList();
-
+            var newPages = loadedPages.Value.Where(x => !_cachedPages[pagesToken.Key].Contains(x)).ToList();
             foreach (var newPage in newPages)
             {
                 foreach (var automationId in pagesToken.Value)
                 {
-                    var handler = _registeredPageHandlers[automationId];
-                    _ = handler(automationId, newPage, CancellationToken.None);
+                    if (_registeredNewPageHandlers.TryGetValue(automationId, out var handler))
+                    {
+                        await handler(automationId, newPage, CancellationToken.None);
+                    }
                 }
             }
 
-            _cachedPages[pagesToken.Key] = pages.Value.Select(x => x.Id).ToList();
+            var removedPages = _cachedPages[pagesToken.Key].Where(x => !loadedPages.Value.Contains(x)).ToList();
+            foreach (var removedPage in removedPages)
+            {
+                foreach (var automationId in pagesToken.Value)
+                {
+                    if (_registeredRemovePageHandlers.TryGetValue(automationId, out var handler))
+                    {
+                        await handler(automationId, removedPage, CancellationToken.None);
+                    }
+                }
+            }
+
+            _cachedPages[pagesToken.Key] = loadedPages.Value;
         }
     }
 

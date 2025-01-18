@@ -25,6 +25,16 @@ public interface INotionPollingService
     /// <param name="cancellationToken"></param>
     public Task<bool> RegisterNewPageDetected(AutomationId automationId, AccessToken accessToken,
         Func<AutomationId, NotionPage, CancellationToken, Task> handler, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Register handler for remove page detected.
+    /// </summary>
+    /// <param name="automationId">The automation id</param>
+    /// <param name="accessToken">The notion access token</param>
+    /// <param name="handler"></param>
+    /// <param name="cancellationToken"></param>
+    public Task<bool> RegisterRemovePageDetected(AutomationId automationId, AccessToken accessToken,
+        Func<AutomationId, NotionPage, CancellationToken, Task> handler, CancellationToken cancellationToken);
 
     /// <summary>
     /// Unregister handler for new database detected.
@@ -37,4 +47,10 @@ public interface INotionPollingService
     /// </summary>
     /// <param name="automationId"></param>
     public void UnregisterNewPageDetected(AutomationId automationId);
+    
+    /// <summary>
+    /// Unregister handler for remove page detected.
+    /// </summary>
+    /// <param name="automationId"></param>
+    public void UnregisterRemovePageDetected(AutomationId automationId);
 }
