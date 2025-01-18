@@ -3,11 +3,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Zeus.Api.Application.Integrations.Commands.CreateDiscordIntegration;
-using Zeus.Api.Application.Integrations.Commands.GenerateDiscordOauth2Uri;
 using Zeus.Api.Application.Integrations.Commands.GenerateGmailOauth2Uri;
 using Zeus.Api.Infrastructure.Authentication.Context;
-using Zeus.Api.Presentation.Web.Contracts.Integrations.Discord;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Gmail;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Integrations.Gmail;
@@ -42,17 +39,11 @@ public class GmailCreationController : ApiController
             Problem);
     }
 
-    /*[AllowAnonymous]
-    [HttpPost(Name = "CreateDiscordIntegration")]
-    [ProducesResponseType<CreateDiscordIntegrationResponse>(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateDiscordIntegration(CreateDiscordIntegrationRequest request)
+    [AllowAnonymous]
+    [HttpPost(Name = "CreateGmailIntegration")]
+    public IActionResult CreateGmailIntegration(CreateGmailIntegrationRequest request)
     {
-        var createIntegrationResult =
-            await _sender.Send(new CreateDiscordIntegrationCommand(request.Code, request.State));
-
-        return createIntegrationResult.Match(
-            result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),
-                new { id = result.IntegrationId }, new CreateDiscordIntegrationResponse()),
-            Problem);
-    }*/
+        Console.WriteLine($"Code = {request.Code}, State = {request.State}");
+        return Created();
+    }
 }
