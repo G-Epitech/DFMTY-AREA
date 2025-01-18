@@ -22,18 +22,10 @@ docker-compose up
 ```
 
 ### Production Version
-In the production environment, you must build the mobile application. To include the mobile build, set the `BUILD_MOBILE` environment variable before running the commands:
+In the production environment, you must build the mobile application. To include the mobile build, you have to use the profile production in the docker-compose command:
 
-#### Windows PowerShell
-```powershell
-$env:BUILD_MOBILE="true"
-docker-compose up --build
 ```
-
-#### Linux/macOS
-```sh
-export BUILD_MOBILE=true
-docker-compose up --build
+docker-compose --profile production up --build
 ```
 
 ---

@@ -8,6 +8,8 @@ COPY . .
 
 RUN flutter pub get
 
-RUN if [ "$BUILD_MOBILE" = "true" ]; then flutter build apk --dart-define-from-file=.env; fi
+RUN flutter build apk --dart-define-from-file=.env
 
-CMD ["sh", "-c", "if [ \"$BUILD_MOBILE\" = \"true\" ]; then flutter build apk --dart-define-from-file=.env && cp build/app/outputs/apk/release/Triggo-release.apk /common/Triggo-release.apk; else echo 'Skipping mobile build'; fi"]
+RUN mkdir -p /common
+
+RUN cp build/app/outputs/apk/release/Triggo-release.apk /common/Triggo-release.apk
