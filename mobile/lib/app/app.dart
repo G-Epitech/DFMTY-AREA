@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:triggo/app/bloc/authentication_bloc.dart';
-import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.dart';
 import 'package:triggo/app/routes/generate.routes.dart';
+import 'package:triggo/app/routes/route_observer.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/theme.dart';
 import 'package:triggo/mediator/authentication.mediator.dart';
@@ -103,6 +104,7 @@ class _TriggoAppState extends State<TriggoApp> {
           ),
         ],
         child: MaterialApp(
+          navigatorObservers: [routeObserver],
           debugShowCheckedModeBanner: false,
           title: 'Triggo',
           theme: triggoTheme,

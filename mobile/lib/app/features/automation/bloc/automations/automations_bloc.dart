@@ -20,7 +20,6 @@ class AutomationsBloc extends Bloc<AutomationsEvent, AutomationsState> {
     emit(AutomationsLoading());
     try {
       final automations = await automationMediator.getUserAutomations();
-      print('Automations: $automations');
       emit(AutomationsLoaded(automations: automations));
     } catch (e) {
       emit(AutomationsError(message: e.toString()));
