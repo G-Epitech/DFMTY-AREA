@@ -237,11 +237,21 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
   void _onActionDeleted(
       AutomationActionDeleted event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
-        List.from(state.dirtyAutomation.actions);
+        List.from(state.cleanedAutomation.actions);
     updatedActions.removeAt(event.index);
+
+    for (int i = event.index; i < updatedActions.length; i++) {
+      final updatedAction = updatedActions[i];
+      final updatedParameters = updatedAction.parameters
+          .where((param) => !(param.type.toLowerCase() == "var" &&
+              param.value.startsWith('${event.index}.')))
+          .toList();
+      updatedActions[i] = updatedAction.copyWith(parameters: updatedParameters);
+    }
+
     final updatedAutomation =
-        state.dirtyAutomation.copyWith(actions: updatedActions);
-    emit(state.copyWith(dirtyAutomation: updatedAutomation));
+        state.cleanedAutomation.copyWith(actions: updatedActions);
+    emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 
   void _onReset(AutomationReset event, Emitter<AutomationState> emit) {
@@ -402,7 +412,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
         if (actionHaveOptions == AutomationParameterNeedOptions.no ||
             param.identifier == "Icon") {
-          if (param.type == "Var") {
+          if (param.type.toLowerCase() == "var") {
             newPreview[previewKey] = "From a previous trigger/action";
           } else {
             newPreview[previewKey] = param.value;

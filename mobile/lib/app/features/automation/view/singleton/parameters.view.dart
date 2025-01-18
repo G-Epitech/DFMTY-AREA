@@ -948,7 +948,7 @@ List<AutomationRadioModel> getOptionsFromFacts(
     AutomationSchemaTriggerActionProperty property) {
   List<AutomationRadioModel> options = [];
   for (final fact in facts.entries) {
-    if (fact.value.type != property.type) {
+    if (fact.value.type.toLowerCase() != property.type.toLowerCase()) {
       continue;
     }
     options.add(AutomationRadioModel(

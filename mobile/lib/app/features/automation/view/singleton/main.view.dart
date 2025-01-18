@@ -346,6 +346,7 @@ class CustomRectangleList extends StatelessWidget {
               indexOfTheTriggerOrAction: 0,
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
+              isDeletable: false,
             ),
             if (automation.actions.isNotEmpty) SizedBox(height: 10),
             ListView.separated(
@@ -372,6 +373,7 @@ class CustomRectangleList extends StatelessWidget {
                   indexOfTheTriggerOrAction: index,
                   integrationIdentifier: integrationIdentifier,
                   triggerOrActionIdentifier: triggerOrActionIdentifier,
+                  isDeletable: true,
                 );
               },
               separatorBuilder: (context, index) {
@@ -439,6 +441,7 @@ class _TriggerListItem extends StatelessWidget {
   final int indexOfTheTriggerOrAction;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
+  final bool isDeletable;
 
   const _TriggerListItem({
     required this.icon,
@@ -448,6 +451,7 @@ class _TriggerListItem extends StatelessWidget {
     required this.indexOfTheTriggerOrAction,
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
+    required this.isDeletable,
   });
 
   @override
@@ -466,6 +470,34 @@ class _TriggerListItem extends StatelessWidget {
               isEdit: true,
             )));
       },
+      onLongPress: isDeletable
+          ? () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Delete this action?'),
+                  content: Text(
+                      'Are you sure you want to delete this action named: $text?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<AutomationBloc>().add(
+                              AutomationActionDeleted(
+                                  index: indexOfTheTriggerOrAction),
+                            );
+                        Navigator.pop(context);
+                      },
+                      child: Text('Delete'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          : null,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: color, width: 2),
