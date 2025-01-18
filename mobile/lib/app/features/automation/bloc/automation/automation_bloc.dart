@@ -360,7 +360,8 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
             triggerIdentifier,
             param.identifier);
 
-        if (triggerHaveOptions == AutomationParameterNeedOptions.no) {
+        if (triggerHaveOptions == AutomationParameterNeedOptions.no ||
+            triggerHaveOptions == AutomationParameterNeedOptions.number) {
           newPreview[previewKey] = param.value;
           continue;
         }

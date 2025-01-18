@@ -14,6 +14,7 @@ enum AutomationParameterNeedOptions {
   yes,
   no,
   blocked,
+  number,
 }
 
 class AutomationRadioModel {

@@ -360,7 +360,6 @@ class _List extends StatelessWidget {
                                         "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: humanReadableValue));
 
-                            print("Save action parameter with value: $value");
                             context
                                 .read<AutomationBloc>()
                                 .add(AutomationActionParameterChanged(
@@ -881,6 +880,11 @@ AutomationParameterNeedOptions haveOptions(
           if (parameterIdentifier == 'DatabaseId') {
             return AutomationParameterNeedOptions.yes;
           }
+        }
+      }
+      if (integrationName == IntegrationNames.leagueOfLegends) {
+        if (parameterIdentifier == "KdaThreshold") {
+          return AutomationParameterNeedOptions.number;
         }
       }
       break;

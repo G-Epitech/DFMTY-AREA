@@ -134,6 +134,18 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             });
           },
         );
+      case AutomationInputEnum.number:
+        return _NumberInput(
+          label: widget.label,
+          placeholder: widget.placeholder,
+          defaultValue: localValue,
+          onValueChanged: (value) {
+            setState(() {
+              localValue = value;
+              humanReadableValue = value;
+            });
+          },
+        );
       default:
         return Container();
     }
@@ -539,7 +551,6 @@ class _EmojiInputState extends State<_EmojiInput> {
   @override
   void initState() {
     super.initState();
-    print(widget.defaultValue);
     _controller = TextEditingController(text: widget.defaultValue);
 
     _controller.addListener(() {
