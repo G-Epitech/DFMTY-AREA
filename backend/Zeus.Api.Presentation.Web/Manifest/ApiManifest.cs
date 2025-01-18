@@ -1,6 +1,4 @@
-﻿using Zeus.Common.Domain.ProvidersSettings;
-
-namespace Zeus.Api.Presentation.Web.Manifest;
+﻿namespace Zeus.Api.Presentation.Web.Manifest;
 
 public sealed class ApiManifest
 {
