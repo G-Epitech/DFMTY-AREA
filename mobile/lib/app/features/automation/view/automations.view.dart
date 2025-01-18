@@ -19,8 +19,7 @@ class AutomationsView extends StatefulWidget {
   State<AutomationsView> createState() => _AutomationsPageState();
 }
 
-class _AutomationsPageState extends State<AutomationsView>
-    with WidgetsBindingObserver, RouteAware {
+class _AutomationsPageState extends State<AutomationsView> with RouteAware {
   late AutomationsBloc _automationsBloc;
 
   @override
@@ -31,7 +30,6 @@ class _AutomationsPageState extends State<AutomationsView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
 
     final automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
@@ -47,7 +45,6 @@ class _AutomationsPageState extends State<AutomationsView>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     routeObserver.unsubscribe(this);
     _automationsBloc.close();
     super.dispose();
