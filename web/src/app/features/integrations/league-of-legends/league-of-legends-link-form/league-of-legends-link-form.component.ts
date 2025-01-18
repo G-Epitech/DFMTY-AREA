@@ -15,7 +15,10 @@ import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputDirective } from '@triggo-ui/input';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
-import { OpenaiMediator } from '@mediators/integrations';
+import {
+  LeagueOfLegendsMediator,
+  OpenaiMediator,
+} from '@mediators/integrations';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -36,14 +39,14 @@ import { finalize } from 'rxjs/operators';
   standalone: true,
 })
 export class LeagueOfLegendsLinkFormComponent implements OnDestroy {
-  readonly #openaiMediator = inject(OpenaiMediator);
+  readonly #mediator = inject(LeagueOfLegendsMediator);
   readonly #toastr = inject(ToastrService);
 
   #destroyRef = new Subject<void>();
 
   leagueOfLegendsForm = new FormGroup({
     gameName: new FormControl(''),
-    tagName: new FormControl(''),
+    tagLine: new FormControl(''),
   });
 
   loading = signal<boolean>(false);
@@ -54,29 +57,26 @@ export class LeagueOfLegendsLinkFormComponent implements OnDestroy {
   }
 
   link() {
-    const apiToken = this.leagueOfLegendsForm.controls.gameName.value;
-    const adminApiToken = this.leagueOfLegendsForm.controls.tagName.value;
+    const gameName = this.leagueOfLegendsForm.controls.gameName.value;
+    const tagLine = `#${this.leagueOfLegendsForm.controls.tagLine.value}`;
 
-    if (!apiToken || !adminApiToken) {
-      this.#toastr.error(
-        'API key and Admin API key are required',
-        'Link failed'
-      );
+    if (!gameName || !tagLine) {
+      this.#toastr.error('Game Name and Tag Line are required', 'Link failed');
       return;
     }
     this.loading.set(true);
-    this.#openaiMediator
-      .link(apiToken, adminApiToken)
+    this.#mediator
+      .link(gameName, tagLine)
       .pipe(
         takeUntil(this.#destroyRef),
         finalize(() => this.loading.set(false))
       )
       .subscribe({
         next: () => {
-          this.#toastr.success('OpenAI linked successfully');
+          this.#toastr.success('League of Legends account linked successfully');
         },
         error: () => {
-          this.#toastr.error('Failed to link OpenAI');
+          this.#toastr.error('Failed to link League of Legends account');
         },
       });
   }

@@ -16,14 +16,19 @@
       </div>
 
       <div>
-        <label for="tagName" trLabel> Tag Name </label>
-        <input
-          trInput
-          id="tagName"
-          type="text"
-          placeholder="Enter tag (e.g. NA1)"
-          class="w-full px-4 py-2"
-          [formControl]="leagueOfLegendsForm.controls.tagName" />
+        <label for="tagLine" trLabel> Tag Line </label>
+        <div class="flex flex-row">
+          <div class="bg-secondary rounded-md rounded-r-none border px-3 flex justify-center items-center">
+            <span class="tr-large text-gray-500">#</span>
+          </div>
+          <input
+            trInput
+            id="tagLine"
+            type="text"
+            placeholder="Enter tag (e.g. NA1)"
+            class="w-full px-4 py-2 rounded-l-none border-l-0"
+            [formControl]="leagueOfLegendsForm.controls.tagLine" />
+        </div>
       </div>
 
       <button
