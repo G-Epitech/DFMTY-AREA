@@ -21,6 +21,11 @@ public class
     public async Task<Page<Integration>> Handle(GetIntegrationsByAutomationIdsQuery query,
         CancellationToken cancellationToken)
     {
+        if (query.AutomationIds.Count == 0)
+        {
+            return Page<Integration>.Empty;
+        }
+
         return await _integrationReadRepository.GetIntegrationsByAutomationIdsAsync(query.AutomationIds, query.Source, cancellationToken);
     }
 }

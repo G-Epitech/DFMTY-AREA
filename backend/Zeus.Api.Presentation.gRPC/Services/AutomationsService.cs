@@ -56,7 +56,7 @@ public class AutomationsService : Contracts.AutomationsService.AutomationsServic
     public override async Task GetRegistrableAutomations(GetAutomationsRequest request,
         IServerStreamWriter<RegistrableAutomation> responseStream, ServerCallContext context)
     {
-        var automations = await _sender.Send(new GetAutomationsUpdateAfterQuery(AutomationState.Any, DateTime.UnixEpoch));
+        var automations = await _sender.Send(new GetAutomationsUpdateAfterQuery(AutomationState.Enabled, DateTime.UnixEpoch));
         var triggers = await _sender.Send(new GetIntegrationsByAutomationIdsQuery(
             automations.Select(a => a.Id).ToList(),
             AutomationIntegrationSource.Trigger
