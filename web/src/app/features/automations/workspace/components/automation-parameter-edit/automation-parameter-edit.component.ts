@@ -22,9 +22,9 @@ import {
   ParameterEditDynamicComponent,
   ParameterEditOutput,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
-import {
-  AutomationParameterEditPreviousFactsComponent
-} from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/automation-parameter-edit-previous-facts.component';
+import { AutomationParameterEditPreviousFactsComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/automation-parameter-edit-previous-facts.component';
+import { DeepAutomationFact } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/automation-parameter-edit-previous-facts.types';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Component({
   standalone: true,
@@ -52,7 +52,7 @@ export class AutomationParameterEditComponent {
   readonly parameterType = input.required<AutomationParameterValueType>();
   readonly displayPrevious = input<boolean>(false);
 
-  readonly activeTab = signal<string>('raw');
+  readonly activeTab = signal<string>('Raw');
 
   readonly parameterChangeEmitter = output<ParameterEditOutput>();
 
@@ -83,7 +83,9 @@ export class AutomationParameterEditComponent {
 
   private shouldCreateDynamicComponent(): boolean {
     return (
-      this.activeTab() === 'raw' && !!this.parameter() && !!this.parameterType()
+      this.activeTab() === (AutomationParameterFormatType.RAW as string) &&
+      !!this.parameter() &&
+      !!this.parameterType()
     );
   }
 
@@ -93,28 +95,37 @@ export class AutomationParameterEditComponent {
     instance.integrationId = this.integrationId();
 
     if (instance.valueChange) {
-      instance.valueChange.subscribe(value => {
-        this.#editService.currentParameters.update(parameters => {
-          const index = parameters.findIndex(
-            ({ identifier }) => identifier === this.parameter().identifier
-          );
-          if (index === -1) {
-            parameters.push({
-              type: this.parameter().type,
-              identifier: this.parameter().identifier,
-              value: value.rawValue,
-            });
-          } else {
-            parameters[index].value = value.rawValue;
-          }
-          return parameters;
-        });
-        this.parameterChangeEmitter.emit(value);
-      });
+      instance.valueChange.subscribe(value =>
+        this._changeParamer(value.rawValue, AutomationParameterFormatType.RAW)
+      );
     }
+  }
+
+  onFactSelected(fact: DeepAutomationFact) {
+    this._changeParamer(fact.identifier, AutomationParameterFormatType.VAR);
   }
 
   onTabChange(tab: string): void {
     this.activeTab.set(tab);
+  }
+
+  _changeParamer(value: string, type: AutomationParameterFormatType) {
+    this.#editService.currentParameters.update(parameters => {
+      const index = parameters.findIndex(
+        ({ identifier }) => identifier === this.parameter().identifier
+      );
+      if (index === -1) {
+        parameters.push({
+          type: type,
+          identifier: this.parameter().identifier,
+          value: value,
+        });
+      } else {
+        parameters[index].value = value;
+        parameters[index].type = type;
+      }
+      return parameters;
+    });
+    this.parameterChangeEmitter.emit({ rawValue: value });
   }
 }

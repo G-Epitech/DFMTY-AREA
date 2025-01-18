@@ -1,4 +1,4 @@
 export enum AutomationParameterFormatType {
-  RAW = 'raw',
-  VAR = 'var',
+  RAW = 'Raw',
+  VAR = 'Var',
 }

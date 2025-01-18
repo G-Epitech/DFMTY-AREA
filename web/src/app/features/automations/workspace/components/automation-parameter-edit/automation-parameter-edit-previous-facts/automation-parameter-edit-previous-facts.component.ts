@@ -3,33 +3,26 @@ import {
   Component,
   effect,
   inject,
-  input,
+  input, output,
   signal,
   Signal,
 } from '@angular/core';
 import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
 import {
   ActionModel,
-  AutomationParameterValueType,
+  ActionParameter,
   AutomationSchemaFactModel,
   AutomationSchemaModel,
   TriggerModel,
+  TriggerParameter,
 } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
-import { PascalToPhrasePipe } from '@app/pipes';
-
-interface DeepAutomationFact {
-  eventIdentifier: string;
-  identifier: string;
-  name: string;
-  description: string;
-  type: AutomationParameterValueType;
-  idx: number | null;
-}
+import { DeepAutomationFact } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/automation-parameter-edit-previous-facts.types';
+import { PreviousFactButtonComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/previous-fact-button/previous-fact-button.component';
 
 @Component({
   selector: 'tr-automation-parameter-edit-previous-facts',
-  imports: [PascalToPhrasePipe],
+  imports: [PreviousFactButtonComponent],
   templateUrl: './automation-parameter-edit-previous-facts.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,11 +33,13 @@ export class AutomationParameterEditPreviousFactsComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   schema: AutomationSchemaModel | null = null;
-
+  readonly parameter = input.required<ActionParameter | TriggerParameter>();
   trigger: Signal<TriggerModel | null> = this.#workspaceStore.getTrigger;
   actions: Signal<ActionModel[]> = this.#workspaceStore.getActions;
 
   facts = signal<DeepAutomationFact[]>([]);
+
+  previousFactSelected = output<DeepAutomationFact>();
 
   constructor() {
     effect(() => {
@@ -89,12 +84,16 @@ export class AutomationParameterEditPreviousFactsComponent {
     actionIdx: number | null = null
   ): DeepAutomationFact[] {
     return Object.entries(facts).map(([identifier, fact]) => ({
-      identifier,
+      identifier: actionIdx ? `${actionIdx}.${identifier}` : `T.${identifier}`,
       name: fact.name,
       description: fact.description,
       type: fact.type,
       idx: actionIdx,
       eventIdentifier: eventIdentifier,
     })) as DeepAutomationFact[];
+  }
+
+  onFactSelected(fact: DeepAutomationFact) {
+    this.previousFactSelected.emit(fact);
   }
 }
