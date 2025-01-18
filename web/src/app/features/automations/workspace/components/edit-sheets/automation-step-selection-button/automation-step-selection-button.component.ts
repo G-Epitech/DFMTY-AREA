@@ -15,14 +15,14 @@ import { NgStyle } from '@angular/common';
 import { iconNameFromIdentifier } from '@utils/icon';
 
 @Component({
-  selector: 'tr-trigger-selection-button',
+  selector: 'tr-automation-step-selection-button',
   imports: [NgIcon, NgStyle],
-  templateUrl: './trigger-selection-button.component.html',
+  templateUrl: './automation-step-selection-button.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class TriggerSelectionButtonComponent {
+export class AutomationStepSelectionButtonComponent {
   schema: AutomationSchemaModel | null | undefined = null;
 
   automationEvent = input.required<

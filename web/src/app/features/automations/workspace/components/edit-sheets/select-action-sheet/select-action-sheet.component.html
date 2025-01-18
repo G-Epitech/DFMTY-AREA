@@ -40,7 +40,7 @@
               <span> No Action Selected </span>
             </button>
           } @else {
-            <tr-trigger-selection-button
+            <tr-automation-step-selection-button
               [color]="service.baseState().selectedIntegration!.color"
               [automationEvent]="service.state().selectedAction!"
               (click)="service.goToStepSelection()" />

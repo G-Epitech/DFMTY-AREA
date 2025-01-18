@@ -36,7 +36,7 @@
               <span> No Trigger Selected </span>
             </button>
           } @else {
-            <tr-trigger-selection-button
+            <tr-automation-step-selection-button
               [color]="service.baseState().selectedIntegration!.color"
               [automationEvent]="service.state().selectedTrigger!"
               (click)="service.goToStepSelection()" />
@@ -103,6 +103,7 @@
       @if (service.baseState().selectionStep === AutomationSelectionStepType.MAIN) {
         <button
           trBtn
+          brnSheetClose
           type="submit"
           class="w-[50%] flex flex-row gap-2 items-center"
           [disabled]="service.saveDisabled()"

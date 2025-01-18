@@ -12,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
-import { SelectTriggerSheetComponent } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.component';
+import { SelectTriggerSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/select-trigger-sheet.component';
 import { SelectActionSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/select-action-sheet.component';
 
 @Component({

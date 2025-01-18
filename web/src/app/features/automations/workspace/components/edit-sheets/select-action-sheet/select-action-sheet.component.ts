@@ -7,15 +7,15 @@ import {
   input,
 } from '@angular/core';
 import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
-import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
+import { AutomationParameterListComponent } from '@features/automations/workspace/components/edit-sheets/automation-parameter-list/automation-parameter-list.component';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
 import {
   BrnSheetImports,
   BrnSheetTriggerDirective,
 } from '@spartan-ng/ui-sheet-brain';
-import { IntegrationSelectionComponent } from '@features/automations/workspace/components/integration-selection/integration-selection.component';
+import { IntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/integration-selection/integration-selection.component';
 import { LinkedIntegrationButtonComponent } from '@components/buttons/linked-integration-button/linked-integration-button.component';
-import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/linked-integration-selection/linked-integration-selection.component';
+import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/linked-integration-selection/linked-integration-selection.component';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import {

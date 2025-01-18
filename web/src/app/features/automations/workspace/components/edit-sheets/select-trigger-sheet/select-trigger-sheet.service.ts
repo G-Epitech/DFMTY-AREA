@@ -3,7 +3,7 @@ import { patchState, signalState } from '@ngrx/signals';
 import {
   SelectTriggerSheetState,
   stateUpdaterSelectTrigger,
-} from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.state';
+} from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/select-trigger-sheet.state';
 import { IntegrationModel } from '@models/integration';
 import {
   AutomationSchemaModel,

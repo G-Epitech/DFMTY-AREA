@@ -13,16 +13,16 @@ import {
   TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
-import { IntegrationSelectionComponent } from '@features/automations/workspace/components/integration-selection/integration-selection.component';
+import { IntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/integration-selection/integration-selection.component';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
-import { SelectTriggerSheetService } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.service';
-import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/linked-integration-selection/linked-integration-selection.component';
+import { SelectTriggerSheetService } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/select-trigger-sheet.service';
+import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/linked-integration-selection/linked-integration-selection.component';
 import { LinkedIntegrationButtonComponent } from '@components/buttons/linked-integration-button/linked-integration-button.component';
-import { TriggerSelectionComponent } from '@features/automations/workspace/components/select-trigger-sheet/trigger-selection/trigger-selection.component';
-import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/trigger-selection-button/trigger-selection-button.component';
+import { TriggerSelectionComponent } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/trigger-selection/trigger-selection.component';
+import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
-import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
+import { AutomationParameterListComponent } from '@features/automations/workspace/components/edit-sheets/automation-parameter-list/automation-parameter-list.component';
 import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
 import { EditSheetComponentBase } from '@features/automations/workspace/components/edit-sheets/edit-sheet.component.base';
 

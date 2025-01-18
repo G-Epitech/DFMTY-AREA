@@ -2,7 +2,7 @@
   <div class="flex-grow bg-secondary rounded-md">
     <div class="flex flex-col p-3 space-y-3">
       @for (trigger of availableTriggers(); track trigger.name) {
-        <tr-trigger-selection-button
+        <tr-automation-step-selection-button
           [color]="integration().color"
           [automationEvent]="trigger"
           (click)="selectTrigger(trigger)" />
