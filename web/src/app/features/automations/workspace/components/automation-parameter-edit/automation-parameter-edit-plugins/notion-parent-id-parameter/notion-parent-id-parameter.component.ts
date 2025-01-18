@@ -12,20 +12,20 @@ import {
 import { AutomationParameterValueType } from '@models/automation';
 import { NotionMediator } from '@mediators/integrations';
 import { Observable } from 'rxjs';
-import { NotionDatabaseModel } from '@models/integration';
+import { NotionDatabaseModel, NotionPageModel } from '@models/integration';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { TrButtonDirective } from '@triggo-ui/button';
 import { NgIcon } from '@ng-icons/core';
+import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({
-  selector: 'tr-notion-database-id-parameter',
-  imports: [AsyncPipe, TrButtonDirective, NgClass, NgIcon],
-  templateUrl: './notion-database-id-parameter.component.html',
+  selector: 'tr-notion-parent-id-parameter',
+  imports: [AsyncPipe, NgIcon, TrButtonDirective, NgClass],
+  templateUrl: './notion-parent-id-parameter.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class NotionDatabaseIdParameterComponent
+export class NotionParentIdParameterComponent
   implements ParameterEditDynamicComponent, OnInit
 {
   parameter!: { identifier: string; value: string | null };
@@ -35,19 +35,19 @@ export class NotionDatabaseIdParameterComponent
 
   readonly #notionMediator = inject(NotionMediator);
 
-  databases$: Observable<NotionDatabaseModel[]> | undefined;
+  pages$: Observable<NotionPageModel[]> | undefined;
 
   ngOnInit() {
     if (this.integrationId) {
-      this.databases$ = this.#notionMediator.getDatabases(this.integrationId);
+      this.pages$ = this.#notionMediator.getPages(this.integrationId);
     }
   }
 
-  selectDatabase(database: NotionDatabaseModel) {
-    this.valueChange.emit({ rawValue: database.id });
+  selectPage(page: NotionPageModel) {
+    this.valueChange.emit({ rawValue: page.id });
   }
 
-  isDatabaseSelected(database: NotionDatabaseModel): boolean {
-    return database.id === this.parameter.value;
+  isPageSelected(page: NotionPageModel): boolean {
+    return page.id === this.parameter.value;
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   NotionDatabaseDTO,
   NotionLinkRequestDTO,
+  NotionPageDTO,
   NotionUriResponseDTO,
 } from '@repositories/integrations/dto';
 
@@ -28,5 +29,10 @@ export class NotionRepository {
   getDatabases(integrationId: string): Observable<NotionDatabaseDTO[]> {
     const url = `${this.baseUrl}/integrations/${integrationId}/notion/databases`;
     return this.#httpClient.get<NotionDatabaseDTO[]>(url);
+  }
+
+  getPages(integrationId: string): Observable<NotionPageDTO[]> {
+    const url = `${this.baseUrl}/integrations/${integrationId}/notion/pages`;
+    return this.#httpClient.get<NotionPageDTO[]>(url);
   }
 }
