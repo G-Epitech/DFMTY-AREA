@@ -272,7 +272,7 @@ class _OKButton extends StatelessWidget {
     for (final integration in integrations) {
       for (final value in values) {
         if (integration.id == value) {
-          final integrationName = integration.name.toLowerCase();
+          final integrationName = integration.name;
           selectedIntegrations[integrationName] =
               (selectedIntegrations[integrationName] ?? 0) + 1;
         }
@@ -283,7 +283,7 @@ class _OKButton extends StatelessWidget {
       log("Dependencies length is not equal to selected integrations length");
       final List<String> missingIntegrations = [];
       for (final dependency in dependencies.entries) {
-        final dependencyName = dependency.key.toLowerCase();
+        final dependencyName = dependency.key;
         if (selectedIntegrations[dependencyName] == null) {
           missingIntegrations.add(dependencyName);
         }
@@ -292,7 +292,7 @@ class _OKButton extends StatelessWidget {
     }
 
     for (final dependency in dependencies.entries) {
-      final dependencyName = dependency.key.toLowerCase();
+      final dependencyName = dependency.key;
       if (dependency.value.optional) {
         continue;
       }
