@@ -324,18 +324,20 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     emit(AutomationInitial());
     emit(state.copyWith(loadingStatus: FormzSubmissionStatus.inProgress));
 
-    try {
-      final previews = await _previewsFromUnknownAutomation(event.automation);
+    do {
+      try {
+        final previews = await _previewsFromUnknownAutomation(event.automation);
 
-      emit(state.copyWith(
-        cleanedAutomation: event.automation,
-        dirtyAutomation: event.automation,
-        previews: previews,
-        loadingStatus: FormzSubmissionStatus.initial,
-      ));
-    } catch (e) {
-      emit(state.copyWith(loadingStatus: FormzSubmissionStatus.failure));
-    }
+        emit(state.copyWith(
+          cleanedAutomation: event.automation,
+          dirtyAutomation: event.automation,
+          previews: previews,
+          loadingStatus: FormzSubmissionStatus.initial,
+        ));
+      } catch (e) {
+        emit(state.copyWith(loadingStatus: FormzSubmissionStatus.failure));
+      }
+    } while (state.loadingStatus == FormzSubmissionStatus.failure);
   }
 
   Future<Map<String, String>> _previewsFromUnknownAutomation(

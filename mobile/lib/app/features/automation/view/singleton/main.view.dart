@@ -224,25 +224,44 @@ class _AutomationContainer extends StatelessWidget {
     final state = context.select((AutomationBloc bloc) => bloc.state);
 
     if (state.loadingStatus.isInProgress) {
-      return Center(
-        child: CircularProgressIndicator(),
+      return Expanded(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (state.loadingStatus.isFailure) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(content: Text('Failed to load automation, retrying...')),
+          );
+      });
+      return Expanded(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     }
 
     if (automation.trigger.identifier.isEmpty) {
       return Expanded(
-          child: Column(
-        children: [
-          _AddTriggerEventWidget(),
-        ],
-      ));
+        child: Column(
+          children: [
+            _AddTriggerEventWidget(),
+          ],
+        ),
+      );
     }
     return Expanded(
-        child: Column(
-      children: [
-        CustomRectangleList(automation: automation),
-      ],
-    ));
+      child: Column(
+        children: [
+          CustomRectangleList(automation: automation),
+        ],
+      ),
+    );
   }
 }
 
