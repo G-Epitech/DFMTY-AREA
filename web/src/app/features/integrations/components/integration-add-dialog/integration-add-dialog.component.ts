@@ -118,9 +118,5 @@ export class IntegrationAddDialogComponent {
     if (fn) fn();
   }
 
-  forceWhite(integration: AvailableIntegrationType): boolean {
-    return integration.name === IntegrationTypeEnum.OPENAI;
-  }
-
   protected readonly IntegrationTypeEnum = IntegrationTypeEnum;
 }

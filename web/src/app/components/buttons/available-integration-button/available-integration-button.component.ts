@@ -14,8 +14,4 @@ import { AvailableIntegrationType } from '@common/types';
 })
 export class AvailableIntegrationButtonComponent {
   integration = input.required<AvailableIntegrationType>();
-
-  forceWhite(): boolean {
-    return this.integration().identifier === IntegrationTypeEnum.OPENAI;
-  }
 }

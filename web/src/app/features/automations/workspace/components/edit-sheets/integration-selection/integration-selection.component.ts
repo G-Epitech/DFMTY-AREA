@@ -47,10 +47,6 @@ export class IntegrationSelectionComponent {
     });
   }
 
-  forceWhite(integration: AvailableIntegrationType): boolean {
-    return integration.identifier == IntegrationTypeEnum.OPENAI;
-  }
-
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.#searchTerm.set(input.value);

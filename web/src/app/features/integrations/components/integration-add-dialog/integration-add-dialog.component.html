@@ -26,7 +26,6 @@
               [iconUri]="integration.iconUri"
               [name]="integration.name"
               [color]="integration.color"
-              [forceWhite]="forceWhite(integration)"
               class="w-full cursor-pointer transition-transform hover:scale-[1.02]"
               (click)="selectIntegration(integration)" />
           } @empty {
@@ -50,11 +49,7 @@
                 width="35"
                 height="35"
                 class="object-contain"
-                [style.filter]="
-                  forceWhite(selectedIntegration()!)
-                    ? 'brightness(0) invert(1)'
-                    : 'none'
-                " />
+                [style.filter]="'brightness(0) invert(1)'" />
             </div>
             <h1 class="tr-title-3">
               {{ selectedIntegration()?.name }} Integration
