@@ -1,15 +1,17 @@
 import { Injectable, signal, Type } from '@angular/core';
-import { AutomationParameterType } from '@models/automation';
+import { AutomationParameterValueType } from '@models/automation';
 import {
   PARAMETER_EDIT_COMPONENT_MAP,
   PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP,
   ParameterEditDynamicComponent,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Injectable({ providedIn: 'root' })
 export class AutomationParameterEditService {
   currentParameters = signal<
     {
+      type: AutomationParameterFormatType;
       identifier: string;
       value: string | null;
     }[]
@@ -17,7 +19,7 @@ export class AutomationParameterEditService {
 
   getParameterEditComponents(
     parameterIdentifier: string,
-    parameterType: AutomationParameterType
+    parameterType: AutomationParameterValueType
   ): Type<ParameterEditDynamicComponent> {
     if (
       parameterIdentifier in PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP

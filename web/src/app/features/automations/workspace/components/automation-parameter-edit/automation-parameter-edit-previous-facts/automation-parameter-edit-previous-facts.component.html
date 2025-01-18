@@ -1,0 +1,9 @@
+<div
+  class="flex flex-col overflow-y-auto max-h-96 bg-secondary rounded-md p-3 space-y-3 border w-full">
+  @for (fact of facts(); track fact.identifier) {
+    <tr-previous-fact-button
+      [fact]="fact"
+      [checked]="parameter().value === fact.identifier"
+      (click)="onFactSelected(fact)" />
+  }
+</div>

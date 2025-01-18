@@ -1,0 +1,22 @@
+<button
+  trBtn
+  variant="outline"
+  class="flex flex-row justify-between items-center bg-white w-full py-10 px-5">
+  <div class="flex flex-col items-start">
+    <span
+      class="tr-medium font-bold text-gray-700"
+      [ngClass]="checked() ? 'text-primary' : ''"
+      >{{ fact().name }}</span
+    >
+    <span class="tr-medium">
+      @if (fact().idx) {
+        {{ fact().idx }} |
+      }
+      {{ fact().eventIdentifier | pascalToPhrase }}</span
+    >
+    <span class="tr-small text-muted">{{ fact().description }} </span>
+  </div>
+  @if (checked()) {
+    <ng-icon name="heroCheckCircle" size="1.6rem" class="text-primary" />
+  }
+</button>

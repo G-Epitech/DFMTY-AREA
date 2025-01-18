@@ -24,7 +24,7 @@ export class ActionCardComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   schema: AutomationSchemaModel | null = null;
-  action = input.required<ActionModel>();
+  action = input.required<ActionModel | null>();
 
   color = computed(() => {
     const action = this.action();

@@ -22,23 +22,29 @@
 </div>
 <div class="mt-3">
   <tr-tabs
-    tab="raw"
+    [tab]="parameter().type"
     class="block max-w-3xl mx-auto"
     (tabActivated)="onTabChange($event)">
     <tr-tabs-list
       class="w-full grid"
       [ngClass]="displayPrevious() ? 'grid-cols-2' : 'grid-cols-1'"
       aria-label="tabs example">
-      <button trTabsTrigger="raw">Manual Input</button>
+      <button trTabsTrigger="Raw">Manual Input</button>
       @if (displayPrevious()) {
-        <button trTabsTrigger="variable">From Previous</button>
+        <button trTabsTrigger="Var">From Previous</button>
       }
     </tr-tabs-list>
     <div class="flex items-center justify-center">
-      <div trTabsContent="raw">
+      <div trTabsContent="Raw">
         <ng-container #dynamicComponentsContainer></ng-container>
       </div>
-      <div trTabsContent="variable">Use a previous Automation fact</div>
+      <div trTabsContent="Var" class="h-full w-full">
+        <tr-automation-parameter-edit-previous-facts
+          [parameterValueType]="parameterValueType()"
+          [actionIdx]="actionIdx()"
+          [parameter]="parameter()"
+          (previousFactSelected)="onFactSelected($event)" />
+      </div>
     </div>
   </tr-tabs>
 </div>

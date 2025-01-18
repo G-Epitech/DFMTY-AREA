@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import {
   ActionDTO,
+  AutomationDTO,
   AutomationSchemaActionDTO,
   AutomationSchemaDependencyDTO,
   AutomationSchemaParameterDTO,
   AutomationSchemaTriggerDTO,
+  TriggerDTO,
 } from '@repositories/automations/dto';
 import {
   ActionModel,
   ActionParameter,
-  AutomationParameterType,
+  AutomationModel,
+  AutomationParameterValueType,
   AutomationSchemaDependency,
   AutomationSchemaDependencyRequired,
   AutomationSchemaParameterModel,
   AutomationSchemaTrigger,
+  TriggerModel,
+  TriggerParameter,
 } from '@models/automation';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Injectable({
   providedIn: 'root',
@@ -56,17 +62,6 @@ export class AutomationMapperService {
     return schemaActions;
   }
 
-  mapActions(actions: ActionDTO[]): ActionModel[] {
-    return actions.map(
-      action =>
-        new ActionModel(
-          action.identifier,
-          this._mapActionParameters(action.parameters),
-          action.dependencies
-        )
-    );
-  }
-
   _mapSchemaDependencies(
     dependencies: Record<string, AutomationSchemaDependencyDTO>
   ): Record<string, AutomationSchemaDependency> {
@@ -90,7 +85,7 @@ export class AutomationMapperService {
       schemaParameters[identifier] = {
         name: parameter.name,
         description: parameter.description,
-        type: parameter.type as AutomationParameterType,
+        type: parameter.type as AutomationParameterValueType,
       };
     }
     return schemaParameters;
@@ -101,10 +96,56 @@ export class AutomationMapperService {
   ): ActionParameter[] {
     return parameters.map(parameter => {
       return {
-        type: parameter.type as AutomationParameterType,
+        type: parameter.type as AutomationParameterFormatType,
         identifier: parameter.identifier,
         value: parameter.value,
       } as ActionParameter;
+    });
+  }
+
+  mapAutomationModel(dto: AutomationDTO): AutomationModel {
+    return new AutomationModel(
+      dto.id,
+      dto.ownerId,
+      dto.label,
+      dto.description,
+      dto.enabled,
+      dto.updatedAt,
+      '#EE883A',
+      'chat-bubble-bottom-center-text',
+      this.mapTriggerModel(dto.trigger),
+      this.mapActionsModel(dto.actions)
+    );
+  }
+
+  mapActionsModel(actions: ActionDTO[]): ActionModel[] {
+    return actions.map(
+      action =>
+        new ActionModel(
+          action.identifier,
+          this._mapActionParameters(action.parameters),
+          action.dependencies
+        )
+    );
+  }
+
+  mapTriggerModel(trigger: TriggerDTO): TriggerModel {
+    return new TriggerModel(
+      trigger.identifier,
+      this._mapTriggerModelParameters(trigger.parameters),
+      trigger.dependencies
+    );
+  }
+
+  _mapTriggerModelParameters(
+    parameters: { identifier: string; value: string }[]
+  ): TriggerParameter[] {
+    return parameters.map(parameter => {
+      return {
+        type: AutomationParameterFormatType.RAW,
+        identifier: parameter.identifier,
+        value: parameter.value,
+      } as TriggerParameter;
     });
   }
 }

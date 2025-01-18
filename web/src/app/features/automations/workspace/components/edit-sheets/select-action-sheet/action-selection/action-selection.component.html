@@ -1,0 +1,14 @@
+<div class="flex flex-col h-full">
+  <div class="flex-grow bg-secondary rounded-md">
+    <div class="flex flex-col p-3 space-y-3">
+      @for (action of availableActions(); track action.name) {
+        <tr-automation-step-selection-button
+          [color]="integration().color"
+          [automationEvent]="action"
+          (click)="selectAction(action)" />
+      } @empty {
+        <span class="text-center text-gray-400">No Actions available</span>
+      }
+    </div>
+  </div>
+</div>

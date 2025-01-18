@@ -1,9 +1,9 @@
-import { AutomationParameterType } from '@models/automation/automation-parameter-type';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 export interface ActionParameter {
-  readonly type: AutomationParameterType;
+  readonly type: AutomationParameterFormatType;
   readonly identifier: string;
-  readonly value: string;
+  readonly value: string | null;
 }
 
 export class ActionModel {
@@ -27,5 +27,9 @@ export class ActionModel {
 
   get nameIdentifier(): string {
     return this.identifier.split('.')[1];
+  }
+
+  addDependency(dependency: string): void {
+    this.dependencies.push(dependency);
   }
 }
