@@ -7,6 +7,7 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -720,7 +721,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
 
   switch (type) {
     case AutomationChoiceEnum.trigger:
-      if (integrationName == 'Discord') {
+      if (integrationName == IntegrationNames.discord) {
         if (propertyIdentifier == 'MessageReceivedInChannel') {
           if (parameterIdentifier == 'GuildId') {
             final integrationId = automation.trigger.dependencies[0];
@@ -751,7 +752,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           }
         }
       }
-      if (integrationName == 'Notion') {
+      if (integrationName == IntegrationNames.notion) {
         if (propertyIdentifier == 'DatabaseRowCreated' ||
             propertyIdentifier == 'DatabaseRowDeleted') {
           if (parameterIdentifier == 'DatabaseId') {
@@ -764,7 +765,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
       }
       break;
     case AutomationChoiceEnum.action:
-      if (integrationName == 'Discord') {
+      if (integrationName == IntegrationNames.discord) {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'GuildId') {
             final integrationId =
@@ -799,7 +800,7 @@ Future<List<AutomationRadioModel>> getOptionsFromMediator(
           }
         }
       }
-      if (integrationName == 'Notion') {
+      if (integrationName == IntegrationNames.notion) {
         if (propertyIdentifier == 'CreateDatabase' ||
             propertyIdentifier == 'CreatePage') {
           if (parameterIdentifier == 'ParentId') {
@@ -851,7 +852,7 @@ AutomationParameterNeedOptions haveOptions(
     String parameterIdentifier) {
   switch (type) {
     case AutomationChoiceEnum.trigger:
-      if (integrationName == 'Discord') {
+      if (integrationName == IntegrationNames.discord) {
         if (propertyIdentifier == 'MessageReceivedInChannel') {
           if (parameterIdentifier == 'GuildId') {
             return AutomationParameterNeedOptions.yes;
@@ -865,7 +866,7 @@ AutomationParameterNeedOptions haveOptions(
           }
         }
       }
-      if (integrationName == 'Notion') {
+      if (integrationName == IntegrationNames.notion) {
         if (propertyIdentifier == 'DatabaseRowCreated' ||
             propertyIdentifier == 'DatabaseRowDeleted') {
           if (parameterIdentifier == 'DatabaseId') {
@@ -875,7 +876,7 @@ AutomationParameterNeedOptions haveOptions(
       }
       break;
     case AutomationChoiceEnum.action:
-      if (integrationName == 'Discord') {
+      if (integrationName == IntegrationNames.discord) {
         if (propertyIdentifier == 'SendMessageToChannel') {
           if (parameterIdentifier == 'GuildId') {
             return AutomationParameterNeedOptions.yes;
@@ -894,7 +895,7 @@ AutomationParameterNeedOptions haveOptions(
           }
         }
       }
-      if (integrationName == 'Notion') {
+      if (integrationName == IntegrationNames.notion) {
         if (propertyIdentifier == 'CreateDatabase' ||
             propertyIdentifier == 'CreatePage') {
           if (parameterIdentifier == 'ParentId') {

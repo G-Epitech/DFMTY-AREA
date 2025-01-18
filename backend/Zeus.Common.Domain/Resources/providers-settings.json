@@ -62,12 +62,12 @@
         "Parameters": {
           "GuildId": {
             "Name": "Guild id",
-            "Description": "The ID of the guild to monitor.",
+            "Description": "The ID of the guild to send the message to.",
             "Type": "string"
           },
           "ChannelId": {
             "Name": "Channel id",
-            "Description": "The ID of the channel to monitor.",
+            "Description": "The ID of the channel to send the message to.",
             "Type": "string"
           },
           "Content": {

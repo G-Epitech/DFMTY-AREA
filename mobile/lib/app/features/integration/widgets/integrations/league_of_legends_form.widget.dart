@@ -38,7 +38,7 @@ class _Label extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Enter your LeagueOfLegends keys',
+      'Enter your League Of Legends keys',
       style: Theme.of(context).textTheme.titleLarge,
     );
   }

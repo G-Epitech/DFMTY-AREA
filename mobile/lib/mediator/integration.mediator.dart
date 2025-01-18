@@ -56,13 +56,13 @@ class IntegrationMediator with ChangeNotifier {
   String _getUrlFromName(String name) {
     switch (name) {
       case IntegrationNames.discord:
-        return 'Discord';
+        return IntegrationNames.discord;
       case IntegrationNames.notion:
-        return 'Notion';
+        return IntegrationNames.notion;
       case IntegrationNames.openAI:
-        return 'OpenAi';
+        return IntegrationNames.openAI;
       case IntegrationNames.leagueOfLegends:
-        return 'LeagueOfLegends';
+        return IntegrationNames.leagueOfLegends;
       default:
         return '';
     }
@@ -77,6 +77,7 @@ class IntegrationMediator with ChangeNotifier {
         for (String key in response.data!.schema.keys.toList()) {
           final integration = response.data!.schema[key];
           integrationNames.add(AvailableIntegration(
+            identifier: key,
             name: integration!.name,
             iconUri: integration.iconUri,
             color: HexColor(integration.color),
