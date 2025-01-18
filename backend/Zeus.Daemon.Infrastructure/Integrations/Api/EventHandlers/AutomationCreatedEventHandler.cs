@@ -40,7 +40,7 @@ public class AutomationCreatedEventHandler : IConsumer<AutomationCreatedEvent>
 
             try
             {
-                _logger.LogInformation("{AutomationId} loaded with {IntegrationId}", automation.Id, integrations.Values.Count);
+                _logger.LogDebug("Automation {AutomationId} loaded with {DependenciesCount} trigger dependencies", automation.Id, integrations.Values.Count);
                 await _automationsRegistry.RegisterAsync(new RegistrableAutomation { Automation = automation, TriggerIntegrations = integrations.Values.ToList() },
                     context.CancellationToken);
             }

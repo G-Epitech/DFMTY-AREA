@@ -22,11 +22,6 @@ public static class DependencyInjection
 
         services.AddMassTransit(busConfiguration =>
         {
-            if (assembly is not null)
-            {
-                busConfiguration.AddConsumers(assembly);
-            }
-
             busConfiguration.UsingRabbitMq((ctx, rabbitConfiguration) =>
             {
                 rabbitConfiguration.ConfigureJsonSerializerOptions(c =>
