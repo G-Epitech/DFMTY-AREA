@@ -1,6 +1,6 @@
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+namespace Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 
 public class LeagueOfLegendsSummonerProfileIconId : ValueObject
 {

@@ -9,8 +9,8 @@ using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
-using Zeus.Daemon.Domain.Discord.Enums;
-using Zeus.Daemon.Domain.Discord.Events;
+using Zeus.Daemon.Domain.Providers.Discord.Enums;
+using Zeus.Daemon.Domain.Providers.Discord.Events;
 
 namespace Zeus.Daemon.Application.Providers.Discord.TriggerHandlers;
 

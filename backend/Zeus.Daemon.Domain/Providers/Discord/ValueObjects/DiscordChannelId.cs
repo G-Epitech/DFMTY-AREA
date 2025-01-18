@@ -1,10 +1,10 @@
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Daemon.Domain.Discord.ValueObjects;
+namespace Zeus.Daemon.Domain.Providers.Discord.ValueObjects;
 
-public sealed class DiscordGuildId : ValueObject
+public sealed class DiscordChannelId : ValueObject
 {
-    public DiscordGuildId(string value)
+    public DiscordChannelId(string value)
     {
         Value = value;
     }

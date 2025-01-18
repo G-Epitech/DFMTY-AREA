@@ -1,4 +1,4 @@
-namespace Zeus.Daemon.Domain.Discord.Enums;
+namespace Zeus.Daemon.Domain.Providers.Discord.Enums;
 
 public enum DiscordGatewayEventType
 {

@@ -2,8 +2,8 @@ using Microsoft.Extensions.Logging;
 
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
-using Zeus.Daemon.Domain.LeagueOfLegends;
-using Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 
 using Timer = System.Timers.Timer;
 

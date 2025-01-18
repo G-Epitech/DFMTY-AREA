@@ -1,10 +1,10 @@
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+namespace Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 
-public class RiotAccountId : ValueObject
+public class LeagueOfLegendsSummonerAccountId : ValueObject
 {
-    public RiotAccountId(string value)
+    public LeagueOfLegendsSummonerAccountId(string value)
     {
         Value = value;
     }

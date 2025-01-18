@@ -1,4 +1,4 @@
-namespace Zeus.Daemon.Domain.Discord.Events;
+namespace Zeus.Daemon.Domain.Providers.Discord.Events;
 
 public class MessageCreate : Message
 {

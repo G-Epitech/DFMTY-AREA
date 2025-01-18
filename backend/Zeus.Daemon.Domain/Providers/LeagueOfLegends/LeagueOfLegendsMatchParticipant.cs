@@ -1,7 +1,7 @@
 using Zeus.BuildingBlocks.Domain.Models;
-using Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 
-namespace Zeus.Daemon.Domain.LeagueOfLegends;
+namespace Zeus.Daemon.Domain.Providers.LeagueOfLegends;
 
 public class LeagueOfLegendsMatchParticipant : Entity<RiotAccountId>
 {

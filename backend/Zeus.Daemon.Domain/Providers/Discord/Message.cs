@@ -1,4 +1,4 @@
-namespace Zeus.Daemon.Domain.Discord;
+namespace Zeus.Daemon.Domain.Providers.Discord;
 
 public class Message
 {

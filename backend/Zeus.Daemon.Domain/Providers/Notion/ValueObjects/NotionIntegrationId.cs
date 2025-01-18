@@ -1,10 +1,10 @@
 using Zeus.BuildingBlocks.Domain.Models;
 
-namespace Zeus.Daemon.Domain.Discord.ValueObjects;
+namespace Zeus.Daemon.Domain.Providers.Notion.ValueObjects;
 
-public sealed class DiscordChannelId : ValueObject
+public class NotionIntegrationId : ValueObject
 {
-    public DiscordChannelId(string value)
+    public NotionIntegrationId(string value)
     {
         Value = value;
     }
