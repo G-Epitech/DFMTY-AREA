@@ -97,9 +97,24 @@ services:
       - zeus-api-grpc
       - zeus-message-broker
 
+  mobile-app:
+    container_name: mobile-app
+    restart: no
+    build:
+      context: mobile/
+      dockerfile: Dockerfile.prod
+      args:
+        BUILD_MOBILE: ${BUILD_MOBILE:-false}
+    environment:
+      - BUILD_MOBILE=${BUILD_MOBILE:-false}
+    volumes:
+      - shared_volume:/common
+
 volumes:
   zeus-db-data:
     name: zeus-db-data
+  shared_volume:
+    name: shared_volume
 
 networks:
   zeus-network:
