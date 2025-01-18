@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triggo/app/features/automation/bloc/automations/automations_bloc.dart';
 import 'package:triggo/app/features/automation/view/singleton/main.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
+import 'package:triggo/app/routes/route_observer.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
@@ -14,31 +16,81 @@ class AutomationsView extends StatefulWidget {
   const AutomationsView({super.key});
 
   @override
-  State<AutomationsView> createState() => _IntegrationPageState();
+  State<AutomationsView> createState() => _AutomationsPageState();
 }
 
-class _IntegrationPageState extends State<AutomationsView> {
+class _AutomationsPageState extends State<AutomationsView> with RouteAware {
+  late AutomationsBloc _automationsBloc;
+
+  @override
+  void didPopNext() {
+    _automationsBloc.add(ReloadAutomations());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+    _automationsBloc = AutomationsBloc(automationMediator: automationMediator)
+      ..add(LoadAutomations());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    _automationsBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
-    late Future<List<Automation>> automations;
-    try {
-      automations = automationMediator.getUserAutomations();
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text('No automation data found')));
-    }
-    return BaseScaffold(
-      title: 'Automations',
-      body: _AutomationContainer(automations: automations),
+    return BlocProvider.value(
+      value: _automationsBloc,
+      child: BaseScaffold(
+        title: 'Automations',
+        body: BlocBuilder<AutomationsBloc, AutomationsState>(
+          builder: (context, state) {
+            return _StateManager(
+              state: state,
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
+class _StateManager extends StatelessWidget {
+  final AutomationsState state;
+
+  const _StateManager({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    if (state is AutomationsLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else if (state is AutomationsLoaded) {
+      return _AutomationContainer(
+        automations: (state as AutomationsLoaded).automations,
+      );
+    } else if (state is AutomationsError) {
+      return _ErrorView(error: (state as AutomationsError).message);
+    } else {
+      return const _NoDataView();
+    }
+  }
+}
+
 class _AutomationContainer extends StatelessWidget {
-  final Future<List<Automation>> automations;
+  final List<Automation> automations;
 
   const _AutomationContainer({required this.automations});
 
@@ -57,7 +109,7 @@ class _AutomationContainer extends StatelessWidget {
             ),
           ],
         ),
-        Expanded(child: _AutomationList(automations: automations)),
+        Expanded(child: _AutomationViewContent(automations: automations)),
       ],
     );
   }
@@ -68,8 +120,6 @@ class _AutomationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*final AutomationMediator automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);*/
     return TriggoButton(
       text: "Create Automation",
       onPressed: () {
@@ -84,41 +134,6 @@ class _AutomationButton extends StatelessWidget {
         Navigator.pushNamed(context, RoutesNames.automationCreation);
       },
     );
-  }
-}
-
-class _AutomationList extends StatelessWidget {
-  final Future<List<Automation>> automations;
-
-  const _AutomationList({required this.automations});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Automation>>(
-      future: automations,
-      builder: (context, snapshot) {
-        return _AutomationListView(snapshot: snapshot);
-      },
-    );
-  }
-}
-
-class _AutomationListView extends StatelessWidget {
-  final AsyncSnapshot<List<Automation>> snapshot;
-
-  const _AutomationListView({required this.snapshot});
-
-  @override
-  Widget build(BuildContext context) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-      return _ErrorView(error: snapshot.error!);
-    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      return const _NoDataView();
-    } else {
-      return _AutomationViewContent(automations: snapshot.data!);
-    }
   }
 }
 
