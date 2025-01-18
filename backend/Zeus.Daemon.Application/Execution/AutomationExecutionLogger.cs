@@ -2,8 +2,6 @@
 
 namespace Zeus.Daemon.Application.Execution;
 
-using System;
-
 public class AutomationExecutionLogger : ILogger
 {
     private readonly Guid _id;

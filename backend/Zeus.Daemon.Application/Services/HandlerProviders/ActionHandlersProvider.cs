@@ -11,7 +11,6 @@ using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Application.Utils;
-using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services.HandlerProviders;
 

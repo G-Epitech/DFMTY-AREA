@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 
-using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Execution;
@@ -12,13 +11,11 @@ namespace Zeus.Daemon.Application.Providers.OpenAi.ActionsHandlers;
 public class OpenAiCreateCompletionActionHandler
 {
     private readonly IOpenAiApiService _openAiApiService;
-    private readonly ILogger _logger;
 
     public OpenAiCreateCompletionActionHandler(IOpenAiApiService openAiApiService,
         ILogger<OpenAiCreateCompletionActionHandler> logger)
     {
         _openAiApiService = openAiApiService;
-        _logger = logger;
     }
 
     [ActionHandler("OpenAi.CreateCompletion")]
@@ -30,23 +27,27 @@ public class OpenAiCreateCompletionActionHandler
         CancellationToken cancellationToken
     )
     {
-        var apiKey = openAiIntegration.Tokens.FirstOrDefault(t => t.Type == "Bearer");
-        if (apiKey is null)
+        try
         {
-            _logger.LogError("Bearer token not found for OpenAI integration {IntegrationId}",
-                openAiIntegration.Id.Value);
-            return new FactsDictionary();
+            var apiKey = openAiIntegration.Tokens.FirstOrDefault(t => t.Type == "Bearer");
+            if (apiKey is null)
+            {
+                return new ActionError { Message = $"Bearer token not found for OpenAI integration {openAiIntegration.Id.Value}" };
+            }
+
+            var completion =
+                await _openAiApiService.GetCompletionAsync(context, prompt, model, apiKey.Value, cancellationToken);
+
+            if (completion.IsError)
+            {
+                return new ActionError { Message = "An error occurred while generating the completion", Details = completion.FirstError.Description };
+            }
+
+            return new FactsDictionary { { "Completion", Fact.Create(completion.Value) } };
         }
-
-        var completion =
-            await _openAiApiService.GetCompletionAsync(context, prompt, model, apiKey.Value, cancellationToken);
-
-        if (completion.IsError)
+        catch (Exception ex)
         {
-            _logger.LogError("Error while generating OpenAI completion: {Error}", completion.Errors);
-            return new FactsDictionary();
+            return new ActionError { Details = ex, InnerException = ex, Message = "An error occurred while generating the completion" };
         }
-
-        return new FactsDictionary { { "Completion", Fact.Create(completion.Value) } };
     }
 }

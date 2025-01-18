@@ -80,7 +80,7 @@ public sealed class AutomationExecutionContext
             {
                 if (!_cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    _logger.WithScope(action.Identifier);
+                    _logger.WithScope($"[{action.Rank}] {action.Identifier}");
                     await RunActionAsync(action);
                 }
                 _logger.ResetScope();
@@ -88,16 +88,16 @@ public sealed class AutomationExecutionContext
         }
         catch (Exception e)
         {
-            _logger.ResetScope();
             if (e is ActionRunningException actionRunningException)
             {
-                _logger.LogError("Error while running action: {message}\n{details}\n", actionRunningException.Message,
-                    actionRunningException.Details);
+                _logger.LogError("{message}\n{details}", actionRunningException.Message,
+                    actionRunningException.InnerException ?? actionRunningException.Details);
             }
             else
             {
-                _logger.LogError("Error while running action: {e}", e);
+                _logger.LogError("{e}", e);
             }
+            _logger.ResetScope();
         }
     }
 
@@ -124,7 +124,7 @@ public sealed class AutomationExecutionContext
 
         if (result.IsError)
         {
-            throw new ActionRunningException(result.Error.Message, result.Error.Details);
+            throw new ActionRunningException(result.Error.Message, result.Error.Details, result.Error.InnerException);
         }
 
         AddActionFacts(action, result.Facts);
