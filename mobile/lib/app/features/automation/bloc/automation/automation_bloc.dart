@@ -399,8 +399,13 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
             actionIdentifier,
             param.identifier);
 
-        if (actionHaveOptions == AutomationParameterNeedOptions.no) {
-          newPreview[previewKey] = param.value;
+        if (actionHaveOptions == AutomationParameterNeedOptions.no ||
+            param.identifier == "Icon") {
+          if (param.type == "Var") {
+            newPreview[previewKey] = "From a previous trigger/action";
+          } else {
+            newPreview[previewKey] = param.value;
+          }
           continue;
         }
 

@@ -7,6 +7,7 @@ enum AutomationInputEnum {
   radio,
   date,
   boolean,
+  emoji,
 }
 
 enum AutomationParameterNeedOptions {

@@ -306,12 +306,14 @@ class _List extends StatelessWidget {
                 disabled: options == AutomationParameterNeedOptions.blocked,
                 input: options != AutomationParameterNeedOptions.no
                     ? AutomationInputView(
-                        type: options == AutomationParameterNeedOptions.yes
-                            ? AutomationInputEnum.radio
-                            : getType(property.type),
+                        type: (options == AutomationParameterNeedOptions.yes
+                            ? (parameterIdentifier == "Icon"
+                                ? AutomationInputEnum.emoji
+                                : AutomationInputEnum.radio)
+                            : getType(property.type)),
                         label: title,
                         routeToGoWhenSave: RoutesNames.popOneTime,
-                        value: selectedValue,
+                        value: selectedValue ?? previewData,
                         humanReadableValue: previewData,
                         getOptions: () async {
                           final integrationMediator =
@@ -358,6 +360,7 @@ class _List extends StatelessWidget {
                                         "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: humanReadableValue));
 
+                            print("Save action parameter with value: $value");
                             context
                                 .read<AutomationBloc>()
                                 .add(AutomationActionParameterChanged(
@@ -902,6 +905,10 @@ AutomationParameterNeedOptions haveOptions(
         }
       }
       if (integrationName == IntegrationNames.notion) {
+        if (parameterIdentifier == "Icon") {
+          return AutomationParameterNeedOptions.yes;
+        }
+
         if (propertyIdentifier == 'CreateDatabase' ||
             propertyIdentifier == 'CreatePage') {
           if (parameterIdentifier == 'ParentId') {
