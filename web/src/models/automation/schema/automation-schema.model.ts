@@ -1,7 +1,7 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
 import { AvailableIntegrationType } from '@common/types';
 import {
-  AutomationParameterValueType,
+  AutomationParameterValueType, AutomationSchemaAction,
   AutomationSchemaTrigger,
 } from '@models/automation';
 
@@ -128,6 +128,15 @@ export class AutomationSchemaModel {
     return [];
   }
 
+  getAvailableActions(integrationName: string): AutomationSchemaAction[] {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        return Object.values(value.actions);
+      }
+    }
+    return [];
+  }
+
   getTriggerByIdentifier(
     integrationName: string,
     triggerIdentifier: string
@@ -135,6 +144,18 @@ export class AutomationSchemaModel {
     for (const [, value] of Object.entries(this.automationServices)) {
       if (value.name == integrationName) {
         return value.triggers[triggerIdentifier];
+      }
+    }
+    return null;
+  }
+
+  getActionByIdentifier(
+    integrationName: string,
+    actionIdentifier: string
+  ): AutomationSchemaAction | null {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        return value.actions[actionIdentifier];
       }
     }
     return null;
@@ -194,6 +215,19 @@ export class AutomationSchemaModel {
     return null;
   }
 
+  getActionIdentifier(integrationName: string, actionName: string) {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [key, action] of Object.entries(value.actions)) {
+          if (action.name === actionName) {
+            return key;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   getTriggerParameterType(
     integrationName: string,
     triggerName: string,
@@ -204,6 +238,23 @@ export class AutomationSchemaModel {
         for (const [, trigger] of Object.entries(value.triggers)) {
           if (trigger.name === triggerName) {
             return trigger.parameters[parameterName].type;
+          }
+        }
+      }
+    }
+    return AutomationParameterValueType.STRING;
+  }
+
+  getActionParameterType(
+    integrationName: string,
+    actionName: string,
+    parameterName: string
+  ): AutomationParameterValueType {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [, action] of Object.entries(value.actions)) {
+          if (action.name === actionName) {
+            return action.parameters[parameterName].type;
           }
         }
       }

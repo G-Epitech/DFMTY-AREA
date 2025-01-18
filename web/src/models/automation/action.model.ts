@@ -5,7 +5,7 @@ import {
 export interface ActionParameter {
   readonly type: AutomationParameterFormatType;
   readonly identifier: string;
-  readonly value: string;
+  readonly value: string | null;
 }
 
 export class ActionModel {
@@ -29,5 +29,9 @@ export class ActionModel {
 
   get nameIdentifier(): string {
     return this.identifier.split('.')[1];
+  }
+
+  addDependency(dependency: string): void {
+    this.dependencies.push(dependency);
   }
 }

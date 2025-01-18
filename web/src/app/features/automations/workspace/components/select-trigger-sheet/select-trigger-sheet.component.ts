@@ -19,7 +19,7 @@ import { SelectTriggerSheetService } from '@features/automations/workspace/compo
 import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/linked-integration-selection/linked-integration-selection.component';
 import { LinkedIntegrationButtonComponent } from '@components/buttons/linked-integration-button/linked-integration-button.component';
 import { TriggerSelectionComponent } from '@features/automations/workspace/components/select-trigger-sheet/trigger-selection/trigger-selection.component';
-import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/select-trigger-sheet/trigger-selection-button/trigger-selection-button.component';
+import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/trigger-selection-button/trigger-selection-button.component';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
@@ -64,6 +64,10 @@ export class SelectTriggerSheetComponent extends EditSheetComponentBase {
         await this.service.initialize(this.trigger(), schema);
       }
     });
+  }
+
+  protected onIntegrationSelected(integration: AvailableIntegrationType): void {
+    this.service.selectIntegration(integration);
   }
 
   protected onLinkedIntegrationSelected(

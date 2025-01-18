@@ -22,15 +22,25 @@
           <div
             class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
           @if (!automation().actions.length) {
-            <tr-add-step-button />
+            <tr-select-action-sheet
+              class="w-full"
+              [actionIndex]="0"
+              sheetTrigger="add-button" />
           }
         }
         @for (action of automation().actions; track action.identifier) {
-          <tr-action-card [action]="action" class="w-full" />
+          <tr-select-action-sheet
+            class="w-full"
+            [actionIndex]="$index"
+            sheetTrigger="action-card" />
+
           <div
             class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
           @if ($last) {
-            <tr-add-step-button />
+            <tr-select-action-sheet
+              class="w-full"
+              [actionIndex]="$index"
+              sheetTrigger="add-button" />
           }
         }
       </div>

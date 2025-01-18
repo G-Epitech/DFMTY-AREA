@@ -1,6 +1,10 @@
 <tr-sheet side="right">
   <button brnSheetTrigger class="w-full">
-    <tr-action-card [action]="action()" />
+    @if (sheetTrigger() === 'action-card') {
+      <tr-action-card [action]="action()" />
+    } @else {
+      <tr-add-step-button />
+    }
   </button>
   <tr-sheet-content *brnSheetContent="let ctx" class="flex flex-col h-full">
     <tr-sheet-header>
@@ -25,7 +29,7 @@
               [integration]="service.baseState().selectedIntegration!"
               (click)="service.goToIntegrationSelection()" />
           }
-          @if (!service.state().selectedTrigger) {
+          @if (!service.state().selectedAction) {
             <button
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
@@ -33,11 +37,12 @@
               [disabled]="service.baseState().selectedIntegration === null"
               (click)="service.goToStepSelection()">
               <ng-icon name="heroRocketLaunch" size="1.4rem" />
-              <span> No Trigger Selected </span>
+              <span> No Action Selected </span>
             </button>
           } @else {
             <tr-trigger-selection-button
-              [automationEvent]="service.state().selectedTrigger!"
+              [color]="service.baseState().selectedIntegration!.color"
+              [automationEvent]="service.state().selectedAction!"
               (click)="service.goToStepSelection()" />
           }
           @if (!service.baseState().selectedLinkedIntegration) {
@@ -45,7 +50,7 @@
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
               variant="outline"
-              [disabled]="service.state().selectedTrigger === null"
+              [disabled]="service.state().selectedAction === null"
               (click)="service.goToLinkedInegrationSelection()">
               <ng-icon name="heroUser" size="1.4rem" />
               <span> No Linked Integration Selected </span>
@@ -57,16 +62,16 @@
               (click)="service.goToLinkedInegrationSelection()" />
           }
           @if (
-            service.state().selectedTrigger &&
+            service.state().selectedAction &&
             service.baseState().selectedLinkedIntegration
           ) {
             <tr-automation-parameter-list
               class="mt-4"
-              [parameters]="service.state().trigger!.parameters"
+              [parameters]="service.state().action!.parameters"
               (editParameter)="onParameterEdit($event)" />
           } @else {
             <span class="text-muted tr-medium">
-              Select a Trigger and Linked Integration to view parameters
+              Select a Action and Linked Integration to view parameters
             </span>
           }
         }
@@ -79,18 +84,19 @@
           <tr-linked-integration-selection
             class="h-full"
             [selectedIntegrationIdentifier]="
-              service.state().trigger!.integration
+              service.baseState().selectedIntegration!.identifier
             "
             (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
         @case (AutomationSelectionStepType.STEP) {
-          <tr-trigger-selection
+          <tr-action-selection
             class="h-full"
             [integration]="service.baseState().selectedIntegration!"
-            (triggerSelected)="onTriggerSelected($event)" />
+            (actionSelected)="onActionSelected($event)" />
         }
         @case (AutomationSelectionStepType.PARAMETER) {
           <tr-automation-parameter-edit
+            [displayPrevious]="true"
             [integrationId]="service.baseState().selectedLinkedIntegration!.id"
             [parameter]="service.baseState().selectedParameter!"
             [parameterDescription]="service.getSelectedParameterDescription()"

@@ -37,6 +37,7 @@
             </button>
           } @else {
             <tr-trigger-selection-button
+              [color]="service.baseState().selectedIntegration!.color"
               [automationEvent]="service.state().selectedTrigger!"
               (click)="service.goToStepSelection()" />
           }
