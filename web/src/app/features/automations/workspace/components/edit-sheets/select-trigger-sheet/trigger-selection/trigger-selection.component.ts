@@ -13,11 +13,11 @@ import {
   AutomationSchemaTrigger,
 } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
-import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
+import { AutomationStepSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
 
 @Component({
   selector: 'tr-trigger-selection',
-  imports: [TriggerSelectionButtonComponent],
+  imports: [AutomationStepSelectionButtonComponent],
   templateUrl: './trigger-selection.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

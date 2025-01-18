@@ -25,7 +25,6 @@ import {
   TrSheetHeaderComponent,
   TrSheetTitleDirective,
 } from '@triggo-ui/sheet';
-import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/trigger-selection-button/trigger-selection-button.component';
 import { EditSheetComponentBase } from '@features/automations/workspace/components/edit-sheets/edit-sheet.component.base';
 import { SelectActionSheetService } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/select-action-sheet.service';
 import { ActionCardComponent } from '@features/automations/workspace/components/cards/action-card/action-card.component';
@@ -34,6 +33,7 @@ import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
 import { ActionSelectionComponent } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/action-selection/action-selection.component';
+import { AutomationStepSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
 
 @Component({
   selector: 'tr-select-action-sheet',
@@ -52,7 +52,7 @@ import { ActionSelectionComponent } from '@features/automations/workspace/compon
     TrSheetDescriptionDirective,
     TrSheetHeaderComponent,
     TrSheetTitleDirective,
-    TriggerSelectionButtonComponent,
+    AutomationStepSelectionButtonComponent,
     ActionCardComponent,
     BrnSheetImports,
     AddStepButtonComponent,

@@ -14,12 +14,13 @@ import {
 } from '@models/automation';
 import { AvailableIntegrationType } from '@common/types';
 import {
-  TriggerSelectionButtonComponent
-} from '@features/automations/workspace/components/edit-sheets/trigger-selection-button/trigger-selection-button.component';
+  AutomationStepSelectionButtonComponent
+} from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
+
 
 @Component({
   selector: 'tr-action-selection',
-  imports: [TriggerSelectionButtonComponent],
+  imports: [AutomationStepSelectionButtonComponent],
   templateUrl: './action-selection.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

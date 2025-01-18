@@ -22,12 +22,20 @@ import {
   ParameterEditDynamicComponent,
   ParameterEditOutput,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
-import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
+import {
+  AutomationParameterEditPreviousFactsComponent
+} from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-previous-facts/automation-parameter-edit-previous-facts.component';
 
 @Component({
   standalone: true,
   selector: 'tr-automation-parameter-edit',
-  imports: [PascalToPhrasePipe, NgIcon, TrTabsImports, NgClass],
+  imports: [
+    PascalToPhrasePipe,
+    NgIcon,
+    TrTabsImports,
+    NgClass,
+    AutomationParameterEditPreviousFactsComponent,
+  ],
   templateUrl: './automation-parameter-edit.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

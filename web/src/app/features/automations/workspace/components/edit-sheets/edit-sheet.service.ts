@@ -5,14 +5,7 @@ import { EditSheetStateInterface } from '@features/automations/workspace/compone
 import {
   stateUpdaterBack,
   stateUpdaterGoTo,
-  stateUpdaterSelectIntegration,
 } from '@features/automations/workspace/components/edit-sheets/edit-sheet.state.updaters';
-import { AvailableIntegrationType } from '@common/types';
-import {
-  ActionParameter,
-  AutomationSchemaModel,
-  TriggerParameter,
-} from '@models/automation';
 
 @Injectable({
   providedIn: 'root',

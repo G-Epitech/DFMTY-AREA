@@ -1,9 +1,9 @@
 import { EventEmitter, Type } from '@angular/core';
 import { AutomationParameterValueType } from '@models/automation';
-import { AutomationParameterEditStringComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-string/automation-parameter-edit-string.component';
-import { AutomationParameterEditIntegerComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-integer/automation-parameter-edit-integer.component';
-import { AutomationParameterEditBooleanComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-boolean/automation-parameter-edit-boolean.component';
-import { AutomationParameterEditDatetimeComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-datetime/automation-parameter-edit-datetime.component';
+import { AutomationParameterEditStringComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-string/automation-parameter-edit-string.component';
+import { AutomationParameterEditIntegerComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-integer/automation-parameter-edit-integer.component';
+import { AutomationParameterEditBooleanComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-boolean/automation-parameter-edit-boolean.component';
+import { AutomationParameterEditDatetimeComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-datetime/automation-parameter-edit-datetime.component';
 import { DiscordGuildIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/discord-guild-id-parameter/discord-guild-id-parameter.component';
 import { DiscordChannelIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/discord-channel-id-parameter/discord-channel-id-parameter.component';
 

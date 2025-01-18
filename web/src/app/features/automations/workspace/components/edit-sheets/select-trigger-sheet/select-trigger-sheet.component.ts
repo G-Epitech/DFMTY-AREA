@@ -19,7 +19,7 @@ import { SelectTriggerSheetService } from '@features/automations/workspace/compo
 import { LinkedIntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/linked-integration-selection/linked-integration-selection.component';
 import { LinkedIntegrationButtonComponent } from '@components/buttons/linked-integration-button/linked-integration-button.component';
 import { TriggerSelectionComponent } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/trigger-selection/trigger-selection.component';
-import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
+import { AutomationStepSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/edit-sheets/automation-parameter-list/automation-parameter-list.component';
@@ -40,7 +40,7 @@ import { EditSheetComponentBase } from '@features/automations/workspace/componen
     LinkedIntegrationSelectionComponent,
     LinkedIntegrationButtonComponent,
     TriggerSelectionComponent,
-    TriggerSelectionButtonComponent,
+    AutomationStepSelectionButtonComponent,
     AutomationParameterListComponent,
     AutomationParameterEditComponent,
   ],

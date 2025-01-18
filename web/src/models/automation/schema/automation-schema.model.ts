@@ -1,8 +1,12 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
 import { AvailableIntegrationType } from '@common/types';
 import {
-  AutomationParameterValueType, AutomationSchemaAction,
+  ActionModel,
+  AutomationParameterValueType,
+  AutomationSchemaAction,
+  AutomationSchemaFactModel,
   AutomationSchemaTrigger,
+  TriggerModel,
 } from '@models/automation';
 
 export class AutomationSchemaModel {
@@ -260,5 +264,22 @@ export class AutomationSchemaModel {
       }
     }
     return AutomationParameterValueType.STRING;
+  }
+
+  getTriggerFacts(
+    trigger: TriggerModel
+  ): Record<string, AutomationSchemaFactModel> | null {
+    const integration = trigger.integration;
+    const triggerIdentifier = trigger.nameIdentifier;
+    return this.automationServices[integration].triggers[triggerIdentifier]
+      .facts;
+  }
+
+  getActionFacts(
+    action: ActionModel
+  ): Record<string, AutomationSchemaFactModel> | null {
+    const integration = action.integration;
+    const actionIdentifier = action.nameIdentifier;
+    return this.automationServices[integration].actions[actionIdentifier].facts;
   }
 }

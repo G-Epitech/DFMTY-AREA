@@ -45,6 +45,9 @@ export const AutomationsWorkspaceStore = signalStore(
     getTrigger: computed(() => {
       return store.automation().trigger;
     }),
+    getActions: computed(() => {
+      return store.automation().actions;
+    }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
     addTrigger: rxMethod<TriggerModel>(
