@@ -20,19 +20,23 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
+import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
 
 @Injectable()
 export class SelectTriggerSheetService implements OnDestroy {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #destroyRef = new Subject<void>();
   readonly #paramEditService = inject(AutomationParameterEditService);
+  readonly #workspaceStore = inject(AutomationWorkspaceStore);
 
   constructor() {
     effect(() => {
       if (
         this.state().selectedTrigger &&
-        this.state().selectedLinkedIntegration
+        this.state().selectedLinkedIntegration &&
+        this.state().selectedIntegration
       ) {
+        this.saveDisabled.set(false);
         const params = this.#paramEditService.currentParameters();
         this.valid.set(true);
         for (const param of params) {
@@ -41,6 +45,9 @@ export class SelectTriggerSheetService implements OnDestroy {
             break;
           }
         }
+      } else {
+        this.saveDisabled.set(true);
+        this.valid.set(null);
       }
     });
   }
@@ -56,6 +63,7 @@ export class SelectTriggerSheetService implements OnDestroy {
     selecterParameterType: null,
   });
   valid = signal<boolean | null>(null);
+  saveDisabled = signal<boolean>(true);
 
   ngOnDestroy() {
     this.#destroyRef.next();
@@ -66,10 +74,11 @@ export class SelectTriggerSheetService implements OnDestroy {
     automationTrigger: TriggerModel | null,
     schema: AutomationSchemaModel
   ) {
+    console.log('init trigger', automationTrigger);
     if (!automationTrigger) {
       return;
     }
-    const integration = schema.getAvailableIntegrationByName(
+    const integration = schema.getAvailableIntegrationByIdentifier(
       automationTrigger.integration
     );
     let linkedIntegration: IntegrationModel | null = null;
@@ -80,10 +89,14 @@ export class SelectTriggerSheetService implements OnDestroy {
         .pipe(takeUntil(this.#destroyRef))
         .subscribe(integration => (linkedIntegration = integration));
     }
+    console.log('init linked integration', linkedIntegration);
+
     const trigger = schema.getTriggerByIdentifier(
       automationTrigger.integration,
       automationTrigger.nameIdentifier
     );
+    console.log('init trigger', trigger);
+
     patchState(this.state, state => ({
       ...state,
       selectedIntegration: integration,
@@ -91,6 +104,7 @@ export class SelectTriggerSheetService implements OnDestroy {
       selectedTrigger: trigger,
       trigger: automationTrigger,
     }));
+    console.log('init', this.state());
   }
 
   goToIntegrationSelection() {
@@ -173,7 +187,7 @@ export class SelectTriggerSheetService implements OnDestroy {
       return;
     }
     const currentIntegration = this.state().selectedIntegration!.name;
-    const triggerIdentifer = schema.getTriggerIdentifier(
+    const schemaTriggerIdentifier = schema.getTriggerIdentifier(
       currentIntegration,
       trigger.name
     );
@@ -183,8 +197,12 @@ export class SelectTriggerSheetService implements OnDestroy {
         value: null,
       })
     );
-    if (triggerIdentifer) {
-      const triggerShort = new TriggerModel(triggerIdentifer, params, []);
+    if (schemaTriggerIdentifier) {
+      const identifier =
+        this.state().selectedIntegration?.identifier +
+        '.' +
+        schemaTriggerIdentifier;
+      const triggerShort = new TriggerModel(identifier, params, []);
       patchState(this.state, state => ({
         ...state,
         trigger: triggerShort,
@@ -196,6 +214,23 @@ export class SelectTriggerSheetService implements OnDestroy {
     return this.state().selectedTrigger?.parameters[
       this.state().selectedParameter!.identifier
     ].description;
+  }
+
+  save() {
+    const currentTrigger = this.state().trigger;
+    if (!currentTrigger) {
+      return;
+    }
+
+    const updatedTrigger = new TriggerModel(
+      currentTrigger.identifier,
+      this.#paramEditService.currentParameters(),
+      [...currentTrigger.dependencies]
+    );
+
+    if (this.#workspaceStore.getAutomation()) {
+      this.#workspaceStore.addTrigger(updatedTrigger);
+    }
   }
 
   back() {

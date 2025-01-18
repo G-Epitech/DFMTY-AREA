@@ -162,6 +162,25 @@ export class AutomationSchemaModel {
     return null;
   }
 
+  getAvailableIntegrationByIdentifier(
+    integrationIdentifier: string
+  ): AvailableIntegrationType | null {
+    const value = this.automationServices[integrationIdentifier];
+    if (!value) {
+      return null;
+    }
+    return {
+      color: value.color,
+      name: value.name,
+      iconUri: value.iconUri,
+      identifier: integrationIdentifier,
+      triggers: Object.entries(value.triggers).map(
+        ([, trigger]) => trigger.name
+      ),
+      actions: Object.entries(value.actions).map(([, action]) => action.name),
+    };
+  }
+
   getTriggerIdentifier(integrationName: string, triggerName: string) {
     for (const [, value] of Object.entries(this.automationServices)) {
       if (value.name == integrationName) {

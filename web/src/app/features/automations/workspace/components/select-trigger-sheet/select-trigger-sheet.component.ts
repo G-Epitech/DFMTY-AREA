@@ -4,7 +4,6 @@ import {
   computed,
   effect,
   inject,
-  input,
 } from '@angular/core';
 import { TrSheetImports } from '@triggo-ui/sheet';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -13,7 +12,6 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
 import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
-  TriggerModel,
   TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
@@ -30,6 +28,9 @@ import { IntegrationModel } from '@models/integration';
 import { SchemaStore } from '@app/store/schema-store';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
 import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
+import {
+  AutomationWorkspaceStore
+} from '@features/automations/workspace/automation-workspace.store';
 
 @Component({
   standalone: true,
@@ -56,6 +57,7 @@ import { AutomationParameterEditComponent } from '@features/automations/workspac
 })
 export class SelectTriggerSheetComponent {
   readonly #schemaStore = inject(SchemaStore);
+  readonly #workspaceStore = inject(AutomationWorkspaceStore);
 
   schema: AutomationSchemaModel | null = null;
 
@@ -63,7 +65,7 @@ export class SelectTriggerSheetComponent {
   protected readonly TriggerSelectionStep = TriggerSelectionStep;
   protected readonly state = this.service.state;
 
-  trigger = input.required<TriggerModel | null>();
+  trigger = this.#workspaceStore.getTrigger;
 
   title = computed(() => {
     const step = this.service.state().selectionStep;

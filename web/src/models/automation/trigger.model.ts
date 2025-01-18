@@ -5,7 +5,7 @@ export interface TriggerParameter {
 
 export class TriggerModel {
   readonly identifier: string;
-  readonly parameters: TriggerParameter[];
+  parameters: TriggerParameter[];
   dependencies: string[];
 
   constructor(

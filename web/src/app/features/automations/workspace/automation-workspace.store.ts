@@ -1,4 +1,8 @@
-import { AutomationModel, newDefaultAutomationModel } from '@models/automation';
+import {
+  AutomationModel,
+  newDefaultAutomationModel,
+  TriggerModel,
+} from '@models/automation';
 import {
   patchState,
   signalStore,
@@ -37,8 +41,31 @@ export const AutomationWorkspaceStore = signalStore(
     automationIsValid: computed(() => {
       return store.automation().hasTrigger;
     }),
+    getTrigger: computed(() => {
+      return store.automation().trigger;
+    }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
+    addTrigger: rxMethod<TriggerModel>(
+      pipe(
+        tap(trigger => {
+          const currentAutomation = store.automation();
+          const updatedAutomation = new AutomationModel(
+            currentAutomation.id,
+            currentAutomation.ownerId,
+            currentAutomation.label,
+            currentAutomation.description,
+            currentAutomation.enabled,
+            currentAutomation.updatedAt,
+            currentAutomation.color,
+            currentAutomation.icon,
+            trigger,
+            currentAutomation.actions
+          );
+          patchState(store, { automation: updatedAutomation });
+        })
+      )
+    ),
     getById: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { loading: true })),

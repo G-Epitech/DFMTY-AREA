@@ -10,8 +10,8 @@ export class AutomationModel {
   readonly enabled: boolean;
   readonly updatedAt: Date;
   readonly color: string;
-  readonly #iconName: string;
-  readonly trigger: TriggerModel | null;
+  readonly icon: string;
+  trigger: TriggerModel | null;
   readonly actions: ActionModel[];
 
   constructor(
@@ -33,7 +33,7 @@ export class AutomationModel {
     this.enabled = enabled;
     this.updatedAt = updatedAt;
     this.color = color;
-    this.#iconName = iconName;
+    this.icon = iconName;
     this.trigger = trigger;
     this.actions = actions;
   }
@@ -43,7 +43,11 @@ export class AutomationModel {
   }
 
   get iconName(): string {
-    return iconNameFromIdentifier(this.#iconName);
+    return iconNameFromIdentifier(this.icon);
+  }
+
+  addTrigger(model: TriggerModel): void {
+    this.trigger = model;
   }
 }
 

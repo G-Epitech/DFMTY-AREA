@@ -76,7 +76,7 @@
           <tr-linked-integration-selection
             class="h-full"
             [selectedIntegrationIdentifier]="
-              service.state().selectedIntegration!.identifier
+              service.state().trigger!.integration
             "
             (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
@@ -100,7 +100,9 @@
         <button
           trBtn
           type="submit"
-          class="w-[50%] flex flex-row gap-2 items-center">
+          class="w-[50%] flex flex-row gap-2 items-center"
+          [disabled]="service.saveDisabled()"
+          (click)="service.save()">
           Save
           @if (service.valid() === false) {
             <ng-icon
