@@ -282,11 +282,6 @@
             "Description": "The title of the database to create.",
             "Type": "string"
           },
-          "Description": {
-            "Name": "Database description",
-            "Description": "The description of the database to create.",
-            "Type": "string"
-          },
           "Icon": {
             "Name": "Database icon",
             "Description": "The icon of the database to create (can be url or emoji).",

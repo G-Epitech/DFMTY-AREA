@@ -32,13 +32,11 @@ public interface INotionApiService
     /// <param name="accessToken">The workspace bot access token</param>
     /// <param name="parentId">The parent page id of the database</param>
     /// <param name="title">The title of the database</param>
-    /// <param name="description">The description of the database</param>
     /// <param name="icon">The icon, can be emoji or link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
-        string title,
-        string description, string icon, CancellationToken cancellationToken = default);
+        string title, string icon, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Create a new notion page

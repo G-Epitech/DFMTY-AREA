@@ -112,11 +112,31 @@ public class NotionApiService : INotionApiService
         return new JsonObject { ["type"] = "emoji", ["emoji"] = icon };
     }
 
-    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
-        string title, string description,
-        string icon, CancellationToken cancellationToken = default)
+    public async Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
+        string title, string icon, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var requestContent = new JsonObject
+        {
+            ["parent"] = new JsonObject {["type"]= "page_id", ["page_id"] = parentId.Value },
+            ["icon"] = GetJsonIconFromString(icon),
+            ["title"] = new JsonArray { new JsonObject { ["text"] = new JsonObject { ["content"] = title } } },
+            ["properties"] = new JsonObject { ["Name"] = new JsonObject { ["title"] = new JsonObject() } }
+        };
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("databases", requestContent, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Services.Notion.ErrorDuringPostRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetNotionDatabaseResponse>(_jsonSerializerOptions, cancellationToken);
+        if (responseContent is null)
+        {
+            return Errors.Services.Notion.InvalidBody;
+        }
+
+        return _mapper.Map<NotionDatabase>(responseContent);
     }
 
     public async Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionPageId parentId,
