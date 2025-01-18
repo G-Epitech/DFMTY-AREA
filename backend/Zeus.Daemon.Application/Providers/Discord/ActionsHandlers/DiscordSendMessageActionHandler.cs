@@ -1,6 +1,5 @@
-using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
-using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
+using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
 using Zeus.Daemon.Domain.Discord.ValueObjects;
@@ -17,16 +16,21 @@ public class DiscordSendMessageActionHandler
     }
 
     [ActionHandler("Discord.SendMessageToChannel")]
-    public async Task<FactsDictionary> RunAsync(
-        AutomationId automationId,
+    public async Task<ActionResult> RunAsync(
         [FromParameters] string channelId,
         [FromParameters] string content,
-        [FromIntegrations] DiscordIntegration discordIntegration,
         CancellationToken cancellationToken
     )
     {
-        // TODO: Check permissions
-        await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
-        return new FactsDictionary();
+        try
+        {
+            // TODO: Check permissions
+            await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
+            return new FactsDictionary();
+        }
+        catch (Exception ex)
+        {
+            return new ActionError { Details = ex, InnerException = ex, Message = "An error occurred while sending the message" };
+        }
     }
 }

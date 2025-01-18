@@ -28,12 +28,14 @@ abstract class Integration {
 }
 
 class AvailableIntegration {
+  final String identifier;
   final String name;
   final String iconUri;
   final Color color;
   final String url;
 
   AvailableIntegration({
+    required this.identifier,
     required this.name,
     required this.iconUri,
     required this.color,

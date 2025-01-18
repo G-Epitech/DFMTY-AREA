@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
@@ -42,7 +43,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     AutomationSubmitted event,
     Emitter<AutomationState> emit,
   ) async {
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    emit(state.copyWith(savingStatus: FormzSubmissionStatus.inProgress));
     try {
       final res =
           await _automationMediator.createAutomation(state.cleanedAutomation);
@@ -51,9 +52,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         throw Exception('Failed to create automation');
       }
 
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
+      emit(state.copyWith(savingStatus: FormzSubmissionStatus.success));
     } catch (e) {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      emit(state.copyWith(savingStatus: FormzSubmissionStatus.failure));
     }
   }
 
@@ -320,14 +321,23 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
   Future<void> _onLoadExistingAutomation(
       AutomationLoadExisting event, Emitter<AutomationState> emit) async {
-    final previews = await _previewsFromUnknownAutomation(event.automation);
+    emit(AutomationInitial());
+    emit(state.copyWith(loadingStatus: FormzSubmissionStatus.inProgress));
 
-    emit(state.copyWith(
-      cleanedAutomation: event.automation,
-      dirtyAutomation: event.automation,
-      previews: previews,
-      status: FormzSubmissionStatus.initial,
-    ));
+    do {
+      try {
+        final previews = await _previewsFromUnknownAutomation(event.automation);
+
+        emit(state.copyWith(
+          cleanedAutomation: event.automation,
+          dirtyAutomation: event.automation,
+          previews: previews,
+          loadingStatus: FormzSubmissionStatus.initial,
+        ));
+      } catch (e) {
+        emit(state.copyWith(loadingStatus: FormzSubmissionStatus.failure));
+      }
+    } while (state.loadingStatus == FormzSubmissionStatus.failure);
   }
 
   Future<Map<String, String>> _previewsFromUnknownAutomation(
@@ -335,13 +345,25 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     final Map<String, String> newPreview = {};
 
     for (final trigger in [automation.trigger]) {
+      final index = [automation.trigger].indexOf(trigger);
+      final integrationIdentifier = trigger.identifier.split('.').first;
+      final triggerIdentifier = trigger.identifier.split('.').last;
       for (final param in trigger.parameters) {
-        final index = [automation.trigger].indexOf(trigger);
-        final integrationIdentifier = trigger.identifier.split('.').first;
-        final triggerIdentifier = trigger.identifier.split('.').last;
         final previewKey =
             "trigger.$index.$integrationIdentifier.$triggerIdentifier.${param.identifier}";
-        newPreview[previewKey] = param.value;
+
+        final triggerHaveOptions = haveOptions(
+            automation,
+            AutomationChoiceEnum.trigger,
+            integrationIdentifier,
+            index,
+            triggerIdentifier,
+            param.identifier);
+
+        if (triggerHaveOptions == AutomationParameterNeedOptions.no) {
+          newPreview[previewKey] = param.value;
+          continue;
+        }
 
         final options = await getOptionsFromMediator(
             automation,
@@ -362,13 +384,25 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     }
 
     for (final action in automation.actions) {
+      final index = automation.actions.indexOf(action);
+      final integrationIdentifier = action.identifier.split('.').first;
+      final actionIdentifier = action.identifier.split('.').last;
       for (final param in action.parameters) {
-        final index = automation.actions.indexOf(action);
-        final integrationIdentifier = action.identifier.split('.').first;
-        final actionIdentifier = action.identifier.split('.').last;
         final previewKey =
             "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
-        newPreview[previewKey] = param.value;
+
+        final actionHaveOptions = haveOptions(
+            automation,
+            AutomationChoiceEnum.action,
+            integrationIdentifier,
+            index,
+            actionIdentifier,
+            param.identifier);
+
+        if (actionHaveOptions == AutomationParameterNeedOptions.no) {
+          newPreview[previewKey] = param.value;
+          continue;
+        }
 
         final options = await getOptionsFromMediator(
             automation,

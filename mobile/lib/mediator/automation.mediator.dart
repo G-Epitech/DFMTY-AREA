@@ -77,6 +77,7 @@ class AutomationMediator with ChangeNotifier {
     for (var key in _automationSchemas!.schemas.keys) {
       var schema = _automationSchemas!.schemas[key];
       integrations.add(AvailableIntegration(
+        identifier: key,
         name: schema!.name,
         iconUri: schema.iconUri,
         color: Color(int.parse(schema.color)),

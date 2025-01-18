@@ -17,10 +17,13 @@ class WelcomeView extends StatefulWidget {
 }
 
 class WelcomeViewState extends State<WelcomeView> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final AuthenticationMediator authMediator =
         RepositoryProvider.of<AuthenticationMediator>(context);
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -98,57 +101,70 @@ class WelcomeViewState extends State<WelcomeView> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                      onPressed: () async {
-                        final bool? connected =
-                            await authMediator.authenticateWithGoogle();
-                        if (context.mounted && connected != null && connected) {
-                          currentRouteNotifier.value = RoutesNames.home;
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, RoutesNames.home, (route) => false);
-                        } else if (context.mounted) {
-                          ScaffoldMessenger.of(context)
-                            ..removeCurrentSnackBar()
-                            ..showSnackBar(
-                              const SnackBar(
-                                content: Text('Could not authenticate'),
-                              ),
-                            );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.grey[300]!,
-                            width: 0.5,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32.0, vertical: 16.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SvgPicture.asset(
-                              'assets/icons/google.svg',
-                              width: 30,
-                              height: 30,
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      final bool? connected =
+                          await authMediator.authenticateWithGoogle();
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (context.mounted && connected != null && connected) {
+                        currentRouteNotifier.value = RoutesNames.home;
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, RoutesNames.home, (route) => false);
+                      } else if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                          ..removeCurrentSnackBar()
+                          ..showSnackBar(
+                            const SnackBar(
+                              content: Text('Could not authenticate'),
                             ),
-                          ),
-                          Text(
-                            'Sign In with Google',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge!
-                                .copyWith(
-                                  fontSize: 16,
+                          );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Colors.grey[300]!,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 16.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: isLoading
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  'assets/icons/google.svg',
+                                  width: 30,
+                                  height: 30,
                                 ),
-                          ),
-                        ],
-                      )),
+                        ),
+                        Text(
+                          'Sign In with Google',
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontSize: 16,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

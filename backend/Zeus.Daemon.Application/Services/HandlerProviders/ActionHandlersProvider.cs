@@ -11,7 +11,6 @@ using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Extensions;
 using Zeus.Daemon.Application.Interfaces.HandlerProviders;
 using Zeus.Daemon.Application.Utils;
-using Zeus.Daemon.Domain.Automations;
 
 namespace Zeus.Daemon.Application.Services.HandlerProviders;
 
@@ -193,7 +192,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
 
     private static void CheckReturnType(MethodInfo method)
     {
-        if (method.ReturnType != typeof(Task<FactsDictionary>))
+        if (method.ReturnType != typeof(Task<ActionResult>))
         {
             throw new InvalidOperationException($"Method '{method.Name}' has invalid return type on '{method.DeclaringType?.Name}'");
         }

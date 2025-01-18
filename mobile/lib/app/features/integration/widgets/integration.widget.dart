@@ -147,7 +147,7 @@ Future<void> _customOnTap(
     BuildContext context,
     AvailableIntegration integration,
     IntegrationMediator integrationMediator) async {
-  switch (integration.name) {
+  switch (integration.identifier) {
     case IntegrationNames.openAI:
       await Navigator.push(context,
           MaterialPageRoute(builder: (context) => OpenAIIntegrationView()));
