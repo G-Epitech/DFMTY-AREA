@@ -56,13 +56,13 @@ class IntegrationMediator with ChangeNotifier {
   String _getUrlFromName(String name) {
     switch (name) {
       case IntegrationNames.discord:
-        return 'discord';
+        return 'Discord';
       case IntegrationNames.notion:
-        return 'notion';
+        return 'Notion';
       case IntegrationNames.openAI:
-        return 'openai';
+        return 'OpenAi';
       case IntegrationNames.leagueOfLegends:
-        return 'leagueOfLegends';
+        return 'LeagueOfLegends';
       default:
         return '';
     }
