@@ -11,7 +11,6 @@ import { TrInputSearchComponent } from '@triggo-ui/input';
 import { AvailableIntegrationType } from '@common/types';
 import { SchemaStore } from '@app/store/schema-store';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
-import { IntegrationTypeEnum } from '@models/integration';
 import { AutomationSchemaModel } from '@models/automation';
 
 @Component({

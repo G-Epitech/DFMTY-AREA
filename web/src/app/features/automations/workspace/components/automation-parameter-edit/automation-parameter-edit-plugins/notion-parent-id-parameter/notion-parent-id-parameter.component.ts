@@ -12,7 +12,7 @@ import {
 import { AutomationParameterValueType } from '@models/automation';
 import { NotionMediator } from '@mediators/integrations';
 import { Observable } from 'rxjs';
-import { NotionDatabaseModel, NotionPageModel } from '@models/integration';
+import { NotionPageModel } from '@models/integration';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { TrButtonDirective } from '@triggo-ui/button';

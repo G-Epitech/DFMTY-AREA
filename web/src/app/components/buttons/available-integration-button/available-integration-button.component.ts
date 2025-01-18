@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
-import { IntegrationTypeEnum } from '@models/integration';
 import { AvailableIntegrationType } from '@common/types';
 
 @Component({
