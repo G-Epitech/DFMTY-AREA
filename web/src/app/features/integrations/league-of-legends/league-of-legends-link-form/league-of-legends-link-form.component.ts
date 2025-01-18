@@ -58,7 +58,7 @@ export class LeagueOfLegendsLinkFormComponent implements OnDestroy {
 
   link() {
     const gameName = this.leagueOfLegendsForm.controls.gameName.value;
-    const tagLine = `#${this.leagueOfLegendsForm.controls.tagLine.value}`;
+    const tagLine = this.leagueOfLegendsForm.controls.tagLine.value;
 
     if (!gameName || !tagLine) {
       this.#toastr.error('Game Name and Tag Line are required', 'Link failed');

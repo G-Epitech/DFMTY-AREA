@@ -18,5 +18,11 @@
         [iconUri]="iconUri()"
         [color]="color()" />
     }
+    @case (IntegrationTypeEnum.LEAGUE_OF_LEGENDS) {
+      <tr-integration-linked-league-of-legends
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
+    }
   }
 </div>

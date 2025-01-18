@@ -54,8 +54,8 @@ export class AutomationSchemaModel {
   }
 
   getIntegrationIconUri(integrationName: string) {
-    for (const [, value] of Object.entries(this.automationServices)) {
-      if (value.name === integrationName) {
+    for (const [key, value] of Object.entries(this.automationServices)) {
+      if (key === integrationName) {
         return value.iconUri;
       }
     }
@@ -63,8 +63,8 @@ export class AutomationSchemaModel {
   }
 
   getIntegrationColor(integrationName: string) {
-    for (const [, value] of Object.entries(this.automationServices)) {
-      if (value.name === integrationName) {
+    for (const [key, value] of Object.entries(this.automationServices)) {
+      if (key === integrationName) {
         return value.color;
       }
     }
