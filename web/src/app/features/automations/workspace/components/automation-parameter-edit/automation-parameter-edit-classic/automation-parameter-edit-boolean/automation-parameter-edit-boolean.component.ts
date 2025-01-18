@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
 } from '@angular/core';
-import { LabelDirective } from '@triggo-ui/label';
 import { TrSwitchImports } from '@triggo-ui/switch';
 import {
   ParameterEditDynamicComponent,

@@ -5,9 +5,7 @@ import {
   PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP,
   ParameterEditDynamicComponent,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
-import {
-  AutomationParameterFormatType
-} from '@models/automation/automation-parameter-format-type';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Injectable({ providedIn: 'root' })
 export class AutomationParameterEditService {

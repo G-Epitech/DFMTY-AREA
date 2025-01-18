@@ -23,9 +23,12 @@ export const PARAMETER_EDIT_COMPONENT_MAP: Record<
   Type<ParameterEditDynamicComponent>
 > = {
   [AutomationParameterValueType.STRING]: AutomationParameterEditStringComponent,
-  [AutomationParameterValueType.INTEGER]: AutomationParameterEditIntegerComponent,
-  [AutomationParameterValueType.BOOLEAN]: AutomationParameterEditBooleanComponent,
-  [AutomationParameterValueType.DATETIME]: AutomationParameterEditDatetimeComponent,
+  [AutomationParameterValueType.INTEGER]:
+    AutomationParameterEditIntegerComponent,
+  [AutomationParameterValueType.BOOLEAN]:
+    AutomationParameterEditBooleanComponent,
+  [AutomationParameterValueType.DATETIME]:
+    AutomationParameterEditDatetimeComponent,
 };
 
 export const PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP: Record<

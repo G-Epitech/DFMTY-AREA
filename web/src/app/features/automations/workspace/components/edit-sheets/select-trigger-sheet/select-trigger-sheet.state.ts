@@ -1,7 +1,4 @@
-import {
-  AutomationSchemaTrigger,
-  TriggerModel,
-} from '@models/automation';
+import { AutomationSchemaTrigger, TriggerModel } from '@models/automation';
 import { PartialStateUpdater } from '@ngrx/signals';
 
 export interface SelectTriggerSheetState {

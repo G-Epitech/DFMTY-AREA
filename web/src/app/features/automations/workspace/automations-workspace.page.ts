@@ -4,7 +4,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  signal,
 } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';

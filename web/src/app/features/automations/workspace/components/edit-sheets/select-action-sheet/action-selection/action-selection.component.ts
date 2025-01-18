@@ -13,10 +13,7 @@ import {
   AutomationSchemaModel,
 } from '@models/automation';
 import { AvailableIntegrationType } from '@common/types';
-import {
-  AutomationStepSelectionButtonComponent
-} from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
-
+import { AutomationStepSelectionButtonComponent } from '@features/automations/workspace/components/edit-sheets/automation-step-selection-button/automation-step-selection-button.component';
 
 @Component({
   selector: 'tr-action-selection',

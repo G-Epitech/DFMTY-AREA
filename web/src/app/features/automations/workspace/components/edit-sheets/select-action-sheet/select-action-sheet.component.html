@@ -96,11 +96,12 @@
         }
         @case (AutomationSelectionStepType.PARAMETER) {
           <tr-automation-parameter-edit
+            [actionIdx]="actionIndex()"
             [displayPrevious]="true"
             [integrationId]="service.baseState().selectedLinkedIntegration!.id"
             [parameter]="service.baseState().selectedParameter!"
             [parameterDescription]="service.getSelectedParameterDescription()"
-            [parameterType]="service.baseState().selecterParameterType!" />
+            [parameterValueType]="service.baseState().selecterParameterType!" />
         }
       }
     </div>

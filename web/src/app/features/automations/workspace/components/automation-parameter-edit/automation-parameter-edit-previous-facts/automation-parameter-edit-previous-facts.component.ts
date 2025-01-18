@@ -3,7 +3,8 @@ import {
   Component,
   effect,
   inject,
-  input, output,
+  input,
+  output,
   signal,
   Signal,
 } from '@angular/core';
@@ -11,6 +12,7 @@ import { AutomationsWorkspaceStore } from '@features/automations/workspace/autom
 import {
   ActionModel,
   ActionParameter,
+  AutomationParameterValueType,
   AutomationSchemaFactModel,
   AutomationSchemaModel,
   TriggerModel,
@@ -32,14 +34,18 @@ export class AutomationParameterEditPreviousFactsComponent {
   readonly #workspaceStore = inject(AutomationsWorkspaceStore);
   readonly #schemaStore = inject(SchemaStore);
 
-  schema: AutomationSchemaModel | null = null;
   readonly parameter = input.required<ActionParameter | TriggerParameter>();
-  trigger: Signal<TriggerModel | null> = this.#workspaceStore.getTrigger;
-  actions: Signal<ActionModel[]> = this.#workspaceStore.getActions;
+  readonly parameterValueType = input.required<AutomationParameterValueType>();
+  readonly actionIdx = input<number | null>(null);
+  previousFactSelected = output<DeepAutomationFact>();
+
+  readonly trigger: Signal<TriggerModel | null> =
+    this.#workspaceStore.getTrigger;
+  readonly actions: Signal<ActionModel[]> = this.#workspaceStore.getActions;
 
   facts = signal<DeepAutomationFact[]>([]);
 
-  previousFactSelected = output<DeepAutomationFact>();
+  schema: AutomationSchemaModel | null = null;
 
   constructor() {
     effect(() => {
@@ -63,7 +69,8 @@ export class AutomationParameterEditPreviousFactsComponent {
         )
       );
     }
-    for (const [index, action] of this.actions().entries()) {
+    for (let index = 0; index < this.actionIdx()!; index++) {
+      const action = this.actions()[index];
       const actionFacts = this.schema?.getActionFacts(action);
       if (actionFacts) {
         facts = facts.concat(
@@ -75,7 +82,9 @@ export class AutomationParameterEditPreviousFactsComponent {
         );
       }
     }
-    this.facts.set(facts);
+    this.facts.set(
+      facts.filter(fact => fact.type === this.parameterValueType())
+    );
   }
 
   _mapSchemaFactsToDeepFacts(

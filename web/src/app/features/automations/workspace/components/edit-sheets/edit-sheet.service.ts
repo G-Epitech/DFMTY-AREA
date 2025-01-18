@@ -80,5 +80,4 @@ export class EditSheetService {
   back() {
     patchState(this.baseState, stateUpdaterBack());
   }
-
 }

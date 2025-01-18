@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  OnInit,
   output,
   signal,
   ViewContainerRef,
@@ -41,7 +42,7 @@ import { AutomationParameterFormatType } from '@models/automation/automation-par
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [],
 })
-export class AutomationParameterEditComponent {
+export class AutomationParameterEditComponent implements OnInit {
   private readonly editService = inject(AutomationParameterEditService);
   private readonly viewContainerRef = inject(ViewContainerRef);
   readonly #editService = inject(AutomationParameterEditService);
@@ -49,8 +50,9 @@ export class AutomationParameterEditComponent {
   readonly integrationId = input.required<string>();
   readonly parameter = input.required<ActionParameter | TriggerParameter>();
   readonly parameterDescription = input.required<string | undefined>();
-  readonly parameterType = input.required<AutomationParameterValueType>();
+  readonly parameterValueType = input.required<AutomationParameterValueType>();
   readonly displayPrevious = input<boolean>(false);
+  readonly actionIdx = input<number | null>(null);
 
   readonly activeTab = signal<string>('Raw');
 
@@ -62,6 +64,10 @@ export class AutomationParameterEditComponent {
     });
   }
 
+  ngOnInit() {
+    this.activeTab.set(this.parameter().type);
+  }
+
   private createDynamicComponentIfNeeded(): void {
     this.viewContainerRef.clear();
     if (!this.shouldCreateDynamicComponent()) {
@@ -69,7 +75,7 @@ export class AutomationParameterEditComponent {
     }
     const component = this.editService.getParameterEditComponents(
       this.parameter().identifier,
-      this.parameterType()
+      this.parameterValueType()
     );
     const componentRef =
       this.viewContainerRef.createComponent<ParameterEditDynamicComponent>(
@@ -85,13 +91,13 @@ export class AutomationParameterEditComponent {
     return (
       this.activeTab() === (AutomationParameterFormatType.RAW as string) &&
       !!this.parameter() &&
-      !!this.parameterType()
+      !!this.parameterValueType()
     );
   }
 
   private setupDynamicComponent(instance: ParameterEditDynamicComponent) {
     instance.parameter = this.parameter();
-    instance.parameterType = this.parameterType();
+    instance.parameterType = this.parameterValueType();
     instance.integrationId = this.integrationId();
 
     if (instance.valueChange) {

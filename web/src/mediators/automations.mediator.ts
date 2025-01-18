@@ -21,9 +21,9 @@ export class AutomationsMediator {
   }
 
   getById(id: string): Observable<AutomationModel> {
-    return this.#automationsRepository.getById(id).pipe(
-      map(dto => this.#automationMapper.mapAutomationModel(dto))
-    );
+    return this.#automationsRepository
+      .getById(id)
+      .pipe(map(dto => this.#automationMapper.mapAutomationModel(dto)));
   }
 
   getSchema(): Observable<AutomationSchemaModel> {

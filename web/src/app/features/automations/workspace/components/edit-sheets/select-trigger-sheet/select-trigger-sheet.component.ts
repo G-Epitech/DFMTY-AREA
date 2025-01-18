@@ -8,10 +8,7 @@ import { TrSheetImports } from '@triggo-ui/sheet';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { BrnSheetImports } from '@spartan-ng/ui-sheet-brain';
 import { TriggerCardComponent } from '@features/automations/workspace/components/cards/trigger-card/trigger-card.component';
-import {
-  AutomationSchemaTrigger,
-  TriggerParameter,
-} from '@models/automation';
+import { AutomationSchemaTrigger, TriggerParameter } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { IntegrationSelectionComponent } from '@features/automations/workspace/components/edit-sheets/integration-selection/integration-selection.component';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
@@ -54,7 +51,9 @@ export class SelectTriggerSheetComponent extends EditSheetComponentBase {
 
   trigger = this.workspaceStore.getTrigger;
 
-  constructor(service: SelectTriggerSheetService = inject(SelectTriggerSheetService)) {
+  constructor(
+    service: SelectTriggerSheetService = inject(SelectTriggerSheetService)
+  ) {
     super(service);
     this.service = service;
     effect(async () => {

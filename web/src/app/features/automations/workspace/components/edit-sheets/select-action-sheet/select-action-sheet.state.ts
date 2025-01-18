@@ -1,7 +1,4 @@
-import {
-  ActionModel,
-  AutomationSchemaAction,
-} from '@models/automation';
+import { ActionModel, AutomationSchemaAction } from '@models/automation';
 import { PartialStateUpdater } from '@ngrx/signals';
 
 export interface SelectActionSheetState {

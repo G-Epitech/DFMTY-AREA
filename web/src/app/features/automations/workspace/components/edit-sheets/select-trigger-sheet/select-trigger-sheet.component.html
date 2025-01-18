@@ -95,12 +95,14 @@
             [integrationId]="service.baseState().selectedLinkedIntegration!.id"
             [parameter]="service.baseState().selectedParameter!"
             [parameterDescription]="service.getSelectedParameterDescription()"
-            [parameterType]="service.baseState().selecterParameterType!" />
+            [parameterValueType]="service.baseState().selecterParameterType!" />
         }
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
-      @if (service.baseState().selectionStep === AutomationSelectionStepType.MAIN) {
+      @if (
+        service.baseState().selectionStep === AutomationSelectionStepType.MAIN
+      ) {
         <button
           trBtn
           brnSheetClose

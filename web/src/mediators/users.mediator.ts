@@ -3,7 +3,7 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import { AutomationModel, TriggerModel } from '@models/automation';
+import { AutomationModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
 import { AutomationMapperService } from '@mediators/mappers';
 

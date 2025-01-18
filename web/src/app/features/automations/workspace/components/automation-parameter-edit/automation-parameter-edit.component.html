@@ -40,6 +40,8 @@
       </div>
       <div trTabsContent="Var" class="h-full w-full">
         <tr-automation-parameter-edit-previous-facts
+          [parameterValueType]="parameterValueType()"
+          [actionIdx]="actionIdx()"
           [parameter]="parameter()"
           (previousFactSelected)="onFactSelected($event)" />
       </div>
