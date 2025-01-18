@@ -13,7 +13,7 @@ import { AutomationParameterType } from '@models/automation';
 
 @Component({
   selector: 'tr-automation-parameter-edit-boolean',
-  imports: [LabelDirective, TrSwitchImports],
+  imports: [TrSwitchImports],
   templateUrl: './automation-parameter-edit-boolean.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

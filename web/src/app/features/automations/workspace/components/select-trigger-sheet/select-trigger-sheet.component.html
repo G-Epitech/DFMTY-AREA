@@ -4,13 +4,13 @@
   </button>
   <tr-sheet-content *brnSheetContent="let ctx" class="flex flex-col h-full">
     <tr-sheet-header>
-      <h3 trSheetTitle>{{ title() }}</h3>
-      <span trSheetDescription>{{ description() }}</span>
+      <h3 trSheetTitle>{{ service.title() }}</h3>
+      <span trSheetDescription>{{ service.description() }}</span>
     </tr-sheet-header>
     <div class="h-full flex flex-col gap-4">
-      @switch (state().selectionStep) {
+      @switch (service.baseState().selectionStep) {
         @case (TriggerSelectionStep.MAIN) {
-          @if (!state().selectedIntegration) {
+          @if (!service.baseState().selectedIntegration) {
             <button
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
@@ -22,7 +22,7 @@
           } @else {
             <tr-available-integration-list-card
               class="w-full"
-              [integration]="service.state().selectedIntegration!"
+              [integration]="service.baseState().selectedIntegration!"
               (click)="service.goToIntegrationSelection()" />
           }
           @if (!state().selectedTrigger) {
@@ -30,17 +30,17 @@
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
               variant="outline"
-              [disabled]="state().selectedIntegration === null"
-              (click)="service.goToTriggerSelection()">
+              [disabled]="service.baseState().selectedIntegration === null"
+              (click)="service.goToStepSelection()">
               <ng-icon name="heroRocketLaunch" size="1.4rem" />
               <span> No Trigger Selected </span>
             </button>
           } @else {
             <tr-trigger-selection-button
               [trigger]="state().selectedTrigger!"
-              (click)="service.goToTriggerSelection()" />
+              (click)="service.goToStepSelection()" />
           }
-          @if (!state().selectedLinkedIntegration) {
+          @if (!service.baseState().selectedLinkedIntegration) {
             <button
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
@@ -53,10 +53,13 @@
           } @else {
             <tr-linked-integration-button
               [displayIcon]="true"
-              [integration]="state().selectedLinkedIntegration!"
+              [integration]="service.baseState().selectedLinkedIntegration!"
               (click)="service.goToLinkedInegrationSelection()" />
           }
-          @if (state().selectedTrigger && state().selectedLinkedIntegration) {
+          @if (
+            state().selectedTrigger &&
+            service.baseState().selectedLinkedIntegration
+          ) {
             <tr-automation-parameter-list
               class="mt-4"
               [parameters]="state().trigger!.parameters"
@@ -80,15 +83,15 @@
             "
             (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
-        @case (TriggerSelectionStep.TRIGGER) {
+        @case (TriggerSelectionStep.STEP) {
           <tr-trigger-selection
             class="h-full"
-            [integration]="service.state().selectedIntegration!"
+            [integration]="service.baseState().selectedIntegration!"
             (triggerSelected)="onTriggerSelected($event)" />
         }
         @case (TriggerSelectionStep.PARAMETER) {
           <tr-automation-parameter-edit
-            [integrationId]="service.state().selectedLinkedIntegration!.id"
+            [integrationId]="service.baseState().selectedLinkedIntegration!.id"
             [parameter]="service.state().selectedParameter!"
             [parameterDescription]="service.getSelectedParameterDescription()"
             [parameterType]="service.state().selecterParameterType!" />
@@ -96,7 +99,7 @@
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
-      @if (state().selectionStep === TriggerSelectionStep.MAIN) {
+      @if (service.baseState().selectionStep === TriggerSelectionStep.MAIN) {
         <button
           trBtn
           type="submit"

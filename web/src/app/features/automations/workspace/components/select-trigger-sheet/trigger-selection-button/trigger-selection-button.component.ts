@@ -41,7 +41,7 @@ export class TriggerSelectionButtonComponent {
       if (this.schema) {
         this.color.set(
           this.schema.getIntegrationColor(
-            this.#service.state().selectedIntegration!.name
+            this.#service.baseState().selectedIntegration!.name
           )
         );
       }

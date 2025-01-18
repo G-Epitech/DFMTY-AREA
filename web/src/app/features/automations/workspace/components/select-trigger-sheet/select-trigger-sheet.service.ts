@@ -1,15 +1,9 @@
-import { effect, inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { effect, inject, Injectable } from '@angular/core';
 import { patchState, signalState } from '@ngrx/signals';
 import {
   SelectTriggerSheetState,
-  stateUpdaterBack,
-  stateUpdaterGoTo,
-  stateUpdaterSelectIntegration,
-  stateUpdaterSelectLinkedIntegration,
   stateUpdaterSelectTrigger,
 } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.state';
-import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
-import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import {
   AutomationSchemaModel,
@@ -17,24 +11,30 @@ import {
   TriggerModel,
   TriggerParameter,
 } from '@models/automation';
-import { firstValueFrom, Subject } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import {
+  stateUpdaterSelectIntegration,
+  stateUpdaterSelectLinkedIntegration,
+} from '@features/automations/workspace/components/edit-sheets/edit-sheet.state.updaters';
+import { EditSheetService } from '@features/automations/workspace/components/edit-sheets/edit-sheet.service';
+import { AvailableIntegrationType } from '@common/types';
 
 @Injectable()
-export class SelectTriggerSheetService implements OnDestroy {
+export class SelectTriggerSheetService extends EditSheetService {
   readonly #integrationsMediator = inject(IntegrationsMediator);
-  readonly #destroyRef = new Subject<void>();
   readonly #paramEditService = inject(AutomationParameterEditService);
   readonly #workspaceStore = inject(AutomationWorkspaceStore);
 
   constructor() {
+    super();
     effect(() => {
       if (
         this.state().selectedTrigger &&
-        this.state().selectedLinkedIntegration &&
-        this.state().selectedIntegration
+        this.baseState().selectedLinkedIntegration &&
+        this.baseState().selectedIntegration
       ) {
         this.saveDisabled.set(false);
         const params = this.#paramEditService.currentParameters();
@@ -53,22 +53,11 @@ export class SelectTriggerSheetService implements OnDestroy {
   }
 
   state = signalState<SelectTriggerSheetState>({
-    selectionStep: TriggerSelectionStep.MAIN,
-    stepHistory: [TriggerSelectionStep.MAIN],
-    selectedIntegration: null,
-    selectedLinkedIntegration: null,
     selectedTrigger: null,
     trigger: null,
     selectedParameter: null,
     selecterParameterType: null,
   });
-  valid = signal<boolean | null>(null);
-  saveDisabled = signal<boolean>(true);
-
-  ngOnDestroy() {
-    this.#destroyRef.next();
-    this.#destroyRef.complete();
-  }
 
   async initialize(
     automationTrigger: TriggerModel | null,
@@ -102,25 +91,6 @@ export class SelectTriggerSheetService implements OnDestroy {
     }));
   }
 
-  goToIntegrationSelection() {
-    patchState(this.state, stateUpdaterGoTo(TriggerSelectionStep.INTEGRATION));
-  }
-
-  goToLinkedInegrationSelection() {
-    patchState(
-      this.state,
-      stateUpdaterGoTo(TriggerSelectionStep.LINKED_INTEGRATION)
-    );
-  }
-
-  goToTriggerSelection() {
-    patchState(this.state, stateUpdaterGoTo(TriggerSelectionStep.TRIGGER));
-  }
-
-  goToParameterEdit() {
-    patchState(this.state, stateUpdaterGoTo(TriggerSelectionStep.PARAMETER));
-  }
-
   selectParameter(
     parameter: TriggerParameter,
     schema: AutomationSchemaModel | null
@@ -129,7 +99,7 @@ export class SelectTriggerSheetService implements OnDestroy {
       return;
     }
     const parameterType = schema.getTriggerParameterType(
-      this.state().selectedIntegration!.name,
+      this.baseState().selectedIntegration!.name,
       this.state().selectedTrigger!.name,
       parameter.identifier
     );
@@ -140,29 +110,33 @@ export class SelectTriggerSheetService implements OnDestroy {
     }));
   }
 
-  selectIntegration(integration: AvailableIntegrationType): void {
-    if (
-      this.state().selectedIntegration?.identifier !== integration.identifier
-    ) {
-      patchState(this.state, state => ({
-        ...state,
-        selectedLinkedIntegration: null,
-        selectedTrigger: null,
-      }));
-    }
-    patchState(this.state, stateUpdaterSelectIntegration(integration));
-    this.back();
-  }
-
   selectLinkedIntegration(linkedIntegration: IntegrationModel): void {
     patchState(
-      this.state,
+      this.baseState,
       stateUpdaterSelectLinkedIntegration(linkedIntegration)
     );
     patchState(this.state, state => {
       state.trigger!.addDependency(linkedIntegration.id);
       return state;
     });
+    this.back();
+  }
+
+  selectIntegration(integration: AvailableIntegrationType): void {
+    if (
+      this.baseState().selectedIntegration?.identifier !==
+      integration.identifier
+    ) {
+      patchState(this.state, state => ({
+        ...state,
+        selectedTrigger: null,
+      }));
+      patchState(this.baseState, state => ({
+        ...state,
+        selectedLinkedIntegration: null,
+      }));
+    }
+    patchState(this.baseState, stateUpdaterSelectIntegration(integration));
     this.back();
   }
 
@@ -181,7 +155,7 @@ export class SelectTriggerSheetService implements OnDestroy {
     if (!schema) {
       return;
     }
-    const currentIntegration = this.state().selectedIntegration!.name;
+    const currentIntegration = this.baseState().selectedIntegration!.name;
     const schemaTriggerIdentifier = schema.getTriggerIdentifier(
       currentIntegration,
       trigger.name
@@ -194,7 +168,7 @@ export class SelectTriggerSheetService implements OnDestroy {
     );
     if (schemaTriggerIdentifier) {
       const identifier =
-        this.state().selectedIntegration?.identifier +
+        this.baseState().selectedIntegration?.identifier +
         '.' +
         schemaTriggerIdentifier;
       const triggerShort = new TriggerModel(identifier, params, []);
@@ -226,9 +200,5 @@ export class SelectTriggerSheetService implements OnDestroy {
     if (this.#workspaceStore.getAutomation()) {
       this.#workspaceStore.addTrigger(updatedTrigger);
     }
-  }
-
-  back() {
-    patchState(this.state, stateUpdaterBack());
   }
 }

@@ -15,7 +15,7 @@ import {
   TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
-import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
+import { AutomationStepSelectionStep } from '@features/automations/workspace/components/edit-sheets/edit-sheet.types';
 import { IntegrationSelectionComponent } from '@features/automations/workspace/components/integration-selection/integration-selection.component';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
 import { SelectTriggerSheetService } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.service';
@@ -60,34 +60,10 @@ export class SelectTriggerSheetComponent {
   schema: AutomationSchemaModel | null = null;
 
   readonly service = inject(SelectTriggerSheetService);
-  protected readonly TriggerSelectionStep = TriggerSelectionStep;
+  protected readonly TriggerSelectionStep = AutomationStepSelectionStep;
   protected readonly state = this.service.state;
 
   trigger = this.#workspaceStore.getTrigger;
-
-  title = computed(() => {
-    const step = this.service.state().selectionStep;
-    const titles: Record<TriggerSelectionStep, string> = {
-      [TriggerSelectionStep.MAIN]: 'Edit Trigger',
-      [TriggerSelectionStep.INTEGRATION]: 'Select Integration',
-      [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select Linked Integration',
-      [TriggerSelectionStep.TRIGGER]: 'Select Trigger',
-      [TriggerSelectionStep.PARAMETER]: '',
-    };
-    return titles[step];
-  });
-
-  description = computed(() => {
-    const step = this.service.state().selectionStep;
-    const descriptions: Record<TriggerSelectionStep, string> = {
-      [TriggerSelectionStep.MAIN]: 'Edit the trigger for this automation',
-      [TriggerSelectionStep.INTEGRATION]: 'Choose an integration to use',
-      [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select a linked account',
-      [TriggerSelectionStep.TRIGGER]: 'Choose a trigger event',
-      [TriggerSelectionStep.PARAMETER]: '',
-    };
-    return descriptions[step];
-  });
 
   constructor() {
     effect(async () => {
