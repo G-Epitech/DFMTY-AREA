@@ -58,8 +58,8 @@
         "Require": {
           "type": "string",
           "enum": [
-            "Single",
-            "Multiple"
+            "single",
+            "multiple"
           ]
         }
       },
