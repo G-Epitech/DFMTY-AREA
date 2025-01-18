@@ -10,23 +10,46 @@ class LeagueOfLegendsIntegrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
       extendBodyBehindAppBar: true,
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: BlocProvider(
-          create: (context) => LeagueOfLegendsIntegrationBloc(
-            leagueOfLegends:
-                context.read<IntegrationMediator>().leagueOfLegends,
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: kToolbarHeight + MediaQuery.of(context).padding.top + 8,
+              left: 12,
+              right: 12,
+              bottom: 12,
+            ),
+            child: BlocProvider(
+              create: (context) => LeagueOfLegendsIntegrationBloc(
+                leagueOfLegends:
+                    context.read<IntegrationMediator>().leagueOfLegends,
+              ),
+              child: const LeagueOfLegendsIntegrationForm(),
+            ),
           ),
-          child: const LeagueOfLegendsIntegrationForm(),
-        ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top,
+                left: 8,
+                right: 8,
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
