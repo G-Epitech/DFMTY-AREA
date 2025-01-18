@@ -350,6 +350,11 @@
             "Description": "The ID of the database to create the row in.",
             "Type": "string"
           },
+          "TitleParamName": {
+            "Name": "Title parameter name",
+            "Description": "The name of the parameter where the title of the row is displayed",
+            "Type": "string"
+          },
           "Title": {
             "Name": "Row title",
             "Description": "The title of the row to create.",
@@ -358,11 +363,6 @@
           "Type": {
             "Name": "Row type",
             "Description": "The type of the row to create (page or database).",
-            "Type": "string"
-          },
-          "Description": {
-            "Name": "Row description",
-            "Description": "The description of the row to create.",
             "Type": "string"
           },
           "Icon": {

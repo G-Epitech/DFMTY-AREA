@@ -112,19 +112,19 @@ public class NotionApiService : INotionApiService
         return new JsonObject { ["type"] = "emoji", ["emoji"] = icon };
     }
 
-    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title, string description,
         string icon, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+    public async Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title, string icon, CancellationToken cancellationToken = default)
     {
         var requestContent = new JsonObject
         {
-            ["parent"] = new JsonObject { ["page_id"] = parentId.Id.Value },
+            ["parent"] = new JsonObject { ["page_id"] = parentId.Value },
             ["icon"] = GetJsonIconFromString(icon),
             ["properties"] = new JsonObject
             {
@@ -151,10 +151,38 @@ public class NotionApiService : INotionApiService
         return _mapper.Map<NotionPage>(responseContent);
     }
 
-    public Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
-        string title, string description,
-        string icon, CancellationToken cancellationToken = default)
+    public async Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
+        string titleParamName, string title, string icon, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var requestContent = new JsonObject
+        {
+            ["parent"] = new JsonObject { ["database_id"] = parentId.Value },
+            ["icon"] = GetJsonIconFromString(icon),
+            ["properties"] = new JsonObject
+            {
+                [titleParamName] = new JsonObject
+                {
+                    ["title"] = new JsonArray
+                    {
+                        new JsonObject { ["text"] = new JsonObject { ["content"] = title } }
+                    }
+                }
+            }
+        };
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("pages", requestContent, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Services.Notion.ErrorDuringPostRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetNotionPageResponse>(_jsonSerializerOptions, cancellationToken);
+        if (responseContent is null)
+        {
+            return Errors.Services.Notion.InvalidBody;
+        }
+
+        return _mapper.Map<NotionPage>(responseContent);
     }
 }

@@ -8,18 +8,19 @@ using Zeus.Daemon.Domain.Providers.Notion.ValueObjects;
 
 namespace Zeus.Daemon.Application.Providers.Notion.ActionsHandlers;
 
-public class NotionCreatePageActionHandler
+public class NotionCreateDatabaseRowActionHandler
 {
     private readonly INotionApiService _notionApiService;
 
-    public NotionCreatePageActionHandler(INotionApiService notionApiService)
+    public NotionCreateDatabaseRowActionHandler(INotionApiService notionApiService)
     {
         _notionApiService = notionApiService;
     }
 
-    [ActionHandler("Notion.CreatePage")]
+    [ActionHandler("Notion.CreateDatabaseRow")]
     public async Task<ActionResult> RunAsync(
-        [FromParameters] string parentId,
+        [FromParameters] string databaseId,
+        [FromParameters] string titleParamName,
         [FromParameters] string title,
         [FromParameters] string icon,
         [FromIntegrations] NotionIntegration notionIntegration,
@@ -39,15 +40,15 @@ public class NotionCreatePageActionHandler
 
             var accessToken = new AccessToken(bearerToken.Value);
 
-            var pageId = new NotionPageId(parentId);
-            var page = await _notionApiService.CreatePageInPageAsync(accessToken, pageId, title,
-                icon, cancellationToken);
+            var page = await _notionApiService.CreatePageInDatabaseAsync(accessToken, new NotionDatabaseId(databaseId),
+                titleParamName, title, icon, cancellationToken);
 
             if (page.IsError)
             {
                 return new ActionError
                 {
-                    Message = "An error occurred while creating the page", Details = page.FirstError.Description
+                    Message = "An error occurred while creating the database row",
+                    Details = page.FirstError.Description
                 };
             }
 
@@ -57,7 +58,7 @@ public class NotionCreatePageActionHandler
         {
             return new ActionError
             {
-                Details = ex, InnerException = ex, Message = "An error occurred while creating the page"
+                Details = ex, InnerException = ex, Message = "An error occurred while creating the database row"
             };
         }
     }

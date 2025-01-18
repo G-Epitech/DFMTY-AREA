@@ -202,7 +202,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
                 {
                     var handler = _registeredNewDatabaseHandlers[automationId];
 
-                    await handler(automationId, newDatabase, CancellationToken.None);
+                    _ = handler(automationId, newDatabase, CancellationToken.None);
                 }
             }
 
@@ -228,7 +228,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
                 {
                     if (_registeredNewPageHandlers.TryGetValue(automationId, out var handler))
                     {
-                        await handler(automationId, newPage, CancellationToken.None);
+                        _ = handler(automationId, newPage, CancellationToken.None);
                     }
                 }
             }
@@ -240,7 +240,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
                 {
                     if (_registeredRemovePageHandlers.TryGetValue(automationId, out var handler))
                     {
-                        await handler(automationId, removedPage, CancellationToken.None);
+                        _ = handler(automationId, removedPage, CancellationToken.None);
                     }
                 }
             }

@@ -36,7 +36,7 @@ public interface INotionApiService
     /// <param name="icon">The icon, can be emoji or link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title,
         string description, string icon, CancellationToken cancellationToken = default);
 
@@ -49,7 +49,7 @@ public interface INotionApiService
     /// <param name="icon">The icon, can be emoji or link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+    public Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title, string icon, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -57,12 +57,11 @@ public interface INotionApiService
     /// </summary>
     /// <param name="accessToken">The workspace bot access token</param>
     /// <param name="parentId">The parent database id of the page</param>
+    /// <param name="titleParamName">The name of the parameter where the title of the row is displayed</param>
     /// <param name="title">The title of the page</param>
-    /// <param name="description">The description of the page</param>
     /// <param name="icon">The icon, can be emoji or link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
-        string title,
-        string description, string icon, CancellationToken cancellationToken = default);
+        string titleParamName, string title, string icon, CancellationToken cancellationToken = default);
 }
