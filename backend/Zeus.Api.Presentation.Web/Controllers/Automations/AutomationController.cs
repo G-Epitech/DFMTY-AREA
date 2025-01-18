@@ -33,6 +33,7 @@ public class AutomationController : ApiController
 
     [HttpPost(Name = "CreateAutomation")]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateAutomation(CreateAutomationRequest request)
     {
         var userId = _authUserContext.User is not null ? new UserId(_authUserContext.User.Id) : null;

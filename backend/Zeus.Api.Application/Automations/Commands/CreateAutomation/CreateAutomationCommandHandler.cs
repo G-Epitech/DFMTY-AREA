@@ -1,7 +1,5 @@
 using ErrorOr;
 
-using Humanizer;
-
 using MediatR;
 
 using Zeus.Api.Application.Interfaces.Repositories;
@@ -32,36 +30,36 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
     {
         public static Error MissingSingleDependency(IHasDependenciesSchema source, string dependency) => source switch
         {
-            ActionSchema _ => Errors.Automations.Action.MissingSingleDependency(dependency),
-            TriggerSchema _ => Errors.Automations.Trigger.MissingSingleDependency(dependency),
+            ActionSchema => Errors.Automations.Action.MissingSingleDependency(dependency),
+            TriggerSchema => Errors.Automations.Trigger.MissingSingleDependency(dependency),
             _ => throw new IndexOutOfRangeException()
         };
 
         public static Error MissingMultipleDependency(IHasDependenciesSchema source, string dependency) => source switch
         {
-            ActionSchema _ => Errors.Automations.Action.MissingMultipleDependency(dependency),
-            TriggerSchema _ => Errors.Automations.Trigger.MissingMultipleDependency(dependency),
+            ActionSchema => Errors.Automations.Action.MissingMultipleDependency(dependency),
+            TriggerSchema => Errors.Automations.Trigger.MissingMultipleDependency(dependency),
             _ => throw new IndexOutOfRangeException()
         };
 
         public static Error TooManyDependencies(IHasDependenciesSchema source, string dependency) => source switch
         {
-            ActionSchema _ => Errors.Automations.Action.TooManyDependencies(dependency),
-            TriggerSchema _ => Errors.Automations.Trigger.TooManyDependencies(dependency),
+            ActionSchema => Errors.Automations.Action.TooManyDependencies(dependency),
+            TriggerSchema => Errors.Automations.Trigger.TooManyDependencies(dependency),
             _ => throw new IndexOutOfRangeException()
         };
 
         public static Error NotFoundDependency(IHasDependenciesSchema source, IntegrationId dependency) => source switch
         {
-            ActionSchema _ => Errors.Automations.Action.NotFoundDependency(dependency),
-            TriggerSchema _ => Errors.Automations.Trigger.NotFoundDependency(dependency),
+            ActionSchema => Errors.Automations.Action.NotFoundDependency(dependency),
+            TriggerSchema => Errors.Automations.Trigger.NotFoundDependency(dependency),
             _ => throw new IndexOutOfRangeException()
         };
 
         public static Error InvalidDependencyType(IHasDependenciesSchema source, IntegrationId dependency, IntegrationType type) => source switch
         {
-            ActionSchema _ => Errors.Automations.Action.InvalidDependencyType(dependency, type),
-            TriggerSchema _ => Errors.Automations.Trigger.InvalidDependencyType(dependency, type),
+            ActionSchema => Errors.Automations.Action.InvalidDependencyType(dependency, type),
+            TriggerSchema => Errors.Automations.Trigger.InvalidDependencyType(dependency, type),
             _ => throw new IndexOutOfRangeException()
         };
     }
@@ -108,9 +106,8 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         (string? provider, string? trigger) = ProvidersSettings.ExplodeIdentifier(command.Identifier);
         var schema = provider is not null ? _providersSettings.GetProviderSchema(provider) : null;
-        var identifier = $"{provider}.{trigger}";
 
-        if (!_providersSettings.IsTriggerIdentifierValid(identifier) || schema is null || provider is null || trigger is null)
+        if (!_providersSettings.IsTriggerIdentifierValid(command.Identifier) || schema is null || provider is null || trigger is null)
         {
             return Errors.Automations.Trigger.InvalidIdentifier;
         }
@@ -149,7 +146,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         #endregion
 
-        return AutomationTrigger.Create(identifier, parameters.Value, dependencies.Value);
+        return AutomationTrigger.Create(command.Identifier, parameters.Value, dependencies.Value);
     }
 
     private static ErrorOr<List<AutomationTriggerParameter>> CreateTriggerParameters(CreateAutomationTriggerCommand command, TriggerSchema schema)
@@ -170,9 +167,8 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
     private static ErrorOr<AutomationTriggerParameter> CreateTriggerParameter(CreateAutomationTriggerParameterCommand command, TriggerSchema schema)
     {
-        var identifier = command.Identifier.Pascalize()!;
 
-        if (!schema.Parameters.TryGetValue(identifier, out var parameterSchema))
+        if (!schema.Parameters.TryGetValue(command.Identifier, out var parameterSchema))
         {
             return Errors.Automations.Trigger.InvalidParameterIdentifier;
         }
@@ -182,7 +178,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
             return Errors.Automations.Trigger.InvalidParameterValue;
         }
 
-        return new AutomationTriggerParameter { Identifier = identifier, Value = command.Value, };
+        return new AutomationTriggerParameter { Identifier = command.Identifier, Value = command.Value, };
     }
 
     private ErrorOr<List<AutomationAction>> CreateActions(List<CreateAutomationActionCommand> commands, CreationContext ctx)
@@ -210,9 +206,8 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         (string? provider, string? action) = ProvidersSettings.ExplodeIdentifier(command.Identifier);
         var schema = provider is not null ? _providersSettings.GetProviderSchema(provider) : null;
-        var identifier = $"{provider}.{action}";
 
-        if (!_providersSettings.IsActionIdentifierValid(identifier) || schema is null || provider is null || action is null)
+        if (!_providersSettings.IsActionIdentifierValid(command.Identifier) || schema is null || provider is null || action is null)
         {
             return Errors.Automations.Action.InvalidIdentifier;
         }
@@ -251,7 +246,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
         #endregion
 
-        return AutomationAction.Create(identifier, rank, parameters.Value, dependencies.Value);
+        return AutomationAction.Create(command.Identifier, rank, parameters.Value, dependencies.Value);
     }
 
     private static ErrorOr<List<AutomationActionParameter>> CreateActionParameters(CreateAutomationActionCommand command, ActionSchema schema, CreationContext ctx)
@@ -272,9 +267,8 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
 
     private static ErrorOr<AutomationActionParameter> CreateActionParameter(CreateAutomationActionParameterCommand command, ActionSchema schema, CreationContext ctx)
     {
-        var identifier = command.Identifier.Pascalize()!;
 
-        if (!schema.Parameters.TryGetValue(identifier, out var parameterSchema))
+        if (!schema.Parameters.TryGetValue(command.Identifier, out var parameterSchema))
         {
             return Errors.Automations.Action.InvalidParameterIdentifier;
         }
@@ -289,7 +283,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
             {
                 return Errors.Automations.Action.InvalidParameterReferenceType(command.Value, refSchema.Type, parameterSchema.Type);
             }
-            return new AutomationActionParameter { Identifier = identifier, Value = command.Value, Type = AutomationActionParameterType.Var };
+            return new AutomationActionParameter { Identifier = command.Identifier, Value = command.Value, Type = AutomationActionParameterType.Var };
         }
 
 
@@ -298,7 +292,7 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
             return Errors.Automations.Action.InvalidParameterValue(command.Value, parameterSchema.Type);
         }
 
-        return new AutomationActionParameter { Identifier = identifier, Value = command.Value, Type = AutomationActionParameterType.Raw };
+        return new AutomationActionParameter { Identifier = command.Identifier, Value = command.Value, Type = AutomationActionParameterType.Raw };
     }
 
     private Task<Dictionary<IntegrationId, IntegrationType>> GetAutomationDependencies(CreateAutomationCommand command)

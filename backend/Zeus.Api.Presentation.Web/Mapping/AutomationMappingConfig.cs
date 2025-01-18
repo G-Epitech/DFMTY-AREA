@@ -22,7 +22,7 @@ public class AutomationMappingConfig : IRegister
 
         config.NewConfig<AutomationTrigger, GetAutomationTriggerResponse>()
             .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
-        
+
         config.NewConfig<AutomationAction, GetAutomationActionResponse>()
             .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
     }

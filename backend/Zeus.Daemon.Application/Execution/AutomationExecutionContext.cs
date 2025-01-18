@@ -1,7 +1,5 @@
 using System.Reflection;
 
-using Microsoft.Extensions.Logging;
-
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Enums;

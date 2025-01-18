@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-using Humanizer;
-
 namespace Zeus.Common.Domain.ProvidersSettings;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -66,7 +64,7 @@ public class ProvidersSettings
     {
         var parts = identifier.Split('.');
 
-        return parts.Length == 2 ? (parts[0].Pascalize(), parts[1].Pascalize()) : (null, null);
+        return parts.Length == 2 ? (parts[0], parts[1]) : (null, null);
     }
 
     public bool IsTriggerIdentifierValid(string identifier)
