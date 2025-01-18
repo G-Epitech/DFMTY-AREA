@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable } from '@angular/core';
 import { EditSheetService } from '@features/automations/workspace/components/edit-sheets/edit-sheet.service';
 import { patchState, signalState } from '@ngrx/signals';
 import {
@@ -21,13 +21,13 @@ import { IntegrationModel } from '@models/integration';
 import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 import { firstValueFrom } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
-import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 
 @Injectable()
 export class SelectActionSheetService extends EditSheetService {
   readonly #paramEditService = inject(AutomationParameterEditService);
-  readonly #workspaceStore = inject(AutomationWorkspaceStore);
+  readonly #workspaceStore = inject(AutomationsWorkspaceStore);
   readonly #integrationsMediator = inject(IntegrationsMediator);
 
   state = signalState<SelectActionSheetState>({
@@ -38,6 +38,26 @@ export class SelectActionSheetService extends EditSheetService {
 
   constructor() {
     super();
+    effect(() => {
+      if (
+        this.state().selectedAction &&
+        this.baseState().selectedLinkedIntegration &&
+        this.baseState().selectedIntegration
+      ) {
+        this.saveDisabled.set(false);
+        const params = this.#paramEditService.currentParameters();
+        this.valid.set(true);
+        for (const param of params) {
+          if (param.value === null) {
+            this.valid.set(false);
+            break;
+          }
+        }
+      } else {
+        this.saveDisabled.set(true);
+        this.valid.set(null);
+      }
+    });
   }
 
   async initialize(
@@ -173,7 +193,7 @@ export class SelectActionSheetService extends EditSheetService {
     ].description;
   }
 
-  save() {
+  save(actionIdx: number) {
     const currentAction = this.state().action;
     if (!currentAction) {
       return;
@@ -187,7 +207,7 @@ export class SelectActionSheetService extends EditSheetService {
 
     if (this.#workspaceStore.getAutomation()) {
       this.#workspaceStore.updateActions({
-        idx: this.state().actionIndex,
+        idx: actionIdx,
         action: updatedAction,
       });
     }

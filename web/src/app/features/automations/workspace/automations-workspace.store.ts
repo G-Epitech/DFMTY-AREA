@@ -30,7 +30,7 @@ const initialState: AutomationWorkspaceState = {
   loading: false,
 };
 
-export const AutomationWorkspaceStore = signalStore(
+export const AutomationsWorkspaceStore = signalStore(
   withState(initialState),
   withComputed(store => ({
     getAutomation: computed(() => {
@@ -71,6 +71,10 @@ export const AutomationWorkspaceStore = signalStore(
       pipe(
         tap(({ idx, action }) => {
           const currentAutomation = store.automation();
+          if (currentAutomation.actions.length < idx) {
+            return;
+          }
+
           const updatedActions = [...currentAutomation.actions];
           updatedActions[idx] = action;
           const updatedAutomation = new AutomationModel(
@@ -92,7 +96,7 @@ export const AutomationWorkspaceStore = signalStore(
 
     getAction: (idx: number) =>
       computed(() => {
-        if (store.automation().actions.length <= idx) {
+        if (store.automation().actions.length < idx) {
           return null;
         }
         return store.automation().actions[idx];

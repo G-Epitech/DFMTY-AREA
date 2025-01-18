@@ -1,7 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed, effect,
+  computed,
+  effect,
   inject,
   input,
 } from '@angular/core';
@@ -31,12 +32,8 @@ import { ActionCardComponent } from '@features/automations/workspace/components/
 import { ActionParameter, AutomationSchemaAction } from '@models/automation';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
-import {
-  AddStepButtonComponent
-} from '@features/automations/workspace/components/add-step-button/add-step-button.component';
-import {
-  ActionSelectionComponent
-} from '@features/automations/workspace/components/edit-sheets/select-action-sheet/action-selection/action-selection.component';
+import { AddStepButtonComponent } from '@features/automations/workspace/components/add-step-button/add-step-button.component';
+import { ActionSelectionComponent } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/action-selection/action-selection.component';
 
 @Component({
   selector: 'tr-select-action-sheet',
@@ -74,7 +71,7 @@ export class SelectActionSheetComponent extends EditSheetComponentBase {
   actionIndex = input.required<number>();
 
   action = computed(() => {
-    if (this.actionIndex()) {
+    if (this.actionIndex() !== undefined) {
       return this.workspaceStore.getAction(this.actionIndex())();
     } else {
       return null;
@@ -90,7 +87,11 @@ export class SelectActionSheetComponent extends EditSheetComponentBase {
       const schema = this.schemaStore.getSchema();
       if (schema && this.actionIndex() !== undefined) {
         this.schema = schema;
-        await this.service.initialize(this.action(), schema, this.actionIndex());
+        await this.service.initialize(
+          this.action(),
+          schema,
+          this.actionIndex()!
+        );
       }
     });
   }
@@ -110,5 +111,9 @@ export class SelectActionSheetComponent extends EditSheetComponentBase {
 
   onActionSelected(action: AutomationSchemaAction) {
     this.service.selectAction(action, this.schema);
+  }
+
+  onSave() {
+    this.service.save(this.actionIndex());
   }
 }

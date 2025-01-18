@@ -14,7 +14,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
-import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
 import {
   stateUpdaterSelectIntegration,
   stateUpdaterSelectLinkedIntegration,
@@ -27,7 +27,7 @@ import { AutomationParameterFormatType } from '@models/automation/automation-par
 export class SelectTriggerSheetService extends EditSheetService {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #paramEditService = inject(AutomationParameterEditService);
-  readonly #workspaceStore = inject(AutomationWorkspaceStore);
+  readonly #workspaceStore = inject(AutomationsWorkspaceStore);
 
   constructor() {
     super();

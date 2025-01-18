@@ -1,7 +1,7 @@
 <tr-sheet side="right">
-  <button brnSheetTrigger class="w-full">
+  <button brnSheetTrigger class="w-full flex items-center justify-center">
     @if (sheetTrigger() === 'action-card') {
-      <tr-action-card [action]="action()" />
+      <tr-action-card [action]="action()" class="w-full" />
     } @else {
       <tr-add-step-button />
     }
@@ -112,7 +112,8 @@
           trBtn
           type="submit"
           class="w-[50%] flex flex-row gap-2 items-center"
-          [disabled]="service.saveDisabled()" (click)="service.save()">
+          [disabled]="service.saveDisabled()"
+          (click)="onSave()">
           Save
           @if (service.valid() === false) {
             <ng-icon

@@ -21,7 +21,7 @@
         @if (automation().trigger) {
           <div
             class="border-r-4 border-secondary-foreground h-[1.6rem] w-[0rem] border-dashed box-content"></div>
-          @if (!automation().actions.length) {
+          @if (automation().actions.length === 0) {
             <tr-select-action-sheet
               class="w-full"
               [actionIndex]="0"
@@ -39,7 +39,7 @@
           @if ($last) {
             <tr-select-action-sheet
               class="w-full"
-              [actionIndex]="$index"
+              [actionIndex]="$index + 1"
               sheetTrigger="add-button" />
           }
         }
