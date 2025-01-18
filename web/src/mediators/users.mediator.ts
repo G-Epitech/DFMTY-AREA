@@ -3,19 +3,16 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import {
-  ActionShortModel,
-  AutomationModel,
-  TriggerShortModel,
-} from '@models/automation';
+import { AutomationModel, TriggerModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
-import { ActionShortDTO } from '@repositories/automations/dto';
+import { AutomationMapperService } from '@mediators/mappers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersMediator {
   readonly #usersRepository = inject(UsersRepository);
+  readonly #automationMapper = inject(AutomationMapperService);
 
   getById(id: string): Observable<UserModel> {
     return this.#usersRepository
@@ -88,26 +85,15 @@ export class UsersMediator {
               automation.updatedAt,
               '#EE883A',
               'chat-bubble-bottom-center-text',
-              new TriggerShortModel(
+              new TriggerModel(
                 automation.trigger.identifier,
                 automation.trigger.parameters,
                 automation.trigger.dependencies
               ),
-              this._mapActions(automation.actions)
+              this.#automationMapper.mapActions(automation.actions)
             )
         ),
       }))
-    );
-  }
-
-  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
-    return actions.map(
-      action =>
-        new ActionShortModel(
-          action.identifier,
-          action.parameters,
-          action.dependencies
-        )
     );
   }
 }

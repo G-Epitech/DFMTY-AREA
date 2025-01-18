@@ -44,7 +44,7 @@ export class IntegrationAddDialogComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   readonly #linkFunctions: Record<string, LinkFunction> = {
-    discord: () => {
+    Discord: () => {
       this.#integrationsMediator.discordRepository.getUri().subscribe({
         next: uri => {
           if (!uri) {
@@ -57,7 +57,7 @@ export class IntegrationAddDialogComponent {
         },
       });
     },
-    notion: () => {
+    Notion: () => {
       this.#notionMediator.getUri().subscribe({
         next: uri => {
           if (!uri) {

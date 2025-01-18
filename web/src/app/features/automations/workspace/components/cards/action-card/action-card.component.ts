@@ -7,7 +7,7 @@ import {
   input,
 } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { ActionShortModel, AutomationSchemaModel } from '@models/automation';
+import { ActionModel, AutomationSchemaModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconNameFromIdentifier } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
@@ -24,7 +24,7 @@ export class ActionCardComponent {
   readonly #schemaStore = inject(SchemaStore);
 
   schema: AutomationSchemaModel | null = null;
-  action = input.required<ActionShortModel>();
+  action = input.required<ActionModel>();
 
   color = computed(() => {
     const action = this.action();

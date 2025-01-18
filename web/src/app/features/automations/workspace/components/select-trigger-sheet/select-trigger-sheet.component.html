@@ -56,6 +56,16 @@
               [integration]="state().selectedLinkedIntegration!"
               (click)="service.goToLinkedInegrationSelection()" />
           }
+          @if (state().selectedTrigger && state().selectedLinkedIntegration) {
+            <tr-automation-parameter-list
+              class="mt-4"
+              [parameters]="state().trigger!.parameters"
+              (editParameter)="onParameterEdit($event)" />
+          } @else {
+            <span class="text-muted tr-medium">
+              Select a Trigger and Linked Integration to view parameters
+            </span>
+          }
         }
         @case (TriggerSelectionStep.INTEGRATION) {
           <tr-integration-selection
@@ -66,7 +76,7 @@
           <tr-linked-integration-selection
             class="h-full"
             [selectedIntegrationIdentifier]="
-              service.state().selectedIntegration!.identifier
+              service.state().trigger!.integration
             "
             (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
@@ -76,11 +86,31 @@
             [integration]="service.state().selectedIntegration!"
             (triggerSelected)="onTriggerSelected($event)" />
         }
+        @case (TriggerSelectionStep.PARAMETER) {
+          <tr-automation-parameter-edit
+            [integrationId]="service.state().selectedLinkedIntegration!.id"
+            [parameter]="service.state().selectedParameter!"
+            [parameterDescription]="service.getSelectedParameterDescription()"
+            [parameterType]="service.state().selecterParameterType!" />
+        }
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
       @if (state().selectionStep === TriggerSelectionStep.MAIN) {
-        <button trBtn type="submit" class="w-[50%]">Save</button>
+        <button
+          trBtn
+          type="submit"
+          class="w-[50%] flex flex-row gap-2 items-center"
+          [disabled]="service.saveDisabled()"
+          (click)="service.save()">
+          Save
+          @if (service.valid() === false) {
+            <ng-icon
+              name="heroExclamationTriangle"
+              size="1rem"
+              strokeWidth="0.1rem" />
+          }
+        </button>
       } @else {
         <button trBtn class="w-[50%]" variant="outline" (click)="onBack()">
           Back

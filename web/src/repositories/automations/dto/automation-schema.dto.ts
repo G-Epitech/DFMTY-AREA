@@ -1,44 +1,44 @@
-export interface DependencyDTO {
+export interface AutomationSchemaDependencyDTO {
   require: string;
   optional: boolean;
 }
 
-export interface AutomationParameterDTO {
+export interface AutomationSchemaParameterDTO {
   name: string;
   description: string;
   type: string;
 }
 
-export interface AutomationFactDTO {
+export interface AutomationSchemaFactDTO {
   name: string;
   description: string;
   type: string;
 }
 
-export interface TriggerDTO {
+export interface AutomationSchemaTriggerDTO {
   name: string;
   description: string;
   icon: string;
-  parameters: Record<string, AutomationParameterDTO>;
-  facts: Record<string, AutomationFactDTO>;
-  dependencies: Record<string, DependencyDTO>;
+  parameters: Record<string, AutomationSchemaParameterDTO>;
+  facts: Record<string, AutomationSchemaFactDTO>;
+  dependencies: Record<string, AutomationSchemaDependencyDTO>;
 }
 
-export interface ActionDTO {
+export interface AutomationSchemaActionDTO {
   name: string;
   description: string;
   icon: string;
-  parameters: Record<string, AutomationParameterDTO>;
-  facts: Record<string, AutomationFactDTO>;
-  dependencies: Record<string, DependencyDTO>;
+  parameters: Record<string, AutomationSchemaParameterDTO>;
+  facts: Record<string, AutomationSchemaFactDTO>;
+  dependencies: Record<string, AutomationSchemaDependencyDTO>;
 }
 
 export interface AutomationServiceDTO {
   name: string;
   iconUri: string;
   color: string;
-  triggers: Record<string, TriggerDTO>;
-  actions: Record<string, ActionDTO>;
+  triggers: Record<string, AutomationSchemaTriggerDTO>;
+  actions: Record<string, AutomationSchemaActionDTO>;
 }
 
 export type AutomationSchemaDTO = Record<string, AutomationServiceDTO>;

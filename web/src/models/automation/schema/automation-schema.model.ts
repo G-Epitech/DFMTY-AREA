@@ -1,6 +1,9 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
 import { AvailableIntegrationType } from '@common/types';
-import { AutomationSchemaTrigger } from '@models/automation';
+import {
+  AutomationParameterType,
+  AutomationSchemaTrigger,
+} from '@models/automation';
 
 export class AutomationSchemaModel {
   readonly automationServices: Record<string, AutomationSchemaService>;
@@ -157,5 +160,54 @@ export class AutomationSchemaModel {
       }
     }
     return null;
+  }
+
+  getAvailableIntegrationByIdentifier(
+    integrationIdentifier: string
+  ): AvailableIntegrationType | null {
+    const value = this.automationServices[integrationIdentifier];
+    if (!value) {
+      return null;
+    }
+    return {
+      color: value.color,
+      name: value.name,
+      iconUri: value.iconUri,
+      identifier: integrationIdentifier,
+      triggers: Object.entries(value.triggers).map(
+        ([, trigger]) => trigger.name
+      ),
+      actions: Object.entries(value.actions).map(([, action]) => action.name),
+    };
+  }
+
+  getTriggerIdentifier(integrationName: string, triggerName: string) {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [key, trigger] of Object.entries(value.triggers)) {
+          if (trigger.name === triggerName) {
+            return key;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  getTriggerParameterType(
+    integrationName: string,
+    triggerName: string,
+    parameterName: string
+  ): AutomationParameterType {
+    for (const [, value] of Object.entries(this.automationServices)) {
+      if (value.name == integrationName) {
+        for (const [, trigger] of Object.entries(value.triggers)) {
+          if (trigger.name === triggerName) {
+            return trigger.parameters[parameterName].type;
+          }
+        }
+      }
+    }
+    return AutomationParameterType.STRING;
   }
 }

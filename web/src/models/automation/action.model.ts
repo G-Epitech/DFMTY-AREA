@@ -1,11 +1,19 @@
-export class ActionShortModel {
+import { AutomationParameterType } from '@models/automation/automation-parameter-type';
+
+export interface ActionParameter {
+  readonly type: AutomationParameterType;
   readonly identifier: string;
-  readonly parameters: { type: string; identifier: string; value: string }[];
+  readonly value: string;
+}
+
+export class ActionModel {
+  readonly identifier: string;
+  readonly parameters: ActionParameter[];
   readonly dependencies: string[];
 
   constructor(
     identifier: string,
-    parameters: { type: string; identifier: string; value: string }[],
+    parameters: ActionParameter[],
     dependencies: string[]
   ) {
     this.identifier = identifier;

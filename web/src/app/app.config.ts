@@ -25,10 +25,13 @@ import {
   heroInformationCircle,
   heroChatBubbleOvalLeftEllipsis,
   heroPlus,
+  heroPlusCircle,
+  heroPencil,
   heroArrowLeftStartOnRectangle,
   heroCog6Tooth,
   heroUser,
   heroRocketLaunch,
+  heroHashtag,
 } from '@ng-icons/heroicons/outline';
 import * as heroiconsSolid from '@ng-icons/heroicons/solid';
 import { provideToastr } from 'ngx-toastr';
@@ -63,10 +66,13 @@ export const appConfig: ApplicationConfig = {
       heroInformationCircle,
       heroChatBubbleOvalLeftEllipsis,
       heroPlus,
+      heroPlusCircle,
+      heroPencil,
       heroArrowLeftStartOnRectangle,
       heroCog6Tooth,
       heroUser,
       heroRocketLaunch,
+      heroHashtag,
     }),
     provideAnimations(),
     provideToastr({

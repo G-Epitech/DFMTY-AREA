@@ -4,7 +4,6 @@ import {
   computed,
   effect,
   inject,
-  input,
 } from '@angular/core';
 import { TrSheetImports } from '@triggo-ui/sheet';
 import { TrButtonDirective } from '@triggo-ui/button';
@@ -13,7 +12,7 @@ import { TriggerCardComponent } from '@features/automations/workspace/components
 import {
   AutomationSchemaModel,
   AutomationSchemaTrigger,
-  TriggerShortModel,
+  TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TriggerSelectionStep } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.types';
@@ -27,6 +26,9 @@ import { TriggerSelectionButtonComponent } from '@features/automations/workspace
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
 import { SchemaStore } from '@app/store/schema-store';
+import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
+import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
+import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
 
 @Component({
   standalone: true,
@@ -43,6 +45,8 @@ import { SchemaStore } from '@app/store/schema-store';
     LinkedIntegrationButtonComponent,
     TriggerSelectionComponent,
     TriggerSelectionButtonComponent,
+    AutomationParameterListComponent,
+    AutomationParameterEditComponent,
   ],
   templateUrl: './select-trigger-sheet.component.html',
   styles: [],
@@ -51,6 +55,7 @@ import { SchemaStore } from '@app/store/schema-store';
 })
 export class SelectTriggerSheetComponent {
   readonly #schemaStore = inject(SchemaStore);
+  readonly #workspaceStore = inject(AutomationWorkspaceStore);
 
   schema: AutomationSchemaModel | null = null;
 
@@ -58,7 +63,7 @@ export class SelectTriggerSheetComponent {
   protected readonly TriggerSelectionStep = TriggerSelectionStep;
   protected readonly state = this.service.state;
 
-  trigger = input.required<TriggerShortModel | null>();
+  trigger = this.#workspaceStore.getTrigger;
 
   title = computed(() => {
     const step = this.service.state().selectionStep;
@@ -67,6 +72,7 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Select Integration',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select Linked Integration',
       [TriggerSelectionStep.TRIGGER]: 'Select Trigger',
+      [TriggerSelectionStep.PARAMETER]: '',
     };
     return titles[step];
   });
@@ -78,16 +84,17 @@ export class SelectTriggerSheetComponent {
       [TriggerSelectionStep.INTEGRATION]: 'Choose an integration to use',
       [TriggerSelectionStep.LINKED_INTEGRATION]: 'Select a linked account',
       [TriggerSelectionStep.TRIGGER]: 'Choose a trigger event',
+      [TriggerSelectionStep.PARAMETER]: '',
     };
     return descriptions[step];
   });
 
   constructor() {
-    effect(() => {
+    effect(async () => {
       const schema = this.#schemaStore.getSchema();
       if (schema) {
         this.schema = schema;
-        this.service.initialize(this.trigger(), schema);
+        await this.service.initialize(this.trigger(), schema);
       }
     });
   }
@@ -103,7 +110,12 @@ export class SelectTriggerSheetComponent {
   }
 
   protected onTriggerSelected(trigger: AutomationSchemaTrigger): void {
-    this.service.selectTrigger(trigger);
+    this.service.selectTrigger(trigger, this.schema);
+  }
+
+  protected onParameterEdit(param: TriggerParameter): void {
+    this.service.goToParameterEdit();
+    this.service.selectParameter(param, this.schema);
   }
 
   protected onBack(): void {

@@ -1,4 +1,4 @@
-export interface ActionShortDTO {
+export interface ActionDTO {
   identifier: string;
   parameters: {
     type: string;

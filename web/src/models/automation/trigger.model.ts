@@ -1,11 +1,16 @@
-export class TriggerShortModel {
+export interface TriggerParameter {
+  identifier: string;
+  value: string | null;
+}
+
+export class TriggerModel {
   readonly identifier: string;
-  readonly parameters: { identifier: string; value: string }[];
-  readonly dependencies: string[];
+  parameters: TriggerParameter[];
+  dependencies: string[];
 
   constructor(
     identifier: string,
-    parameters: { identifier: string; value: string }[],
+    parameters: TriggerParameter[],
     dependencies: string[]
   ) {
     this.identifier = identifier;
@@ -19,5 +24,9 @@ export class TriggerShortModel {
 
   get nameIdentifier(): string {
     return this.identifier.split('.')[1];
+  }
+
+  addDependency(dependency: string): void {
+    this.dependencies.push(dependency);
   }
 }

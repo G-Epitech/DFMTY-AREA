@@ -3,4 +3,5 @@ export enum TriggerSelectionStep {
   INTEGRATION,
   LINKED_INTEGRATION,
   TRIGGER,
+  PARAMETER,
 }

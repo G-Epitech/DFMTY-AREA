@@ -7,7 +7,7 @@ import {
   input,
 } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { AutomationSchemaModel, TriggerShortModel } from '@models/automation';
+import { AutomationSchemaModel, TriggerModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconNameFromIdentifier } from '@utils/icon';
 import { NgIcon } from '@ng-icons/core';
@@ -25,7 +25,7 @@ export class TriggerCardComponent {
 
   schema: AutomationSchemaModel | null = null;
 
-  trigger = input.required<TriggerShortModel | null>();
+  trigger = input.required<TriggerModel | null>();
 
   color = computed(() => {
     const trigger = this.trigger();

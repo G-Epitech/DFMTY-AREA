@@ -1,13 +1,13 @@
-import { TriggerShortDTO } from '@repositories/automations/dto/trigger-short.dto';
-import { ActionShortDTO } from '@repositories/automations/dto/action-short.dto';
+import { TriggerDTO } from '@repositories/automations/dto/trigger.dto';
+import { ActionDTO } from '@repositories/automations/dto/action.dto';
 
 export interface AutomationDTO {
   id: string;
   label: string;
   description: string;
   ownerId: string;
-  trigger: TriggerShortDTO;
-  actions: ActionShortDTO[];
+  trigger: TriggerDTO;
+  actions: ActionDTO[];
   enabled: boolean;
   updatedAt: Date;
 }
