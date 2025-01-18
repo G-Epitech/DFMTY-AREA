@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import {
+  AutomationSchemaAction,
   AutomationSchemaModel,
   AutomationSchemaTrigger,
 } from '@models/automation';
@@ -30,7 +31,7 @@ export class TriggerSelectionButtonComponent {
 
   schema: AutomationSchemaModel | null | undefined = null;
 
-  trigger = input.required<AutomationSchemaTrigger>();
+  automationEvent = input.required<AutomationSchemaTrigger | AutomationSchemaAction>();
 
   color = signal<string | null>('');
   icon = signal<string>('');
@@ -47,7 +48,7 @@ export class TriggerSelectionButtonComponent {
       }
     });
     effect(() => {
-      this.icon.set(iconNameFromIdentifier(this.trigger().icon));
+      this.icon.set(iconNameFromIdentifier(this.automationEvent().icon));
     });
   }
 }

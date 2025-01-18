@@ -1,7 +1,7 @@
 import { AutomationSchemaService } from '@models/automation/schema/automations-schema-service';
 import { AvailableIntegrationType } from '@common/types';
 import {
-  AutomationParameterType,
+  AutomationParameterValueType,
   AutomationSchemaTrigger,
 } from '@models/automation';
 
@@ -198,7 +198,7 @@ export class AutomationSchemaModel {
     integrationName: string,
     triggerName: string,
     parameterName: string
-  ): AutomationParameterType {
+  ): AutomationParameterValueType {
     for (const [, value] of Object.entries(this.automationServices)) {
       if (value.name == integrationName) {
         for (const [, trigger] of Object.entries(value.triggers)) {
@@ -208,6 +208,6 @@ export class AutomationSchemaModel {
         }
       }
     }
-    return AutomationParameterType.STRING;
+    return AutomationParameterValueType.STRING;
   }
 }

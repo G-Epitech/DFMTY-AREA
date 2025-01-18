@@ -10,6 +10,7 @@ import { PascalToPhrasePipe } from '@app/pipes';
 import { NgIcon } from '@ng-icons/core';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 import { TrButtonDirective } from '@triggo-ui/button';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Component({
   selector: 'tr-automation-parameter-list',
@@ -24,12 +25,17 @@ export class AutomationParameterListComponent {
 
   parameters = input.required<
     {
+      type: AutomationParameterFormatType;
       identifier: string;
       value: string | null;
     }[]
   >();
 
-  editParameter = output<{ identifier: string; value: string | null }>();
+  editParameter = output<{
+    type: AutomationParameterFormatType;
+    identifier: string;
+    value: string | null;
+  }>();
 
   constructor() {
     effect(() => {

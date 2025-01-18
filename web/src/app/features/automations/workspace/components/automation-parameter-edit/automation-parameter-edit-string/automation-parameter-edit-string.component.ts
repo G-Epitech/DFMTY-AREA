@@ -8,7 +8,7 @@ import {
   ParameterEditDynamicComponent,
   ParameterEditOutput,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
-import { AutomationParameterType } from '@models/automation';
+import { AutomationParameterValueType } from '@models/automation';
 
 @Component({
   selector: 'tr-automation-parameter-edit-string',
@@ -22,7 +22,7 @@ export class AutomationParameterEditStringComponent
   implements ParameterEditDynamicComponent
 {
   parameter!: { identifier: string; value: string | null };
-  parameterType!: AutomationParameterType;
+  parameterType!: AutomationParameterValueType;
   valueChange = new EventEmitter<ParameterEditOutput>();
 
   onValueChange(event: Event): void {

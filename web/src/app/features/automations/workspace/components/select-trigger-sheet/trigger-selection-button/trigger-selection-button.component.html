@@ -3,12 +3,12 @@
   [ngStyle]="{
     border: color() ? '2px solid ' + color() : 'none',
   }">
-  @if (trigger()) {
+  @if (automationEvent()) {
     <div
       [style.background-color]="color()"
       class="p-2 flex items-center justify-center rounded-md">
       <ng-icon [name]="icon()" size="1.4rem" class="text-white" />
     </div>
   }
-  <span class="tr-large">{{ trigger().name }}</span>
+  <span class="tr-large">{{ automationEvent().name }}</span>
 </button>

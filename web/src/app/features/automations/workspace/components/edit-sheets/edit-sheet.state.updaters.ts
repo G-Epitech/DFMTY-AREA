@@ -3,7 +3,7 @@ import { PartialStateUpdater } from '@ngrx/signals';
 import { EditSheetStateInterface } from '@features/automations/workspace/components/edit-sheets/edit-sheet.state.interface';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
-import { AutomationStepSelectionStep } from '@features/automations/workspace/components/edit-sheets/edit-sheet.types';
+import { AutomationStepSelectionType } from '@features/automations/workspace/components/edit-sheets/edit-sheet.types';
 
 export function stateUpdaterBack(): PartialStateUpdater<EditSheetStateInterface> {
   return (state: EditSheetStateInterface) => {
@@ -43,7 +43,7 @@ export function stateUpdaterSelectLinkedIntegration(
 }
 
 export function stateUpdaterGoTo(
-  step: AutomationStepSelectionStep
+  step: AutomationStepSelectionType
 ): PartialStateUpdater<EditSheetStateInterface> {
   return (state: EditSheetStateInterface) => {
     return {

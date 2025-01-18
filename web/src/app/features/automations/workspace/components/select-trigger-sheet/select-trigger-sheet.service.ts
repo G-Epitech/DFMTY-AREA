@@ -21,6 +21,7 @@ import {
 } from '@features/automations/workspace/components/edit-sheets/edit-sheet.state.updaters';
 import { EditSheetService } from '@features/automations/workspace/components/edit-sheets/edit-sheet.service';
 import { AvailableIntegrationType } from '@common/types';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Injectable()
 export class SelectTriggerSheetService extends EditSheetService {
@@ -55,8 +56,6 @@ export class SelectTriggerSheetService extends EditSheetService {
   state = signalState<SelectTriggerSheetState>({
     selectedTrigger: null,
     trigger: null,
-    selectedParameter: null,
-    selecterParameterType: null,
   });
 
   async initialize(
@@ -82,10 +81,13 @@ export class SelectTriggerSheetService extends EditSheetService {
       automationTrigger.nameIdentifier
     );
 
-    patchState(this.state, state => ({
+    patchState(this.baseState, state => ({
       ...state,
       selectedIntegration: integration,
       selectedLinkedIntegration: linkedIntegration,
+    }));
+    patchState(this.state, state => ({
+      ...state,
       selectedTrigger: trigger,
       trigger: automationTrigger,
     }));
@@ -103,7 +105,7 @@ export class SelectTriggerSheetService extends EditSheetService {
       this.state().selectedTrigger!.name,
       parameter.identifier
     );
-    patchState(this.state, state => ({
+    patchState(this.baseState, state => ({
       ...state,
       selectedParameter: parameter,
       selecterParameterType: parameterType,
@@ -164,6 +166,7 @@ export class SelectTriggerSheetService extends EditSheetService {
       key => ({
         identifier: key,
         value: null,
+        type: AutomationParameterFormatType.RAW,
       })
     );
     if (schemaTriggerIdentifier) {
@@ -181,7 +184,7 @@ export class SelectTriggerSheetService extends EditSheetService {
 
   getSelectedParameterDescription(): string | undefined {
     return this.state().selectedTrigger?.parameters[
-      this.state().selectedParameter!.identifier
+      this.baseState().selectedParameter!.identifier
     ].description;
   }
 

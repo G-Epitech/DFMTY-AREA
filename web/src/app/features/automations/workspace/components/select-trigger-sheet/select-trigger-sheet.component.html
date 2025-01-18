@@ -9,7 +9,7 @@
     </tr-sheet-header>
     <div class="h-full flex flex-col gap-4">
       @switch (service.baseState().selectionStep) {
-        @case (TriggerSelectionStep.MAIN) {
+        @case (AutomationSelectionStepType.MAIN) {
           @if (!service.baseState().selectedIntegration) {
             <button
               trBtn
@@ -25,7 +25,7 @@
               [integration]="service.baseState().selectedIntegration!"
               (click)="service.goToIntegrationSelection()" />
           }
-          @if (!state().selectedTrigger) {
+          @if (!service.state().selectedTrigger) {
             <button
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
@@ -37,7 +37,7 @@
             </button>
           } @else {
             <tr-trigger-selection-button
-              [trigger]="state().selectedTrigger!"
+              [automationEvent]="service.state().selectedTrigger!"
               (click)="service.goToStepSelection()" />
           }
           @if (!service.baseState().selectedLinkedIntegration) {
@@ -45,7 +45,7 @@
               trBtn
               class="w-full text-left items-center justify-start gap-3 p-8"
               variant="outline"
-              [disabled]="state().selectedTrigger === null"
+              [disabled]="service.state().selectedTrigger === null"
               (click)="service.goToLinkedInegrationSelection()">
               <ng-icon name="heroUser" size="1.4rem" />
               <span> No Linked Integration Selected </span>
@@ -57,12 +57,12 @@
               (click)="service.goToLinkedInegrationSelection()" />
           }
           @if (
-            state().selectedTrigger &&
+            service.state().selectedTrigger &&
             service.baseState().selectedLinkedIntegration
           ) {
             <tr-automation-parameter-list
               class="mt-4"
-              [parameters]="state().trigger!.parameters"
+              [parameters]="service.state().trigger!.parameters"
               (editParameter)="onParameterEdit($event)" />
           } @else {
             <span class="text-muted tr-medium">
@@ -70,12 +70,12 @@
             </span>
           }
         }
-        @case (TriggerSelectionStep.INTEGRATION) {
+        @case (AutomationSelectionStepType.INTEGRATION) {
           <tr-integration-selection
             class="h-full"
             (integrationSelected)="onIntegrationSelected($event)" />
         }
-        @case (TriggerSelectionStep.LINKED_INTEGRATION) {
+        @case (AutomationSelectionStepType.LINKED_INTEGRATION) {
           <tr-linked-integration-selection
             class="h-full"
             [selectedIntegrationIdentifier]="
@@ -83,23 +83,23 @@
             "
             (linkedIntegrationSelected)="onLinkedIntegrationSelected($event)" />
         }
-        @case (TriggerSelectionStep.STEP) {
+        @case (AutomationSelectionStepType.STEP) {
           <tr-trigger-selection
             class="h-full"
             [integration]="service.baseState().selectedIntegration!"
             (triggerSelected)="onTriggerSelected($event)" />
         }
-        @case (TriggerSelectionStep.PARAMETER) {
+        @case (AutomationSelectionStepType.PARAMETER) {
           <tr-automation-parameter-edit
             [integrationId]="service.baseState().selectedLinkedIntegration!.id"
-            [parameter]="service.state().selectedParameter!"
+            [parameter]="service.baseState().selectedParameter!"
             [parameterDescription]="service.getSelectedParameterDescription()"
-            [parameterType]="service.state().selecterParameterType!" />
+            [parameterType]="service.baseState().selecterParameterType!" />
         }
       }
     </div>
     <div class="mt-auto flex flex-row justify-end">
-      @if (service.baseState().selectionStep === TriggerSelectionStep.MAIN) {
+      @if (service.baseState().selectionStep === AutomationSelectionStepType.MAIN) {
         <button
           trBtn
           type="submit"

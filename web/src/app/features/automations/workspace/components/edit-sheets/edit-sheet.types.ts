@@ -1,4 +1,4 @@
-export enum AutomationStepSelectionStep {
+export enum AutomationStepSelectionType {
   MAIN,
   INTEGRATION,
   LINKED_INTEGRATION,

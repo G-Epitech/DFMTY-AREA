@@ -66,6 +66,13 @@ export const AutomationWorkspaceStore = signalStore(
         })
       )
     ),
+    getAction: (idx: number) =>
+      computed(() => {
+        if (store.automation().actions.length <= idx) {
+          return null;
+        }
+        return store.automation().actions[idx];
+      }),
     getById: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { loading: true })),

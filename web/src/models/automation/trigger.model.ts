@@ -1,4 +1,9 @@
+import {
+  AutomationParameterFormatType
+} from '@models/automation/automation-parameter-format-type';
+
 export interface TriggerParameter {
+  readonly type: AutomationParameterFormatType;
   identifier: string;
   value: string | null;
 }

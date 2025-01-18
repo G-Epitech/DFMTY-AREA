@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
 } from '@angular/core';
@@ -10,12 +9,10 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { BrnSheetImports } from '@spartan-ng/ui-sheet-brain';
 import { TriggerCardComponent } from '@features/automations/workspace/components/cards/trigger-card/trigger-card.component';
 import {
-  AutomationSchemaModel,
   AutomationSchemaTrigger,
   TriggerParameter,
 } from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
-import { AutomationStepSelectionStep } from '@features/automations/workspace/components/edit-sheets/edit-sheet.types';
 import { IntegrationSelectionComponent } from '@features/automations/workspace/components/integration-selection/integration-selection.component';
 import { AvailableIntegrationButtonComponent } from '@components/buttons/available-integration-button/available-integration-button.component';
 import { SelectTriggerSheetService } from '@features/automations/workspace/components/select-trigger-sheet/select-trigger-sheet.service';
@@ -25,10 +22,9 @@ import { TriggerSelectionComponent } from '@features/automations/workspace/compo
 import { TriggerSelectionButtonComponent } from '@features/automations/workspace/components/select-trigger-sheet/trigger-selection-button/trigger-selection-button.component';
 import { AvailableIntegrationType } from '@common/types';
 import { IntegrationModel } from '@models/integration';
-import { SchemaStore } from '@app/store/schema-store';
 import { AutomationParameterListComponent } from '@features/automations/workspace/components/automation-parameter-list/automation-parameter-list.component';
 import { AutomationParameterEditComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.component';
-import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import { EditSheetComponentBase } from '@features/automations/workspace/components/edit-sheets/edit-sheet.component.base';
 
 @Component({
   standalone: true,
@@ -53,30 +49,21 @@ import { AutomationWorkspaceStore } from '@features/automations/workspace/automa
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [SelectTriggerSheetService],
 })
-export class SelectTriggerSheetComponent {
-  readonly #schemaStore = inject(SchemaStore);
-  readonly #workspaceStore = inject(AutomationWorkspaceStore);
+export class SelectTriggerSheetComponent extends EditSheetComponentBase {
+  readonly service: SelectTriggerSheetService;
 
-  schema: AutomationSchemaModel | null = null;
+  trigger = this.workspaceStore.getTrigger;
 
-  readonly service = inject(SelectTriggerSheetService);
-  protected readonly TriggerSelectionStep = AutomationStepSelectionStep;
-  protected readonly state = this.service.state;
-
-  trigger = this.#workspaceStore.getTrigger;
-
-  constructor() {
+  constructor(service: SelectTriggerSheetService = inject(SelectTriggerSheetService)) {
+    super(service);
+    this.service = service;
     effect(async () => {
-      const schema = this.#schemaStore.getSchema();
+      const schema = this.schemaStore.getSchema();
       if (schema) {
         this.schema = schema;
         await this.service.initialize(this.trigger(), schema);
       }
     });
-  }
-
-  protected onIntegrationSelected(integration: AvailableIntegrationType): void {
-    this.service.selectIntegration(integration);
   }
 
   protected onLinkedIntegrationSelected(
@@ -92,9 +79,5 @@ export class SelectTriggerSheetComponent {
   protected onParameterEdit(param: TriggerParameter): void {
     this.service.goToParameterEdit();
     this.service.selectParameter(param, this.schema);
-  }
-
-  protected onBack(): void {
-    this.service.back();
   }
 }

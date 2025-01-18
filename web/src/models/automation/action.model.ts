@@ -1,7 +1,9 @@
-import { AutomationParameterType } from '@models/automation/automation-parameter-type';
+import {
+  AutomationParameterFormatType
+} from '@models/automation/automation-parameter-format-type';
 
 export interface ActionParameter {
-  readonly type: AutomationParameterType;
+  readonly type: AutomationParameterFormatType;
   readonly identifier: string;
   readonly value: string;
 }

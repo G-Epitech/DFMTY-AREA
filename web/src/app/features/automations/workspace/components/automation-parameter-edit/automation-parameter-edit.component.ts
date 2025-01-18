@@ -9,7 +9,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { PascalToPhrasePipe } from '@app/pipes';
-import { AutomationParameterType } from '@models/automation';
+import {
+  ActionParameter,
+  AutomationParameterValueType,
+  TriggerParameter,
+} from '@models/automation';
 import { NgIcon } from '@ng-icons/core';
 import { TrTabsImports } from '@triggo-ui/tabs';
 import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
@@ -18,6 +22,7 @@ import {
   ParameterEditDynamicComponent,
   ParameterEditOutput,
 } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.types';
+import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 
 @Component({
   standalone: true,
@@ -34,12 +39,9 @@ export class AutomationParameterEditComponent {
   readonly #editService = inject(AutomationParameterEditService);
 
   readonly integrationId = input.required<string>();
-  readonly parameter = input.required<{
-    identifier: string;
-    value: string | null;
-  }>();
+  readonly parameter = input.required<ActionParameter | TriggerParameter>();
   readonly parameterDescription = input.required<string | undefined>();
-  readonly parameterType = input.required<AutomationParameterType>();
+  readonly parameterType = input.required<AutomationParameterValueType>();
   readonly displayPrevious = input<boolean>(false);
 
   readonly activeTab = signal<string>('raw');
@@ -90,6 +92,7 @@ export class AutomationParameterEditComponent {
           );
           if (index === -1) {
             parameters.push({
+              type: this.parameter().type,
               identifier: this.parameter().identifier,
               value: value.rawValue,
             });
