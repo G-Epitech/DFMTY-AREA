@@ -2,6 +2,8 @@
 
 using Humanizer;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Attributes;
@@ -12,12 +14,13 @@ public static class ParameterInfoExtensions
 {
     public static bool IsValidActionHandlerParameter(this ParameterInfo parameter)
     {
+        var loggerParameter = parameter.ParameterType.IsAssignableTo(typeof(ILogger));
         var fromParameter = parameter.GetCustomAttribute<FromParametersAttribute>() != null;
         var fromIntegrations = parameter.GetCustomAttribute<FromIntegrationsAttribute>() != null;
         var automationId = parameter.ParameterType.IsAssignableTo(typeof(AutomationId));
         var cancellationToken = parameter.ParameterType.IsAssignableTo(typeof(CancellationToken));
 
-        return fromParameter || fromIntegrations || automationId || cancellationToken;
+        return fromParameter || fromIntegrations || automationId || loggerParameter || cancellationToken;
     }
 
     public static bool IsValidOnTriggerRegisterMethodParameter(this ParameterInfo parameter)
