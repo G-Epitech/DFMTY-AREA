@@ -10,6 +10,7 @@ import {
   ActionParameter,
   AutomationSchemaAction,
   AutomationSchemaModel,
+  TriggerModel,
 } from '@models/automation';
 import {
   stateUpdaterSelectIntegration,
@@ -20,14 +21,19 @@ import { IntegrationModel } from '@models/integration';
 import { AutomationParameterFormatType } from '@models/automation/automation-parameter-format-type';
 import { firstValueFrom } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
+import { AutomationWorkspaceStore } from '@features/automations/workspace/automation-workspace.store';
+import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 
 @Injectable()
 export class SelectActionSheetService extends EditSheetService {
+  readonly #paramEditService = inject(AutomationParameterEditService);
+  readonly #workspaceStore = inject(AutomationWorkspaceStore);
   readonly #integrationsMediator = inject(IntegrationsMediator);
 
   state = signalState<SelectActionSheetState>({
     selectedAction: null,
     action: null,
+    actionIndex: 0,
   });
 
   constructor() {
@@ -36,7 +42,8 @@ export class SelectActionSheetService extends EditSheetService {
 
   async initialize(
     automationAction: ActionModel | null,
-    schema: AutomationSchemaModel
+    schema: AutomationSchemaModel,
+    actionIndex: number
   ) {
     if (!automationAction) {
       return;
@@ -64,6 +71,7 @@ export class SelectActionSheetService extends EditSheetService {
     }));
     patchState(this.state, state => ({
       ...state,
+      actionIndex: actionIndex,
       selectedAction: action,
       action: automationAction,
     }));
@@ -122,19 +130,16 @@ export class SelectActionSheetService extends EditSheetService {
     action: AutomationSchemaAction,
     schema: AutomationSchemaModel | null
   ) {
-    console.log('zdeze');
     if (this.state().selectedAction?.name !== action.name) {
       patchState(this.state, state => ({
         ...state,
         selectedLinkedIntegration: null,
       }));
     }
-    console.log('zdeze');
 
     patchState(this.state, stateUpdaterSelectAction(action));
     this.back();
     if (!schema) {
-      console.log('schrma is null');
       return;
     }
     const currentIntegration = this.baseState().selectedIntegration!.name;
@@ -142,7 +147,6 @@ export class SelectActionSheetService extends EditSheetService {
       currentIntegration,
       action.name
     );
-    console.log('schemaActionIdentifier', schemaActionIdentifier);
     const params: ActionParameter[] = Object.keys(action.parameters).map(
       key => ({
         identifier: key,
@@ -167,5 +171,25 @@ export class SelectActionSheetService extends EditSheetService {
     return this.state().selectedAction?.parameters[
       this.baseState().selectedParameter!.identifier
     ].description;
+  }
+
+  save() {
+    const currentAction = this.state().action;
+    if (!currentAction) {
+      return;
+    }
+
+    const updatedAction = new TriggerModel(
+      currentAction.identifier,
+      this.#paramEditService.currentParameters(),
+      [...currentAction.dependencies]
+    );
+
+    if (this.#workspaceStore.getAutomation()) {
+      this.#workspaceStore.updateActions({
+        idx: this.state().actionIndex,
+        action: updatedAction,
+      });
+    }
   }
 }

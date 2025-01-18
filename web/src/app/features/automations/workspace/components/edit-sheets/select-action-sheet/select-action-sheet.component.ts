@@ -88,10 +88,9 @@ export class SelectActionSheetComponent extends EditSheetComponentBase {
     this.service = service;
     effect(async () => {
       const schema = this.schemaStore.getSchema();
-      if (schema) {
-        console.log('schema val');
+      if (schema && this.actionIndex() !== undefined) {
         this.schema = schema;
-        await this.service.initialize(this.action(), schema);
+        await this.service.initialize(this.action(), schema, this.actionIndex());
       }
     });
   }

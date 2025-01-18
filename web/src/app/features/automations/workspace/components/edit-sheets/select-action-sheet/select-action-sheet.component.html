@@ -112,7 +112,7 @@
           trBtn
           type="submit"
           class="w-[50%] flex flex-row gap-2 items-center"
-          [disabled]="service.saveDisabled()">
+          [disabled]="service.saveDisabled()" (click)="service.save()">
           Save
           @if (service.valid() === false) {
             <ng-icon

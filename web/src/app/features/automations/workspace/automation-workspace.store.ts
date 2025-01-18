@@ -1,4 +1,5 @@
 import {
+  ActionModel,
   AutomationModel,
   newDefaultAutomationModel,
   TriggerModel,
@@ -66,6 +67,29 @@ export const AutomationWorkspaceStore = signalStore(
         })
       )
     ),
+    updateActions: rxMethod<{ idx: number; action: ActionModel }>(
+      pipe(
+        tap(({ idx, action }) => {
+          const currentAutomation = store.automation();
+          const updatedActions = [...currentAutomation.actions];
+          updatedActions[idx] = action;
+          const updatedAutomation = new AutomationModel(
+            currentAutomation.id,
+            currentAutomation.ownerId,
+            currentAutomation.label,
+            currentAutomation.description,
+            currentAutomation.enabled,
+            currentAutomation.updatedAt,
+            currentAutomation.color,
+            currentAutomation.icon,
+            currentAutomation.trigger,
+            updatedActions
+          );
+          patchState(store, { automation: updatedAutomation });
+        })
+      )
+    ),
+
     getAction: (idx: number) =>
       computed(() => {
         if (store.automation().actions.length <= idx) {

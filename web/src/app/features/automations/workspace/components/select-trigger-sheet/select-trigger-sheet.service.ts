@@ -169,7 +169,6 @@ export class SelectTriggerSheetService extends EditSheetService {
         type: AutomationParameterFormatType.RAW,
       })
     );
-    console.log('schemaTriggerIdentifier', schemaTriggerIdentifier);
     if (schemaTriggerIdentifier) {
       const identifier =
         this.baseState().selectedIntegration?.identifier +

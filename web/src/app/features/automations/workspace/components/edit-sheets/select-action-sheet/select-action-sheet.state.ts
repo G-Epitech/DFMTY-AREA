@@ -5,6 +5,7 @@ import {
 import { PartialStateUpdater } from '@ngrx/signals';
 
 export interface SelectActionSheetState {
+  actionIndex: number;
   selectedAction: AutomationSchemaAction | null;
   action: ActionModel | null;
 }
