@@ -39,7 +39,7 @@ public class DiscordMessageReceivedTriggerHandler
         AutomationId automationId,
         [FromParameters] string channelId,
         [FromParameters] string guildId,
-        [FromIntegrations] IList<DiscordIntegration> integrations,
+        [FromIntegrations] DiscordIntegration integration,
         CancellationToken cancellationToken = default)
     {
         _triggers[automationId] = new TriggerParameters { GuildId = guildId, ChannelId = channelId };
