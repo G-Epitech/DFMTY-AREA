@@ -27,6 +27,12 @@
             class="tr-medium text-gray-700 group-hover:opacity-0 transition-all"
             >{{ param.identifier | pascalToPhrase }}</span
           >
+          @if (!param.value) {
+            <span
+              class="ml-auto tr-medium text-gray-500 group-hover:opacity-0 transition-all"
+              >Empty</span
+            >
+          }
         </button>
       }
     } @else {

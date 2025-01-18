@@ -97,7 +97,18 @@
     </div>
     <div class="mt-auto flex flex-row justify-end">
       @if (state().selectionStep === TriggerSelectionStep.MAIN) {
-        <button trBtn type="submit" class="w-[50%]">Save</button>
+        <button
+          trBtn
+          type="submit"
+          class="w-[50%] flex flex-row gap-2 items-center">
+          Save
+          @if (service.valid() === false) {
+            <ng-icon
+              name="heroExclamationTriangle"
+              size="1rem"
+              strokeWidth="0.1rem" />
+          }
+        </button>
       } @else {
         <button trBtn class="w-[50%]" variant="outline" (click)="onBack()">
           Back

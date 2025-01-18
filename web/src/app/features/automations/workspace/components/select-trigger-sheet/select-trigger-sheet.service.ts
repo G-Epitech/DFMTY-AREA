@@ -1,4 +1,4 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import { effect, inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { patchState, signalState } from '@ngrx/signals';
 import {
   SelectTriggerSheetState,
@@ -19,11 +19,31 @@ import {
 } from '@models/automation';
 import { Subject, takeUntil } from 'rxjs';
 import { IntegrationsMediator } from '@mediators/integrations';
+import { AutomationParameterEditService } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit.service';
 
 @Injectable()
 export class SelectTriggerSheetService implements OnDestroy {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #destroyRef = new Subject<void>();
+  readonly #paramEditService = inject(AutomationParameterEditService);
+
+  constructor() {
+    effect(() => {
+      if (
+        this.state().selectedTrigger &&
+        this.state().selectedLinkedIntegration
+      ) {
+        const params = this.#paramEditService.currentParameters();
+        this.valid.set(true);
+        for (const param of params) {
+          if (param.value === null) {
+            this.valid.set(false);
+            break;
+          }
+        }
+      }
+    });
+  }
 
   state = signalState<SelectTriggerSheetState>({
     selectionStep: TriggerSelectionStep.MAIN,
@@ -35,6 +55,7 @@ export class SelectTriggerSheetService implements OnDestroy {
     selectedParameter: null,
     selecterParameterType: null,
   });
+  valid = signal<boolean | null>(null);
 
   ngOnDestroy() {
     this.#destroyRef.next();
