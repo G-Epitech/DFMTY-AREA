@@ -321,11 +321,6 @@
             "Description": "The title of the page to create.",
             "Type": "string"
           },
-          "Description": {
-            "Name": "Page description",
-            "Description": "The description of the page to create.",
-            "Type": "string"
-          },
           "Icon": {
             "Name": "Page icon",
             "Description": "The icon of the page to create (can be url or emoji).",

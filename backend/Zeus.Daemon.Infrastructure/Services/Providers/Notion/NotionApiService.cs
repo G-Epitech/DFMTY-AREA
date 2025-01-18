@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 using ErrorOr;
 
@@ -12,6 +13,7 @@ using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Application.Providers.Notion.Services;
 using Zeus.Daemon.Domain.Errors.Services;
 using Zeus.Daemon.Domain.Providers.Notion;
+using Zeus.Daemon.Domain.Providers.Notion.ValueObjects;
 using Zeus.Daemon.Infrastructure.Services.Providers.Notion.Contracts;
 
 namespace Zeus.Daemon.Infrastructure.Services.Providers.Notion;
@@ -98,5 +100,61 @@ public class NotionApiService : INotionApiService
         }
 
         return responseContent.Results.Select(database => _mapper.Map<NotionPage>(database)).ToList();
+    }
+
+    private JsonObject GetJsonIconFromString(string icon)
+    {
+        if (Uri.IsWellFormedUriString(icon, UriKind.Absolute))
+        {
+            return new JsonObject { ["type"] = "external", ["external"] = new JsonObject { ["url"] = icon } };
+        }
+
+        return new JsonObject { ["type"] = "emoji", ["emoji"] = icon };
+    }
+
+    public Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+        string title, string description,
+        string icon, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionParentPage parentId,
+        string title, string icon, CancellationToken cancellationToken = default)
+    {
+        var requestContent = new JsonObject
+        {
+            ["parent"] = new JsonObject { ["page_id"] = parentId.Id.Value },
+            ["icon"] = GetJsonIconFromString(icon),
+            ["properties"] = new JsonObject
+            {
+                ["title"] = new JsonArray
+                {
+                    new JsonObject { ["text"] = new JsonObject { ["content"] = title } }
+                }
+            }
+        };
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("pages", requestContent, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Errors.Services.Notion.ErrorDuringPostRequest;
+        }
+
+        var responseContent =
+            await response.Content.ReadFromJsonAsync<GetNotionPageResponse>(_jsonSerializerOptions, cancellationToken);
+        if (responseContent is null)
+        {
+            return Errors.Services.Notion.InvalidBody;
+        }
+
+        return _mapper.Map<NotionPage>(responseContent);
+    }
+
+    public Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
+        string title, string description,
+        string icon, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }

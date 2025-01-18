@@ -12,6 +12,11 @@ public static partial class Errors
                 code: "Integrations.Notion.ErrorDuringSearchRequest",
                 description: "Error during notion search request."
             );
+            
+            public static Error ErrorDuringPostRequest => Error.Failure(
+                code: "Integrations.Notion.ErrorDuringPostRequest",
+                description: "Error during notion post request."
+            );
 
             public static Error InvalidBody => Error.Validation(
                 code: "Integrations.Notion.InvalidBody",
