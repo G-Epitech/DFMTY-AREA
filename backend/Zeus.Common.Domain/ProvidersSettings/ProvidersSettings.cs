@@ -10,11 +10,9 @@ public class ProvidersSettings
 
     [JsonIgnore] private List<string>? _cachedTriggersIdentifiers;
 
-    [JsonIgnore]
-    public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
+    [JsonIgnore] public IReadOnlyList<string> AllTriggerIdentifiers => _cachedTriggersIdentifiers ??= CacheTriggersIdentifiers();
 
-    [JsonIgnore]
-    public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
+    [JsonIgnore] public IReadOnlyList<string> AllActionIdentifiers => _cachedActionsIdentifiers ??= CacheActionsIdentifiers();
 
     public required ProviderSchema Discord { get; set; }
     public required ProviderSchema Notion { get; set; }
@@ -75,5 +73,16 @@ public class ProvidersSettings
     public bool IsActionIdentifierValid(string identifier)
     {
         return AllActionIdentifiers.Contains(identifier);
+    }
+
+    public Dictionary<string, ProviderSchema> ToDictionary()
+    {
+        return new Dictionary<string, ProviderSchema>
+        {
+            { nameof(Discord), Discord },
+            { nameof(Notion), Notion },
+            { nameof(OpenAi), OpenAi },
+            { nameof(LeagueOfLegends), LeagueOfLegends }
+        };
     }
 }

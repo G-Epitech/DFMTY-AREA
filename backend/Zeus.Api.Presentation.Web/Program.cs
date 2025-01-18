@@ -5,7 +5,6 @@ using Scalar.AspNetCore;
 using Zeus.Api.Application;
 using Zeus.Api.Infrastructure;
 using Zeus.Api.Presentation.Shared;
-using Zeus.Api.Presentation.Web.Converters;
 using Zeus.Api.Presentation.Web.Http;
 using Zeus.Api.Presentation.Web.Mapping;
 using Zeus.Common.Domain.ProvidersSettings;
@@ -35,7 +34,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers().AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        options.JsonSerializerOptions.Converters.Add(new JsonProvidersSettingsConverter());
     });
     builder.Services.AddOpenApi();
     builder.Services.AddCors(builder.Environment);
