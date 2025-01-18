@@ -193,7 +193,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
 
     private static void CheckReturnType(MethodInfo method)
     {
-        if (method.ReturnType != typeof(Task<FactsDictionary>))
+        if (method.ReturnType != typeof(Task<ActionResult>))
         {
             throw new InvalidOperationException($"Method '{method.Name}' has invalid return type on '{method.DeclaringType?.Name}'");
         }

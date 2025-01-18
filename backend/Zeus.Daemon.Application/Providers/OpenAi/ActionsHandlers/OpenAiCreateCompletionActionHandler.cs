@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate;
 using Zeus.Daemon.Application.Attributes;
+using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Providers.OpenAi.Services;
 using Zeus.Daemon.Domain.Automations;
 
@@ -21,8 +22,7 @@ public class OpenAiCreateCompletionActionHandler
     }
 
     [ActionHandler("OpenAi.CreateCompletion")]
-    public async Task<FactsDictionary> RunAsync(
-        AutomationId automationId,
+    public async Task<ActionResult> RunAsync(
         [FromParameters] string model,
         [FromParameters] string context,
         [FromParameters] string prompt,

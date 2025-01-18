@@ -1,5 +1,7 @@
 using System.Reflection;
 
+using Microsoft.Extensions.Logging;
+
 using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.Entities;
 using Zeus.Common.Domain.AutomationAggregate.Enums;
@@ -20,8 +22,8 @@ public sealed class AutomationExecutionContext
     private readonly FactsDictionary _facts;
     private readonly IActionHandlersProvider _handlersProvider;
     private readonly IReadOnlyDictionary<IntegrationId, Integration> _integrations;
-    private Task<FactsDictionary>? _currentTask;
-    private Task? _mainTask;
+    private Task<ActionResult>? _currentTask;
+    private readonly AutomationExecutionLogger _logger;
 
     public AutomationExecutionContext(
         IActionHandlersProvider actionHandlersProvider,
@@ -33,6 +35,7 @@ public sealed class AutomationExecutionContext
         _actions = automation.Actions;
         _integrations = integrations;
         _facts = FillFactsFromTrigger(facts);
+        _logger = new AutomationExecutionLogger(automation.Id.Value);
 
         AutomationId = automation.Id;
     }
@@ -46,7 +49,7 @@ public sealed class AutomationExecutionContext
 
     public void Run()
     {
-        _mainTask = RunDetachedAsync();
+        _ = RunDetachedAsync();
     }
 
     private static FactsDictionary FillFactsFromTrigger(FactsDictionary triggerFacts)
@@ -77,17 +80,28 @@ public sealed class AutomationExecutionContext
             {
                 if (!_cancellationTokenSource.Token.IsCancellationRequested)
                 {
+                    _logger.WithScope(action.Identifier);
                     await RunActionAsync(action);
                 }
+                _logger.ResetScope();
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.ResetScope();
+            if (e is ActionRunningException actionRunningException)
+            {
+                _logger.LogError("Error while running action: {message}\n{details}\n", actionRunningException.Message,
+                    actionRunningException.Details);
+            }
+            else
+            {
+                _logger.LogError("Error while running action: {e}", e);
+            }
         }
     }
 
-    private async Task<bool> RunActionAsync(AutomationAction action)
+    private async Task RunActionAsync(AutomationAction action)
     {
         var handler = _handlersProvider.GetHandler(action.Identifier);
         var parameters = GetHandlerParameters(handler.Method, action);
@@ -96,21 +110,25 @@ public sealed class AutomationExecutionContext
 
         _currentTask = res switch
         {
-            Task<FactsDictionary> taskWithFacts => taskWithFacts,
-            Task task => task.ContinueWith(_ => _facts, _cancellationTokenSource.Token),
+            Task<ActionResult> taskWithResult => taskWithResult,
+            Task task => task.ContinueWith(_ => ActionResult.From(_facts), _cancellationTokenSource.Token),
             _ => null
         };
 
         if (_currentTask is null)
         {
-            return false;
+            throw new InvalidOperationException("Invalid handler return type");
         }
 
-        var facts = await _currentTask;
+        var result = await _currentTask;
 
-        AddActionFacts(action, facts);
+        if (result.IsError)
+        {
+            throw new ActionRunningException(result.Error.Message, result.Error.Details);
+        }
+
+        AddActionFacts(action, result.Facts);
         _currentTask = null;
-        return true;
     }
 
     private object?[] GetHandlerParameters(MethodInfo method, AutomationAction action)
@@ -140,6 +158,10 @@ public sealed class AutomationExecutionContext
             else if (parameter.ParameterType.IsAssignableTo(typeof(AutomationId)))
             {
                 result[parameter.Position] = AutomationId;
+            }
+            else if (parameter.ParameterType.IsAssignableTo(typeof(ILogger)))
+            {
+                result[parameter.Position] = _logger;
             }
             else
             {
