@@ -86,6 +86,6 @@ public class AutomationController : ApiController
     [ProducesResponseType<ProvidersSettings>(StatusCodes.Status200OK)]
     public Task<IActionResult> GetAutomationSchema()
     {
-        return Task.FromResult<IActionResult>(Ok(_providersSettings));
+        return Task.FromResult<IActionResult>(Ok(_providersSettings.ToDictionary()));
     }
 }
