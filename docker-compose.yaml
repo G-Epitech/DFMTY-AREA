@@ -97,16 +97,29 @@ services:
       - zeus-api-grpc
       - zeus-message-broker
 
-  mobile-app:
-    container_name: mobile-app
+  mobile-base:
+    container_name: mobile-base
+    restart: no
+    build:
+      context: mobile/
+      dockerfile: Dockerfile.base
+    image: mobile-base
+    profiles:
+      - production
+    volumes:
+      - shared_volume:/common
+
+  mobile-apk:
+    container_name: mobile-apk
     restart: no
     build:
       context: mobile/
       dockerfile: Dockerfile.prod
-      args:
-        BUILD_MOBILE: ${BUILD_MOBILE:-false}
-    environment:
-      - BUILD_MOBILE=${BUILD_MOBILE:-false}
+    profiles:
+      - production
+    depends_on:
+      - mobile-base
+    image: mobile-apk:local
     volumes:
       - shared_volume:/common
 
