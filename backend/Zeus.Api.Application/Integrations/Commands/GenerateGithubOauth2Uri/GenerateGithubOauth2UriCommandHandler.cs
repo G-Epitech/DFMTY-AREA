@@ -39,7 +39,7 @@ public class GenerateGithubOauth2UriCommandHandler : IRequestHandler<GenerateGit
         queryString.Add("scope", string.Join(" ", settings.Scopes));
         queryString.Add("state", linkRequestResult.Value.IntegrationLinkRequestId.ToString());
 
-        var uri = new UriBuilder(settings.OAuth2Endpoint) { Query = queryString.ToString() }.Uri;
+        var uri = new UriBuilder($"{settings.OAuth2Endpoint}login/oauth/authorize") { Query = queryString.ToString() }.Uri;
 
         return new GenerateGithubOauth2UriCommandResult(uri);
     }
