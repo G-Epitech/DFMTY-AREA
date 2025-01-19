@@ -6,7 +6,7 @@ import 'package:triggo/app/widgets/input.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
 class AutomationInputView extends StatefulWidget {
-  final AutomationInputEnum type;
+  final AutomationInputType type;
   final String label;
   final String? placeholder;
   final List<AutomationRadioModel>? options;
@@ -85,7 +85,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
 
   Widget _buildInput() {
     switch (widget.type) {
-      case AutomationInputEnum.text:
+      case AutomationInputType.text:
         return _TextInput(
           label: widget.label,
           placeholder: widget.placeholder,
@@ -97,7 +97,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             });
           },
         );
-      case AutomationInputEnum.textArea:
+      case AutomationInputType.textArea:
         return _TextAreaInput(
           label: widget.label,
           placeholder: widget.placeholder,
@@ -109,7 +109,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             });
           },
         );
-      case AutomationInputEnum.radio:
+      case AutomationInputType.radio:
         return _RadioInput(
           label: widget.label,
           options: widget.options,
@@ -122,7 +122,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           },
           getOptions: widget.getOptions,
         );
-      case AutomationInputEnum.emoji:
+      case AutomationInputType.emoji:
         return _EmojiInput(
           label: widget.label,
           placeholder: widget.placeholder ?? 'Enter an emoji',
@@ -134,7 +134,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             });
           },
         );
-      case AutomationInputEnum.number:
+      case AutomationInputType.number:
         return _NumberInput(
           label: widget.label,
           placeholder: widget.placeholder,

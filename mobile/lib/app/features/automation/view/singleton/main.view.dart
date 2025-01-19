@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/utils/validate.dart';
 import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/select_integration.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
@@ -197,7 +198,8 @@ class _SaveButton extends StatelessWidget {
     final automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
 
-    final isValid = _isSaveButtonEnabled(state, automationMediator);
+    final isValid =
+        validateAutomation(state.cleanedAutomation, automationMediator);
 
     return Row(
       children: [
@@ -223,21 +225,6 @@ class _SaveButton extends StatelessWidget {
       ],
     );
   }
-}
-
-bool _isSaveButtonEnabled(
-    AutomationState state, AutomationMediator automationMediator) {
-  for (final action in state.cleanedAutomation.actions) {
-    if (!validateAction(state.cleanedAutomation, automationMediator,
-        state.cleanedAutomation.actions.indexOf(action))) {
-      return false;
-    }
-  }
-
-  return state.cleanedAutomation.label.isNotEmpty &&
-      state.cleanedAutomation.description.isNotEmpty &&
-      state.cleanedAutomation.trigger.identifier.isNotEmpty &&
-      state.cleanedAutomation.actions.isNotEmpty;
 }
 
 class _AutomationContainer extends StatelessWidget {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.dart';
@@ -8,6 +6,8 @@ import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/utils/human_readable.dart';
 import 'package:triggo/app/features/automation/utils/parameter_get_options.dart';
 import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
+import 'package:triggo/app/features/automation/utils/parameter_type.dart';
+import 'package:triggo/app/features/automation/utils/validate.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
 import 'package:triggo/app/routes/routes_names.dart';
@@ -115,7 +115,7 @@ class _OKButton extends StatelessWidget {
         RepositoryProvider.of<AutomationMediator>(context);
 
     final isValid = type == AutomationTriggerOrActionType.trigger
-        ? _validateTrigger(automation, automationMediator)
+        ? validateTrigger(automation, automationMediator)
         : validateAction(
             automation, automationMediator, indexOfTheTriggerOrAction);
 
@@ -154,95 +154,6 @@ class _OKButton extends StatelessWidget {
       ],
     );
   }
-
-  bool _validateTrigger(
-      Automation automation, AutomationMediator automationMediator) {
-    final schema = automationMediator.automationSchemas;
-    final trigger = automation.trigger;
-
-    if (trigger.identifier.isEmpty) {
-      log("Trigger identifier is empty");
-      return false;
-    }
-
-    if (trigger.dependencies.isEmpty) {
-      log("Trigger depencencies is empty");
-      return false;
-    }
-
-    for (final parameter in trigger.parameters) {
-      if (parameter.value.isEmpty) {
-        log("Trigger parameter value is empty");
-        return false;
-      }
-    }
-
-    final integrationIdentifier = trigger.identifier.split('.').first;
-    final triggerOrActionIdentifier = trigger.identifier.split('.').last;
-
-    final integrationSchema = schema!.schemas[integrationIdentifier];
-    final triggerSchema =
-        integrationSchema?.triggers[triggerOrActionIdentifier];
-    final hasDifferentParameterLength =
-        triggerSchema?.parameters.length != trigger.parameters.length;
-
-    if (integrationSchema != null &&
-        triggerSchema != null &&
-        hasDifferentParameterLength) {
-      log("Trigger parameters length is different: ${trigger.parameters.length} - ${triggerSchema.parameters.length}");
-      return false;
-    }
-
-    return true;
-  }
-}
-
-bool validateAction(Automation automation,
-    AutomationMediator automationMediator, int indexOfTheTriggerOrAction) {
-  final schema = automationMediator.automationSchemas;
-
-  if (indexOfTheTriggerOrAction < 0 ||
-      indexOfTheTriggerOrAction >= automation.actions.length) {
-    log("Index of the trigger or action is out of bounds");
-    return false;
-  }
-
-  log("Index of the trigger or action: $indexOfTheTriggerOrAction");
-  final action = automation.actions[indexOfTheTriggerOrAction];
-
-  if (action.identifier.isEmpty) {
-    log("Action identifier is empty");
-    return false;
-  }
-
-  if (action.dependencies.isEmpty) {
-    log("Action dependencies is empty");
-    return false;
-  }
-
-  for (final parameter in action.parameters) {
-    if (parameter.value.isEmpty) {
-      log("Action parameter value is empty");
-      return false;
-    }
-  }
-
-  final integrationIdentifier = action.identifier.split('.').first;
-  final triggerOrActionIdentifier = action.identifier.split('.').last;
-
-  final integrationSchema = schema!.schemas[integrationIdentifier];
-  final actionSchema = integrationSchema?.actions[triggerOrActionIdentifier];
-  final hasDifferentParameterLength =
-      actionSchema?.parameters.length != action.parameters.length;
-
-  if (integrationSchema != null &&
-      actionSchema != null &&
-      hasDifferentParameterLength) {
-    log("Action parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
-    return false;
-  }
-
-  return true;
 }
 
 class _List extends StatelessWidget {
@@ -310,9 +221,9 @@ class _List extends StatelessWidget {
                     ? AutomationInputView(
                         type: (options == AutomationParameterNeedOptions.yes
                             ? (parameterIdentifier == "Icon"
-                                ? AutomationInputEnum.emoji
-                                : AutomationInputEnum.radio)
-                            : getType(property.type)),
+                                ? AutomationInputType.emoji
+                                : AutomationInputType.radio)
+                            : getParameterType(property.type)),
                         label: title,
                         routeToGoWhenSave: RoutesNames.popOneTime,
                         value: selectedValue ?? previewData,
@@ -479,7 +390,7 @@ class AutomationParameterChoice extends StatelessWidget {
               title: "Manual input",
               previewData: "Enter manually a value",
               input: AutomationInputView(
-                type: getType(property.type),
+                type: getParameterType(property.type),
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
@@ -569,7 +480,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     title: "Trigger",
                     previewData: integrationName,
                     input: AutomationInputView(
-                      type: AutomationInputEnum.radio,
+                      type: AutomationInputType.radio,
                       label: triggerName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
@@ -624,7 +535,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     title: "Action $index - $actionParameterName",
                     previewData: integrationName,
                     input: AutomationInputView(
-                      type: AutomationInputEnum.radio,
+                      type: AutomationInputType.radio,
                       label: actionsName,
                       options: options,
                       routeToGoWhenSave: RoutesNames.popThreeTimes,
@@ -644,22 +555,5 @@ class AutomationParameterFromActions extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-AutomationInputEnum getType(String type) {
-  switch (type) {
-    case 'String':
-      return AutomationInputEnum.text;
-    case 'Float':
-      return AutomationInputEnum.number;
-    case 'Integer':
-      return AutomationInputEnum.number;
-    case 'Boolean':
-      return AutomationInputEnum.boolean;
-    case 'Datetime':
-      return AutomationInputEnum.date;
-    default:
-      return AutomationInputEnum.text;
   }
 }

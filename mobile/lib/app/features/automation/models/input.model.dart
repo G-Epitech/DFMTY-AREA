@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum AutomationInputEnum {
+enum AutomationInputType {
   text,
   textArea,
   number,

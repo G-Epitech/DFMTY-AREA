@@ -28,7 +28,7 @@ class AutomationSettingsView extends StatelessWidget {
                       ? state.cleanedAutomation.label
                       : null,
                   input: AutomationInputView(
-                    type: AutomationInputEnum.text,
+                    type: AutomationInputType.text,
                     label: 'Label',
                     placeholder: 'Enter a label',
                     onSave: (value, humanValue) {
@@ -49,7 +49,7 @@ class AutomationSettingsView extends StatelessWidget {
                       ? state.cleanedAutomation.description
                       : null,
                   input: AutomationInputView(
-                    type: AutomationInputEnum.textArea,
+                    type: AutomationInputType.textArea,
                     label: 'Description',
                     placeholder: 'Enter a description',
                     onSave: (value, humanValue) {
