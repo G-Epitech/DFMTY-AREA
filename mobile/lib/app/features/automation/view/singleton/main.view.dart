@@ -179,7 +179,10 @@ class _SaveButton extends StatelessWidget {
       );
     }
 
-    final isValid = _isSaveButtonEnabled(state);
+    final automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+
+    final isValid = _isSaveButtonEnabled(state, automationMediator);
 
     return Row(
       children: [
@@ -207,7 +210,15 @@ class _SaveButton extends StatelessWidget {
   }
 }
 
-bool _isSaveButtonEnabled(AutomationState state) {
+bool _isSaveButtonEnabled(
+    AutomationState state, AutomationMediator automationMediator) {
+  for (final action in state.cleanedAutomation.actions) {
+    if (!validateAction(state.cleanedAutomation, automationMediator,
+        state.cleanedAutomation.actions.indexOf(action))) {
+      return false;
+    }
+  }
+
   return state.cleanedAutomation.label.isNotEmpty &&
       state.cleanedAutomation.description.isNotEmpty &&
       state.cleanedAutomation.trigger.identifier.isNotEmpty &&
