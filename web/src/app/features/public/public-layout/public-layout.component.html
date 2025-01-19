@@ -1,48 +1,44 @@
-<div class="flex flex-col">
-  <nav class="bg-white fixed border-b border-gray-200 w-full top-0 z-50">
-    <div class="max-w-full px-4 sm:px-6">
-      <div class="flex justify-between items-center h-16">
-        <div
-          class="flex items-center flex-row hover:cursor-pointer"
-          routerLink="/landing">
-          <img
-            ngSrc="icons/triggo_logo.svg"
-            alt="Triggo Logo"
-            [width]="120"
-            [height]="120"
-            priority />
-        </div>
+<nav class="bg-white fixed border-b border-gray-200 w-full top-0 z-50">
+  <div class="max-w-full px-4 sm:px-6">
+    <div class="flex justify-between items-center h-16">
+      <div
+        class="flex items-center flex-row hover:cursor-pointer"
+        routerLink="/landing">
+        <img
+          ngSrc="icons/triggo_logo.svg"
+          alt="Triggo Logo"
+          [width]="120"
+          [height]="120"
+          priority />
+      </div>
 
-        <div class="hidden lg:flex lg:items-center lg:space-x-6">
-          <a
-            routerLink="/landing"
-            routerLinkActive="text-primary"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="px-3 py-2 rounded-md tr-container-title">
-            Home
-          </a>
-          <a
-            routerLink="/downloads"
-            routerLinkActive="text-primary"
-            class="px-3 py-2 rounded-md tr-container-title">
-            Downloads
-          </a>
-          <a
-            routerLink="/faq"
-            routerLinkActive="text-primary"
-            class="px-3 py-2 rounded-md tr-container-title">
-            FAQ
-          </a>
-        </div>
+      <div class="hidden lg:flex lg:items-center lg:space-x-6">
+        <a
+          routerLink="/landing"
+          routerLinkActive="text-primary"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-3 py-2 rounded-md tr-container-title">
+          Home
+        </a>
+        <a
+          routerLink="/downloads"
+          routerLinkActive="text-primary"
+          class="px-3 py-2 rounded-md tr-container-title">
+          Downloads
+        </a>
+        <a
+          routerLink="/faq"
+          routerLinkActive="text-primary"
+          class="px-3 py-2 rounded-md tr-container-title">
+          FAQ
+        </a>
+      </div>
 
-        <div class="flex items-center space-x-4">
-          <button trBtn routerLink="/register" variant="outline">
-            Sign Up
-          </button>
-          <button trBtn routerLink="/login">Log In</button>
-        </div>
+      <div class="flex items-center space-x-4">
+        <button trBtn routerLink="/register" variant="outline">Sign Up</button>
+        <button trBtn routerLink="/login">Log In</button>
       </div>
     </div>
-  </nav>
-  <router-outlet></router-outlet>
-</div>
+  </div>
+</nav>
+<router-outlet></router-outlet>
