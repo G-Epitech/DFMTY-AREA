@@ -31,6 +31,14 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'client.apk',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/downloads/download.client.page').then(
+            m => m.DownloadClientComponent
+          ),
+      },
+      {
         path: 'faq',
         pathMatch: 'full',
         loadComponent: () =>
