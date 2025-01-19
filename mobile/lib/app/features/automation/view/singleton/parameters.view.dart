@@ -174,165 +174,194 @@ class _List extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (properties.isEmpty) {
-      return Center(
-        child: Text('No need for parameters,\n just click the OK button',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelLarge),
-      );
+      return _buildNoParametersMessage(context);
     }
     return ListView.separated(
       itemCount: properties.length,
-      itemBuilder: (context, index) {
-        final parameterIdentifier = properties.keys.elementAt(index);
-        final property = properties[parameterIdentifier]!;
-        return BlocBuilder<AutomationBloc, AutomationState>(
-          builder: (context, state) {
-            final title = property.name;
-            final parameterData = getHumanReadableValue(
-                state.dirtyAutomation,
-                type,
-                integrationIdentifier,
-                indexOfTheTriggerOrAction,
-                triggerOrActionIdentifier,
-                parameterIdentifier,
-                state.previews);
-            final selectedValue = parameterData?.value;
-            final previewData = replaceByHumanReadable(
-                    type,
-                    integrationIdentifier,
-                    indexOfTheTriggerOrAction,
-                    triggerOrActionIdentifier,
-                    parameterIdentifier,
-                    state.previews) ??
-                selectedValue;
-            final parameterType = getParameterType(
-                state.dirtyAutomation,
-                type,
-                integrationIdentifier,
-                indexOfTheTriggerOrAction,
-                triggerOrActionIdentifier,
-                parameterIdentifier);
-            return AutomationLabelParameterWidget(
-                title: title,
-                previewData: previewData,
-                disabled: parameterType ==
-                    AutomationParameterType.restrictedRadioBlocked,
-                input: parameterType != AutomationParameterType.choice
-                    ? AutomationInputView(
-                        type: getInputType(parameterType),
-                        label: title,
-                        routeToGoWhenSave: RoutesNames.popOneTime,
-                        value: selectedValue ?? previewData,
-                        humanReadableValue: previewData,
-                        getOptions: () async {
-                          final integrationMediator =
-                              RepositoryProvider.of<IntegrationMediator>(
-                                  context);
-                          late List<AutomationRadioModel> options;
-                          try {
-                            options = await getParameterOptions(
-                                state.dirtyAutomation,
-                                type,
-                                integrationIdentifier,
-                                indexOfTheTriggerOrAction,
-                                triggerOrActionIdentifier,
-                                parameterIdentifier,
-                                integrationMediator);
-                          } catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                ..removeCurrentSnackBar()
-                                ..showSnackBar(SnackBar(
-                                    content: Text('Error getting options')));
-                            }
-                          }
-                          return options;
-                        },
-                        onSave: (value, humanReadableValue) {
-                          if (type == AutomationTriggerOrActionType.trigger) {
-                            context.read<AutomationBloc>().add(
-                                AutomationPreviewUpdated(
-                                    key:
-                                        "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
-                                    value: humanReadableValue));
+      itemBuilder: (context, index) => _buildListItem(context, index),
+      separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+    );
+  }
 
-                            context
-                                .read<AutomationBloc>()
-                                .add(AutomationTriggerParameterChanged(
-                                  parameterIdentifier: parameterIdentifier,
-                                  parameterValue: value,
-                                ));
-                          } else {
-                            context.read<AutomationBloc>().add(
-                                AutomationPreviewUpdated(
-                                    key:
-                                        "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
-                                    value: humanReadableValue));
+  Widget _buildNoParametersMessage(BuildContext context) {
+    return Center(
+      child: Text(
+        'No need for parameters,\n just click the OK button',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+    );
+  }
 
-                            context
-                                .read<AutomationBloc>()
-                                .add(AutomationActionParameterChanged(
-                                  index: indexOfTheTriggerOrAction,
-                                  parameterIdentifier: parameterIdentifier,
-                                  parameterValue: value,
-                                  parameterType: "raw",
-                                ));
-                          }
-                        },
-                      )
-                    : AutomationParameterChoice(
-                        title: title,
-                        type: type,
-                        automation: state.cleanedAutomation,
-                        value: selectedValue,
-                        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
-                        property: property,
-                        parameterType: parameterType,
-                        previousValueType: parameterData?.type,
-                        onSave: (value, valueType, humanReadableValue,
-                            indexVariable) {
-                          if (type == AutomationTriggerOrActionType.trigger) {
-                            context.read<AutomationBloc>().add(
-                                AutomationPreviewUpdated(
-                                    key:
-                                        "trigger.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
-                                    value: humanReadableValue));
+  Widget _buildListItem(BuildContext context, int index) {
+    final parameterIdentifier = properties.keys.elementAt(index);
+    final property = properties[parameterIdentifier]!;
 
-                            context
-                                .read<AutomationBloc>()
-                                .add(AutomationTriggerParameterChanged(
-                                  parameterIdentifier: parameterIdentifier,
-                                  parameterValue: value,
-                                ));
-                          } else {
-                            context.read<AutomationBloc>().add(
-                                AutomationPreviewUpdated(
-                                    key:
-                                        "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
-                                    value: valueType == 'var'
-                                        ? 'From a previous trigger/action'
-                                        : value));
+    return BlocBuilder<AutomationBloc, AutomationState>(
+      builder: (context, state) {
+        final title = property.name;
+        final parameterData = _getParameterModel(state, parameterIdentifier);
+        final selectedValue = parameterData?.value;
+        final previewData =
+            _getPreviewData(state, parameterIdentifier) ?? selectedValue;
+        final parameterType = _getParameterType(state, parameterIdentifier);
 
-                            context
-                                .read<AutomationBloc>()
-                                .add(AutomationActionParameterChanged(
-                                  index: indexOfTheTriggerOrAction,
-                                  parameterIdentifier: parameterIdentifier,
-                                  parameterValue: (valueType == 'var'
-                                          ? indexVariable
-                                          : "") +
-                                      value,
-                                  parameterType: valueType,
-                                ));
-                          }
-                        },
-                      ));
-          },
+        return AutomationLabelParameterWidget(
+          title: title,
+          previewData: previewData,
+          disabled:
+              parameterType == AutomationParameterType.restrictedRadioBlocked,
+          input: _buildInputWidget(context, state, parameterType, title,
+              selectedValue, previewData, parameterIdentifier),
         );
       },
-      separatorBuilder: (context, index) {
-        return const SizedBox(height: 8.0);
-      },
+    );
+  }
+
+  Widget _buildInputWidget(
+    BuildContext context,
+    AutomationState state,
+    AutomationParameterType parameterType,
+    String title,
+    String? selectedValue,
+    String? previewData,
+    String parameterIdentifier,
+  ) {
+    if (parameterType != AutomationParameterType.choice) {
+      return AutomationInputView(
+        type: getInputType(parameterType),
+        label: title,
+        routeToGoWhenSave: RoutesNames.popOneTime,
+        value: selectedValue ?? previewData,
+        humanReadableValue: previewData,
+        getOptions: _getOptions(context, state, parameterIdentifier),
+        onSave: (value, humanReadableValue) =>
+            _onSave(context, value, humanReadableValue, parameterIdentifier),
+      );
+    } else {
+      return AutomationParameterChoice(
+        title: title,
+        type: type,
+        automation: state.cleanedAutomation,
+        value: selectedValue,
+        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        property: properties[parameterIdentifier]!,
+        parameterType: parameterType,
+        previousValueType: _getParameterModel(state, parameterIdentifier)?.type,
+        onSave: (value, valueType, humanReadableValue, indexVariable) =>
+            _onSaveChoice(context, value, valueType, humanReadableValue,
+                indexVariable, parameterIdentifier),
+      );
+    }
+  }
+
+  Future<List<AutomationRadioModel>> Function() _getOptions(
+      BuildContext context, AutomationState state, String parameterIdentifier) {
+    return () async {
+      final integrationMediator =
+          RepositoryProvider.of<IntegrationMediator>(context);
+      try {
+        return await getParameterOptions(
+          state.dirtyAutomation,
+          type,
+          integrationIdentifier,
+          indexOfTheTriggerOrAction,
+          triggerOrActionIdentifier,
+          parameterIdentifier,
+          integrationMediator,
+        );
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+                const SnackBar(content: Text('Error getting options')));
+        }
+        return [];
+      }
+    };
+  }
+
+  void _onSave(BuildContext context, String value, String humanReadableValue,
+      String parameterIdentifier) {
+    final key = _getKey(parameterIdentifier);
+    context
+        .read<AutomationBloc>()
+        .add(AutomationPreviewUpdated(key: key, value: humanReadableValue));
+    if (type == AutomationTriggerOrActionType.trigger) {
+      context.read<AutomationBloc>().add(AutomationTriggerParameterChanged(
+          parameterIdentifier: parameterIdentifier, parameterValue: value));
+    } else {
+      context.read<AutomationBloc>().add(AutomationActionParameterChanged(
+          index: indexOfTheTriggerOrAction,
+          parameterIdentifier: parameterIdentifier,
+          parameterValue: value,
+          parameterType: "raw"));
+    }
+  }
+
+  void _onSaveChoice(
+      BuildContext context,
+      String value,
+      String valueType,
+      String humanReadableValue,
+      String indexVariable,
+      String parameterIdentifier) {
+    final key = _getKey(parameterIdentifier);
+    final previewValue =
+        valueType == 'var' ? 'From a previous trigger/action' : value;
+    context
+        .read<AutomationBloc>()
+        .add(AutomationPreviewUpdated(key: key, value: previewValue));
+    if (type == AutomationTriggerOrActionType.trigger) {
+      context.read<AutomationBloc>().add(AutomationTriggerParameterChanged(
+          parameterIdentifier: parameterIdentifier, parameterValue: value));
+    } else {
+      context.read<AutomationBloc>().add(AutomationActionParameterChanged(
+          index: indexOfTheTriggerOrAction,
+          parameterIdentifier: parameterIdentifier,
+          parameterValue: (valueType == 'var' ? indexVariable : "") + value,
+          parameterType: valueType));
+    }
+  }
+
+  String _getKey(String parameterIdentifier) {
+    return "${type == AutomationTriggerOrActionType.trigger ? "trigger" : "action"}.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier";
+  }
+
+  AutomationParameterModel? _getParameterModel(
+      AutomationState state, String parameterIdentifier) {
+    return getHumanReadableValue(
+      state.dirtyAutomation,
+      type,
+      integrationIdentifier,
+      indexOfTheTriggerOrAction,
+      triggerOrActionIdentifier,
+      parameterIdentifier,
+      state.previews,
+    );
+  }
+
+  String? _getPreviewData(AutomationState state, String parameterIdentifier) {
+    return replaceByHumanReadable(
+      type,
+      integrationIdentifier,
+      indexOfTheTriggerOrAction,
+      triggerOrActionIdentifier,
+      parameterIdentifier,
+      state.previews,
+    );
+  }
+
+  AutomationParameterType _getParameterType(
+      AutomationState state, String parameterIdentifier) {
+    return getParameterType(
+      state.dirtyAutomation,
+      type,
+      integrationIdentifier,
+      indexOfTheTriggerOrAction,
+      triggerOrActionIdentifier,
+      parameterIdentifier,
     );
   }
 }
@@ -363,42 +392,50 @@ class AutomationParameterChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Previous value type: $previousValueType");
     return BaseScaffold(
-        title: title,
-        getBack: true,
-        body: ListView(
-          children: [
-            AutomationLabelParameterWidget(
-              title: "From a previous trigger/action",
-              previewData:
-                  "Select a value that resulted from a previous trigger/action",
-              input: AutomationParameterFromActions(
-                type: type,
-                automation: automation,
-                label: title,
-                onSave: onSave,
-                value: value,
-                indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
-                property: property,
-              ),
-            ),
-            const SizedBox(height: 8.0),
-            AutomationLabelParameterWidget(
-              title: "Manual input",
-              previewData: "Enter manually a value",
-              input: AutomationInputView(
-                type: getInputType(parameterType),
-                label: title,
-                routeToGoWhenSave: RoutesNames.popTwoTimes,
-                onSave: (value, humanReadableValue) {
-                  onSave(value, 'raw', humanReadableValue, "any");
-                },
-                value: previousValueType?.toLowerCase() == 'raw' ? value : null,
-              ),
-            ),
-          ],
-        ));
+      title: title,
+      getBack: true,
+      body: ListView(
+        children: [
+          _buildFromPreviousTriggerAction(context),
+          const SizedBox(height: 8.0),
+          _buildManualInput(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFromPreviousTriggerAction(BuildContext context) {
+    return AutomationLabelParameterWidget(
+      title: "From a previous trigger/action",
+      previewData:
+          "Select a value that resulted from a previous trigger/action",
+      input: AutomationParameterFromActions(
+        type: type,
+        automation: automation,
+        label: title,
+        onSave: onSave,
+        value: value,
+        indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+        property: property,
+      ),
+    );
+  }
+
+  Widget _buildManualInput(BuildContext context) {
+    return AutomationLabelParameterWidget(
+      title: "Manual input",
+      previewData: "Enter manually a value",
+      input: AutomationInputView(
+        type: getInputType(parameterType),
+        label: title,
+        routeToGoWhenSave: RoutesNames.popTwoTimes,
+        onSave: (value, humanReadableValue) {
+          onSave(value, 'raw', humanReadableValue, "any");
+        },
+        value: previousValueType?.toLowerCase() == 'raw' ? value : null,
+      ),
+    );
   }
 }
 
@@ -446,110 +483,142 @@ class AutomationParameterFromActions extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: triggers.length,
-                itemBuilder: (context, index) {
-                  final trigger = triggers[index];
-                  final integrationIdentifier =
-                      trigger.identifier.split('.').first;
-                  final triggerIdentifier = trigger.identifier.split('.').last;
-
-                  final integrationName =
-                      schema.schemas[integrationIdentifier]?.name;
-                  final triggerName = schema.schemas[integrationIdentifier]
-                      ?.triggers[triggerIdentifier]?.name;
-                  final facts = schema.schemas[integrationIdentifier]
-                      ?.triggers[triggerIdentifier]?.facts;
-
-                  if (facts == null ||
-                      facts.isEmpty ||
-                      integrationName == null ||
-                      triggerName == null) {
-                    return const SizedBox();
-                  }
-
-                  final options = getTypeFromFacts(facts, property);
-
-                  return AutomationLabelParameterWidget(
-                    title: "Trigger",
-                    previewData: integrationName,
-                    input: AutomationInputView(
-                      type: AutomationInputType.radio,
-                      label: triggerName,
-                      options: options,
-                      routeToGoWhenSave: RoutesNames.popThreeTimes,
-                      value: value?.split('.').last,
-                      onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue, "T.");
-                      },
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8.0);
-                },
-              ),
+              _buildTriggersList(context, triggers),
               if (actions.isNotEmpty) const SizedBox(height: 8.0),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: actions.length,
-                itemBuilder: (context, index) {
-                  if (index >= indexOfTheTriggerOrAction) {
-                    return const SizedBox();
-                  }
-
-                  final action = actions[index];
-                  final integrationIdentifier =
-                      action.identifier.split('.').first;
-                  final actionsIdentifier = action.identifier.split('.').last;
-
-                  final integrationName =
-                      schema.schemas[integrationIdentifier]?.name;
-                  final actionParameterName = schema
-                      .schemas[integrationIdentifier]
-                      ?.actions[actionsIdentifier]
-                      ?.name;
-
-                  final actionsName = schema.schemas[integrationIdentifier]
-                      ?.actions[actionsIdentifier]?.name;
-                  final facts = schema.schemas[integrationIdentifier]
-                      ?.actions[actionsIdentifier]?.facts;
-
-                  if (facts == null ||
-                      facts.isEmpty ||
-                      integrationName == null ||
-                      actionsName == null) {
-                    return const SizedBox();
-                  }
-
-                  final options = getTypeFromFacts(facts, property);
-
-                  return AutomationLabelParameterWidget(
-                    title: "Action $index - $actionParameterName",
-                    previewData: integrationName,
-                    input: AutomationInputView(
-                      type: AutomationInputType.radio,
-                      label: actionsName,
-                      options: options,
-                      routeToGoWhenSave: RoutesNames.popThreeTimes,
-                      value: value?.split('.').last,
-                      onSave: (value, humanReadableValue) {
-                        onSave(value, 'var', humanReadableValue, "$index.");
-                      },
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8.0);
-                },
-              ),
+              _buildActionsList(context, actions),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildTriggersList(
+      BuildContext context, List<AutomationTrigger> triggers) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: triggers.length,
+      itemBuilder: (context, index) =>
+          _buildTriggerItem(context, triggers[index]),
+      separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+    );
+  }
+
+  Widget _buildTriggerItem(BuildContext context, AutomationTrigger trigger) {
+    final integrationIdentifier = trigger.identifier.split('.').first;
+    final triggerIdentifier = trigger.identifier.split('.').last;
+    final integrationName = _getIntegrationName(context, integrationIdentifier);
+    final triggerName =
+        _getTriggerName(context, integrationIdentifier, triggerIdentifier);
+    final facts = _getFacts(context, integrationIdentifier, triggerIdentifier);
+
+    if (facts == null ||
+        facts.isEmpty ||
+        integrationName == null ||
+        triggerName == null) {
+      return const SizedBox();
+    }
+
+    final options = getTypeFromFacts(facts, property);
+
+    return AutomationLabelParameterWidget(
+      title: "Trigger",
+      previewData: integrationName,
+      input: AutomationInputView(
+        type: AutomationInputType.radio,
+        label: triggerName,
+        options: options,
+        routeToGoWhenSave: RoutesNames.popThreeTimes,
+        value: value?.split('.').last,
+        onSave: (value, humanReadableValue) {
+          onSave(value, 'var', humanReadableValue, "T.");
+        },
+      ),
+    );
+  }
+
+  Widget _buildActionsList(
+      BuildContext context, List<AutomationAction> actions) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: actions.length,
+      itemBuilder: (context, index) =>
+          _buildActionItem(context, actions[index], index),
+      separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+    );
+  }
+
+  Widget _buildActionItem(
+      BuildContext context, AutomationAction action, int index) {
+    if (index >= indexOfTheTriggerOrAction) {
+      return const SizedBox();
+    }
+
+    final integrationIdentifier = action.identifier.split('.').first;
+    final actionsIdentifier = action.identifier.split('.').last;
+    final integrationName = _getIntegrationName(context, integrationIdentifier);
+    final actionParameterName =
+        _getActionName(context, integrationIdentifier, actionsIdentifier);
+    final actionsName =
+        _getActionName(context, integrationIdentifier, actionsIdentifier);
+    final facts = _getFacts(context, integrationIdentifier, actionsIdentifier);
+
+    if (facts == null ||
+        facts.isEmpty ||
+        integrationName == null ||
+        actionsName == null) {
+      return const SizedBox();
+    }
+
+    final options = getTypeFromFacts(facts, property);
+
+    return AutomationLabelParameterWidget(
+      title: "Action $index - $actionParameterName",
+      previewData: integrationName,
+      input: AutomationInputView(
+        type: AutomationInputType.radio,
+        label: actionsName,
+        options: options,
+        routeToGoWhenSave: RoutesNames.popThreeTimes,
+        value: value?.split('.').last,
+        onSave: (value, humanReadableValue) {
+          onSave(value, 'var', humanReadableValue, "$index.");
+        },
+      ),
+    );
+  }
+
+  String? _getIntegrationName(
+      BuildContext context, String integrationIdentifier) {
+    final schema =
+        RepositoryProvider.of<AutomationMediator>(context).automationSchemas;
+    return schema?.schemas[integrationIdentifier]?.name;
+  }
+
+  String? _getTriggerName(BuildContext context, String integrationIdentifier,
+      String triggerIdentifier) {
+    final schema =
+        RepositoryProvider.of<AutomationMediator>(context).automationSchemas;
+    return schema
+        ?.schemas[integrationIdentifier]?.triggers[triggerIdentifier]?.name;
+  }
+
+  String? _getActionName(BuildContext context, String integrationIdentifier,
+      String actionsIdentifier) {
+    final schema =
+        RepositoryProvider.of<AutomationMediator>(context).automationSchemas;
+    return schema
+        ?.schemas[integrationIdentifier]?.actions[actionsIdentifier]?.name;
+  }
+
+  Map<String, AutomationSchemaTriggerActionProperty>? _getFacts(
+      BuildContext context, String integrationIdentifier, String identifier) {
+    final schema =
+        RepositoryProvider.of<AutomationMediator>(context).automationSchemas;
+    return schema
+            ?.schemas[integrationIdentifier]?.triggers[identifier]?.facts ??
+        schema?.schemas[integrationIdentifier]?.actions[identifier]?.facts;
   }
 }
