@@ -66,6 +66,7 @@ class IntegrationDTO implements Json {
         break;
       case IntegrationType.gmail:
         properties = GmailPropertiesDTO.fromJson(json['properties']);
+        break;
       default:
         throw Exception('Unknown integration type');
     }
