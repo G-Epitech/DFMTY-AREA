@@ -35,7 +35,7 @@ public sealed class TriggerHandlersProvider : ITriggerHandlersProvider
         {
             CheckHandlerDeclarationsAndRegister(type, providersSettings);
         }
-        //EnsureEveryTriggerHasHandler(providersSettings);
+        EnsureEveryTriggerHasHandler(providersSettings);
         _logger.LogDebug("{count} trigger handlers have been registered", _handlers.Count);
     }
 
