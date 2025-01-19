@@ -27,8 +27,8 @@ using Zeus.Api.Infrastructure.Persistence.Interceptors;
 using Zeus.Api.Infrastructure.Persistence.Repositories;
 using Zeus.Api.Infrastructure.Services;
 using Zeus.Api.Infrastructure.Services.Integrations.Discord;
-using Zeus.Api.Infrastructure.Services.Integrations.Github;
 using Zeus.Api.Infrastructure.Services.Integrations.Gmail;
+using Zeus.Api.Infrastructure.Services.Integrations.Github;
 using Zeus.Api.Infrastructure.Services.Integrations.LeagueOfLegends;
 using Zeus.Api.Infrastructure.Services.Integrations.Notion;
 using Zeus.Api.Infrastructure.Services.Integrations.OpenAi;
@@ -69,6 +69,7 @@ public static class DependencyInjection
         services.AddScoped<IOpenAiService, OpenAiService>();
         services.AddScoped<ILeagueOfLegendsService, LeagueOfLegendsService>();
         services.AddScoped<IGithubService, GithubService>();
+        services.AddScoped<IGmailService, GmailService>();
         services.AddScoped<IGmailService, GmailService>();
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
