@@ -34,7 +34,7 @@ final class AutomationDescriptionChanged extends AutomationEvent {
 }
 
 final class AutomationResetPending extends AutomationEvent {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final int index;
 
   const AutomationResetPending({

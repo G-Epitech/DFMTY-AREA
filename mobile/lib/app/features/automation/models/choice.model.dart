@@ -1,4 +1,4 @@
-enum AutomationChoiceEnum {
+enum AutomationTriggerOrActionType {
   action,
   trigger,
 }

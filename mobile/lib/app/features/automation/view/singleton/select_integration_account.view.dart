@@ -22,7 +22,7 @@ import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/models/integrations/openAI.integration.model.dart';
 
 class AutomationSelectIntegrationsAccountView extends StatefulWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
@@ -97,7 +97,7 @@ class _AutomationSelectIntegrationsAccountViewState
 class _StateManager extends StatelessWidget {
   final List<String> values;
   final IntegrationsState state;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
@@ -145,7 +145,7 @@ class _StateManager extends StatelessWidget {
 class _IntegrationList extends StatelessWidget {
   final List<String> values;
   final List<Integration> integrations;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;
@@ -203,7 +203,7 @@ bool _isRadio(Map<String, AutomationSchemaDependenciesProperty> dependencies) {
 class _OKButton extends StatelessWidget {
   final List<String> values;
   final List<Integration> integrations;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
   final String triggerOrActionIdentifier;

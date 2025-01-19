@@ -88,8 +88,8 @@ class AutomationMediator with ChangeNotifier {
   }
 
   Map<String, AutomationSchemaTriggerAction> getTriggersOrActions(
-      String integration, AutomationChoiceEnum type) {
-    if (type == AutomationChoiceEnum.trigger) {
+      String integration, AutomationTriggerOrActionType type) {
+    if (type == AutomationTriggerOrActionType.trigger) {
       return _automationSchemas!.schemas[integration]!.triggers;
     } else {
       return _automationSchemas!.schemas[integration]!.actions;
@@ -97,8 +97,10 @@ class AutomationMediator with ChangeNotifier {
   }
 
   Map<String, AutomationSchemaTriggerActionProperty> getParameters(
-      String integration, AutomationChoiceEnum type, String identifier) {
-    if (type == AutomationChoiceEnum.trigger) {
+      String integration,
+      AutomationTriggerOrActionType type,
+      String identifier) {
+    if (type == AutomationTriggerOrActionType.trigger) {
       return _automationSchemas!
           .schemas[integration]!.triggers[identifier]!.parameters;
     } else {
@@ -108,8 +110,10 @@ class AutomationMediator with ChangeNotifier {
   }
 
   Map<String, AutomationSchemaDependenciesProperty> getDependencies(
-      String integration, AutomationChoiceEnum type, String identifier) {
-    if (type == AutomationChoiceEnum.trigger) {
+      String integration,
+      AutomationTriggerOrActionType type,
+      String identifier) {
+    if (type == AutomationTriggerOrActionType.trigger) {
       return _automationSchemas!
           .schemas[integration]!.triggers[identifier]!.dependencies;
     } else {

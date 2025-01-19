@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum AutomationInputEnum {
+enum AutomationInputType {
   text,
   textArea,
   number,
@@ -10,11 +10,12 @@ enum AutomationInputEnum {
   emoji,
 }
 
-enum AutomationParameterNeedOptions {
-  yes,
-  no,
-  blocked,
+enum AutomationParameterType {
+  restrictedRadio,
+  restrictedRadioBlocked,
   number,
+  emoji,
+  choice,
 }
 
 class AutomationRadioModel {
@@ -40,5 +41,15 @@ class AutomationCheckboxModel {
     required this.value,
     required this.description,
     this.widget,
+  });
+}
+
+class AutomationParameterModel {
+  late final String value;
+  late final String type;
+
+  AutomationParameterModel({
+    required this.value,
+    required this.type,
   });
 }
