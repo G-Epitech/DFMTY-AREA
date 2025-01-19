@@ -378,7 +378,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final previewKey =
             "trigger.$index.$integrationIdentifier.$triggerIdentifier.${param.identifier}";
 
-        final triggerHaveOptions = parameterHaveOptions(
+        final triggerHaveOptions = getParameterType(
             automation,
             AutomationTriggerOrActionType.trigger,
             integrationIdentifier,
@@ -386,8 +386,8 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
             triggerIdentifier,
             param.identifier);
 
-        if (triggerHaveOptions == AutomationParameterNeedOptions.no ||
-            triggerHaveOptions == AutomationParameterNeedOptions.number) {
+        if (triggerHaveOptions == AutomationParameterType.choice ||
+            triggerHaveOptions == AutomationParameterType.number) {
           newPreview[previewKey] = param.value;
           continue;
         }
@@ -418,7 +418,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final previewKey =
             "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
 
-        final actionHaveOptions = parameterHaveOptions(
+        final actionHaveOptions = getParameterType(
             automation,
             AutomationTriggerOrActionType.action,
             integrationIdentifier,
@@ -426,7 +426,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
             actionIdentifier,
             param.identifier);
 
-        if (actionHaveOptions == AutomationParameterNeedOptions.no ||
+        if (actionHaveOptions == AutomationParameterType.choice ||
             param.identifier == "Icon") {
           if (param.type.toLowerCase() == "var") {
             newPreview[previewKey] = "From a previous trigger/action";

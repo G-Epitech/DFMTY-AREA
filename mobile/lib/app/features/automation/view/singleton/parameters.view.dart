@@ -4,9 +4,9 @@ import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.d
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/utils/human_readable.dart';
+import 'package:triggo/app/features/automation/utils/input_type.dart';
 import 'package:triggo/app/features/automation/utils/parameter_get_options.dart';
 import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
-import 'package:triggo/app/features/automation/utils/parameter_type.dart';
 import 'package:triggo/app/features/automation/utils/validate.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
@@ -205,7 +205,7 @@ class _List extends StatelessWidget {
                     parameterIdentifier,
                     state.previews) ??
                 selectedValue;
-            final options = parameterHaveOptions(
+            final parameterType = getParameterType(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
@@ -215,14 +215,11 @@ class _List extends StatelessWidget {
             return AutomationLabelParameterWidget(
                 title: title,
                 previewData: previewData,
-                disabled: options == AutomationParameterNeedOptions.blocked,
-                input: options != AutomationParameterNeedOptions.no
+                disabled: parameterType ==
+                    AutomationParameterType.restrictedRadioBlocked,
+                input: parameterType != AutomationParameterType.choice
                     ? AutomationInputView(
-                        type: (options == AutomationParameterNeedOptions.yes
-                            ? (parameterIdentifier == "Icon"
-                                ? AutomationInputType.emoji
-                                : AutomationInputType.radio)
-                            : getParameterType(property.type)),
+                        type: getInputType(parameterType),
                         label: title,
                         routeToGoWhenSave: RoutesNames.popOneTime,
                         value: selectedValue ?? previewData,
@@ -290,6 +287,8 @@ class _List extends StatelessWidget {
                         value: selectedValue,
                         indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
                         property: property,
+                        parameterType: parameterType,
+                        previousValueType: parameterData?.type,
                         onSave: (value, valueType, humanReadableValue,
                             indexVariable) {
                           if (type == AutomationTriggerOrActionType.trigger) {
@@ -312,7 +311,7 @@ class _List extends StatelessWidget {
                                         "action.$indexOfTheTriggerOrAction.$integrationIdentifier.$triggerOrActionIdentifier.$parameterIdentifier",
                                     value: valueType == 'var'
                                         ? 'From a previous trigger/action'
-                                        : 'Manual input'));
+                                        : value));
 
                             context
                                 .read<AutomationBloc>()
@@ -343,11 +342,11 @@ class AutomationParameterChoice extends StatelessWidget {
   final void Function(String, String, String, String) onSave;
   final AutomationTriggerOrActionType type;
   final Automation automation;
-  final List<AutomationRadioModel>? options;
   final String? value;
-  final String? selectedValue;
   final int indexOfTheTriggerOrAction;
   final AutomationSchemaTriggerActionProperty property;
+  final AutomationParameterType parameterType;
+  final String? previousValueType;
 
   const AutomationParameterChoice({
     super.key,
@@ -355,15 +354,16 @@ class AutomationParameterChoice extends StatelessWidget {
     required this.onSave,
     required this.type,
     required this.automation,
-    this.options,
-    this.value,
-    this.selectedValue,
+    required this.value,
     required this.indexOfTheTriggerOrAction,
     required this.property,
+    required this.parameterType,
+    required this.previousValueType,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("Previous value type: $previousValueType");
     return BaseScaffold(
         title: title,
         getBack: true,
@@ -378,7 +378,6 @@ class AutomationParameterChoice extends StatelessWidget {
                 automation: automation,
                 label: title,
                 onSave: onSave,
-                options: options,
                 value: value,
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
                 property: property,
@@ -389,13 +388,13 @@ class AutomationParameterChoice extends StatelessWidget {
               title: "Manual input",
               previewData: "Enter manually a value",
               input: AutomationInputView(
-                type: getParameterType(property.type),
+                type: getInputType(parameterType),
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
                   onSave(value, 'raw', humanReadableValue, "any");
                 },
-                value: selectedValue,
+                value: previousValueType?.toLowerCase() == 'raw' ? value : null,
               ),
             ),
           ],
@@ -408,7 +407,6 @@ class AutomationParameterFromActions extends StatelessWidget {
   final Automation automation;
   final String label;
   final String? placeholder;
-  final List<AutomationRadioModel>? options;
   final void Function(String, String, String, String) onSave;
   final String? value;
   final int indexOfTheTriggerOrAction;
@@ -420,7 +418,6 @@ class AutomationParameterFromActions extends StatelessWidget {
     required this.type,
     required this.label,
     this.placeholder,
-    this.options,
     required this.onSave,
     this.value,
     required this.indexOfTheTriggerOrAction,
@@ -473,7 +470,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     return const SizedBox();
                   }
 
-                  final options = getOptionsFromFacts(facts, property);
+                  final options = getTypeFromFacts(facts, property);
 
                   return AutomationLabelParameterWidget(
                     title: "Trigger",
@@ -528,7 +525,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     return const SizedBox();
                   }
 
-                  final options = getOptionsFromFacts(facts, property);
+                  final options = getTypeFromFacts(facts, property);
 
                   return AutomationLabelParameterWidget(
                     title: "Action $index - $actionParameterName",

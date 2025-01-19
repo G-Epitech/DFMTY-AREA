@@ -10,11 +10,12 @@ enum AutomationInputType {
   emoji,
 }
 
-enum AutomationParameterNeedOptions {
-  yes,
-  no,
-  blocked,
+enum AutomationParameterType {
+  restrictedRadio,
+  restrictedRadioBlocked,
   number,
+  emoji,
+  choice,
 }
 
 class AutomationRadioModel {
