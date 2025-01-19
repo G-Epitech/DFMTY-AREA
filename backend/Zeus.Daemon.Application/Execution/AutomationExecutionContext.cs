@@ -1,5 +1,7 @@
 using System.Reflection;
 
+using Json.Schema;
+
 using Microsoft.Extensions.Logging;
 
 using Zeus.Common.Domain.AutomationAggregate;
@@ -32,7 +34,7 @@ public sealed class AutomationExecutionContext
         FactsDictionary facts)
     {
         _handlersProvider = actionHandlersProvider;
-        _actions = automation.Actions;
+        _actions = automation.Actions.OrderBy(a => a.Rank).ToList();
         _integrations = integrations;
         _facts = FillFactsFromTrigger(facts);
         _logger = new AutomationExecutionLogger(automation.Id.Value);
@@ -83,6 +85,7 @@ public sealed class AutomationExecutionContext
                     _logger.WithScope($"[{action.Rank}] {action.Identifier}");
                     await RunActionAsync(action);
                 }
+
                 _logger.ResetScope();
             }
         }
@@ -97,6 +100,7 @@ public sealed class AutomationExecutionContext
             {
                 _logger.LogError("{e}", e);
             }
+
             _logger.ResetScope();
         }
     }
