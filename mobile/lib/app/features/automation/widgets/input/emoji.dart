@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 
 class EmojiInput extends StatefulWidget {
-  final String label;
   final String placeholder;
   final void Function(String) onValueChanged;
   final String defaultValue;
 
   const EmojiInput({
     super.key,
-    required this.label,
     required this.placeholder,
     required this.onValueChanged,
     required this.defaultValue,

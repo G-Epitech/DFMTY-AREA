@@ -9,8 +9,8 @@ class Automation {
   final List<AutomationAction> actions;
   final bool enabled;
   final DateTime updatedAt;
-  final String iconUri;
-  final int iconColor;
+  final String icon;
+  final String color;
 
   const Automation({
     required this.id,
@@ -21,8 +21,8 @@ class Automation {
     required this.actions,
     required this.enabled,
     required this.updatedAt,
-    required this.iconUri,
-    required this.iconColor,
+    required this.icon,
+    required this.color,
   });
 
   factory Automation.fromDTO(AutomationDTO json) {
@@ -35,8 +35,8 @@ class Automation {
       actions: json.actions.map((e) => AutomationAction.fromDTO(e)).toList(),
       enabled: json.enabled,
       updatedAt: json.updatedAt,
-      iconUri: "assets/icons/chat.svg",
-      iconColor: 0xFFEE883A,
+      icon: json.icon,
+      color: json.color,
     );
   }
 
@@ -50,6 +50,8 @@ class Automation {
       'actions': actions.map((e) => e.toJson()).toList(),
       'enabled': enabled,
       'updatedAt': updatedAt.toIso8601String(),
+      'icon': icon,
+      'color': color,
     };
   }
 
@@ -62,8 +64,8 @@ class Automation {
     List<AutomationAction>? actions,
     bool? enabled,
     DateTime? updatedAt,
-    String? iconUri,
-    int? iconColor,
+    String? icon,
+    String? iconColor,
   }) {
     return Automation(
       id: id ?? this.id,
@@ -74,8 +76,8 @@ class Automation {
       actions: actions ?? this.actions,
       enabled: enabled ?? this.enabled,
       updatedAt: updatedAt ?? this.updatedAt,
-      iconUri: iconUri ?? this.iconUri,
-      iconColor: iconColor ?? this.iconColor,
+      icon: icon ?? this.icon,
+      color: iconColor ?? this.color,
     );
   }
 }

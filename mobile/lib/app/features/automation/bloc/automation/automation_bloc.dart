@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -39,6 +41,8 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationLoadCleanToDirty>(_onLoadCleanAutomation);
     on<AutomationLoadExisting>(_onLoadExistingAutomation);
     on<DeleteAutomation>(_onDeleteAutomation);
+    on<AutomationIconChanged>(_onIconChanged);
+    on<AutomationColorChanged>(_onColorChanged);
   }
 
   Future<void> _onSubmitted(
@@ -56,6 +60,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
       emit(state.copyWith(savingStatus: FormzSubmissionStatus.success));
     } catch (e) {
+      log(e.toString());
       emit(state.copyWith(savingStatus: FormzSubmissionStatus.failure));
     }
   }
@@ -467,5 +472,19 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     } catch (e) {
       emit(state.copyWith(deletingStatus: FormzSubmissionStatus.failure));
     }
+  }
+
+  void _onIconChanged(
+      AutomationIconChanged event, Emitter<AutomationState> emit) {
+    final updatedAutomation =
+        state.cleanedAutomation.copyWith(icon: event.iconUri);
+    emit(state.copyWith(cleanedAutomation: updatedAutomation));
+  }
+
+  void _onColorChanged(
+      AutomationColorChanged event, Emitter<AutomationState> emit) {
+    final updatedAutomation =
+        state.cleanedAutomation.copyWith(iconColor: event.color);
+    emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 }

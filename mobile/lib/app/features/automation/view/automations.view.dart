@@ -6,6 +6,7 @@ import 'package:triggo/app/features/automation/view/singleton/main.view.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/route_observer.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
+import 'package:triggo/app/theme/colors/colors.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
 import 'package:triggo/app/widgets/card.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -200,12 +201,12 @@ class _AutomationListItem extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Color(automation.iconColor),
+                    color: HexColor(automation.color),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Center(
                     child: SvgPicture.asset(
-                      automation.iconUri,
+                      automation.icon,
                       width: 30,
                       height: 30,
                       colorFilter: ColorFilter.mode(

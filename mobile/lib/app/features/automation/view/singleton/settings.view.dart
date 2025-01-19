@@ -14,10 +14,10 @@ class AutomationSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final args = _extractArguments(context);
     final bool isCreated = args['isCreated'] as bool;
     final String? id = args['id'] as String?;
+
     return BlocListener<AutomationBloc, AutomationState>(
       listener: _listener,
       child: BlocBuilder<AutomationBloc, AutomationState>(
@@ -30,61 +30,154 @@ class AutomationSettingsView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        AutomationInputParameterWithLabel(
-                          title: 'Label',
-                          previewData: state.cleanedAutomation.label.isNotEmpty
-                              ? state.cleanedAutomation.label
-                              : null,
-                          input: AutomationInputView(
-                            type: AutomationInputType.text,
-                            label: 'Label',
-                            placeholder: 'Enter a label',
-                            onSave: (value, humanValue) {
-                              context
-                                  .read<AutomationBloc>()
-                                  .add(AutomationLabelChanged(label: value));
-                            },
-                            value: state.cleanedAutomation.label.isNotEmpty
-                                ? state.cleanedAutomation.label
-                                : null,
-                            routeToGoWhenSave: RoutesNames.popOneTime,
-                          ),
-                        ),
-                        SizedBox(height: 12.0),
-                        AutomationInputParameterWithLabel(
-                          title: 'Description',
-                          previewData:
-                              state.cleanedAutomation.description.isNotEmpty
-                                  ? state.cleanedAutomation.description
-                                  : null,
-                          input: AutomationInputView(
-                            type: AutomationInputType.textArea,
-                            label: 'Description',
-                            placeholder: 'Enter a description',
-                            onSave: (value, humanValue) {
-                              context.read<AutomationBloc>().add(
-                                  AutomationDescriptionChanged(
-                                      description: value));
-                            },
-                            value:
-                                state.cleanedAutomation.description.isNotEmpty
-                                    ? state.cleanedAutomation.description
-                                    : null,
-                            routeToGoWhenSave: RoutesNames.popOneTime,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildInputParameters(context, state),
                   _DeleteButton(isCreated: isCreated, id: id),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Map<String, dynamic> _extractArguments(BuildContext context) {
+    return ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  }
+
+  Widget _buildInputParameters(BuildContext context, AutomationState state) {
+    return Expanded(
+      child: ListView(
+        children: [
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Label',
+            inputType: AutomationInputType.text,
+            placeholder: 'Enter a label',
+            value: state.cleanedAutomation.label,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationLabelChanged(label: value));
+            },
+          ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Description',
+            inputType: AutomationInputType.textArea,
+            placeholder: 'Enter a description',
+            value: state.cleanedAutomation.description,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationDescriptionChanged(description: value));
+            },
+          ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Icon',
+            inputType: AutomationInputType.icon,
+            placeholder: 'Select an icon',
+            value: state.cleanedAutomation.icon,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationIconChanged(iconUri: value));
+            },
+            hexColor: state.cleanedAutomation.color,
+          ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Color',
+            inputType: AutomationInputType.radio,
+            placeholder: 'Select an icon',
+            value: state.cleanedAutomation.color,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationColorChanged(color: value));
+            },
+            hexColor: state.cleanedAutomation.color,
+            getOptions: () async {
+              return [
+                AutomationRadioModel(
+                  title: 'Black',
+                  description: 'Set the color to black',
+                  value: '#000000',
+                ),
+                AutomationRadioModel(
+                  title: 'Red',
+                  description: 'Set the color to red',
+                  value: '#EE3A3D',
+                ),
+                AutomationRadioModel(
+                  title: 'Green',
+                  description: 'Set the color to green',
+                  value: '#1DC249',
+                ),
+                AutomationRadioModel(
+                  title: 'Blue',
+                  description: 'Set the color to blue',
+                  value: '#1D39C2',
+                ),
+                AutomationRadioModel(
+                  title: 'Yellow',
+                  description: 'Set the color to yellow',
+                  value: '#C9C90C',
+                ),
+                AutomationRadioModel(
+                  title: 'Orange',
+                  description: 'Set the color to orange',
+                  value: '#EE883A',
+                ),
+                AutomationRadioModel(
+                  title: 'Purple',
+                  description: 'Set the color to purple',
+                  value: '#913AEE',
+                ),
+                AutomationRadioModel(
+                  title: 'Grey',
+                  description: 'Set the color to grey',
+                  value: '#AEAEB2',
+                ),
+              ];
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputParameter({
+    required BuildContext context,
+    required AutomationState state,
+    required String title,
+    required AutomationInputType inputType,
+    required String placeholder,
+    required String? value,
+    required void Function(String, String) onSave,
+    Future<List<AutomationRadioModel>> Function()? getOptions,
+    String? hexColor,
+  }) {
+    return AutomationInputParameterWithLabel(
+      title: title,
+      previewData: value?.isNotEmpty == true ? value : null,
+      input: AutomationInputView(
+        type: inputType,
+        label: title,
+        placeholder: placeholder,
+        onSave: onSave,
+        value: value?.isNotEmpty == true ? value : null,
+        routeToGoWhenSave: RoutesNames.popOneTime,
+        hexColor: hexColor ?? '#000000',
+        getOptions: getOptions,
       ),
     );
   }

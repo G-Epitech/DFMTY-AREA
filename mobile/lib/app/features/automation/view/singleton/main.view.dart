@@ -95,15 +95,14 @@ class _Header extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: Color(
-                  automation.iconColor > 0 ? automation.iconColor : 0xFFEE883A),
+              color: HexColor(automation.color),
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Center(
               child: SvgPicture.asset(
-                automation.iconUri.isEmpty
+                automation.icon.isEmpty
                     ? 'assets/icons/chat.svg'
-                    : automation.iconUri,
+                    : 'assets/icons/${automation.icon}.svg',
                 width: 25,
                 height: 25,
                 colorFilter: ColorFilter.mode(
@@ -147,10 +146,21 @@ class _Header extends StatelessWidget {
                 Positioned(
                   bottom: 4,
                   right: 8,
-                  child: Icon(
-                    Icons.warning_amber_rounded,
-                    color: Theme.of(context).colorScheme.onError,
-                    size: 20,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.automationSettings,
+                        arguments: {
+                          'isCreated': isCreated,
+                          "id": automation.id
+                        },
+                      );
+                    },
+                    child: Icon(
+                      Icons.warning_amber_rounded,
+                      color: Theme.of(context).colorScheme.onError,
+                      size: 20,
+                    ),
                   ),
                 ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/widgets/input/emoji.dart';
+import 'package:triggo/app/features/automation/widgets/input/icon.dart';
 import 'package:triggo/app/features/automation/widgets/input/number.dart';
 import 'package:triggo/app/features/automation/widgets/input/radio.dart';
 import 'package:triggo/app/features/automation/widgets/input/text.dart';
@@ -24,6 +25,7 @@ class AutomationInputView extends StatefulWidget {
   final String routeToGoWhenSave;
   final Future<List<AutomationRadioModel>> Function()? getOptions;
   final Future<List<AutomationCheckboxModel>> Function()? getCheckboxes;
+  final String hexColor;
 
   const AutomationInputView({
     super.key,
@@ -41,6 +43,7 @@ class AutomationInputView extends StatefulWidget {
     required this.routeToGoWhenSave,
     this.getOptions,
     this.getCheckboxes,
+    this.hexColor = '#000000',
   });
 
   @override
@@ -91,7 +94,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
     switch (widget.type) {
       case AutomationInputType.text:
         return TextInput(
-          label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
           onValueChanged: (value) {
@@ -103,7 +105,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
         );
       case AutomationInputType.textArea:
         return TextAreaInput(
-          label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
           onChanged: (value) {
@@ -115,7 +116,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
         );
       case AutomationInputType.radio:
         return RadioInput(
-          label: widget.label,
           options: widget.options,
           defaultValue: localValue,
           onChanged: (value, humanValue) {
@@ -128,7 +128,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
         );
       case AutomationInputType.emoji:
         return EmojiInput(
-          label: widget.label,
           placeholder: widget.placeholder ?? 'Enter an emoji',
           defaultValue: localValue,
           onValueChanged: (value) {
@@ -140,7 +139,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
         );
       case AutomationInputType.number:
         return NumberInput(
-          label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
           onValueChanged: (value) {
@@ -149,6 +147,18 @@ class _AutomationInputViewState extends State<AutomationInputView> {
               humanReadableValue = value;
             });
           },
+        );
+      case AutomationInputType.icon:
+        return IconInput(
+          placeholder: widget.placeholder,
+          onValueChanged: (value) {
+            setState(() {
+              localValue = value;
+              humanReadableValue = value;
+            });
+          },
+          defaultValue: localValue,
+          hexColor: widget.hexColor,
         );
       default:
         return Container();

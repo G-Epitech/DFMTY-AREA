@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:triggo/app/widgets/input.triggo.dart';
 
 class TextAreaInput extends StatefulWidget {
-  final String label;
   final String? placeholder;
   final String? defaultValue;
   final void Function(String)? onChanged;
 
   const TextAreaInput({
     super.key,
-    required this.label,
     this.placeholder,
     this.defaultValue,
     this.onChanged,
