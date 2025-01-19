@@ -5,7 +5,6 @@ import {
   AutomationModel,
   AutomationSchemaModel,
   AutomationSchemaService,
-  TriggerModel,
 } from '@models/automation';
 import { AutomationSchemaDTO } from '@repositories/automations/dto';
 import { AutomationMapperService } from '@mediators/mappers';
@@ -22,26 +21,9 @@ export class AutomationsMediator {
   }
 
   getById(id: string): Observable<AutomationModel> {
-    return this.#automationsRepository.getById(id).pipe(
-      map(dto => {
-        return new AutomationModel(
-          dto.id,
-          dto.ownerId,
-          dto.label,
-          dto.description,
-          dto.enabled,
-          dto.updatedAt,
-          '#EE883A',
-          'chat-bubble-bottom-center-text',
-          new TriggerModel(
-            dto.trigger.identifier,
-            dto.trigger.parameters,
-            dto.trigger.dependencies
-          ),
-          this.#automationMapper.mapActions(dto.actions)
-        );
-      })
-    );
+    return this.#automationsRepository
+      .getById(id)
+      .pipe(map(dto => this.#automationMapper.mapAutomationModel(dto)));
   }
 
   getSchema(): Observable<AutomationSchemaModel> {

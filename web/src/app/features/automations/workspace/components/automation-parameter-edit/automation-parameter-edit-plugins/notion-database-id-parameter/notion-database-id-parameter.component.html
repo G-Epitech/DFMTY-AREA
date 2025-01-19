@@ -1,0 +1,31 @@
+@if (databases$ | async; as databases) {
+  <div
+    class="flex flex-col overflow-y-auto max-h-96 bg-secondary rounded-md p-3 space-y-3 border">
+    @for (db of databases; track db.id) {
+      <button
+        trBtn
+        variant="outline"
+        class="flex flex-row bg-white items-center justify-between w-full p-7 text-left"
+        (click)="selectDatabase(db)"
+        [ngClass]="isDatabaseSelected(db) ? 'text-primary' : 'text-gray-900'">
+        <div class="flex-shrink-0 mr-4">
+          <ng-icon name="heroCircleStack" size="1.3rem" class="text-gray-400" />
+        </div>
+
+        <div class="flex flex-col flex-grow">
+          <span class="tr-large font-medium">{{ db.title }}</span>
+          @if (db.description) {
+            <span class="tr-small text-muted">{{ db.description }}</span>
+          }
+        </div>
+
+        @if (isDatabaseSelected(db)) {
+          <ng-icon
+            name="heroCheckCircle"
+            size="1.5rem"
+            class="flex-shrink-0 ml-2" />
+        }
+      </button>
+    }
+  </div>
+}

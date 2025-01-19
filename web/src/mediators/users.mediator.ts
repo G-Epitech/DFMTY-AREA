@@ -3,7 +3,7 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import { AutomationModel, TriggerModel } from '@models/automation';
+import { AutomationModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
 import { AutomationMapperService } from '@mediators/mappers';
 
@@ -74,24 +74,8 @@ export class UsersMediator {
     return this.#usersRepository.getAutomations(pageOptions).pipe(
       map(res => ({
         ...res,
-        data: res.data.map(
-          automation =>
-            new AutomationModel(
-              automation.id,
-              automation.ownerId,
-              automation.label,
-              automation.description,
-              automation.enabled,
-              automation.updatedAt,
-              '#EE883A',
-              'chat-bubble-bottom-center-text',
-              new TriggerModel(
-                automation.trigger.identifier,
-                automation.trigger.parameters,
-                automation.trigger.dependencies
-              ),
-              this.#automationMapper.mapActions(automation.actions)
-            )
+        data: res.data.map(automation =>
+          this.#automationMapper.mapAutomationModel(automation)
         ),
       }))
     );
