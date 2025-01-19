@@ -13,7 +13,7 @@ public interface IGithubService
     /// <param name="code">The code provided by the service</param>
     /// <returns>Github tokens</returns>
     public Task<ErrorOr<GithubTokens>> GetTokensFromOauth2Async(string code);
-    
+
     /// <summary>
     /// Get user info from access token.
     /// </summary>

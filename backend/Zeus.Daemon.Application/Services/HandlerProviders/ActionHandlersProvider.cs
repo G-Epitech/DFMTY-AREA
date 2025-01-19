@@ -37,7 +37,7 @@ public class ActionHandlersProvider : IActionHandlersProvider
         {
             CheckHandlerDeclarationsAndRegister(type, providersSettings);
         }
-        //EnsureEveryActionHasHandler(providersSettings);
+        EnsureEveryActionHasHandler(providersSettings);
         _logger.LogDebug("{count} action handlers have been registered", _handlers.Count);
     }
 

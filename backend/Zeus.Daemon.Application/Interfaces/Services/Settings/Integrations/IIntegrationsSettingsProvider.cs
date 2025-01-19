@@ -7,4 +7,5 @@ public interface IIntegrationsSettingsProvider
     public IOpenAiSettingsProvider OpenAi { get; }
     public IRiotSettingsProvider Riot { get; }
     public IGithubSettingsProvider Github { get; }
+    public IGmailSettingsProvider Gmail { get; }
 }
