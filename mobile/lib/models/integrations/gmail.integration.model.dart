@@ -4,8 +4,8 @@ import 'package:triggo/repositories/integration/models/integrations/gmail.integr
 
 class GmailIntegration extends Integration {
   final String displayName;
-  final String firstName;
-  final String lastName;
+  final String givenName;
+  final String familyName;
   final String email;
   final String avatarUri;
 
@@ -13,8 +13,8 @@ class GmailIntegration extends Integration {
     required super.name,
     required super.id,
     required this.displayName,
-    required this.firstName,
-    required this.lastName,
+    required this.givenName,
+    required this.familyName,
     required this.email,
     required this.avatarUri,
   });
@@ -25,8 +25,8 @@ class GmailIntegration extends Integration {
       name: 'Gmail',
       id: dto.id,
       displayName: properties.displayName,
-      firstName: properties.firstName,
-      lastName: properties.lastName,
+      givenName: properties.givenName,
+      familyName: properties.familyName,
       email: properties.email,
       avatarUri: properties.avatarUri,
     );

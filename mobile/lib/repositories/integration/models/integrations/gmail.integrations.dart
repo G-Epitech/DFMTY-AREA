@@ -4,16 +4,16 @@ class GmailPropertiesDTO implements IntegrationPropertiesDTO {
   final String id;
   final String avatarUri;
   final String displayName;
-  final String firstName;
-  final String lastName;
+  final String givenName;
+  final String familyName;
   final String email;
 
   GmailPropertiesDTO({
     required this.id,
     required this.avatarUri,
     required this.displayName,
-    required this.firstName,
-    required this.lastName,
+    required this.givenName,
+    required this.familyName,
     required this.email,
   });
 
@@ -23,8 +23,8 @@ class GmailPropertiesDTO implements IntegrationPropertiesDTO {
       'id': id,
       'avatarUri': avatarUri,
       'displayName': displayName,
-      'firstName': firstName,
-      'lastName': lastName,
+      'givenName': givenName,
+      'familyName': familyName,
       'email': email,
     };
   }
@@ -34,8 +34,8 @@ class GmailPropertiesDTO implements IntegrationPropertiesDTO {
       id: json['id'] as String,
       avatarUri: json['avatarUri'] as String,
       displayName: json['displayName'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      givenName: json['givenName'] as String,
+      familyName: json['familyName'] as String,
       email: json['email'] as String,
     );
   }

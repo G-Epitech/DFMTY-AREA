@@ -45,15 +45,11 @@ class GmailCustomWidget extends StatelessWidget {
               right: 0,
               child: CircleAvatar(
                   radius: 10,
-                  backgroundColor: Color(0xFF4E4E4E),
+                  backgroundColor: Colors.white,
                   child: SvgPicture.asset(
-                    "assets/icons/notion.svg",
-                    width: 15,
-                    height: 15,
-                    colorFilter: ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
-                    ),
+                    "assets/icons/gmail.svg",
+                    width: 10,
+                    height: 10,
                   )),
             ),
           ],
@@ -74,7 +70,7 @@ class GmailCustomWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                '${integration.firstName} ${integration.lastName} - ${integration.email}',
+                '${integration.givenName} ${integration.familyName} - ${integration.email}',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,

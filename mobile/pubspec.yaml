@@ -338,6 +338,7 @@ flutter:
     - ./assets/icons/x-circle.svg
     - ./assets/icons/x-mark.svg
     - ./assets/icons/league_of_legends.svg
+    - ./assets/icons/gmail.svg
 
   uses-material-design: true
 
