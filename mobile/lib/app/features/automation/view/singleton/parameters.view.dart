@@ -306,12 +306,14 @@ class _List extends StatelessWidget {
                 disabled: options == AutomationParameterNeedOptions.blocked,
                 input: options != AutomationParameterNeedOptions.no
                     ? AutomationInputView(
-                        type: options == AutomationParameterNeedOptions.yes
-                            ? AutomationInputEnum.radio
-                            : AutomationInputEnum.text,
+                        type: (options == AutomationParameterNeedOptions.yes
+                            ? (parameterIdentifier == "Icon"
+                                ? AutomationInputEnum.emoji
+                                : AutomationInputEnum.radio)
+                            : getType(property.type)),
                         label: title,
                         routeToGoWhenSave: RoutesNames.popOneTime,
-                        value: selectedValue,
+                        value: selectedValue ?? previewData,
                         humanReadableValue: previewData,
                         getOptions: () async {
                           final integrationMediator =
@@ -375,6 +377,7 @@ class _List extends StatelessWidget {
                         automation: state.cleanedAutomation,
                         value: selectedValue,
                         indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                        property: property,
                         onSave: (value, valueType, humanReadableValue,
                             indexVariable) {
                           if (type == AutomationChoiceEnum.trigger) {
@@ -432,6 +435,7 @@ class AutomationParameterChoice extends StatelessWidget {
   final String? value;
   final String? selectedValue;
   final int indexOfTheTriggerOrAction;
+  final AutomationSchemaTriggerActionProperty property;
 
   const AutomationParameterChoice({
     super.key,
@@ -443,6 +447,7 @@ class AutomationParameterChoice extends StatelessWidget {
     this.value,
     this.selectedValue,
     required this.indexOfTheTriggerOrAction,
+    required this.property,
   });
 
   @override
@@ -464,6 +469,7 @@ class AutomationParameterChoice extends StatelessWidget {
                 options: options,
                 value: value,
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction,
+                property: property,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -471,7 +477,7 @@ class AutomationParameterChoice extends StatelessWidget {
               title: "Manual input",
               previewData: "Enter manually a value",
               input: AutomationInputView(
-                type: AutomationInputEnum.text,
+                type: getType(property.type),
                 label: title,
                 routeToGoWhenSave: RoutesNames.popTwoTimes,
                 onSave: (value, humanReadableValue) {
@@ -494,6 +500,7 @@ class AutomationParameterFromActions extends StatelessWidget {
   final void Function(String, String, String, String) onSave;
   final String? value;
   final int indexOfTheTriggerOrAction;
+  final AutomationSchemaTriggerActionProperty property;
 
   const AutomationParameterFromActions({
     super.key,
@@ -505,6 +512,7 @@ class AutomationParameterFromActions extends StatelessWidget {
     required this.onSave,
     this.value,
     required this.indexOfTheTriggerOrAction,
+    required this.property,
   });
 
   @override
@@ -553,7 +561,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     return const SizedBox();
                   }
 
-                  final options = getOptionsFromFacts(facts);
+                  final options = getOptionsFromFacts(facts, property);
 
                   return AutomationLabelParameterWidget(
                     title: "Trigger",
@@ -608,7 +616,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                     return const SizedBox();
                   }
 
-                  final options = getOptionsFromFacts(facts);
+                  final options = getOptionsFromFacts(facts, property);
 
                   return AutomationLabelParameterWidget(
                     title: "Action $index - $actionParameterName",
@@ -874,6 +882,11 @@ AutomationParameterNeedOptions haveOptions(
           }
         }
       }
+      if (integrationName == IntegrationNames.leagueOfLegends) {
+        if (parameterIdentifier == "KdaThreshold") {
+          return AutomationParameterNeedOptions.number;
+        }
+      }
       break;
     case AutomationChoiceEnum.action:
       if (integrationName == IntegrationNames.discord) {
@@ -896,6 +909,10 @@ AutomationParameterNeedOptions haveOptions(
         }
       }
       if (integrationName == IntegrationNames.notion) {
+        if (parameterIdentifier == "Icon") {
+          return AutomationParameterNeedOptions.yes;
+        }
+
         if (propertyIdentifier == 'CreateDatabase' ||
             propertyIdentifier == 'CreatePage') {
           if (parameterIdentifier == 'ParentId') {
@@ -927,9 +944,13 @@ AutomationParameterNeedOptions haveOptions(
 }
 
 List<AutomationRadioModel> getOptionsFromFacts(
-    Map<String, AutomationSchemaTriggerActionProperty> facts) {
+    Map<String, AutomationSchemaTriggerActionProperty> facts,
+    AutomationSchemaTriggerActionProperty property) {
   List<AutomationRadioModel> options = [];
   for (final fact in facts.entries) {
+    if (fact.value.type != property.type) {
+      continue;
+    }
     options.add(AutomationRadioModel(
       title: fact.value.name,
       description: fact.value.description,
@@ -937,4 +958,21 @@ List<AutomationRadioModel> getOptionsFromFacts(
     ));
   }
   return options;
+}
+
+AutomationInputEnum getType(String type) {
+  switch (type) {
+    case 'String':
+      return AutomationInputEnum.text;
+    case 'Float':
+      return AutomationInputEnum.number;
+    case 'Integer':
+      return AutomationInputEnum.number;
+    case 'Boolean':
+      return AutomationInputEnum.boolean;
+    case 'Datetime':
+      return AutomationInputEnum.date;
+    default:
+      return AutomationInputEnum.text;
+  }
 }
