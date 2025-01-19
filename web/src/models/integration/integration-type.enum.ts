@@ -3,4 +3,5 @@ export enum IntegrationTypeEnum {
   NOTION = 'Notion',
   OPENAI = 'OpenAi',
   LEAGUE_OF_LEGENDS = 'LeagueOfLegends',
+  GITHUB = 'Github',
 }

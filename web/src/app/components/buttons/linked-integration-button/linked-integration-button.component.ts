@@ -16,6 +16,7 @@ import {
 } from '@models/integration';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { NgIcon } from '@ng-icons/core';
+import { IntegrationGithubProps } from '@models/integration/properties/integration-github-props';
 
 @Component({
   selector: 'tr-linked-integration-button',
@@ -68,6 +69,12 @@ export class LinkedIntegrationButtonComponent {
           .props as IntegrationLeagueOfLegendsProps;
         this.header.set(leagueOfLegendsProps.riotGameName);
         this.subheader.set(leagueOfLegendsProps.riotTagLine);
+        break;
+      }
+      case IntegrationTypeEnum.GITHUB: {
+        const githubProps = this.integration().props as IntegrationGithubProps;
+        this.header.set(githubProps.name);
+        this.subheader.set(githubProps.email || githubProps.bio || '');
         break;
       }
     }

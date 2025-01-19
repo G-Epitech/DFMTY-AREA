@@ -1,6 +1,9 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OpenaiLinkRequestDTO } from '@repositories/integrations/dto';
+import {
+  OpenaiLinkRequestDTO,
+  OpenaiModelDTO,
+} from '@repositories/integrations/dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -14,5 +17,10 @@ export class OpenaiRepository {
   link(dto: OpenaiLinkRequestDTO): Observable<void> {
     const url = `${this.baseUrl}/integrations/openai`;
     return this.#httpClient.post<void>(url, dto);
+  }
+
+  getModels(integrationId: string): Observable<OpenaiModelDTO[]> {
+    const url = `${this.baseUrl}/integrations/${integrationId}/openai/models`;
+    return this.#httpClient.get<OpenaiModelDTO[]>(url);
   }
 }
