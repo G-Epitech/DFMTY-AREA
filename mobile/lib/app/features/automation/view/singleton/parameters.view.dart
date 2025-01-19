@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
+import 'package:triggo/app/features/automation/utils/human_readable.dart';
+import 'package:triggo/app/features/automation/utils/parameter_get_options.dart';
+import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
-import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
@@ -17,7 +19,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationParametersView extends StatefulWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final int indexOfTheTriggerOrAction;
@@ -48,7 +50,7 @@ class _AutomationParametersViewState extends State<AutomationParametersView> {
 
     return BaseScaffold(
       title:
-          '${widget.type == AutomationChoiceEnum.trigger ? 'Trigger' : 'Action'} parameters',
+          '${widget.type == AutomationTriggerOrActionType.trigger ? 'Trigger' : 'Action'} parameters',
       getBack: true,
       body:
           _Body(widget: widget, properties: properties, isEdit: widget.isEdit),
@@ -95,7 +97,7 @@ class _Body extends StatelessWidget {
 
 class _OKButton extends StatelessWidget {
   final bool isEdit;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final int indexOfTheTriggerOrAction;
 
   const _OKButton({
@@ -112,7 +114,7 @@ class _OKButton extends StatelessWidget {
     final AutomationMediator automationMediator =
         RepositoryProvider.of<AutomationMediator>(context);
 
-    final isValid = type == AutomationChoiceEnum.trigger
+    final isValid = type == AutomationTriggerOrActionType.trigger
         ? _validateTrigger(automation, automationMediator)
         : validateAction(
             automation, automationMediator, indexOfTheTriggerOrAction);
@@ -244,7 +246,7 @@ bool validateAction(Automation automation,
 }
 
 class _List extends StatelessWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final Map<String, AutomationSchemaTriggerActionProperty> properties;
@@ -275,7 +277,7 @@ class _List extends StatelessWidget {
         return BlocBuilder<AutomationBloc, AutomationState>(
           builder: (context, state) {
             final title = property.name;
-            final previewData = getPreviewData(
+            final previewData = getHumanReadableValue(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
@@ -284,7 +286,7 @@ class _List extends StatelessWidget {
                 parameterIdentifier,
                 state.previews,
                 true);
-            final selectedValue = getPreviewData(
+            final selectedValue = getHumanReadableValue(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
@@ -293,7 +295,7 @@ class _List extends StatelessWidget {
                 parameterIdentifier,
                 state.previews,
                 false);
-            final AutomationParameterNeedOptions options = haveOptions(
+            final AutomationParameterNeedOptions options = parameterHaveOptions(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
@@ -321,7 +323,7 @@ class _List extends StatelessWidget {
                                   context);
                           late List<AutomationRadioModel> options;
                           try {
-                            options = await getOptionsFromMediator(
+                            options = await getParameterOptions(
                                 state.dirtyAutomation,
                                 type,
                                 integrationIdentifier,
@@ -340,7 +342,7 @@ class _List extends StatelessWidget {
                           return options;
                         },
                         onSave: (value, humanReadableValue) {
-                          if (type == AutomationChoiceEnum.trigger) {
+                          if (type == AutomationTriggerOrActionType.trigger) {
                             context.read<AutomationBloc>().add(
                                 AutomationPreviewUpdated(
                                     key:
@@ -380,7 +382,7 @@ class _List extends StatelessWidget {
                         property: property,
                         onSave: (value, valueType, humanReadableValue,
                             indexVariable) {
-                          if (type == AutomationChoiceEnum.trigger) {
+                          if (type == AutomationTriggerOrActionType.trigger) {
                             context.read<AutomationBloc>().add(
                                 AutomationPreviewUpdated(
                                     key:
@@ -429,7 +431,7 @@ class _List extends StatelessWidget {
 class AutomationParameterChoice extends StatelessWidget {
   final String title;
   final void Function(String, String, String, String) onSave;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final Automation automation;
   final List<AutomationRadioModel>? options;
   final String? value;
@@ -492,7 +494,7 @@ class AutomationParameterChoice extends StatelessWidget {
 }
 
 class AutomationParameterFromActions extends StatelessWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final Automation automation;
   final String label;
   final String? placeholder;
@@ -643,321 +645,6 @@ class AutomationParameterFromActions extends StatelessWidget {
       ),
     );
   }
-}
-
-String? getPreviewData(
-    Automation automation,
-    AutomationChoiceEnum type,
-    String integrationIdentifier,
-    int indexOfTheTriggerOrAction,
-    String triggerOrActionIdentifier,
-    String parameterIdentifier,
-    Map<String, String> previews,
-    bool humanReadable) {
-  String? value;
-  bool isNotHumanReadable = true;
-  switch (type) {
-    case AutomationChoiceEnum.trigger:
-      if (automation.trigger.identifier !=
-          "$integrationIdentifier.$triggerOrActionIdentifier") {
-        break;
-      }
-      for (final parameter in automation.trigger.parameters) {
-        if (parameter.identifier == parameterIdentifier) {
-          value = parameter.value;
-          break;
-        }
-      }
-      break;
-    case AutomationChoiceEnum.action:
-      for (final action in automation.actions) {
-        if (action.identifier !=
-            "$integrationIdentifier.$triggerOrActionIdentifier") {
-          break;
-        }
-        for (final parameter in action.parameters) {
-          if (parameter.identifier == parameterIdentifier) {
-            value = parameter.value;
-            isNotHumanReadable = parameter.type != 'raw';
-            break;
-          }
-        }
-      }
-      break;
-  }
-  if (humanReadable || !isNotHumanReadable) {
-    return replaceByHumanReadable(
-        type,
-        integrationIdentifier,
-        indexOfTheTriggerOrAction,
-        triggerOrActionIdentifier,
-        parameterIdentifier,
-        previews);
-  }
-  return value;
-}
-
-String? replaceByHumanReadable(
-    AutomationChoiceEnum type,
-    String integrationIdentifier,
-    int indexOfTheTriggerOrAction,
-    String triggerOrActionIdentifier,
-    String parameterIdentifier,
-    Map<String, String> previews) {
-  String key = '';
-  if (type == AutomationChoiceEnum.trigger) {
-    key = 'trigger';
-  } else {
-    key = 'action';
-  }
-  key += '.$indexOfTheTriggerOrAction';
-  key += '.$integrationIdentifier';
-  key += '.$triggerOrActionIdentifier';
-  key += '.$parameterIdentifier';
-  return previews[key];
-}
-
-Future<List<AutomationRadioModel>> getOptionsFromMediator(
-    Automation automation,
-    AutomationChoiceEnum type,
-    String integrationName,
-    int indexOfTheTriggerOrAction,
-    String propertyIdentifier,
-    String parameterIdentifier,
-    IntegrationMediator integrationMediator) async {
-  List<AutomationRadioModel> options = [];
-
-  switch (type) {
-    case AutomationChoiceEnum.trigger:
-      if (integrationName == IntegrationNames.discord) {
-        if (propertyIdentifier == 'MessageReceivedInChannel') {
-          if (parameterIdentifier == 'GuildId') {
-            final integrationId = automation.trigger.dependencies[0];
-
-            return await integrationMediator.discord
-                .getGuildsRadio(integrationId);
-          }
-          if (parameterIdentifier == 'ChannelId') {
-            if (automation.trigger.parameters.isEmpty) {
-              return [];
-            }
-            final integrationId = automation.trigger.dependencies[0];
-            var guildId = '';
-
-            for (final parameter in automation.trigger.parameters) {
-              if (parameter.identifier == 'GuildId') {
-                guildId = parameter.value;
-                break;
-              }
-            }
-
-            if (guildId.isEmpty) {
-              return [];
-            }
-
-            return await integrationMediator.discord
-                .getChannelsRadio(integrationId, guildId);
-          }
-        }
-      }
-      if (integrationName == IntegrationNames.notion) {
-        if (propertyIdentifier == 'DatabaseRowCreated' ||
-            propertyIdentifier == 'DatabaseRowDeleted') {
-          if (parameterIdentifier == 'DatabaseId') {
-            final integrationId = automation.trigger.dependencies[0];
-
-            return await integrationMediator.notion
-                .getDatabasesRadio(integrationId);
-          }
-        }
-      }
-      break;
-    case AutomationChoiceEnum.action:
-      if (integrationName == IntegrationNames.discord) {
-        if (propertyIdentifier == 'SendMessageToChannel') {
-          if (parameterIdentifier == 'GuildId') {
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-
-            return await integrationMediator.discord
-                .getGuildsRadio(integrationId);
-          }
-          if (parameterIdentifier == 'ChannelId') {
-            if (automation
-                .actions[indexOfTheTriggerOrAction].parameters.isEmpty) {
-              return [];
-            }
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-            var guildId = '';
-
-            for (final parameter
-                in automation.actions[indexOfTheTriggerOrAction].parameters) {
-              if (parameter.identifier == 'GuildId') {
-                guildId = parameter.value;
-                break;
-              }
-            }
-
-            if (guildId.isEmpty) {
-              return [];
-            }
-
-            return await integrationMediator.discord
-                .getChannelsRadio(integrationId, guildId);
-          }
-        }
-      }
-      if (integrationName == IntegrationNames.notion) {
-        if (propertyIdentifier == 'CreateDatabase' ||
-            propertyIdentifier == 'CreatePage') {
-          if (parameterIdentifier == 'ParentId') {
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-            return await integrationMediator.notion
-                .getPagesRadio(integrationId);
-          }
-        }
-
-        if (propertyIdentifier == 'CreateDatabaseRow') {
-          if (parameterIdentifier == 'DatabaseId') {
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-            return await integrationMediator.notion
-                .getDatabasesRadio(integrationId);
-          }
-        }
-
-        if (propertyIdentifier == 'ArchiveDatabase') {
-          if (parameterIdentifier == 'DatabaseId') {
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-            return await integrationMediator.notion
-                .getDatabasesRadio(integrationId);
-          }
-        }
-
-        if (propertyIdentifier == 'ArchivePage') {
-          if (parameterIdentifier == 'PageId') {
-            final integrationId =
-                automation.actions[indexOfTheTriggerOrAction].dependencies[0];
-            return await integrationMediator.notion
-                .getPagesRadio(integrationId);
-          }
-        }
-      }
-      break;
-  }
-  return options;
-}
-
-AutomationParameterNeedOptions haveOptions(
-    Automation automation,
-    AutomationChoiceEnum type,
-    String integrationName,
-    int indexOfTheTriggerOrAction,
-    String propertyIdentifier,
-    String parameterIdentifier) {
-  switch (type) {
-    case AutomationChoiceEnum.trigger:
-      if (integrationName == IntegrationNames.discord) {
-        if (propertyIdentifier == 'MessageReceivedInChannel') {
-          if (parameterIdentifier == 'GuildId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-          if (parameterIdentifier == 'ChannelId') {
-            if (automation.trigger.parameters.isEmpty) {
-              return AutomationParameterNeedOptions.blocked;
-            }
-
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-      }
-      if (integrationName == IntegrationNames.notion) {
-        if (propertyIdentifier == 'DatabaseRowCreated' ||
-            propertyIdentifier == 'DatabaseRowDeleted') {
-          if (parameterIdentifier == 'DatabaseId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-      }
-      if (integrationName == IntegrationNames.leagueOfLegends) {
-        if (parameterIdentifier == "KdaThreshold") {
-          return AutomationParameterNeedOptions.number;
-        }
-      }
-      break;
-    case AutomationChoiceEnum.action:
-      if (integrationName == IntegrationNames.discord) {
-        if (propertyIdentifier == 'SendMessageToChannel') {
-          if (parameterIdentifier == 'GuildId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-          if (parameterIdentifier == 'ChannelId') {
-            for (final parameter
-                in automation.actions[indexOfTheTriggerOrAction].parameters) {
-              if (parameter.identifier == 'GuildId') {
-                if (parameter.value.isNotEmpty) {
-                  return AutomationParameterNeedOptions.yes;
-                }
-              }
-            }
-
-            return AutomationParameterNeedOptions.blocked;
-          }
-        }
-      }
-      if (integrationName == IntegrationNames.notion) {
-        if (parameterIdentifier == "Icon") {
-          return AutomationParameterNeedOptions.yes;
-        }
-
-        if (propertyIdentifier == 'CreateDatabase' ||
-            propertyIdentifier == 'CreatePage') {
-          if (parameterIdentifier == 'ParentId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-
-        if (propertyIdentifier == 'CreateDatabaseRow') {
-          if (parameterIdentifier == 'DatabaseId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-
-        if (propertyIdentifier == 'ArchiveDatabase') {
-          if (parameterIdentifier == 'DatabaseId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-
-        if (propertyIdentifier == 'ArchivePage') {
-          if (parameterIdentifier == 'PageId') {
-            return AutomationParameterNeedOptions.yes;
-          }
-        }
-      }
-      break;
-  }
-  return AutomationParameterNeedOptions.no;
-}
-
-List<AutomationRadioModel> getOptionsFromFacts(
-    Map<String, AutomationSchemaTriggerActionProperty> facts,
-    AutomationSchemaTriggerActionProperty property) {
-  List<AutomationRadioModel> options = [];
-  for (final fact in facts.entries) {
-    if (fact.value.type.toLowerCase() != property.type.toLowerCase()) {
-      continue;
-    }
-    options.add(AutomationRadioModel(
-      title: fact.value.name,
-      description: fact.value.description,
-      value: fact.key,
-    ));
-  }
-  return options;
 }
 
 AutomationInputEnum getType(String type) {

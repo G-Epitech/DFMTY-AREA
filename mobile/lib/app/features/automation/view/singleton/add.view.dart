@@ -12,7 +12,7 @@ import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 
 class AutomationAddView extends StatefulWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final String integrationIdentifier;
   final int indexOfTheTriggerOrAction;
 
@@ -37,7 +37,7 @@ class _AutomationAddViewState extends State<AutomationAddView> {
             widget.integrationIdentifier, widget.type);
     return BaseScaffold(
       title:
-          'Add a${widget.type == AutomationChoiceEnum.trigger ? ' Trigger' : 'n Action'}',
+          'Add a${widget.type == AutomationTriggerOrActionType.trigger ? ' Trigger' : 'n Action'}',
       getBack: true,
       body: _List(
         triggersOrActions: triggersOrActions,
@@ -52,7 +52,7 @@ class _AutomationAddViewState extends State<AutomationAddView> {
 class _List extends StatelessWidget {
   final Map<String, AutomationSchemaTriggerAction> triggersOrActions;
   final String integrationIdentifier;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final int indexOfTheTriggerOrAction;
 
   const _List({
@@ -78,7 +78,7 @@ class _List extends StatelessWidget {
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              if (type == AutomationChoiceEnum.trigger) {
+              if (type == AutomationTriggerOrActionType.trigger) {
                 context.read<AutomationBloc>().add(
                     AutomationTriggerIdentifierChanged(
                         identifier:

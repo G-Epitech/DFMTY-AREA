@@ -3,7 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
-import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
+import 'package:triggo/app/features/automation/utils/parameter_get_options.dart';
+import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
 import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
@@ -212,7 +213,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
   void _onResetPending(
       AutomationResetPending event, Emitter<AutomationState> emit) {
     switch (event.type) {
-      case AutomationChoiceEnum.trigger:
+      case AutomationTriggerOrActionType.trigger:
         final updatedAutomation = state.dirtyAutomation.copyWith(
             trigger: AutomationTrigger(
           identifier: '',
@@ -221,7 +222,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         ));
         emit(state.copyWith(dirtyAutomation: updatedAutomation));
         break;
-      case AutomationChoiceEnum.action:
+      case AutomationTriggerOrActionType.action:
         final updatedActions =
             List<AutomationAction>.from(state.dirtyAutomation.actions);
         if (updatedActions.length > event.index) {
@@ -377,9 +378,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final previewKey =
             "trigger.$index.$integrationIdentifier.$triggerIdentifier.${param.identifier}";
 
-        final triggerHaveOptions = haveOptions(
+        final triggerHaveOptions = parameterHaveOptions(
             automation,
-            AutomationChoiceEnum.trigger,
+            AutomationTriggerOrActionType.trigger,
             integrationIdentifier,
             index,
             triggerIdentifier,
@@ -391,9 +392,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
           continue;
         }
 
-        final options = await getOptionsFromMediator(
+        final options = await getParameterOptions(
             automation,
-            AutomationChoiceEnum.trigger,
+            AutomationTriggerOrActionType.trigger,
             integrationIdentifier,
             index,
             triggerIdentifier,
@@ -417,9 +418,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
         final previewKey =
             "action.$index.$integrationIdentifier.$actionIdentifier.${param.identifier}";
 
-        final actionHaveOptions = haveOptions(
+        final actionHaveOptions = parameterHaveOptions(
             automation,
-            AutomationChoiceEnum.action,
+            AutomationTriggerOrActionType.action,
             integrationIdentifier,
             index,
             actionIdentifier,
@@ -435,9 +436,9 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
           continue;
         }
 
-        final options = await getOptionsFromMediator(
+        final options = await getParameterOptions(
             automation,
-            AutomationChoiceEnum.action,
+            AutomationTriggerOrActionType.action,
             integrationIdentifier,
             index,
             actionIdentifier,

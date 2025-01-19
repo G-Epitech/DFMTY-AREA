@@ -301,7 +301,7 @@ class _AddTriggerEventWidget extends StatelessWidget {
         Navigator.push(
             context,
             customScreenBuilder(AutomationSelectIntegrationView(
-              type: AutomationChoiceEnum.trigger,
+              type: AutomationTriggerOrActionType.trigger,
               indexOfTheTriggerOrAction: 0,
             )));
       },
@@ -368,7 +368,7 @@ class CustomRectangleList extends StatelessWidget {
               icon: "assets/icons/${triggerOrAction.icon}.svg",
               color: HexColor(triggerIntegration.color),
               text: triggerOrAction.name,
-              type: AutomationChoiceEnum.trigger,
+              type: AutomationTriggerOrActionType.trigger,
               indexOfTheTriggerOrAction: 0,
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
@@ -398,7 +398,7 @@ class CustomRectangleList extends StatelessWidget {
                   icon: "assets/icons/${actionSchema.icon}.svg",
                   color: HexColor(actionIntegration.color),
                   text: actionSchema.name,
-                  type: AutomationChoiceEnum.action,
+                  type: AutomationTriggerOrActionType.action,
                   indexOfTheTriggerOrAction: index,
                   integrationIdentifier: integrationIdentifier,
                   triggerOrActionIdentifier: actionIdentifier,
@@ -431,7 +431,7 @@ class CustomRectangleList extends StatelessWidget {
                   Navigator.push(
                       context,
                       customScreenBuilder(AutomationSelectIntegrationView(
-                        type: AutomationChoiceEnum.action,
+                        type: AutomationTriggerOrActionType.action,
                         indexOfTheTriggerOrAction: automation.actions.length,
                       )));
                 },
@@ -467,7 +467,7 @@ class _TriggerListItem extends StatelessWidget {
   final String icon;
   final Color color;
   final String text;
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final int indexOfTheTriggerOrAction;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
