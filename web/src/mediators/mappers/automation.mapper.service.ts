@@ -154,6 +154,8 @@ export class AutomationMapperService {
 
   mapToCreateDTO(model: AutomationModel): AutomationCreateDTO {
     return {
+      icon: model.icon,
+      color: model.color,
       label: model.label,
       description: model.description,
       trigger: this._mapTriggerCreateDTO(model.trigger!),
