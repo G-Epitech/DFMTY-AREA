@@ -5,15 +5,15 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 
 void automationUpdateDependencies(
     BuildContext context,
-    AutomationChoiceEnum type,
+    AutomationTriggerOrActionType type,
     List<String> integrationProviders,
     int indexOfTheTriggerOrAction) {
   switch (type) {
-    case AutomationChoiceEnum.trigger:
+    case AutomationTriggerOrActionType.trigger:
       context.read<AutomationBloc>().add(AutomationTriggerDependenciesUpdated(
           dependencies: integrationProviders));
       break;
-    case AutomationChoiceEnum.action:
+    case AutomationTriggerOrActionType.action:
       context.read<AutomationBloc>().add(AutomationActionDependenciesUpdated(
             index: indexOfTheTriggerOrAction,
             dependencies: integrationProviders,

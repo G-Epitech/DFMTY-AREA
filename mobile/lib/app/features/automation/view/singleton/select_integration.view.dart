@@ -5,7 +5,7 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/integration/view/integration_connect.view.dart';
 
 class AutomationSelectIntegrationView extends StatelessWidget {
-  final AutomationChoiceEnum type;
+  final AutomationTriggerOrActionType type;
   final int indexOfTheTriggerOrAction;
 
   const AutomationSelectIntegrationView({

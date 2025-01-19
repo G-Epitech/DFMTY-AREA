@@ -14,7 +14,7 @@ import 'package:triggo/models/integration.model.dart';
 
 class IntegrationListItemWidget extends StatelessWidget {
   final AvailableIntegration integration;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const IntegrationListItemWidget({
@@ -38,7 +38,7 @@ class IntegrationListItemWidget extends StatelessWidget {
 
 class _CustomWidget extends StatelessWidget {
   final AvailableIntegration integration;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const _CustomWidget({

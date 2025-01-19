@@ -7,7 +7,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/integration.model.dart';
 
 class IntegrationAvailableView extends StatefulWidget {
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final List<AvailableIntegration>? integrationsNames;
   final int? indexOfTheTriggerOrAction;
 
@@ -53,7 +53,7 @@ class _IntegrationAvailableViewState extends State<IntegrationAvailableView> {
 
 class _IntegrationNamesContainer extends StatelessWidget {
   final Future<List<AvailableIntegration>> integrations;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const _IntegrationNamesContainer({
@@ -84,7 +84,7 @@ class _IntegrationNamesContainer extends StatelessWidget {
 
 class _IntegrationList extends StatelessWidget {
   final Future<List<AvailableIntegration>> integrations;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const _IntegrationList({
@@ -110,7 +110,7 @@ class _IntegrationList extends StatelessWidget {
 
 class IntegrationListView extends StatelessWidget {
   final AsyncSnapshot<List<AvailableIntegration>> snapshot;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const IntegrationListView({
@@ -172,7 +172,7 @@ class _NoDataView extends StatelessWidget {
 
 class _IntegrationListViewContent extends StatelessWidget {
   final List<AvailableIntegration> integrations;
-  final AutomationChoiceEnum? type;
+  final AutomationTriggerOrActionType? type;
   final int? indexOfTheTriggerOrAction;
 
   const _IntegrationListViewContent({
