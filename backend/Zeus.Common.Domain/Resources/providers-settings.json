@@ -88,6 +88,89 @@
             "Require": "single"
           }
         }
+      },
+      "SendEmbedToChannel": {
+        "Name": "Send embed to channel",
+        "Description": "Sends a embed to a specific guild channel as triggo bot.",
+        "Icon": "bookmark-square",
+        "Parameters": {
+          "GuildId": {
+            "Name": "Guild id",
+            "Description": "The ID of the guild to send the message to.",
+            "Type": "string"
+          },
+          "ChannelId": {
+            "Name": "Channel id",
+            "Description": "The ID of the channel to send the message to.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Embed title",
+            "Description": "The title of the embed.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Embed description",
+            "Description": "The description of the embed.",
+            "Type": "string"
+          },
+          "Color": {
+            "Name": "Embed color",
+            "Description": "The color of the embed.",
+            "Type": "integer"
+          },
+          "ImageUrl": {
+            "Name": "Image url",
+            "Description": "The URL of the image to display in the embed.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "MessageId": {
+            "Name": "Message id",
+            "Description": "The ID of the sent message.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "single"
+          }
+        }
+      },
+      "SendEmbedFromJsonToChannel": {
+        "Name": "Send embed from json to channel",
+        "Description": "Sends a embed from json to a specific guild channel as triggo bot.",
+        "Icon": "bars-arrow-down",
+        "Parameters": {
+          "GuildId": {
+            "Name": "Guild id",
+            "Description": "The ID of the guild to send the message to.",
+            "Type": "string"
+          },
+          "ChannelId": {
+            "Name": "Channel id",
+            "Description": "The ID of the channel to send the message to.",
+            "Type": "string"
+          },
+          "Json": {
+            "Name": "Json content",
+            "Description": "The json that represents the embed.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "MessageId": {
+            "Name": "Message id",
+            "Description": "The ID of the sent message.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "single"
+          }
+        }
       }
     }
   },
