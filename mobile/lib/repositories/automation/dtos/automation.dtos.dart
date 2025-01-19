@@ -79,7 +79,7 @@ class OutGetAutomationsDTO implements PageJson<AutomationDTO> {
   Map<String, dynamic> toJson() => _$OutGetAutomationsDTOToJson(this);
 }
 
-@JsonSerializable(createJsonKeys: false)
+@JsonSerializable(createToJson: false)
 class InPostAutomationDTO implements Json {
   final AutomationDTO automation;
 

@@ -50,6 +50,8 @@ class Automation {
       'actions': actions.map((e) => e.toJson()).toList(),
       'enabled': enabled,
       'updatedAt': updatedAt.toIso8601String(),
+      'iconUri': iconUri,
+      'iconColor': iconColor,
     };
   }
 

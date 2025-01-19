@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -58,6 +60,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
 
       emit(state.copyWith(savingStatus: FormzSubmissionStatus.success));
     } catch (e) {
+      log(e.toString());
       emit(state.copyWith(savingStatus: FormzSubmissionStatus.failure));
     }
   }
