@@ -1,24 +1,24 @@
-﻿using MediatR;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+using Zeus.Api.Infrastructure.Services;
 using Zeus.BuildingBlocks.Domain.Models;
 
 namespace Zeus.Api.Infrastructure.Persistence.Interceptors;
 
 public class PublishDomainEventsInterceptor : SaveChangesInterceptor
 {
-    private readonly IPublisher _publisher;
+    private readonly DomainEventDelayer _delayer;
 
-    public PublishDomainEventsInterceptor(IPublisher publisher)
+    public PublishDomainEventsInterceptor(DomainEventDelayer delayer)
     {
-        _publisher = publisher;
+        _delayer = delayer;
     }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        PublishDomainEventsAsync(eventData.Context).GetAwaiter().GetResult();
+        DelayDomainEvents(eventData.Context);
+
         return base.SavingChanges(eventData, result);
     }
 
@@ -26,16 +26,18 @@ public class PublishDomainEventsInterceptor : SaveChangesInterceptor
         InterceptionResult<int> result,
         CancellationToken cancellationToken = new())
     {
-        await PublishDomainEventsAsync(eventData.Context);
+        DelayDomainEvents(eventData.Context);
+
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private async Task PublishDomainEventsAsync(DbContext? dbContext)
+    private void DelayDomainEvents(DbContext? dbContext)
     {
         if (dbContext is null)
         {
             return;
         }
+
         var entitiesWithDomainEvents = dbContext.ChangeTracker.Entries<IHasDomainEvents>()
             .Select(x => x.Entity)
             .Where(x => x.DomainEvents.Any())
@@ -47,9 +49,6 @@ public class PublishDomainEventsInterceptor : SaveChangesInterceptor
 
         entitiesWithDomainEvents.ForEach(x => x.ClearDomainEvents());
 
-        foreach (var domainEvent in domainEvents)
-        {
-            await _publisher.Publish(domainEvent);
-        }
+        _delayer.DelayEvents(domainEvents);
     }
 }

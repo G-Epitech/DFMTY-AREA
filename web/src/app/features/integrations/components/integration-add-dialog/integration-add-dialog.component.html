@@ -100,8 +100,16 @@
               Link Integration
             </button>
           }
-          @if (selectedIntegration()?.name === IntegrationTypeEnum.OPENAI) {
+          @if (
+            selectedIntegration()?.identifier === IntegrationTypeEnum.OPENAI
+          ) {
             <tr-openai-link-form />
+          }
+          @if (
+            selectedIntegration()?.identifier ===
+            IntegrationTypeEnum.LEAGUE_OF_LEGENDS
+          ) {
+            <tr-league-of-legends-link-form />
           }
         </div>
       </div>

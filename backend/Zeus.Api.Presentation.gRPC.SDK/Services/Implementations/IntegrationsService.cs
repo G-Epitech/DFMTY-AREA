@@ -16,6 +16,11 @@ internal class IntegrationsService : IIntegrationsService
     public async Task<IList<Integration>> GetAutomationsIntegrationsAsync(IReadOnlyList<Guid> automationIds, IntegrationSource source = IntegrationSource.Any,
         CancellationToken cancellationToken = default)
     {
+        if (automationIds.Count == 0)
+        {
+            return new List<Integration>();
+        }
+
         var res = await _client.GetAutomationsIntegrationsAsync(
             new GetAutomationsIntegrationsRequest { AutomationIds = { automationIds.Select(id => id.ToString()).ToList() }, Source = source },
             cancellationToken: cancellationToken);

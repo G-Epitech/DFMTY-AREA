@@ -3,7 +3,7 @@ using Zeus.Api.Presentation.gRPC.SDK.Services;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.Integrations.IntegrationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Interfaces;
-using Zeus.Daemon.Infrastructure.Mapping;
+using Zeus.Daemon.Infrastructure.Services.Api.Mapping;
 
 using Integration = Zeus.Common.Domain.Integrations.IntegrationAggregate.Integration;
 
@@ -21,6 +21,11 @@ public class IntegrationsProvider : IIntegrationsProvider
     public async Task<Dictionary<IntegrationId, Integration>> GetActionsIntegrationsByAutomationIdsAsync(IReadOnlyList<AutomationId> automationIds,
         CancellationToken cancellationToken = default)
     {
+        if (automationIds.Count == 0)
+        {
+            return new Dictionary<IntegrationId, Integration>();
+        }
+
         var integrations =
             await _integrationService.GetAutomationsIntegrationsAsync(automationIds.Select(x => x.Value).ToList(), IntegrationSource.Action, cancellationToken);
 

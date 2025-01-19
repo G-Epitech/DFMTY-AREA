@@ -22,7 +22,7 @@ public class AutomationCreatedEventMapper : IRegister
         config.NewConfig<AutomationAction, AutomationCreatedEventAction>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Parameters, src => src.Parameters)
-            .Map(dest => dest.Providers, src => src.Dependencies);
+            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(x => x.Value).ToList());
 
         config.NewConfig<IntegrationId, Guid>()
             .Map(dest => dest, src => src.Value);
@@ -30,7 +30,7 @@ public class AutomationCreatedEventMapper : IRegister
         config.NewConfig<AutomationTrigger, AutomationCreatedEventTrigger>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Parameters, src => src.Parameters)
-            .Map(dest => dest.Providers, src => src.Dependencies);
+            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(x => x.Value).ToList());
 
         config.NewConfig<AutomationCreatedEvent, Automation>()
             .MapWith(raw => new Automation(
@@ -41,15 +41,16 @@ public class AutomationCreatedEventMapper : IRegister
                 new AutomationTrigger(
                     new AutomationTriggerId(raw.Trigger.Id),
                     raw.Trigger.Identifier,
-                    Enumerable.Select<AutomationCreatedEventTrigger.Parameter, AutomationTriggerParameter>(raw.Trigger.Parameters, p => new AutomationTriggerParameter { Value = p.Value, Identifier = p.Identifier }).ToList(),
-                    Enumerable.Select<Guid, IntegrationId>(raw.Trigger.Providers, p => new IntegrationId(p)).ToList()
+                    Enumerable.Select<AutomationCreatedEventTrigger.Parameter, AutomationTriggerParameter>(raw.Trigger.Parameters,
+                        p => new AutomationTriggerParameter { Value = p.Value, Identifier = p.Identifier }).ToList(),
+                    Enumerable.Select<Guid, IntegrationId>(raw.Trigger.Dependencies, p => new IntegrationId(p)).ToList()
                 ),
                 Enumerable.Select(raw.Actions, a => new AutomationAction(
                     new AutomationActionId(a.Id),
                     a.Identifier,
                     a.Rank,
                     a.Parameters.Select(p => new AutomationActionParameter { Value = p.Value, Identifier = p.Identifier, Type = p.Type }).ToList(),
-                    a.Providers.Select(p => new IntegrationId(p)).ToList()
+                    a.Dependencies.Select(p => new IntegrationId(p)).ToList()
                 )).ToList(),
                 raw.CreatedAt,
                 raw.UpdatedAt,

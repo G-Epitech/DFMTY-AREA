@@ -5,4 +5,7 @@ public record Page<T>(
     int Size,
     int TotalPages,
     int TotalItems,
-    IReadOnlyCollection<T> Items);
+    IReadOnlyCollection<T> Items)
+{
+    public static Page<T> Empty => new(0, 0, 0, 0, Array.Empty<T>());
+}

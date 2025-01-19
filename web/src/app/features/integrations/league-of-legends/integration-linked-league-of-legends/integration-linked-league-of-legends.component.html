@@ -1,0 +1,29 @@
+<div class="flex flex-row items-center">
+  <div class="relative">
+    @if (props()?.summonerProfileIcon) {
+      <img
+        [ngSrc]="props()!.summonerProfileIcon"
+        alt="Notion User Avatar"
+        [width]="47"
+        [height]="47"
+        class="rounded-full" />
+    }
+    <div
+      class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center"
+      [ngStyle]="{ 'background-color': color() }">
+      <img
+        [ngSrc]="iconUri() || ''"
+        alt="League Of Legends Logo"
+        class="rounded-full"
+        [width]="10"
+        [height]="10"
+        [style.filter]="'brightness(0) invert(1)'" />
+    </div>
+  </div>
+  <div class="flex flex-col ml-4 mr-auto">
+    <h1 class="tr-large">
+      {{ props()?.riotGameName }}
+    </h1>
+    <span class="text-gray-500 text-sm">#{{ props()?.riotTagLine }}</span>
+  </div>
+</div>

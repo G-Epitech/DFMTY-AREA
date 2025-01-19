@@ -3,7 +3,7 @@
 using Zeus.Api.Presentation.gRPC.SDK.Services;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Registries;
-using Zeus.Daemon.Infrastructure.Mapping;
+using Zeus.Daemon.Infrastructure.Services.Api.Mapping;
 
 namespace Zeus.Daemon.Infrastructure.Services.Api;
 

@@ -7,7 +7,7 @@ public record AutomationCreatedEventTrigger
     public required Guid Id;
     public required string Identifier;
     public required Parameter[] Parameters;
-    public required Guid[] Providers;
+    public required Guid[] Dependencies;
 
     public record Parameter
     {
@@ -21,7 +21,7 @@ public record AutomationCreatedEventAction
     public required Guid Id;
     public required string Identifier;
     public required Parameter[] Parameters;
-    public required Guid[] Providers;
+    public required Guid[] Dependencies;
     public required int Rank;
 
     public record Parameter
