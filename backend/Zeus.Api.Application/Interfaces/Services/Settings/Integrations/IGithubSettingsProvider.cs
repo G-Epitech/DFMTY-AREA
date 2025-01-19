@@ -7,4 +7,5 @@ public interface IGithubSettingsProvider
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
+    public List<string> Scopes { get; }
 }

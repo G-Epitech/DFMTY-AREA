@@ -8,7 +8,8 @@ public enum CreateIntegrationLinkRequestCommandType
     Gmail,
     Notion,
     OpenAi,
-    LeagueOfLegends
+    LeagueOfLegends,
+    Github
 }
 
 public static class CreateIntegrationLinkRequestCommandTypeExtensions
@@ -21,6 +22,7 @@ public static class CreateIntegrationLinkRequestCommandTypeExtensions
             CreateIntegrationLinkRequestCommandType.Notion => IntegrationType.Notion,
             CreateIntegrationLinkRequestCommandType.OpenAi => IntegrationType.OpenAi,
             CreateIntegrationLinkRequestCommandType.LeagueOfLegends => IntegrationType.LeagueOfLegends,
+            CreateIntegrationLinkRequestCommandType.Github => IntegrationType.Github,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 }

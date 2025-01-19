@@ -28,7 +28,7 @@ public class GithubService : IGithubService
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+            new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     public async Task<ErrorOr<GithubTokens>> GetTokensFromOauth2Async(string code)

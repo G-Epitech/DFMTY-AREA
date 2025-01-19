@@ -12,6 +12,7 @@ public class GithubSettingsProvider : IGithubSettingsProvider
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
+        Scopes = settings.Scopes;
     }
 
     public string ApiEndpoint { get; }
@@ -19,4 +20,5 @@ public class GithubSettingsProvider : IGithubSettingsProvider
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }
+    public List<string> Scopes { get; }
 }
