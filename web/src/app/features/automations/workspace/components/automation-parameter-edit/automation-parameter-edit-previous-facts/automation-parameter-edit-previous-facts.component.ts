@@ -93,7 +93,9 @@ export class AutomationParameterEditPreviousFactsComponent {
     actionIdx: number | null = null
   ): DeepAutomationFact[] {
     return Object.entries(facts).map(([identifier, fact]) => ({
-      identifier: actionIdx ? `${actionIdx - 1}.${identifier}` : `T.${identifier}`,
+      identifier: actionIdx
+        ? `${actionIdx - 1}.${identifier}`
+        : `T.${identifier}`,
       name: fact.name,
       description: fact.description,
       type: fact.type,
