@@ -161,7 +161,6 @@ export const AutomationsWorkspaceStore = signalStore(
         })
       )
     ),
-
     getAction: (idx: number) =>
       computed(() => {
         if (store.automation().actions.length < idx) {
@@ -169,6 +168,23 @@ export const AutomationsWorkspaceStore = signalStore(
         }
         return store.automation().actions[idx];
       }),
+    create: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { loading: true })),
+        switchMap(() =>
+          automationsMediator.create(store.automation()).pipe(
+            tapResponse({
+              next: () => {
+                patchState(store, { loading: false });
+              },
+              error: () => {
+                patchState(store, { error: true, loading: false });
+              },
+            })
+          )
+        )
+      )
+    ),
     getById: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { loading: true })),

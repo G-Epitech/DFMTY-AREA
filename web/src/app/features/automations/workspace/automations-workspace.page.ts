@@ -56,4 +56,8 @@ export class AutomationsWorkspacePageComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  onSave() {
+    this.#workspaceStore.create();
+  }
 }
