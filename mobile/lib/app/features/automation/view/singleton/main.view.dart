@@ -47,7 +47,9 @@ class _AutomationMainViewState extends State<AutomationMainView> {
       builder: (context, state) {
         return BaseScaffold(
           title: 'Automation',
-          header: _Header(automation: state.cleanedAutomation),
+          header: _Header(
+              automation: state.cleanedAutomation,
+              isCreated: widget.automation != null),
           getBack: true,
           body: Padding(
             padding: const EdgeInsets.all(4.0),
@@ -66,8 +68,9 @@ class _AutomationMainViewState extends State<AutomationMainView> {
 
 class _Header extends StatelessWidget {
   final Automation automation;
+  final bool isCreated;
 
-  const _Header({required this.automation});
+  const _Header({required this.automation, required this.isCreated});
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +127,10 @@ class _Header extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(RoutesNames.automationSettings);
+                  Navigator.of(context).pushNamed(
+                    RoutesNames.automationSettings,
+                    arguments: {'isCreated': isCreated, "id": automation.id},
+                  );
                 },
                 icon: SvgPicture.asset(
                   'assets/icons/cog-6-tooth.svg',

@@ -6,6 +6,7 @@ final class AutomationState extends Equatable {
   final Map<String, String> previews;
   final FormzSubmissionStatus savingStatus;
   final FormzSubmissionStatus loadingStatus;
+  final FormzSubmissionStatus deletingStatus;
 
   const AutomationState({
     required this.cleanedAutomation,
@@ -13,6 +14,7 @@ final class AutomationState extends Equatable {
     required this.previews,
     required this.savingStatus,
     required this.loadingStatus,
+    required this.deletingStatus,
   });
 
   @override
@@ -21,7 +23,8 @@ final class AutomationState extends Equatable {
         cleanedAutomation,
         previews,
         savingStatus,
-        loadingStatus
+        loadingStatus,
+        deletingStatus,
       ];
 
   AutomationState copyWith({
@@ -30,6 +33,7 @@ final class AutomationState extends Equatable {
     Map<String, String>? previews,
     FormzSubmissionStatus? savingStatus,
     FormzSubmissionStatus? loadingStatus,
+    FormzSubmissionStatus? deletingStatus,
   }) {
     return AutomationState(
       cleanedAutomation: cleanedAutomation ?? this.cleanedAutomation,
@@ -37,6 +41,7 @@ final class AutomationState extends Equatable {
       previews: previews ?? this.previews,
       savingStatus: savingStatus ?? this.savingStatus,
       loadingStatus: loadingStatus ?? this.loadingStatus,
+      deletingStatus: deletingStatus ?? this.deletingStatus,
     );
   }
 }
@@ -78,5 +83,17 @@ final class AutomationInitial extends AutomationState {
             ),
             previews: {},
             savingStatus: FormzSubmissionStatus.initial,
-            loadingStatus: FormzSubmissionStatus.initial);
+            loadingStatus: FormzSubmissionStatus.initial,
+            deletingStatus: FormzSubmissionStatus.initial);
+}
+
+final class AutomationDeleted extends AutomationState {
+  AutomationDeleted(Automation automation)
+      : super(
+            dirtyAutomation: automation,
+            cleanedAutomation: automation,
+            previews: {},
+            savingStatus: FormzSubmissionStatus.initial,
+            loadingStatus: FormzSubmissionStatus.initial,
+            deletingStatus: FormzSubmissionStatus.success);
 }

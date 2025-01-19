@@ -171,3 +171,12 @@ final class AutomationLoadDirtyToClean extends AutomationEvent {
 final class AutomationLoadCleanToDirty extends AutomationEvent {
   const AutomationLoadCleanToDirty();
 }
+
+final class DeleteAutomation extends AutomationEvent {
+  final String id;
+
+  const DeleteAutomation(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

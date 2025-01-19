@@ -94,7 +94,7 @@ class InPostAutomationDTO implements Json {
   Map<String, dynamic> toJson() => automation.toJson();
 }
 
-@JsonSerializable()
+@JsonSerializable(createJsonKeys: false)
 class OutPostAutomationDTO implements Json {
   OutPostAutomationDTO();
 
@@ -103,4 +103,14 @@ class OutPostAutomationDTO implements Json {
 
   @override
   Map<String, dynamic> toJson() => _$OutPostAutomationDTOToJson(this);
+}
+
+@JsonSerializable()
+class OutDeleteAutomationDTO {
+  OutDeleteAutomationDTO();
+
+  factory OutDeleteAutomationDTO.fromJson(Map<String, dynamic> json) =>
+      _$OutDeleteAutomationDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OutDeleteAutomationDTOToJson(this);
 }
