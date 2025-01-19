@@ -24,7 +24,6 @@ public class DiscordSendMessageActionHandler
     {
         try
         {
-            // TODO: Check permissions
             await _discordApiService.SendChannelMessageAsync(new DiscordChannelId(channelId), content, cancellationToken);
             return new FactsDictionary();
         }

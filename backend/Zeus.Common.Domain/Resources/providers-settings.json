@@ -626,7 +626,12 @@
         "Facts": {
           "Author": {
             "Name": "Author",
-            "Description": "The author of the received email.",
+            "Description": "The name of the author of the received email.",
+            "Type": "string"
+          },
+          "From": {
+            "Name": "From",
+            "Description": "The email address of the sender of the received email.",
             "Type": "string"
           },
           "Subject": {
@@ -634,12 +639,17 @@
             "Description": "The subject of the received email.",
             "Type": "string"
           },
-          "Content": {
-            "Name": "Content",
-            "Description": "The content of the received email.",
+          "To": {
+            "Name": "To",
+            "Description": "The email address of the recipient of the received email.",
             "Type": "string"
           },
-          "ReceivedTime": {
+          "Body": {
+            "Name": "Body",
+            "Description": "The body of the received email.",
+            "Type": "string"
+          },
+          "ReceptionTime": {
             "Name": "Received time",
             "Description": "The time when the email was received.",
             "Type": "datetime"
@@ -647,7 +657,7 @@
         },
         "Dependencies": {
           "Gmail": {
-            "Require": "multiple"
+            "Require": "single"
           }
         }
       }
