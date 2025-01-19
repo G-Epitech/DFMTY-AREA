@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/github.integration.model.dart';
 import 'package:triggo/models/integrations/gmail.integration.model.dart';
 import 'package:triggo/models/integrations/leagueOfLegends.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
@@ -22,6 +23,8 @@ abstract class Integration {
         return OpenAIIntegration.fromDTO(dto);
       case IntegrationType.leagueOfLegends:
         return LeagueOfLegendsIntegration.fromDTO(dto);
+      case IntegrationType.github:
+        return GithubIntegration.fromDTO(dto);
       case IntegrationType.gmail:
         return GmailIntegration.fromDTO(dto);
       default:
