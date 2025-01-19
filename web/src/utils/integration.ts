@@ -20,6 +20,8 @@ export function integrationTypeFromIdentifier(
       return IntegrationTypeEnum.LEAGUE_OF_LEGENDS;
     case 'Github':
       return IntegrationTypeEnum.GITHUB;
+    case 'Gmail':
+      return IntegrationTypeEnum.GMAIL
     default:
       throw new Error(`Unsupported integration type: ${identifier}`);
   }

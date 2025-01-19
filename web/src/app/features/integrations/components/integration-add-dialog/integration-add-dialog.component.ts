@@ -21,6 +21,7 @@ import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-li
 import { AvailableIntegrationType } from '@common/types';
 import { AutomationSchemaModel } from '@models/automation';
 import { LeagueOfLegendsLinkFormComponent } from '@features/integrations/league-of-legends/league-of-legends-link-form/league-of-legends-link-form.component';
+import { GmailRepository } from '@repositories/integrations';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -44,6 +45,7 @@ export class IntegrationAddDialogComponent {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #notionMediator = inject(NotionMediator);
   readonly #githubMediator = inject(GithubMediator);
+  readonly #gmailRepository = inject(GmailRepository);
   readonly #schemaStore = inject(SchemaStore);
 
   readonly #linkFunctions: Record<string, LinkFunction> = {
@@ -75,6 +77,19 @@ export class IntegrationAddDialogComponent {
     },
     Github: () => {
       this.#githubMediator.getUri().subscribe({
+        next: uri => {
+          if (!uri) {
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+      });
+    },
+    Gmail: () => {
+      this.#gmailRepository.getUri().subscribe({
         next: uri => {
           if (!uri) {
             return;

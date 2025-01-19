@@ -43,7 +43,7 @@ export class LinkedIntegrationSelectionComponent {
   pageOptions$: BehaviorSubject<PageOptions> = new BehaviorSubject<PageOptions>(
     {
       page: 0,
-      size: 5,
+      size: 10,
     }
   );
 

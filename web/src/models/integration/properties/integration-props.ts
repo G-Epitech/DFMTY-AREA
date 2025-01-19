@@ -1,5 +1,6 @@
 import {
   IntegrationDiscordProps,
+  IntegrationGmailProps,
   IntegrationNotionProps,
   IntegrationOpenaiProps,
 } from '@models/integration';
@@ -11,4 +12,5 @@ export type IntegrationProps =
   | IntegrationNotionProps
   | IntegrationOpenaiProps
   | IntegrationLeagueOfLegendsProps
-  | IntegrationGithubProps;
+  | IntegrationGithubProps
+  | IntegrationGmailProps;
