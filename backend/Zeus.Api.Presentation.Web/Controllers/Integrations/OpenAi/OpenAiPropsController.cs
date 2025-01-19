@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using Zeus.Api.Application.Integrations.Query.OpenAi.GetOpenAiModels;
 using Zeus.Api.Infrastructure.Authentication.Context;
-using Zeus.Api.Presentation.Web.Contracts.Integrations.Notion;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.OpenAi;
 
 namespace Zeus.Api.Presentation.Web.Controllers.Integrations.OpenAi;
