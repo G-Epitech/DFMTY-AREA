@@ -1,0 +1,17 @@
+<tr-dialog>
+  <button brnDialogTrigger trBtn class="ml-auto p-2" variant="outline">
+    <ng-icon name="heroCog6Tooth" size="1.4rem" />
+  </button>
+  <tr-dialog-content
+    class="min-w-[450px] min-h-[400px]"
+    *brnDialogContent="let ctx">
+    <tr-dialog-header>
+      <h3 trDialogTitle>Edit Automation</h3>
+    </tr-dialog-header>
+    <span>{{ label() }}</span>
+    <span>{{ description() }}</span>
+    <tr-dialog-footer class="mt-auto">
+      <button trBtn type="submit">Save changes</button>
+    </tr-dialog-footer>
+  </tr-dialog-content>
+</tr-dialog>

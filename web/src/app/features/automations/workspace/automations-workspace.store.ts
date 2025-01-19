@@ -48,6 +48,12 @@ export const AutomationsWorkspaceStore = signalStore(
     getActions: computed(() => {
       return store.automation().actions;
     }),
+    getLabel: computed(() => {
+      return store.automation().label;
+    }),
+    getDescription: computed(() => {
+      return store.automation().description;
+    }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
     addTrigger: rxMethod<TriggerModel>(

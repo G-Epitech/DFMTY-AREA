@@ -13,6 +13,9 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
 import { SelectTriggerSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/select-trigger-sheet.component';
 import { SelectActionSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/select-action-sheet.component';
+import {
+  GeneralEditDialogComponent
+} from '@features/automations/workspace/components/general-edit-dialog/general-edit-dialog.component';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -22,6 +25,7 @@ import { SelectActionSheetComponent } from '@features/automations/workspace/comp
     TrButtonDirective,
     SelectTriggerSheetComponent,
     SelectActionSheetComponent,
+    GeneralEditDialogComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],
