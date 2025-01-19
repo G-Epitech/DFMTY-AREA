@@ -8,8 +8,9 @@ public class GmailSettingsProvider : IGmailSettingsProvider
     public GmailSettingsProvider(GmailSettings settings)
     {
         ApiEndpoint = settings.ApiEndpoint;
+        TokenEndpoint = settings.TokenEndpoint;
+        UserInfoEndpoint = settings.UserInfoEndpoint;
         OAuth2Endpoint = settings.OAuth2Endpoint;
-        OAuth2AccessType = settings.OAuth2AccessType;
         ClientId = settings.ClientId;
         ClientSecret = settings.ClientSecret;
         RedirectUrl = settings.RedirectUrl;
@@ -17,8 +18,9 @@ public class GmailSettingsProvider : IGmailSettingsProvider
     }
 
     public string ApiEndpoint { get; }
+    public string TokenEndpoint { get; }
+    public string UserInfoEndpoint { get; }
     public string OAuth2Endpoint { get; }
-    public string OAuth2AccessType { get; }
     public string ClientId { get; }
     public string ClientSecret { get; }
     public string RedirectUrl { get; }

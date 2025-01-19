@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Zeus.Api.Application.Integrations.Commands.CreateGmailIntegration;
 using Zeus.Api.Application.Integrations.Commands.GenerateGmailOauth2Uri;
 using Zeus.Api.Infrastructure.Authentication.Context;
 using Zeus.Api.Presentation.Web.Contracts.Integrations.Gmail;
@@ -41,9 +42,15 @@ public class GmailCreationController : ApiController
 
     [AllowAnonymous]
     [HttpPost(Name = "CreateGmailIntegration")]
-    public IActionResult CreateGmailIntegration(CreateGmailIntegrationRequest request)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<IActionResult> CreateGmailIntegration(CreateGmailIntegrationRequest request)
     {
-        Console.WriteLine($"Code = {request.Code}, State = {request.State}");
-        return Created();
+        var createIntegrationResult =
+            await _sender.Send(new CreateGmailIntegrationCommand(request.Code, request.State));
+
+        return createIntegrationResult.Match(
+            result => CreatedAtRoute(nameof(IntegrationsController.GetIntegrationById),
+                new { id = result.IntegrationId }, null),
+            Problem);
     }
 }

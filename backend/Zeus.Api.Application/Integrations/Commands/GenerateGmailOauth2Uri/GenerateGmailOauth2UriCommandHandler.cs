@@ -35,12 +35,12 @@ public class GenerateGmailOauth2UriCommandHandler : IRequestHandler<GenerateGmai
 
         var queryString = HttpUtility.ParseQueryString(String.Empty);
         queryString.Add("redirect_uri", settings.RedirectUrl);
+        queryString.Add("access_type", "offline");
         queryString.Add("prompt", "consent");
         queryString.Add("response_type", "code");
         queryString.Add("client_id", settings.ClientId);
         queryString.Add("scope", string.Join(' ', settings.Scopes));
         queryString.Add("state", linkRequestResult.Value.IntegrationLinkRequestId.ToString());
-        queryString.Add("access_type", settings.OAuth2AccessType);
 
         var builder = new UriBuilder(settings.OAuth2Endpoint) { Query = queryString.ToString() };
 

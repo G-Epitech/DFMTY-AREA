@@ -30,7 +30,7 @@ export class GmailOAuth2PageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    debugger;
+
     this.route.queryParams.subscribe(params => {
       const code: string | null = params['code'];
       const state: string | null = params['state'];
