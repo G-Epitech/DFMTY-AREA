@@ -5,4 +5,5 @@ class IntegrationNames {
   static const String notion = 'Notion';
   static const String openAI = 'OpenAi';
   static const String leagueOfLegends = 'LeagueOfLegends';
+  static const String gmail = 'Gmail';
 }

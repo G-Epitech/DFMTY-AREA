@@ -17,6 +17,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/gmail.integration.model.dart';
 import 'package:triggo/models/integrations/leagueOfLegends.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
 import 'package:triggo/models/integrations/openAI.integration.model.dart';
@@ -402,6 +403,20 @@ class _IntegrationListItem extends StatelessWidget {
           selected: selected,
           isRadio: isRadio,
         );
+      case IntegrationNames.gmail:
+        final gmail = integration as GmailIntegration;
+        return _ItemWidget(
+          id: gmail.id,
+          title: gmail.email,
+          description: gmail.email,
+          avatarUri: gmail.avatarUri,
+          integrationSvg: "assets/icons/gmail.svg",
+          onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
+          width: 10,
+          height: 10,
+        );
       default:
         return _DefaultIntegrationListItem(integration: integration);
     }
@@ -431,6 +446,8 @@ class _ItemWidget extends StatefulWidget {
   final List<String> selected;
   final bool isRadio;
   final int? color;
+  final double? width;
+  final double? height;
 
   const _ItemWidget({
     required this.id,
@@ -442,6 +459,8 @@ class _ItemWidget extends StatefulWidget {
     required this.selected,
     required this.isRadio,
     this.color,
+    this.width,
+    this.height,
   });
 
   @override
@@ -521,16 +540,18 @@ class _ItemWidgetState extends State<_ItemWidget> {
                     CircleAvatar(
                       backgroundColor: widget.color != null
                           ? Color(widget.color!)
-                          : Theme.of(context).colorScheme.primary,
+                          : Colors.white,
                       radius: 25,
                       child: SvgPicture.asset(
                         widget.integrationSvg,
-                        width: 30,
-                        height: 30,
-                        colorFilter: ColorFilter.mode(
-                          Colors.white,
-                          BlendMode.srcIn,
-                        ),
+                        width: widget.width ?? 30,
+                        height: widget.height ?? 30,
+                        colorFilter: widget.color != null
+                            ? ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              )
+                            : null,
                       ),
                     ),
                   if (widget.avatarUri != null)
@@ -546,15 +567,17 @@ class _ItemWidgetState extends State<_ItemWidget> {
                         radius: 10,
                         backgroundColor: widget.color != null
                             ? Color(widget.color!)
-                            : Theme.of(context).colorScheme.primary,
+                            : Colors.white,
                         child: SvgPicture.asset(
                           widget.integrationSvg,
-                          width: 15,
-                          height: 15,
-                          colorFilter: ColorFilter.mode(
-                            Colors.white,
-                            BlendMode.srcIn,
-                          ),
+                          width: widget.width ?? 15,
+                          height: widget.height ?? 15,
+                          colorFilter: widget.color != null
+                              ? ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                )
+                              : null,
                         ),
                       ),
                     ),

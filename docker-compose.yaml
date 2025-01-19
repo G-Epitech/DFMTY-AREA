@@ -97,6 +97,22 @@ services:
       - zeus-api-grpc
       - zeus-message-broker
 
+  web:
+    container_name: web
+    restart: always
+    build:
+      context: web/
+      dockerfile: Dockerfile.production
+    ports:
+      - "8081:80"
+    image: web-image
+    depends_on:
+      - mobile-apk
+    profiles:
+      - production
+    volumes:
+      - shared_volume:/common
+
   mobile-base:
     container_name: mobile-base
     restart: no
