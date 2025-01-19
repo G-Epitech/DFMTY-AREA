@@ -16,6 +16,8 @@ export function integrationTypeFromIdentifier(
       return IntegrationTypeEnum.DISCORD;
     case 'OpenAi':
       return IntegrationTypeEnum.OPENAI;
+    case 'LeagueOfLegends':
+      return IntegrationTypeEnum.LEAGUE_OF_LEGENDS;
     default:
       throw new Error(`Unsupported integration type: ${identifier}`);
   }

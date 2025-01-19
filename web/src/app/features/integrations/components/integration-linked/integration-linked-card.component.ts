@@ -11,6 +11,7 @@ import { IntegrationLinkedDiscordComponent } from '@features/integrations/discor
 import { SchemaStore } from '@app/store/schema-store';
 import { IntegrationLinkedNotionComponent } from '@features/integrations/notion/integration-linked-notion/integration-linked-notion.component';
 import { IntegrationLinkedOpenaiComponent } from '@features/integrations/openai/integration-linked-openai/integration-linked-openai.component';
+import { IntegrationLinkedLeagueOfLegendsComponent } from '@features/integrations/league-of-legends/integration-linked-league-of-legends/integration-linked-league-of-legends.component';
 
 @Component({
   selector: 'tr-integration-linked-card',
@@ -18,6 +19,7 @@ import { IntegrationLinkedOpenaiComponent } from '@features/integrations/openai/
     IntegrationLinkedDiscordComponent,
     IntegrationLinkedNotionComponent,
     IntegrationLinkedOpenaiComponent,
+    IntegrationLinkedLeagueOfLegendsComponent,
   ],
   templateUrl: './integration-linked-card.component.html',
   styles: [],
@@ -35,7 +37,7 @@ export class IntegrationLinkedCardComponent {
   constructor() {
     effect(() => {
       if (this.schema && this.integration) {
-        const integrationName = this.integration().type.toString();
+        const integrationName = this.integration().type;
         this.iconUri.set(this.schema.getIntegrationIconUri(integrationName));
         this.color.set(this.schema.getIntegrationColor(integrationName));
       }

@@ -1,0 +1,51 @@
+<div class="bg-white flex items-center justify-center border rounded-md p-4">
+  <div class="p-6 w-full">
+    <form
+      class="space-y-6"
+      (ngSubmit)="link()"
+      [formGroup]="leagueOfLegendsForm">
+      <div>
+        <label for="gameName" trLabel> Game Name </label>
+        <input
+          trInput
+          id="gameName"
+          type="text"
+          placeholder="Enter summoner name"
+          class="w-full px-4 py-2"
+          [formControl]="leagueOfLegendsForm.controls.gameName" />
+      </div>
+
+      <div>
+        <label for="tagLine" trLabel> Tag Line </label>
+        <div class="flex flex-row">
+          <div
+            class="bg-secondary rounded-md rounded-r-none border px-3 flex justify-center items-center">
+            <span class="tr-large text-gray-500">#</span>
+          </div>
+          <input
+            trInput
+            id="tagLine"
+            type="text"
+            placeholder="Enter tag (e.g. NA1)"
+            class="w-full px-4 py-2 rounded-l-none border-l-0"
+            [formControl]="leagueOfLegendsForm.controls.tagLine" />
+        </div>
+      </div>
+
+      <button
+        trBtn
+        type="submit"
+        [disabled]="loading() || leagueOfLegendsForm.invalid"
+        class="w-full text-white py-2 px-4 font-medium">
+        @if (loading()) {
+          <div class="flex items-center justify-center space-x-2">
+            <tr-spinner size="sm" class="text-white" />
+            <span>Linking...</span>
+          </div>
+        } @else {
+          Link Account
+        }
+      </button>
+    </form>
+  </div>
+</div>
