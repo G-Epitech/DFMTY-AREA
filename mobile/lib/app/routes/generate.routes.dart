@@ -34,7 +34,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (RoutesNames.automationCreation):
       return customScreenBuilder(const AutomationMainView());
     case (RoutesNames.automationSettings):
-      return customScreenBuilder(const AutomationSettingsView());
+      return customScreenBuilder(const AutomationSettingsView(), settings);
     case (RoutesNames.profile):
       return customScreenBuilder(const ProfileView());
     default:
