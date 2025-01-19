@@ -151,6 +151,14 @@ export const routes: Routes = [
         canActivate: [stateGuard],
         data: { stateKey: GOOGLE_STATE_CODE_KEY, redirectUrl: '/login' },
       },
+      {
+        path: 'github',
+        loadComponent: () =>
+          import('@features/oauth2/github/github.oauth2.page').then(
+            m => m.GithubOauth2PageComponent
+          ),
+        pathMatch: 'full',
+      }
     ],
   },
 ];

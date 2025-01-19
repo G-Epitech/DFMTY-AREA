@@ -15,7 +15,7 @@ import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { IntegrationsMediator } from '@mediators/integrations/integrations.mediator';
 import { SchemaStore } from '@app/store/schema-store';
 import { LinkFunction } from '@features/integrations/components/integration-add-dialog/integration-add-dialog.types';
-import { NotionMediator } from '@mediators/integrations';
+import { GithubMediator, NotionMediator } from '@mediators/integrations';
 import { IntegrationTypeEnum } from '@models/integration';
 import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
 import { AvailableIntegrationType } from '@common/types';
@@ -43,6 +43,7 @@ import { LeagueOfLegendsLinkFormComponent } from '@features/integrations/league-
 export class IntegrationAddDialogComponent {
   readonly #integrationsMediator = inject(IntegrationsMediator);
   readonly #notionMediator = inject(NotionMediator);
+  readonly #githubMediator = inject(GithubMediator);
   readonly #schemaStore = inject(SchemaStore);
 
   readonly #linkFunctions: Record<string, LinkFunction> = {
@@ -61,6 +62,19 @@ export class IntegrationAddDialogComponent {
     },
     Notion: () => {
       this.#notionMediator.getUri().subscribe({
+        next: uri => {
+          if (!uri) {
+            return;
+          }
+          const newWindow = window.open(`${uri}`, '_blank');
+          if (newWindow) {
+            newWindow.opener = window;
+          }
+        },
+      });
+    },
+    Github: () => {
+      this.#githubMediator.getUri().subscribe({
         next: uri => {
           if (!uri) {
             return;
