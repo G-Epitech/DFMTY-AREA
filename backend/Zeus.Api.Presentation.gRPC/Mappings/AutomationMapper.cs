@@ -13,7 +13,7 @@ public class AutomationMapper : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<Automation, Contracts.Automation>()
-            .MapWith(a => new Contracts.Automation()
+            .MapWith(a => new Contracts.Automation
             {
                 Id = a.Id.Value.ToString(),
                 Label = a.Label,
@@ -24,7 +24,7 @@ public class AutomationMapper : IRegister
                 OwnerId = a.OwnerId.Value.ToString(),
                 Actions =
                 {
-                    Enumerable.Select(a.Actions, action => new AutomationAction
+                    a.Actions.Select(action => new AutomationAction
                     {
                         Id = action.Id.Value.ToString(),
                         Identifier = action.Identifier,
@@ -41,8 +41,8 @@ public class AutomationMapper : IRegister
                 {
                     Id = a.Trigger.Id.Value.ToString(),
                     Identifier = a.Trigger.Identifier,
-                    Parameters = { Enumerable.Select<AutomationTriggerParameter, Contracts.AutomationTriggerParameter>(a.Trigger.Parameters, p => new Contracts.AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }) },
-                    Dependencies = { Enumerable.Select<IntegrationId, string>(a.Trigger.Dependencies, p => p.Value.ToString()) }
+                    Parameters = { a.Trigger.Parameters.Select(p => new Contracts.AutomationTriggerParameter { Identifier = p.Identifier, Value = p.Value }) },
+                    Dependencies = { a.Trigger.Dependencies.Select(p => p.Value.ToString()) }
                 }
             });
     }

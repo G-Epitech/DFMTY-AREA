@@ -5,6 +5,8 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Zeus.Api.Integration.Contracts;
+using Zeus.Daemon.Infrastructure.Integrations.Api.EventHandlers;
 using Zeus.Daemon.Infrastructure.Settings.MessageBrokers;
 
 namespace Zeus.Daemon.Infrastructure.Integrations;
@@ -40,7 +42,16 @@ public static class DependencyInjection
                     host.Username(rabbitMqSettings.Username);
                     host.Password(rabbitMqSettings.Password);
                 });
-                rabbitConfiguration.ConfigureEndpoints(ctx);
+
+                rabbitConfiguration.ReceiveEndpoint(nameof(AutomationCreatedEvent), c =>
+                {
+                    c.Durable = false;
+                    c.PurgeOnStartup = true;
+                    c.Exclusive = true;
+                    c.AutoStart = true;
+                    c.ExchangeType = "fanout";
+                    c.ConfigureConsumer<AutomationCreatedEventHandler>(ctx);
+                });
             });
         });
         return services;

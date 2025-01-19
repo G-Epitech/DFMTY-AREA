@@ -25,6 +25,8 @@ public sealed class AutomationLauncher : IAutomationsLauncher
 
     public Task<Dictionary<AutomationId, bool>> LaunchManyAsync(IReadOnlyList<AutomationId> automationIds, FactsDictionary facts)
     {
-        return AutomationsRunner.RunManyAsync(automationIds, facts);
+        return automationIds.Count == 0
+            ? Task.FromResult(new Dictionary<AutomationId, bool>())
+            : AutomationsRunner.RunManyAsync(automationIds, facts);
     }
 }

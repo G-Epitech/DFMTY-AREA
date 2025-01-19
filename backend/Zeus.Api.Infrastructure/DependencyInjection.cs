@@ -59,7 +59,6 @@ public static class DependencyInjection
         services.AddScoped<IAutomationWriteRepository, AutomationWriteRepository>();
         services.AddScoped<IAuthenticationMethodReadRepository, AuthenticationMethodReadRepository>();
         services.AddScoped<IAuthenticationMethodWriteRepository, AuthenticationMethodWriteRepository>();
-
         services.AddScoped<IAuthUserContext, AuthUserContext>();
 
         services.AddScoped<IDiscordService, DiscordService>();
@@ -122,6 +121,7 @@ public static class DependencyInjection
             throw new ArgumentNullException(nameof(connectionString));
         }
 
+        services.AddScoped<DomainEventDelayer>();
         services.AddDbContext<ZeusDbContext>(options =>
         {
             options.UseNpgsql(connectionString, o =>

@@ -15,13 +15,13 @@ using IntegrationTokenUsage = Zeus.Common.Domain.Integrations.IntegrationAggrega
 using IntegrationType = Zeus.Common.Domain.Integrations.Common.Enums.IntegrationType;
 using RegistrableAutomation = Zeus.Daemon.Domain.Automations.RegistrableAutomation;
 
-namespace Zeus.Daemon.Infrastructure.Mapping;
+namespace Zeus.Daemon.Infrastructure.Services.Api.Mapping;
 
 using RegistrableAutomation = RegistrableAutomation;
 
 public static class SynchronizationMappers
 {
-    public static RegistrableAutomation MapToRegistrableAutomation(this Api.Presentation.gRPC.Contracts.RegistrableAutomation registrable)
+    public static RegistrableAutomation MapToRegistrableAutomation(this Zeus.Api.Presentation.gRPC.Contracts.RegistrableAutomation registrable)
     {
         var automationId = new AutomationId(Guid.Parse(registrable.Automation.Id));
         var ownerId = new UserId(Guid.Parse(registrable.Automation.OwnerId));
@@ -43,7 +43,7 @@ public static class SynchronizationMappers
         };
     }
 
-    private static AutomationTrigger MapToAutomationTrigger(this Api.Presentation.gRPC.Contracts.AutomationTrigger trigger)
+    private static AutomationTrigger MapToAutomationTrigger(this Zeus.Api.Presentation.gRPC.Contracts.AutomationTrigger trigger)
     {
         var automationTriggerId = new AutomationTriggerId(Guid.Parse(trigger.Id));
 
@@ -55,12 +55,12 @@ public static class SynchronizationMappers
         );
     }
 
-    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Api.Presentation.gRPC.Contracts.AutomationTriggerParameter parameter)
+    private static AutomationTriggerParameter MapToAutomationTriggerParameter(this Zeus.Api.Presentation.gRPC.Contracts.AutomationTriggerParameter parameter)
     {
         return new AutomationTriggerParameter { Identifier = parameter.Identifier, Value = parameter.Value };
     }
 
-    private static AutomationAction MapToAutomationAction(this Api.Presentation.gRPC.Contracts.AutomationAction action)
+    private static AutomationAction MapToAutomationAction(this Zeus.Api.Presentation.gRPC.Contracts.AutomationAction action)
     {
         var automationActionId = new AutomationActionId(Guid.Parse(action.Id));
 
@@ -78,7 +78,7 @@ public static class SynchronizationMappers
         );
     }
 
-    public static Integration MapToIntegration(this Api.Presentation.gRPC.Contracts.Integration integration)
+    public static Integration MapToIntegration(this Zeus.Api.Presentation.gRPC.Contracts.Integration integration)
     {
         var id = new IntegrationId(Guid.Parse(integration.Id));
         var ownerId = new UserId(Guid.Parse(integration.OwnerId));

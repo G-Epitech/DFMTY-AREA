@@ -1,4 +1,6 @@
-﻿using Zeus.Common.Domain.AutomationAggregate;
+﻿using Microsoft.Extensions.Logging;
+
+using Zeus.Common.Domain.AutomationAggregate;
 using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Interfaces.Registries;
 using Zeus.Daemon.Domain.Automations;
@@ -9,10 +11,12 @@ public class AutomationsRegistry : IAutomationsRegistry
 {
     private readonly Dictionary<AutomationId, Automation> _automations = new();
     private readonly ITriggersRegistry _triggersRegistry;
+    private readonly ILogger<AutomationsRegistry> _logger;
 
-    public AutomationsRegistry(ITriggersRegistry triggersRegistry)
+    public AutomationsRegistry(ITriggersRegistry triggersRegistry, ILogger<AutomationsRegistry> logger)
     {
         _triggersRegistry = triggersRegistry;
+        _logger = logger;
     }
 
     public async Task<bool> RegisterAsync(RegistrableAutomation registrable, CancellationToken cancellationToken = default)
@@ -22,6 +26,7 @@ public class AutomationsRegistry : IAutomationsRegistry
 
         if (exists && !await RemoveAsync(registrable.Automation.Id, cancellationToken))
         {
+            _logger.LogWarning("Automation refresh failed during remove step: {AutomationId}", automation.Id);
             return false;
         }
 
@@ -30,6 +35,15 @@ public class AutomationsRegistry : IAutomationsRegistry
         if (valid)
         {
             _automations[automation.Id] = automation;
+            _logger.LogDebug("Automation {AutomationId} {Action}", automation.Id, exists ? "refreshed" : "registered");
+        }
+        else if (exists)
+        {
+            _logger.LogWarning("Automation refresh failed during register step: {AutomationId}", automation.Id);
+        }
+        else
+        {
+            _logger.LogWarning("Automation registration failed: {AutomationId}", automation.Id);
         }
         return valid;
     }
