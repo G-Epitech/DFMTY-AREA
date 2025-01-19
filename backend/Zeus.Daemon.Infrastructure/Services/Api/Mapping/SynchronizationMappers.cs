@@ -32,6 +32,8 @@ public static class SynchronizationMappers
                 automationId,
                 registrable.Automation.Label,
                 registrable.Automation.Description,
+                registrable.Automation.Color,
+                registrable.Automation.Icon,
                 ownerId,
                 MapToAutomationTrigger(registrable.Automation.Trigger),
                 registrable.Automation.Actions.Select(MapToAutomationAction).ToList(),

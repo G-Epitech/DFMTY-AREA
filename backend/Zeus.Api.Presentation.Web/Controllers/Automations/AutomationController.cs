@@ -46,6 +46,8 @@ public class AutomationController : ApiController
             userId,
             request.Label,
             request.Description,
+            request.Color,
+            request.Icon,
             _mapper.Map<CreateAutomationTriggerCommand>(request.Trigger),
             request.Actions.Select(a => _mapper.Map<CreateAutomationActionCommand>(a)).ToList(),
             request.Enabled

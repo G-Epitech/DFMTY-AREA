@@ -14,6 +14,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
 {
     public const int LabelMaxLength = 100;
     public const int DescriptionMaxLength = 255;
+    public const int ColorLength = 7;
 
     private readonly List<AutomationAction> _actions;
     private bool _enabled;
@@ -22,6 +23,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
         AutomationId id,
         string label,
         string description,
+        string color,
+        string icon,
         UserId ownerId,
         AutomationTrigger trigger,
         List<AutomationAction> actions,
@@ -33,6 +36,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
         _actions = actions;
         Label = label;
         Description = description;
+        Color = color;
+        Icon = icon;
         Trigger = trigger;
         OwnerId = ownerId;
         _enabled = enabled;
@@ -46,6 +51,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
 
     public string Label { get; private set; }
     public string Description { get; private set; }
+    public string Color { get; private set; }
+    public string Icon { get; private set; }
     public AutomationTrigger Trigger { get; private set; }
     public IReadOnlyList<AutomationAction> Actions => _actions.AsReadOnly();
     public UserId OwnerId { get; private set; }
@@ -65,6 +72,7 @@ public sealed class Automation : AggregateRoot<AutomationId>
             {
                 return;
             }
+
             _enabled = value;
             AddDomainEvent(new AutomationEnabledStateChangedEvent(this));
         }
@@ -73,6 +81,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
     public static Automation Create(
         string label,
         string description,
+        string color,
+        string icon,
         UserId ownerId,
         AutomationTrigger trigger,
         List<AutomationAction> actions,
@@ -82,6 +92,8 @@ public sealed class Automation : AggregateRoot<AutomationId>
             AutomationId.CreateUnique(),
             label,
             description,
+            color,
+            icon,
             ownerId,
             trigger,
             actions,

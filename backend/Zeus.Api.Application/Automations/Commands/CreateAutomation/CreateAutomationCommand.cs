@@ -12,6 +12,8 @@ public record CreateAutomationCommand(
     UserId OwnerId,
     string Label,
     string Description,
+    string Color,
+    string Icon,
     CreateAutomationTriggerCommand Trigger,
     List<CreateAutomationActionCommand> Actions,
     bool Enabled = true

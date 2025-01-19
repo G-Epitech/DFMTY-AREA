@@ -5,6 +5,8 @@ namespace Zeus.Api.Presentation.Web.Contracts.Automations;
 public record CreateAutomationRequest(
     string Label,
     string Description,
+    string Color,
+    string Icon,
     CreateAutomationTriggerRequest Trigger,
     CreateAutomationActionRequest[] Actions,
     bool Enabled = true
