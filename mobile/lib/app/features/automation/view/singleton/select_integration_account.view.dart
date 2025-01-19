@@ -17,6 +17,7 @@ import 'package:triggo/mediator/integration.mediator.dart';
 import 'package:triggo/models/automation.model.dart';
 import 'package:triggo/models/integration.model.dart';
 import 'package:triggo/models/integrations/discord.integration.model.dart';
+import 'package:triggo/models/integrations/github.integration.model.dart';
 import 'package:triggo/models/integrations/gmail.integration.model.dart';
 import 'package:triggo/models/integrations/leagueOfLegends.integration.model.dart';
 import 'package:triggo/models/integrations/notion.integration.model.dart';
@@ -399,6 +400,20 @@ class _IntegrationListItem extends StatelessWidget {
           avatarUri: leagueOfLegends.summonerProfileIcon,
           integrationSvg: "assets/icons/league_of_legends.svg",
           color: 0xFFc89b3c,
+          onTap: onTap,
+          selected: selected,
+          isRadio: isRadio,
+        );
+      case IntegrationNames.github:
+        final github = integration as GithubIntegration;
+        return _ItemWidget(
+          id: github.id,
+          title: github.username ?? "No username",
+          description:
+              '${github.email != null && github.email!.isNotEmpty ? '${github.email} - ' : ''}Followers: ${github.followers} - Following: ${github.following}',
+          avatarUri: github.avatarUri,
+          integrationSvg: "assets/icons/github.svg",
+          color: 0xFF24292E,
           onTap: onTap,
           selected: selected,
           isRadio: isRadio,

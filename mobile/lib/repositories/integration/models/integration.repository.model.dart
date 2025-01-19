@@ -1,4 +1,5 @@
 import 'package:triggo/repositories/integration/models/integrations/discord.integrations.dart';
+import 'package:triggo/repositories/integration/models/integrations/github.integrations.dart';
 import 'package:triggo/repositories/integration/models/integrations/gmail.integrations.dart';
 import 'package:triggo/repositories/integration/models/integrations/league_of_legends.integrations.dart';
 import 'package:triggo/repositories/integration/models/integrations/notion.integrations.dart';
@@ -10,6 +11,7 @@ class IntegrationType {
   static const String notion = 'Notion';
   static const String openAI = 'OpenAi';
   static const String leagueOfLegends = 'LeagueOfLegends';
+  static const String github = 'Github';
   static const String gmail = 'Gmail';
 }
 
@@ -59,8 +61,12 @@ class IntegrationDTO implements Json {
       case IntegrationType.leagueOfLegends:
         properties = LeagueOfLegendsPropertiesDTO.fromJson(json['properties']);
         break;
+      case IntegrationType.github:
+        properties = GithubPropertiesDTO.fromJson(json['properties']);
+        break;
       case IntegrationType.gmail:
         properties = GmailPropertiesDTO.fromJson(json['properties']);
+        break;
       default:
         throw Exception('Unknown integration type');
     }

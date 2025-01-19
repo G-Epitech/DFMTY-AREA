@@ -9,6 +9,7 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/utils/validate.dart';
 import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/select_integration.view.dart';
+import 'package:triggo/app/features/integration/integration.names.dart';
 import 'package:triggo/app/routes/custom.router.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/colors/colors.dart';
@@ -534,7 +535,9 @@ class _TriggerListItem extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color,
+                color: integrationIdentifier == IntegrationNames.github
+                    ? Colors.white
+                    : color,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
