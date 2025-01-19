@@ -60,6 +60,11 @@
         "Description": "Sends a message to a specific guild channel as triggo bot.",
         "Icon": "chat-bubble-oval-left-ellipsis",
         "Parameters": {
+          "GuildId": {
+            "Name": "Guild id",
+            "Description": "The ID of the guild to send the message to.",
+            "Type": "string"
+          },
           "ChannelId": {
             "Name": "Channel id",
             "Description": "The ID of the channel to send the message to.",

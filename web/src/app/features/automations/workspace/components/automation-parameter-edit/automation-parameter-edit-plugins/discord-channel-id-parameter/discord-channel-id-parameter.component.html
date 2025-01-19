@@ -1,0 +1,32 @@
+@if (!guildSelected()) {
+  <div class="alert alert-warning" role="alert">
+    Please select a Discord guild first.
+  </div>
+} @else {
+  @if (this.integrationId) {
+    @if (channels$ | async; as channels) {
+      <div
+        class="flex flex-col overflow-y-auto max-h-96 bg-secondary rounded-md p-3 space-y-3 border">
+        @for (channel of channels; track channel.id) {
+          <button
+            trBtn
+            variant="outline"
+            class="flex flex-row bg-white items-center p-7"
+            (click)="selectChannel(channel.id)">
+            <div
+              class="flex flex-row items-center justify-start gap-3 w-full"
+              [ngClass]="
+                isChannelSelected(channel.id) ? 'text-primary' : 'text-gray-900'
+              ">
+              <ng-icon name="heroHashtag" size="1.3rem" />
+              <span class="tr-large">{{ channel.name }} </span>
+              @if (isChannelSelected(channel.id)) {
+                <ng-icon name="heroCheckCircle" size="1.3rem" />
+              }
+            </div>
+          </button>
+        }
+      </div>
+    }
+  }
+}

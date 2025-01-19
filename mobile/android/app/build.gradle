@@ -50,8 +50,28 @@ android {
             keyPassword 'yannmasson'
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def newApkName = "Triggo-${variant.buildType.name}.apk"
+            outputFileName = newApkName
+        }
+    }
 }
 
 flutter {
     source = "../.."
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleRelease') {
+        task.doLast {
+            def apkDir = file("${buildDir}/outputs/flutter-apk")
+            def oldApk = file("${apkDir}/app-release.apk")
+            def newApk = file("${apkDir}/Triggo-release.apk")
+            if (oldApk.exists()) {
+                oldApk.renameTo(newApk)
+            }
+        }
+    }
 }

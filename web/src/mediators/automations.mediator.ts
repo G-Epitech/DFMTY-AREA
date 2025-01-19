@@ -2,54 +2,28 @@ import { inject, Injectable } from '@angular/core';
 import { AutomationsRepository } from '@repositories/automations';
 import { map, Observable } from 'rxjs';
 import {
-  ActionShortModel,
   AutomationModel,
-  AutomationSchemaDependency,
-  AutomationSchemaDependencyRequired,
   AutomationSchemaModel,
   AutomationSchemaService,
-  AutomationSchemaTrigger,
-  TriggerShortModel,
 } from '@models/automation';
-import {
-  AutomationSchemaDTO,
-  TriggerDTO,
-  ActionDTO,
-  ActionShortDTO,
-  DependencyDTO,
-} from '@repositories/automations/dto';
+import { AutomationSchemaDTO } from '@repositories/automations/dto';
+import { AutomationMapperService } from '@mediators/mappers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutomationsMediator {
   readonly #automationsRepository = inject(AutomationsRepository);
+  readonly #automationMapper = inject(AutomationMapperService);
 
   create(): Observable<string> {
     return this.#automationsRepository.post();
   }
 
   getById(id: string): Observable<AutomationModel> {
-    return this.#automationsRepository.getById(id).pipe(
-      map(dto => {
-        return new AutomationModel(
-          dto.id,
-          dto.ownerId,
-          dto.label,
-          dto.description,
-          dto.enabled,
-          dto.updatedAt,
-          '#EE883A',
-          'chat-bubble-bottom-center-text',
-          new TriggerShortModel(
-            dto.trigger.identifier,
-            dto.trigger.parameters,
-            dto.trigger.dependencies
-          ),
-          this._mapActions(dto.actions)
-        );
-      })
-    );
+    return this.#automationsRepository
+      .getById(id)
+      .pipe(map(dto => this.#automationMapper.mapAutomationModel(dto)));
   }
 
   getSchema(): Observable<AutomationSchemaModel> {
@@ -58,10 +32,11 @@ export class AutomationsMediator {
         const services: Record<string, AutomationSchemaService> = {};
         for (const serviceName in dto) {
           const service = dto[serviceName];
-          const schemaTriggers = this._mapSchemaServiceTriggers(
-            service.triggers
+          const schemaTriggers =
+            this.#automationMapper.mapSchemaServiceTriggers(service.triggers);
+          const schemaActions = this.#automationMapper.mapSchemaServiceActions(
+            service.actions
           );
-          const schemaActions = this._mapSchemaServiceActions(service.actions);
           services[serviceName] = {
             name: service.name,
             color: service.color,
@@ -73,66 +48,5 @@ export class AutomationsMediator {
         return new AutomationSchemaModel(services);
       })
     );
-  }
-
-  _mapSchemaServiceTriggers(
-    dtoTriggers: Record<string, TriggerDTO>
-  ): Record<string, AutomationSchemaTrigger> {
-    const schemaTriggers: Record<string, AutomationSchemaTrigger> = {};
-
-    for (const [identifier, trigger] of Object.entries(dtoTriggers)) {
-      schemaTriggers[identifier] = {
-        name: trigger.name,
-        description: trigger.description,
-        icon: trigger.icon,
-        parameters: trigger.parameters,
-        facts: trigger.facts,
-        dependencies: this._mapSchemaDependencies(trigger.dependencies),
-      };
-    }
-    return schemaTriggers;
-  }
-
-  _mapSchemaServiceActions(
-    dtoActions: Record<string, ActionDTO>
-  ): Record<string, AutomationSchemaTrigger> {
-    const schemaActions: Record<string, AutomationSchemaTrigger> = {};
-
-    for (const [identifier, action] of Object.entries(dtoActions)) {
-      schemaActions[identifier] = {
-        name: action.name,
-        description: action.description,
-        icon: action.icon,
-        parameters: action.parameters,
-        facts: action.facts,
-        dependencies: this._mapSchemaDependencies(action.dependencies),
-      };
-    }
-    return schemaActions;
-  }
-
-  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
-    return actions.map(
-      action =>
-        new ActionShortModel(
-          action.identifier,
-          action.parameters,
-          action.dependencies
-        )
-    );
-  }
-
-  _mapSchemaDependencies(
-    dependencies: Record<string, DependencyDTO>
-  ): Record<string, AutomationSchemaDependency> {
-    const schemaDependencies: Record<string, AutomationSchemaDependency> = {};
-
-    for (const [identifier, dependency] of Object.entries(dependencies)) {
-      schemaDependencies[identifier] = {
-        require: dependency.require as AutomationSchemaDependencyRequired,
-        optional: dependency.optional,
-      };
-    }
-    return schemaDependencies;
   }
 }

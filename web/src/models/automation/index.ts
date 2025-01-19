@@ -1,4 +1,5 @@
 export * from './automation.model';
-export * from './action-short.model';
-export * from './trigger-short.model';
+export * from './action.model';
+export * from './trigger.model';
 export * from './schema';
+export * from './automation-parameter-value-type';

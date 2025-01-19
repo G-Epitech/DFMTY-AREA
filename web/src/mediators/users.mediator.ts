@@ -3,19 +3,16 @@ import { UsersRepository } from '@repositories/users';
 import { PageModel, PageOptions } from '@models/page';
 import { map, Observable } from 'rxjs';
 import { IntegrationModel } from '@models/integration';
-import {
-  ActionShortModel,
-  AutomationModel,
-  TriggerShortModel,
-} from '@models/automation';
+import { AutomationModel } from '@models/automation';
 import { UserModel } from '@models/user.model';
-import { ActionShortDTO } from '@repositories/automations/dto';
+import { AutomationMapperService } from '@mediators/mappers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersMediator {
   readonly #usersRepository = inject(UsersRepository);
+  readonly #automationMapper = inject(AutomationMapperService);
 
   getById(id: string): Observable<UserModel> {
     return this.#usersRepository
@@ -77,37 +74,10 @@ export class UsersMediator {
     return this.#usersRepository.getAutomations(pageOptions).pipe(
       map(res => ({
         ...res,
-        data: res.data.map(
-          automation =>
-            new AutomationModel(
-              automation.id,
-              automation.ownerId,
-              automation.label,
-              automation.description,
-              automation.enabled,
-              automation.updatedAt,
-              '#EE883A',
-              'chat-bubble-bottom-center-text',
-              new TriggerShortModel(
-                automation.trigger.identifier,
-                automation.trigger.parameters,
-                automation.trigger.dependencies
-              ),
-              this._mapActions(automation.actions)
-            )
+        data: res.data.map(automation =>
+          this.#automationMapper.mapAutomationModel(automation)
         ),
       }))
-    );
-  }
-
-  _mapActions(actions: ActionShortDTO[]): ActionShortModel[] {
-    return actions.map(
-      action =>
-        new ActionShortModel(
-          action.identifier,
-          action.parameters,
-          action.dependencies
-        )
     );
   }
 }

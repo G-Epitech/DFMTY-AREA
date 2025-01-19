@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
-import 'package:triggo/app/features/automation/bloc/automation_bloc.dart';
+import 'package:triggo/app/features/automation/bloc/automation/automation_bloc.dart';
 import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/view/singleton/parameters.view.dart';
 import 'package:triggo/app/features/automation/view/singleton/select_integration.view.dart';
@@ -146,11 +146,11 @@ class _SaveWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AutomationBloc, AutomationState>(
       listener: (context, state) {
-        if (state.status.isSuccess) {
+        if (state.savingStatus.isSuccess) {
           Navigator.of(context).pop();
         }
 
-        if (state.status.isFailure) {
+        if (state.savingStatus.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -173,7 +173,7 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.select((AutomationBloc bloc) => bloc.state);
 
-    if (state.status.isInProgress) {
+    if (state.savingStatus.isInProgress) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -221,20 +221,47 @@ class _AutomationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.select((AutomationBloc bloc) => bloc.state);
+
+    if (state.loadingStatus.isInProgress) {
+      return Expanded(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (state.loadingStatus.isFailure) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(content: Text('Failed to load automation, retrying...')),
+          );
+      });
+      return Expanded(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     if (automation.trigger.identifier.isEmpty) {
       return Expanded(
-          child: Column(
-        children: [
-          _AddTriggerEventWidget(),
-        ],
-      ));
+        child: Column(
+          children: [
+            _AddTriggerEventWidget(),
+          ],
+        ),
+      );
     }
     return Expanded(
-        child: Column(
-      children: [
-        CustomRectangleList(automation: automation),
-      ],
-    ));
+      child: Column(
+        children: [
+          CustomRectangleList(automation: automation),
+        ],
+      ),
+    );
   }
 }
 
