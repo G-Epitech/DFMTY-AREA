@@ -12,5 +12,12 @@
       </div>
     }
     <span class="tr-container-title">{{ name() }}</span>
+    @if (paramsInvalid()) {
+      <ng-icon
+        name="heroExclamationTriangle"
+        size="1.5rem"
+        strokeWidth="0.15rem"
+        class="text-red-500 ml-auto" />
+    }
   </div>
 }

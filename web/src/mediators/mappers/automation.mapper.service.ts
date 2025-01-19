@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   ActionDTO,
+  AutomationCreateActionDTO,
+  AutomationCreateActionParameterDTO,
+  AutomationCreateDTO,
   AutomationDTO,
   AutomationSchemaActionDTO,
   AutomationSchemaDependencyDTO,
@@ -146,6 +149,55 @@ export class AutomationMapperService {
         identifier: parameter.identifier,
         value: parameter.value,
       } as TriggerParameter;
+    });
+  }
+
+  mapToCreateDTO(model: AutomationModel): AutomationCreateDTO {
+    return {
+      label: model.label,
+      description: model.description,
+      trigger: this._mapTriggerCreateDTO(model.trigger!),
+      actions: this._mapActionsCreateDTO(model.actions),
+      enabled: model.enabled,
+    };
+  }
+
+  _mapActionsCreateDTO(actions: ActionModel[]): AutomationCreateActionDTO[] {
+    return actions.map(action => {
+      return {
+        identifier: action.identifier,
+        parameters: this._mapActionCreateDTOParameters(action.parameters),
+        dependencies: action.dependencies,
+      };
+    });
+  }
+
+  _mapActionCreateDTOParameters(
+    parameters: ActionParameter[]
+  ): AutomationCreateActionParameterDTO[] {
+    return parameters.map(parameter => {
+      return {
+        identifier: parameter.identifier,
+        value: parameter.value!,
+        type: parameter.type,
+      };
+    });
+  }
+
+  private _mapTriggerCreateDTO(trigger: TriggerModel) {
+    return {
+      identifier: trigger.identifier,
+      parameters: this._mapTriggerCreateDTOParameters(trigger.parameters),
+      dependencies: trigger.dependencies,
+    };
+  }
+
+  private _mapTriggerCreateDTOParameters(parameters: TriggerParameter[]) {
+    return parameters.map(parameter => {
+      return {
+        identifier: parameter.identifier,
+        value: parameter.value!,
+      };
     });
   }
 }

@@ -145,8 +145,8 @@ export class AutomationSchemaModel {
     integrationName: string,
     triggerIdentifier: string
   ): AutomationSchemaTrigger | null {
-    for (const [, value] of Object.entries(this.automationServices)) {
-      if (value.name == integrationName) {
+    for (const [key, value] of Object.entries(this.automationServices)) {
+      if (key == integrationName) {
         return value.triggers[triggerIdentifier];
       }
     }
@@ -157,8 +157,8 @@ export class AutomationSchemaModel {
     integrationName: string,
     actionIdentifier: string
   ): AutomationSchemaAction | null {
-    for (const [, value] of Object.entries(this.automationServices)) {
-      if (value.name == integrationName) {
+    for (const [key, value] of Object.entries(this.automationServices)) {
+      if (key == integrationName) {
         return value.actions[actionIdentifier];
       }
     }

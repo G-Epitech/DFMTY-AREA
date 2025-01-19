@@ -20,4 +20,20 @@ export class AppRouter extends Router {
   redirectToAutomationWorkspace() {
     void this.navigate(['/automations/workspace/']);
   }
+
+  redirectToAutomationListing() {
+    void this.navigate(['/automations/']);
+  }
+
+  redirectToDocs() {
+    void this.navigate(['/docs']);
+  }
+
+  redirectToFAQ() {
+    void this.navigate(['/faq']);
+  }
+
+  redirectToDownloadAPK() {
+    void this.navigate(['/client.apk']);
+  }
 }

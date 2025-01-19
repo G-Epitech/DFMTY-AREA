@@ -92,4 +92,23 @@ class AutomationRepository {
       errors: response.errors,
     );
   }
+
+  Future<Response<OutDeleteAutomationDTO>> deleteAutomation(String id) async {
+    final accessToken = await credentialsRepository.getAccessToken();
+    final response = await call(
+      method: 'DELETE',
+      endpoint: '/automations/$id',
+      headers: {'Authorization': 'Bearer $accessToken'},
+      client: client,
+    );
+    return Response<OutDeleteAutomationDTO>(
+      statusCode: response.statusCode,
+      message: response.message,
+      headers: response.headers,
+      data: response.data != null
+          ? OutDeleteAutomationDTO.fromJson(response.data)
+          : null,
+      errors: response.errors,
+    );
+  }
 }

@@ -59,6 +59,15 @@ export class ActionCardComponent {
     return null;
   });
 
+  paramsInvalid = computed(() => {
+    for (const param of this.action()?.parameters || []) {
+      if (!param.value) {
+        return true;
+      }
+    }
+    return false;
+  });
+
   constructor() {
     effect(() => {
       const schema = this.#schemaStore.getSchema();

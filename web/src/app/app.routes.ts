@@ -31,10 +31,26 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'client.apk',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/downloads/download.client.page').then(
+            m => m.DownloadClientComponent
+          ),
+      },
+      {
         path: 'faq',
         pathMatch: 'full',
         loadComponent: () =>
           import('@features/public/faq/faq.page').then(m => m.FaqPageComponent),
+      },
+      {
+        path: 'about-us',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/about-us/about-us.page').then(
+            m => m.AboutUsPageComponent
+          ),
       },
     ],
   },
@@ -114,6 +130,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@features/oauth2/discord/discord.oauth2.page').then(
             m => m.DiscordOAuth2PageComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
+        path: 'gmail',
+        loadComponent: () =>
+          import('@features/oauth2/gmail/gmail.oauth2.page').then(
+            m => m.GmailOAuth2PageComponent
           ),
         pathMatch: 'full',
       },
