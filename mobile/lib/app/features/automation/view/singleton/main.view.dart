@@ -119,19 +119,34 @@ class _Header extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(RoutesNames.automationSettings);
-            },
-            icon: SvgPicture.asset(
-              'assets/icons/cog-6-tooth.svg',
-              height: 24,
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                textPrimaryColor,
-                BlendMode.srcIn,
+          Stack(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(RoutesNames.automationSettings);
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/cog-6-tooth.svg',
+                  height: 24,
+                  width: 24,
+                  colorFilter: ColorFilter.mode(
+                    textPrimaryColor,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
-            ),
+              if (automation.label.isEmpty || automation.description.isEmpty)
+                Positioned(
+                  bottom: 4,
+                  right: 8,
+                  child: Icon(
+                    Icons.warning_amber_rounded,
+                    color: Theme.of(context).colorScheme.onError,
+                    size: 20,
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -179,7 +194,10 @@ class _SaveButton extends StatelessWidget {
       );
     }
 
-    final isValid = _isSaveButtonEnabled(state);
+    final automationMediator =
+        RepositoryProvider.of<AutomationMediator>(context);
+
+    final isValid = _isSaveButtonEnabled(state, automationMediator);
 
     return Row(
       children: [
@@ -207,7 +225,15 @@ class _SaveButton extends StatelessWidget {
   }
 }
 
-bool _isSaveButtonEnabled(AutomationState state) {
+bool _isSaveButtonEnabled(
+    AutomationState state, AutomationMediator automationMediator) {
+  for (final action in state.cleanedAutomation.actions) {
+    if (!validateAction(state.cleanedAutomation, automationMediator,
+        state.cleanedAutomation.actions.indexOf(action))) {
+      return false;
+    }
+  }
+
   return state.cleanedAutomation.label.isNotEmpty &&
       state.cleanedAutomation.description.isNotEmpty &&
       state.cleanedAutomation.trigger.identifier.isNotEmpty &&
@@ -346,6 +372,8 @@ class CustomRectangleList extends StatelessWidget {
               indexOfTheTriggerOrAction: 0,
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
+              isDeletable: false,
+              missingParameters: false,
             ),
             if (automation.actions.isNotEmpty) SizedBox(height: 10),
             ListView.separated(
@@ -356,22 +384,26 @@ class CustomRectangleList extends StatelessWidget {
                 final action = automation.actions[index];
                 final integrationIdentifier =
                     action.identifier.split('.').first;
-                final triggerOrActionIdentifier =
-                    action.identifier.split('.').last;
+                final actionIdentifier = action.identifier.split('.').last;
 
                 final actionIntegration =
                     schema.schemas[integrationIdentifier]!;
-                final actionOrAction =
-                    actionIntegration.actions[triggerOrActionIdentifier]!;
+                final actionSchema =
+                    actionIntegration.actions[actionIdentifier]!;
+
+                final missingParameters =
+                    !validateAction(automation, automationMediator, index);
 
                 return _TriggerListItem(
-                  icon: "assets/icons/${actionOrAction.icon}.svg",
+                  icon: "assets/icons/${actionSchema.icon}.svg",
                   color: HexColor(actionIntegration.color),
-                  text: actionOrAction.name,
+                  text: actionSchema.name,
                   type: AutomationChoiceEnum.action,
                   indexOfTheTriggerOrAction: index,
                   integrationIdentifier: integrationIdentifier,
-                  triggerOrActionIdentifier: triggerOrActionIdentifier,
+                  triggerOrActionIdentifier: actionIdentifier,
+                  isDeletable: true,
+                  missingParameters: missingParameters,
                 );
               },
               separatorBuilder: (context, index) {
@@ -439,6 +471,8 @@ class _TriggerListItem extends StatelessWidget {
   final int indexOfTheTriggerOrAction;
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
+  final bool isDeletable;
+  final bool missingParameters;
 
   const _TriggerListItem({
     required this.icon,
@@ -448,6 +482,8 @@ class _TriggerListItem extends StatelessWidget {
     required this.indexOfTheTriggerOrAction,
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
+    required this.isDeletable,
+    required this.missingParameters,
   });
 
   @override
@@ -466,6 +502,34 @@ class _TriggerListItem extends StatelessWidget {
               isEdit: true,
             )));
       },
+      onLongPress: isDeletable
+          ? () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Delete this action?'),
+                  content: Text(
+                      'Are you sure you want to delete this action named: $text?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<AutomationBloc>().add(
+                              AutomationActionDeleted(
+                                  index: indexOfTheTriggerOrAction),
+                            );
+                        Navigator.pop(context);
+                      },
+                      child: Text('Delete'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          : null,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: color, width: 2),
@@ -505,6 +569,15 @@ class _TriggerListItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            if (missingParameters)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  color: Theme.of(context).colorScheme.onError,
+                  size: 30,
+                ),
+              ),
           ],
         ),
       ),

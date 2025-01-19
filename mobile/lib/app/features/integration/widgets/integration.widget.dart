@@ -60,7 +60,7 @@ class _CustomWidget extends StatelessWidget {
               context,
               customScreenBuilder(AutomationAddView(
                 type: type!,
-                integrationIdentifier: integration.url,
+                integrationIdentifier: integration.identifier,
                 indexOfTheTriggerOrAction: indexOfTheTriggerOrAction!,
               )));
         } else {

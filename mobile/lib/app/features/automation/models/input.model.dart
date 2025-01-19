@@ -6,12 +6,15 @@ enum AutomationInputEnum {
   number,
   radio,
   date,
+  boolean,
+  emoji,
 }
 
 enum AutomationParameterNeedOptions {
   yes,
   no,
   blocked,
+  number,
 }
 
 class AutomationRadioModel {

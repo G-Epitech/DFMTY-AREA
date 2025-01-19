@@ -93,6 +93,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           onValueChanged: (value) {
             setState(() {
               localValue = value;
+              humanReadableValue = value;
             });
           },
         );
@@ -104,6 +105,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           onChanged: (value) {
             setState(() {
               localValue = value;
+              humanReadableValue = value;
             });
           },
         );
@@ -119,6 +121,30 @@ class _AutomationInputViewState extends State<AutomationInputView> {
             });
           },
           getOptions: widget.getOptions,
+        );
+      case AutomationInputEnum.emoji:
+        return _EmojiInput(
+          label: widget.label,
+          placeholder: widget.placeholder ?? 'Enter an emoji',
+          defaultValue: localValue,
+          onValueChanged: (value) {
+            setState(() {
+              localValue = value;
+              humanReadableValue = value;
+            });
+          },
+        );
+      case AutomationInputEnum.number:
+        return _NumberInput(
+          label: widget.label,
+          placeholder: widget.placeholder,
+          defaultValue: localValue,
+          onValueChanged: (value) {
+            setState(() {
+              localValue = value;
+              humanReadableValue = value;
+            });
+          },
         );
       default:
         return Container();
@@ -424,6 +450,136 @@ class _RadioInputState extends State<_RadioInput> {
           ),
         );
       },
+    );
+  }
+}
+
+class _NumberInput extends StatefulWidget {
+  final String label;
+  final String? placeholder;
+  final void Function(String) onValueChanged;
+  final String defaultValue;
+
+  const _NumberInput({
+    required this.label,
+    this.placeholder,
+    required this.onValueChanged,
+    required this.defaultValue,
+  });
+
+  @override
+  State<_NumberInput> createState() => _NumberInputState();
+}
+
+class _NumberInputState extends State<_NumberInput> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.defaultValue);
+    _controller.addListener(() {
+      widget.onValueChanged(_controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TriggoInput(
+      controller: _controller,
+      placeholder: widget.placeholder,
+      keyboardType: TextInputType.number,
+      backgroundColor: Colors.white,
+    );
+  }
+}
+
+class _EmojiInput extends StatefulWidget {
+  final String label;
+  final String placeholder;
+  final void Function(String) onValueChanged;
+  final String defaultValue;
+
+  const _EmojiInput({
+    required this.label,
+    required this.placeholder,
+    required this.onValueChanged,
+    required this.defaultValue,
+  });
+
+  @override
+  State<_EmojiInput> createState() => _EmojiInputState();
+}
+
+class _EmojiInputState extends State<_EmojiInput> {
+  late TextEditingController _controller;
+
+  bool isSingleEmoji(String input) {
+    final RegExp regexEmoji = RegExp(
+        r'^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$');
+    return regexEmoji.hasMatch(input);
+  }
+
+  void _validateInput(String input) {
+    final graphemes = input.characters.toList();
+
+    if (input.isEmpty) {
+      widget.onValueChanged(input);
+      return;
+    }
+
+    if (graphemes.length == 1 && isSingleEmoji(graphemes.first)) {
+      widget.onValueChanged(input);
+    } else {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: const Text('Please enter a single emoji'),
+        ));
+      _controller.text = widget.defaultValue;
+      _controller.selection =
+          TextSelection.collapsed(offset: _controller.text.characters.length);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.defaultValue);
+
+    _controller.addListener(() {
+      final input = _controller.text;
+      final graphemes = input.characters.toList();
+
+      if (graphemes.length > 1) {
+        _controller.text = graphemes.first;
+        _controller.selection =
+            TextSelection.collapsed(offset: _controller.text.characters.length);
+      } else {
+        _validateInput(input);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TriggoInput(
+      controller: _controller,
+      placeholder: widget.placeholder,
+      keyboardType: TextInputType.text,
+      backgroundColor: Colors.white,
     );
   }
 }
