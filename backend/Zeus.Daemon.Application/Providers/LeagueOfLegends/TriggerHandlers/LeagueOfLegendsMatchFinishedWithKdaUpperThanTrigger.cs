@@ -8,8 +8,8 @@ using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
 using Zeus.Daemon.Domain.Automations;
-using Zeus.Daemon.Domain.LeagueOfLegends;
-using Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 
 namespace Zeus.Daemon.Application.Providers.LeagueOfLegends.TriggerHandlers;
 

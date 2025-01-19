@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Application.Providers.Discord.Services;
-using Zeus.Daemon.Domain.Discord.Enums;
+using Zeus.Daemon.Domain.Providers.Discord.Enums;
 
 namespace Zeus.Daemon.Infrastructure.Services.Providers.Discord;
 

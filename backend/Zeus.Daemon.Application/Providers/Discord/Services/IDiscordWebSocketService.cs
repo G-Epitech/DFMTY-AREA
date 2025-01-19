@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-using Zeus.Daemon.Domain.Discord.Enums;
+using Zeus.Daemon.Domain.Providers.Discord.Enums;
 
 namespace Zeus.Daemon.Application.Providers.Discord.Services;
 

@@ -287,11 +287,6 @@
             "Description": "The title of the database to create.",
             "Type": "string"
           },
-          "Description": {
-            "Name": "Database description",
-            "Description": "The description of the database to create.",
-            "Type": "string"
-          },
           "Icon": {
             "Name": "Database icon",
             "Description": "The icon of the database to create (can be url or emoji).",
@@ -326,11 +321,6 @@
             "Description": "The title of the page to create.",
             "Type": "string"
           },
-          "Description": {
-            "Name": "Page description",
-            "Description": "The description of the page to create.",
-            "Type": "string"
-          },
           "Icon": {
             "Name": "Page icon",
             "Description": "The icon of the page to create (can be url or emoji).",
@@ -360,6 +350,11 @@
             "Description": "The ID of the database to create the row in.",
             "Type": "string"
           },
+          "TitleParamName": {
+            "Name": "Title parameter name",
+            "Description": "The name of the parameter where the title of the row is displayed",
+            "Type": "string"
+          },
           "Title": {
             "Name": "Row title",
             "Description": "The title of the row to create.",
@@ -368,11 +363,6 @@
           "Type": {
             "Name": "Row type",
             "Description": "The type of the row to create (page or database).",
-            "Type": "string"
-          },
-          "Description": {
-            "Name": "Row description",
-            "Description": "The description of the row to create.",
             "Type": "string"
           },
           "Icon": {

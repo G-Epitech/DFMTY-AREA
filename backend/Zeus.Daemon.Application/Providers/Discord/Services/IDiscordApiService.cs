@@ -1,4 +1,4 @@
-using Zeus.Daemon.Domain.Discord.ValueObjects;
+using Zeus.Daemon.Domain.Providers.Discord.ValueObjects;
 
 namespace Zeus.Daemon.Application.Providers.Discord.Services;
 

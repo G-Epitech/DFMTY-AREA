@@ -8,8 +8,7 @@ public record NotionTextContract(
     string? Href);
 
 public record NotionTextContentContract(
-    string Content,
-    string? Link);
+    string Content);
 
 public record NotionTextAnnotationsContract(
     bool Bold,

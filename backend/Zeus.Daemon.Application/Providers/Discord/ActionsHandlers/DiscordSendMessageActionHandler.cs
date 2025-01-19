@@ -2,7 +2,7 @@ using Zeus.Daemon.Application.Attributes;
 using Zeus.Daemon.Application.Execution;
 using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Domain.Automations;
-using Zeus.Daemon.Domain.Discord.ValueObjects;
+using Zeus.Daemon.Domain.Providers.Discord.ValueObjects;
 
 namespace Zeus.Daemon.Application.Providers.Discord.ActionsHandlers;
 
