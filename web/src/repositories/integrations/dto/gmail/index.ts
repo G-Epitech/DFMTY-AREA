@@ -1,3 +1,2 @@
-export * from './discord-uri.dto';
-export * from './discord-guild.dto';
-export * from './discord-channel.dto';
+export * from './gmail-uri.dto';
+export * from './gmail.dto';
