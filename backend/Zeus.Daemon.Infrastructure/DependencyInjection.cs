@@ -7,6 +7,7 @@ using Zeus.Common.Extensions.DependencyInjection;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Application.Providers.Discord.Services;
+using Zeus.Daemon.Application.Providers.Github.Services;
 using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
 using Zeus.Daemon.Application.Providers.Notion.Services;
 using Zeus.Daemon.Application.Providers.OpenAi.Services;
@@ -14,6 +15,7 @@ using Zeus.Daemon.Infrastructure.Integrations;
 using Zeus.Daemon.Infrastructure.Integrations.Api;
 using Zeus.Daemon.Infrastructure.Services.Api;
 using Zeus.Daemon.Infrastructure.Services.Providers.Discord;
+using Zeus.Daemon.Infrastructure.Services.Providers.Github;
 using Zeus.Daemon.Infrastructure.Services.Providers.LeagueOfLegends;
 using Zeus.Daemon.Infrastructure.Services.Providers.Notion;
 using Zeus.Daemon.Infrastructure.Services.Providers.OpenAi;
@@ -62,6 +64,14 @@ public static class DependencyInjection
             ServiceLifetime.Singleton);
         services.AddSingleton<ILeagueOfLegendsApiService, LeagueOfLegendsApiService>();
 
+        #endregion
+        
+        #region Github
+        
+        services.AddSingleton<IGithubSettingsProvider, GithubSettingsProvider>();
+        services.AddService<GithubPollingService, IGithubPollingService, IDaemonService>(
+            ServiceLifetime.Singleton);
+        
         #endregion
 
         #region GRPC
