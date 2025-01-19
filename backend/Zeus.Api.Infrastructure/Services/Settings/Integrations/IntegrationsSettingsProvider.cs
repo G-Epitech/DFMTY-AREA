@@ -13,6 +13,7 @@ public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
         Notion = new NotionSettingsProvider(settings.Value.Notion);
         OpenAi = new OpenAiSettingsProvider(settings.Value.OpenAi);
         Riot = new RiotSettingsProvider(settings.Value.Riot);
+        Gmail = new GmailSettingsProvider(settings.Value.Gmail);
         Github = new GithubSettingsProvider(settings.Value.Github);
     }
 
@@ -21,4 +22,5 @@ public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
     public IOpenAiSettingsProvider OpenAi { get; }
     public IRiotSettingsProvider Riot { get; }
     public IGithubSettingsProvider Github { get; }
+    public IGmailSettingsProvider Gmail { get; }
 }

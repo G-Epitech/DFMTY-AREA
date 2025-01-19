@@ -38,6 +38,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     on<AutomationLoadDirtyToClean>(_onValidatePendingAutomation);
     on<AutomationLoadCleanToDirty>(_onLoadCleanAutomation);
     on<AutomationLoadExisting>(_onLoadExistingAutomation);
+    on<DeleteAutomation>(_onDeleteAutomation);
   }
 
   Future<void> _onSubmitted(
@@ -455,5 +456,16 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
     }
 
     return newPreview;
+  }
+
+  void _onDeleteAutomation(
+      DeleteAutomation event, Emitter<AutomationState> emit) async {
+    emit(state.copyWith(deletingStatus: FormzSubmissionStatus.inProgress));
+    try {
+      await _automationMediator.deleteAutomation(event.id);
+      emit(state.copyWith(deletingStatus: FormzSubmissionStatus.success));
+    } catch (e) {
+      emit(state.copyWith(deletingStatus: FormzSubmissionStatus.failure));
+    }
   }
 }

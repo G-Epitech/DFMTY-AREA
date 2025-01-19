@@ -1,1 +1,76 @@
-<p>faq works!</p>
+<div class="min-h-screen bg-white">
+  <div
+    class="flex flex-col items-center text-center px-3 w-full py-16 lg:py-24 overflow-hidden">
+    <div class="text-center mb-12">
+      <h1 class="tr-title-1 mb-4">Frequently Asked Questions</h1>
+      <p class="tr-subtitle text-muted">
+        Find answers to common questions about our platform and services.
+      </p>
+      <span class="tr-subtitle text-muted"
+        >Check out our
+        <a
+          class="text-primary hover:text-primary/90"
+          href="https://scientific-slice-efe.notion.site/Triggo-User-Documentation-18061b122ab480768eeeeed7a527b572"
+          >official documentation on Notion</a
+        >
+      </span>
+    </div>
+
+    <div class="space-y-6 w-full flex flex-col items-center">
+      @for (item of faqItems; track item.question) {
+        <div class="rounded-md flex flex-col items-center w-full">
+          <button
+            trBtn
+            variant="outline"
+            (click)="toggleFAQ(item)"
+            class="w-1/2 p-8 flex items-center justify-center relative">
+            <span class="tr-large text-center">
+              {{ item.question }}
+            </span>
+            @if (item.isOpen) {
+              <ng-icon
+                name="heroChevronUp"
+                size="1rem"
+                class="absolute right-4" />
+            } @else {
+              <ng-icon
+                name="heroChevronDown"
+                size="1rem"
+                class="absolute right-4" />
+            }
+          </button>
+
+          @if (item.isOpen) {
+            <div class="px-6 py-4 bg-gray-50 w-1/2 text-center">
+              <p class="text-gray-600 prose">
+                {{ item.answer }}
+              </p>
+              @if (item.links) {
+                <div class="mt-4">
+                  @for (link of item.links; track link) {
+                    <a [href]="link" class="text-primary hover:text-primary/90">
+                      {{ link }}
+                    </a>
+                    <br />
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="mt-6 text-center">
+      <p class="text-muted tr-medium">
+        Still have questions? Contact our support team
+      </p>
+      <a
+        href="mailto:official@triggo.fr"
+        class="mt-2 inline-block text-primary hover:text-primary/90">
+        official&#64;triggo.fr
+      </a>
+    </div>
+    <div></div>
+  </div>
+</div>

@@ -16,8 +16,9 @@ export class AutomationsMediator {
   readonly #automationsRepository = inject(AutomationsRepository);
   readonly #automationMapper = inject(AutomationMapperService);
 
-  create(): Observable<string> {
-    return this.#automationsRepository.post();
+  create(model: AutomationModel): Observable<void> {
+    const dto = this.#automationMapper.mapToCreateDTO(model);
+    return this.#automationsRepository.create(dto);
   }
 
   getById(id: string): Observable<AutomationModel> {

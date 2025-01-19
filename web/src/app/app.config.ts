@@ -14,6 +14,8 @@ import { AppService } from './app.service';
 import { environment } from '@environments/environment';
 import { provideIcons } from '@ng-icons/core';
 import {
+  heroChevronUp,
+  heroChevronDown,
   heroHome,
   heroBolt,
   heroLink,
@@ -56,6 +58,8 @@ export const appConfig: ApplicationConfig = {
     },
     provideIcons({
       ...heroiconsSolid,
+      heroChevronUp,
+      heroChevronDown,
       heroHome,
       heroLink,
       heroBolt,

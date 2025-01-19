@@ -1,0 +1,89 @@
+<div class="min-h-screen bg-white overflow-hidden">
+  <section class="flex flex-col items-center text-center px-8 py-16 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+      <div class="relative h-[400px] rounded-md overflow-hidden">
+        <img
+          ngSrc="images/about_us.png"
+          priority
+          [height]="200"
+          [width]="200"
+          alt="G-Epitech Team"
+          class="object-cover w-full h-full" />
+      </div>
+
+      <div class="space-y-6 text-left">
+        <h1 class="tr-title-1">About G-Epitech</h1>
+        <p class="tr-subtitle text-gray-700 leading-relaxed">
+          We are a dedicated team of Epitech students who came together to
+          create Triggo, an innovative startup born from our shared passion for
+          technology. For the past two years, we've been working
+          collaboratively, combining our diverse skills and expertise to bring
+          our vision to life.
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-12 w-full max-w-7xl">
+      <h2 class="tr-title-2 text-center">Meet Our Team</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
+        <div class="bg-white rounded-xl p-8 border">
+          <div class="rounded-md p-2 bg-primary mb-6">
+            <span class="tr-large text-white">Backend Team</span>
+          </div>
+          <div class="space-y-6">
+            @for (member of backendTeam; track member.name) {
+              <div class="flex flex-col items-start space-y-2">
+                <h3 class="tr-subtitle font-semibold text-gray-900">
+                  {{ member.name }}
+                </h3>
+                <div class="flex flex-row items-center gap-2">
+                  @for (title of member.titles; track title) {
+                    <div
+                      class="inline-flex px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
+                      {{ title }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-8 border">
+          <div class="rounded-md p-2 bg-primary mb-6">
+            <span class="tr-large text-white">Frontend Team</span>
+          </div>
+          <div class="space-y-6">
+            @for (member of frontendTeam; track member.name) {
+              <div class="flex flex-col items-start space-y-2">
+                <h3 class="tr-subtitle font-semibold text-gray-900">
+                  {{ member.name }}
+                </h3>
+                <div class="flex flex-row items-center gap-2">
+                  @for (title of member.titles; track title) {
+                    <div
+                      class="inline-flex px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
+                      {{ title }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 text-center bg-secondary rounded-xl w-full p-8">
+      <h2 class="tr-title-2 mb-4">Our Journey</h2>
+      <p class="tr-subtite text-muted w-full mx-auto">
+        As students from Epitech, we've spent the last two years building not
+        just a product, but a strong team foundation. Our diverse skills
+        complement each other perfectly, creating a dynamic and effective
+        working environment. At Triggo, we believe in the power of collaboration
+        and innovation, working together to turn our ideas into reality.
+      </p>
+    </div>
+  </section>
+</div>
