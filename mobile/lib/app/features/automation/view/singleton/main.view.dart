@@ -119,19 +119,34 @@ class _Header extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(RoutesNames.automationSettings);
-            },
-            icon: SvgPicture.asset(
-              'assets/icons/cog-6-tooth.svg',
-              height: 24,
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                textPrimaryColor,
-                BlendMode.srcIn,
+          Stack(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(RoutesNames.automationSettings);
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/cog-6-tooth.svg',
+                  height: 24,
+                  width: 24,
+                  colorFilter: ColorFilter.mode(
+                    textPrimaryColor,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
-            ),
+              if (automation.label.isEmpty || automation.description.isEmpty)
+                Positioned(
+                  bottom: 4,
+                  right: 8,
+                  child: Icon(
+                    Icons.warning_amber_rounded,
+                    color: Theme.of(context).colorScheme.onError,
+                    size: 20,
+                  ),
+                ),
+            ],
           ),
         ],
       ),
