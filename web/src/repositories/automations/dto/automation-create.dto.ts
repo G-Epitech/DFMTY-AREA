@@ -24,6 +24,8 @@ export interface AutomationCreateActionDTO {
 export interface AutomationCreateDTO {
   label: string;
   description: string;
+  color: string;
+  icon: string;
   trigger: AutomationCreateTriggerDTO;
   actions: AutomationCreateActionDTO[];
   enabled: boolean;
