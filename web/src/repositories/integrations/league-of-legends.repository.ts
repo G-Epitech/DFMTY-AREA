@@ -1,8 +1,6 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  LeagueOfLegendsLinkDTO
-} from '@repositories/integrations/dto/league-of-legends';
+import { LeagueOfLegendsLinkDTO } from '@repositories/integrations/dto/league-of-legends';
 import { Observable } from 'rxjs';
 
 @Injectable({

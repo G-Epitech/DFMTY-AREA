@@ -1,9 +1,6 @@
 <div class="bg-white flex items-center justify-center border rounded-md p-4">
   <div class="p-6 w-full">
-    <form
-      class="space-y-6"
-      (ngSubmit)="link()"
-      [formGroup]="openaiForm">
+    <form class="space-y-6" (ngSubmit)="link()" [formGroup]="openaiForm">
       <div>
         <label trLabel for="apiKey">API Key</label>
         <input

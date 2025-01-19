@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   IntegrationDiscordProps,
+  IntegrationLeagueOfLegendsProps,
   IntegrationModel,
   IntegrationNotionProps,
   IntegrationOpenaiProps,
@@ -60,6 +61,13 @@ export class LinkedIntegrationButtonComponent {
         const notionProps = this.integration().props as IntegrationNotionProps;
         this.header.set(notionProps.name + ' - ' + notionProps.workspaceName);
         this.subheader.set(notionProps.email);
+        break;
+      }
+      case IntegrationTypeEnum.LEAGUE_OF_LEGENDS: {
+        const leagueOfLegendsProps = this.integration()
+          .props as IntegrationLeagueOfLegendsProps;
+        this.header.set(leagueOfLegendsProps.riotGameName);
+        this.subheader.set(leagueOfLegendsProps.riotTagLine);
         break;
       }
     }

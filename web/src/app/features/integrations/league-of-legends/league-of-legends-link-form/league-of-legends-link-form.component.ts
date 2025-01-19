@@ -15,10 +15,7 @@ import { LabelDirective } from '@triggo-ui/label';
 import { TrButtonDirective } from '@triggo-ui/button';
 import { TrInputDirective } from '@triggo-ui/input';
 import { TrSpinnerComponent } from '@triggo-ui/spinner';
-import {
-  LeagueOfLegendsMediator,
-  OpenaiMediator,
-} from '@mediators/integrations';
+import { LeagueOfLegendsMediator } from '@mediators/integrations';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';

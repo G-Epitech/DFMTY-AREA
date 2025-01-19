@@ -11,9 +11,7 @@ import { IntegrationLinkedDiscordComponent } from '@features/integrations/discor
 import { SchemaStore } from '@app/store/schema-store';
 import { IntegrationLinkedNotionComponent } from '@features/integrations/notion/integration-linked-notion/integration-linked-notion.component';
 import { IntegrationLinkedOpenaiComponent } from '@features/integrations/openai/integration-linked-openai/integration-linked-openai.component';
-import {
-  IntegrationLinkedLeagueOfLegendsComponent
-} from '@features/integrations/league-of-legends/integration-linked-league-of-legends/integration-linked-league-of-legends.component';
+import { IntegrationLinkedLeagueOfLegendsComponent } from '@features/integrations/league-of-legends/integration-linked-league-of-legends/integration-linked-league-of-legends.component';
 
 @Component({
   selector: 'tr-integration-linked-card',
@@ -42,7 +40,6 @@ export class IntegrationLinkedCardComponent {
         const integrationName = this.integration().type;
         this.iconUri.set(this.schema.getIntegrationIconUri(integrationName));
         this.color.set(this.schema.getIntegrationColor(integrationName));
-        console.log(this.iconUri(), this.color());
       }
     });
   }

@@ -20,9 +20,7 @@ import { IntegrationTypeEnum } from '@models/integration';
 import { OpenaiLinkFormComponent } from '@features/integrations/openai/openai-link-form/openai-link-form.component';
 import { AvailableIntegrationType } from '@common/types';
 import { AutomationSchemaModel } from '@models/automation';
-import {
-  LeagueOfLegendsLinkFormComponent
-} from '@features/integrations/league-of-legends/league-of-legends-link-form/league-of-legends-link-form.component';
+import { LeagueOfLegendsLinkFormComponent } from '@features/integrations/league-of-legends/league-of-legends-link-form/league-of-legends-link-form.component';
 
 @Component({
   selector: 'tr-integration-add-dialog',
@@ -100,7 +98,6 @@ export class IntegrationAddDialogComponent {
       if (!availableIntegrations) {
         return;
       }
-      console.log(this.selectedIntegration());
       this.availableIntegrations.set(availableIntegrations);
     });
   }
