@@ -3,7 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
-  OnInit,
+  OnInit, Signal,
 } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';
@@ -16,6 +16,7 @@ import { SelectActionSheetComponent } from '@features/automations/workspace/comp
 import {
   GeneralEditDialogComponent
 } from '@features/automations/workspace/components/general-edit-dialog/general-edit-dialog.component';
+import { AutomationModel } from '@models/automation';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -39,7 +40,9 @@ export class AutomationsWorkspacePageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  automation = this.#workspaceStore.getAutomation;
+  automation: Signal<AutomationModel> = this.#workspaceStore.getAutomation;
+
+  canSave: Signal<boolean> = this.#workspaceStore.canSave;
 
   ngOnInit() {
     this.#route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {

@@ -22,12 +22,14 @@ export interface AutomationWorkspaceState {
   automation: AutomationModel;
   error: boolean;
   loading: boolean;
+  initialState: AutomationModel;
 }
 
 const initialState: AutomationWorkspaceState = {
   automation: newDefaultAutomationModel(),
   error: false,
   loading: false,
+  initialState: newDefaultAutomationModel(),
 };
 
 export const AutomationsWorkspaceStore = signalStore(
@@ -36,9 +38,7 @@ export const AutomationsWorkspaceStore = signalStore(
     getAutomation: computed(() => {
       return store.automation();
     }),
-    automationHasChanged: computed(() => {
-      return store.automation() !== initialState.automation;
-    }),
+
     automationIsValid: computed(() => {
       return store.automation().hasTrigger;
     }),
@@ -53,6 +53,25 @@ export const AutomationsWorkspaceStore = signalStore(
     }),
     getDescription: computed(() => {
       return store.automation().description;
+    }),
+    canSave: computed(() => {
+      const trigger = store.automation().trigger;
+      if (!trigger) {
+        return false;
+      }
+      for (const param of trigger.parameters) {
+        if (!param.value) {
+          return false;
+        }
+      }
+      for (const action of store.automation().actions) {
+        for (const param of action.parameters) {
+          if (!param.value) {
+            return false;
+          }
+        }
+      }
+      return store.automation() !== store.initialState();
     }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
@@ -157,7 +176,11 @@ export const AutomationsWorkspaceStore = signalStore(
           automationsMediator.getById(id).pipe(
             tapResponse({
               next: automation => {
-                patchState(store, { automation, loading: false });
+                patchState(store, {
+                  automation,
+                  loading: false,
+                  initialState: automation,
+                });
               },
               error: () => {
                 patchState(store, { error: true, loading: false });
