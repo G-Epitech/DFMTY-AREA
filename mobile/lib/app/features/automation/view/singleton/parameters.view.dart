@@ -9,7 +9,7 @@ import 'package:triggo/app/features/automation/utils/parameter_get_options.dart'
 import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
 import 'package:triggo/app/features/automation/utils/validate.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
-import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
+import 'package:triggo/app/features/automation/widgets/input_parameter.dart';
 import 'package:triggo/app/features/automation/widgets/parameter_choice.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/theme/fonts/fonts.dart';
@@ -207,7 +207,7 @@ class _List extends StatelessWidget {
             _getPreviewData(state, parameterIdentifier) ?? selectedValue;
         final parameterType = _getParameterType(state, parameterIdentifier);
 
-        return AutomationLabelParameterWidget(
+        return AutomationInputParameterWithLabel(
           title: title,
           previewData: previewData,
           disabled:

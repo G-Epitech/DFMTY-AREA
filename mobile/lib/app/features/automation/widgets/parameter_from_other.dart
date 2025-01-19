@@ -4,7 +4,7 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/utils/parameter_have_options.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
-import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
+import 'package:triggo/app/features/automation/widgets/input_parameter.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 import 'package:triggo/mediator/automation.mediator.dart';
@@ -93,7 +93,7 @@ class AutomationParameterFromOther extends StatelessWidget {
 
     final options = getTypeFromFacts(facts, property);
 
-    return AutomationLabelParameterWidget(
+    return AutomationInputParameterWithLabel(
       title: "Trigger",
       previewData: integrationName,
       input: AutomationInputView(
@@ -145,7 +145,7 @@ class AutomationParameterFromOther extends StatelessWidget {
 
     final options = getTypeFromFacts(facts, property);
 
-    return AutomationLabelParameterWidget(
+    return AutomationInputParameterWithLabel(
       title: "Action $index - $actionParameterName",
       previewData: integrationName,
       input: AutomationInputView(

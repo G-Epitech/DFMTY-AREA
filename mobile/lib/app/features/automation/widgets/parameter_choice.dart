@@ -3,7 +3,7 @@ import 'package:triggo/app/features/automation/models/choice.model.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/app/features/automation/utils/input_type.dart';
 import 'package:triggo/app/features/automation/view/singleton/input.view.dart';
-import 'package:triggo/app/features/automation/view/singleton/settings.view.dart';
+import 'package:triggo/app/features/automation/widgets/input_parameter.dart';
 import 'package:triggo/app/features/automation/widgets/parameter_from_other.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
@@ -49,7 +49,7 @@ class AutomationParameterChoice extends StatelessWidget {
   }
 
   Widget _buildFromPreviousTriggerAction(BuildContext context) {
-    return AutomationLabelParameterWidget(
+    return AutomationInputParameterWithLabel(
       title: "From a previous trigger/action",
       previewData:
           "Select a value that resulted from a previous trigger/action",
@@ -66,7 +66,7 @@ class AutomationParameterChoice extends StatelessWidget {
   }
 
   Widget _buildManualInput(BuildContext context) {
-    return AutomationLabelParameterWidget(
+    return AutomationInputParameterWithLabel(
       title: "Manual input",
       previewData: "Enter manually a value",
       input: AutomationInputView(
