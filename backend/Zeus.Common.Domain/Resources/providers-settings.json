@@ -612,5 +612,47 @@
       }
     },
     "Actions": {}
+  },
+  "Gmail": {
+    "Name": "Gmail",
+    "IconUri": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg",
+    "Color": "#FFFFFF",
+    "Triggers": {
+      "EmailReceived": {
+        "Name": "Email received",
+        "Description": "Trigger when an email is received in the inbox.",
+        "Icon": "envelope",
+        "Parameters": {},
+        "Facts": {
+          "Author": {
+            "Name": "Author",
+            "Description": "The author of the received email.",
+            "Type": "string"
+          },
+          "Subject": {
+            "Name": "Subject",
+            "Description": "The subject of the received email.",
+            "Type": "string"
+          },
+          "Content": {
+            "Name": "Content",
+            "Description": "The content of the received email.",
+            "Type": "string"
+          },
+          "ReceivedTime": {
+            "Name": "Received time",
+            "Description": "The time when the email was received.",
+            "Type": "datetime"
+          }
+        },
+        "Dependencies": {
+          "Gmail": {
+            "Require": "multiple"
+          }
+        }
+      }
+    },
+    "Actions": {
+    }
   }
 }

@@ -13,6 +13,9 @@
     },
     "LeagueOfLegends": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "Gmail": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
@@ -20,7 +23,8 @@
     "Discord",
     "Notion",
     "OpenAi",
-    "LeagueOfLegends"
+    "LeagueOfLegends",
+    "Gmail"
   ],
   "$defs": {
     "varType": {
@@ -44,6 +48,12 @@
           "$ref": "#/$defs/dependencyRule"
         },
         "OpenAi": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "LeagueOfLegends": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "Gmail": {
           "$ref": "#/$defs/dependencyRule"
         }
       }
