@@ -16,6 +16,9 @@
     },
     "Github": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "Gmail": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
@@ -24,6 +27,7 @@
     "Notion",
     "OpenAi",
     "LeagueOfLegends",
+    "Gmail",
     "Github"
   ],
   "$defs": {
@@ -48,6 +52,15 @@
           "$ref": "#/$defs/dependencyRule"
         },
         "OpenAi": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "LeagueOfLegends": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "Gmail": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "GitHub": {
           "$ref": "#/$defs/dependencyRule"
         }
       }

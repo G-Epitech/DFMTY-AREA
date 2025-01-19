@@ -8,6 +8,7 @@ using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Application.Providers.Discord.Services;
 using Zeus.Daemon.Application.Providers.Github.Services;
+using Zeus.Daemon.Application.Providers.Gmail.Services;
 using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
 using Zeus.Daemon.Application.Providers.Notion.Services;
 using Zeus.Daemon.Application.Providers.OpenAi.Services;
@@ -15,6 +16,7 @@ using Zeus.Daemon.Infrastructure.Integrations;
 using Zeus.Daemon.Infrastructure.Integrations.Api;
 using Zeus.Daemon.Infrastructure.Services.Api;
 using Zeus.Daemon.Infrastructure.Services.Providers.Discord;
+using Zeus.Daemon.Infrastructure.Services.Providers.Gmail;
 using Zeus.Daemon.Infrastructure.Services.Providers.Github;
 using Zeus.Daemon.Infrastructure.Services.Providers.LeagueOfLegends;
 using Zeus.Daemon.Infrastructure.Services.Providers.Notion;
@@ -72,6 +74,14 @@ public static class DependencyInjection
         services.AddService<GithubPollingService, IGithubPollingService, IDaemonService>(
             ServiceLifetime.Singleton);
         
+        #endregion
+
+        #region Gmail
+
+        services.AddService<GmailPollingService, IGmailPollingService, IDaemonService>(
+            ServiceLifetime.Singleton);
+        services.AddSingleton<IGmailApiService, GmailApiService>();
+
         #endregion
 
         #region GRPC
