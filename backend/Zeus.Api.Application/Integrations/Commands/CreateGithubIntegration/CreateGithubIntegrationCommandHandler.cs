@@ -49,8 +49,6 @@ public class CreateGithubIntegrationCommandHandler : IRequestHandler<CreateGithu
         {
             return githubTokens.Errors;
         }
-        
-        // TODO: Get github user
 
         var integration = GithubIntegration.Create(linkRequest.OwnerId, "");
         integration.AddToken(new IntegrationToken(githubTokens.Value.AccessToken.Value, "Bearer",

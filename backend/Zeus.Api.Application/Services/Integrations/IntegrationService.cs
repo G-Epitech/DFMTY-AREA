@@ -22,15 +22,17 @@ public class IntegrationService : IIntegrationService
     private readonly IMapper _mapper;
     private readonly INotionService _notionService;
     private readonly IOpenAiService _openAiService;
+    private readonly IGithubService _githubService;
 
     public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper,
-        IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService)
+        IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService, IGithubService githubService)
     {
         _discordService = discordService;
         _notionService = notionService;
         _mapper = mapper;
         _openAiService = openAiService;
         _leagueOfLegendsService = leagueOfLegendsService;
+        _githubService = githubService;
     }
 
     public async Task<ErrorOr<IntegrationProperties>> GetProperties(Integration integration)
@@ -41,6 +43,7 @@ public class IntegrationService : IIntegrationService
             IntegrationType.Notion => await GetIntegrationNotionProperties(integration),
             IntegrationType.OpenAi => await GetIntegrationOpenAiProperties(integration),
             IntegrationType.LeagueOfLegends => await GetIntegrationLeagueOfLegendsProperties(integration),
+            IntegrationType.Github => await GetIntegrationGithubProperties(integration),
             _ => Errors.Integrations.PropertiesHandlerNotFound
         };
     }
@@ -126,5 +129,32 @@ public class IntegrationService : IIntegrationService
             summoner.Value.Id.Value,
             summoner.Value.AccountId.Value,
             profileIconUri);
+    }
+
+    private async Task<ErrorOr<IntegrationProperties>> GetIntegrationGithubProperties(
+        Integration integration)
+    {
+        var githubIntegration = (GithubIntegration)integration;
+
+        var accessToken = githubIntegration.Tokens.First(x => x.Usage == IntegrationTokenUsage.Access);
+        var githubUser = await _githubService.GetUserAsync(new AccessToken(accessToken.Value));
+
+        if (githubUser.IsError)
+        {
+            return githubUser.Errors;
+        }
+
+        return new IntegrationGithubProperties(
+            githubUser.Value.Id.Value,
+            githubUser.Value.Name,
+            githubUser.Value.Email,
+            githubUser.Value.Bio,
+            githubUser.Value.AvatarUri,
+            githubUser.Value.ProfileUri,
+            githubUser.Value.Company,
+            githubUser.Value.Blog,
+            githubUser.Value.Location,
+            githubUser.Value.Followers,
+            githubUser.Value.Following);
     }
 }

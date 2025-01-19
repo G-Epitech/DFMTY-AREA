@@ -1,6 +1,6 @@
 namespace Zeus.Api.Infrastructure.Services.Integrations.Github.Contracts;
 
-public record GetGithubTokens(
+public record GetGithubTokensResult(
     string AccessToken,
     string Scope,
     string TokenType);
