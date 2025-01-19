@@ -24,6 +24,7 @@
             <span class="tr-large">{{ guild.name }}</span>
           </div>
           <button
+            aria-label="Link Guild"
             [ngClass]="{
               'bg-green-500 hover:bg-green-400': guild.linked,
               'bg-primary hover:bg-primary/90': !guild.linked,
