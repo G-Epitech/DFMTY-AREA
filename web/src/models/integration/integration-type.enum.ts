@@ -4,4 +4,5 @@ export enum IntegrationTypeEnum {
   OPENAI = 'OpenAi',
   LEAGUE_OF_LEGENDS = 'LeagueOfLegends',
   GITHUB = 'Github',
+  GMAIL = 'Gmail',
 }

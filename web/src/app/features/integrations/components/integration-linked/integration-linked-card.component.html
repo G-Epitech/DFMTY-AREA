@@ -30,5 +30,11 @@
         [iconUri]="iconUri()"
         [color]="color()" />
     }
+    @case (IntegrationTypeEnum.GMAIL) {
+      <tr-integration-linked-gmail
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
+    }
   }
 </div>

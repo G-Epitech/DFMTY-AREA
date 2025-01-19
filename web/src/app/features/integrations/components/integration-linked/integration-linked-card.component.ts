@@ -13,6 +13,9 @@ import { IntegrationLinkedNotionComponent } from '@features/integrations/notion/
 import { IntegrationLinkedOpenaiComponent } from '@features/integrations/openai/integration-linked-openai/integration-linked-openai.component';
 import { IntegrationLinkedLeagueOfLegendsComponent } from '@features/integrations/league-of-legends/integration-linked-league-of-legends/integration-linked-league-of-legends.component';
 import { IntegrationLinkedGithubComponent } from '@features/integrations/github/integration-linked-github/integration-linked-github.component';
+import {
+  IntegrationLinkedGmailComponent
+} from '@features/integrations/gmail/integration-linked-gmail/integration-linked-gmail.component';
 
 @Component({
   selector: 'tr-integration-linked-card',
@@ -22,6 +25,7 @@ import { IntegrationLinkedGithubComponent } from '@features/integrations/github/
     IntegrationLinkedOpenaiComponent,
     IntegrationLinkedLeagueOfLegendsComponent,
     IntegrationLinkedGithubComponent,
+    IntegrationLinkedGmailComponent,
   ],
   templateUrl: './integration-linked-card.component.html',
   styles: [],

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   IntegrationDiscordProps,
+  IntegrationGmailProps,
   IntegrationLeagueOfLegendsProps,
   IntegrationModel,
   IntegrationNotionProps,
@@ -75,6 +76,12 @@ export class LinkedIntegrationButtonComponent {
         const githubProps = this.integration().props as IntegrationGithubProps;
         this.header.set(githubProps.name);
         this.subheader.set(githubProps.email || githubProps.bio || '');
+        break;
+      }
+      case IntegrationTypeEnum.GMAIL: {
+        const gmailProps = this.integration().props as IntegrationGmailProps;
+        this.header.set(gmailProps.displayName + ' - ' + gmailProps.familyName);
+        this.subheader.set(gmailProps.email || '');
         break;
       }
     }
