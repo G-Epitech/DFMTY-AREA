@@ -46,3 +46,11 @@ OutPostAutomationDTO _$OutPostAutomationDTOFromJson(
 Map<String, dynamic> _$OutPostAutomationDTOToJson(
         OutPostAutomationDTO instance) =>
     <String, dynamic>{};
+
+OutDeleteAutomationDTO _$OutDeleteAutomationDTOFromJson(
+        Map<String, dynamic> json) =>
+    OutDeleteAutomationDTO();
+
+Map<String, dynamic> _$OutDeleteAutomationDTOToJson(
+        OutDeleteAutomationDTO instance) =>
+    <String, dynamic>{};
