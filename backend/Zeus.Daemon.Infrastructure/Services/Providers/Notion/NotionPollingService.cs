@@ -5,7 +5,6 @@ using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Daemon.Application.Interfaces;
 using Zeus.Daemon.Application.Providers.Notion.Services;
 using Zeus.Daemon.Domain.Providers.Notion;
-using Zeus.Daemon.Domain.Providers.Notion.ValueObjects;
 
 using Timer = System.Timers.Timer;
 
@@ -48,7 +47,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     {
         if (!_registeredPollingDatabasesTokens.TryGetValue(accessToken, out List<AutomationId>? automations))
         {
-            automations = ( []);
+            automations = ([]);
             _registeredPollingDatabasesTokens.Add(accessToken, automations);
         }
 
@@ -76,7 +75,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     {
         if (!_registeredPollingPagesTokens.TryGetValue(accessToken, out List<AutomationId>? automations))
         {
-            automations = ( []);
+            automations = ([]);
             _registeredPollingPagesTokens.Add(accessToken, automations);
         }
 
@@ -105,7 +104,7 @@ public class NotionPollingService : INotionPollingService, IDaemonService
     {
         if (!_registeredPollingPagesTokens.TryGetValue(accessToken, out List<AutomationId>? automations))
         {
-            automations = ( []);
+            automations = ([]);
             _registeredPollingPagesTokens.Add(accessToken, automations);
         }
 

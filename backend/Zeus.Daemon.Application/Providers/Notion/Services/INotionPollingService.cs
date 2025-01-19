@@ -25,7 +25,7 @@ public interface INotionPollingService
     /// <param name="cancellationToken"></param>
     public Task<bool> RegisterNewPageDetected(AutomationId automationId, AccessToken accessToken,
         Func<AutomationId, NotionPage, CancellationToken, Task> handler, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Register handler for remove page detected.
     /// </summary>
@@ -47,7 +47,7 @@ public interface INotionPollingService
     /// </summary>
     /// <param name="automationId"></param>
     public void UnregisterNewPageDetected(AutomationId automationId);
-    
+
     /// <summary>
     /// Unregister handler for remove page detected.
     /// </summary>

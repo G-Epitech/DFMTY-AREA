@@ -46,7 +46,9 @@ public class NotionArchivePageActionHandler
         {
             return new ActionError
             {
-                Details = ex, InnerException = ex, Message = "An error occurred while deleting the page"
+                Details = ex,
+                InnerException = ex,
+                Message = "An error occurred while deleting the page"
             };
         }
     }

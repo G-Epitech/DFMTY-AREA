@@ -21,9 +21,9 @@ public class AutomationMappingConfig : IRegister
             .Map(dest => dest.Actions, src => src.Actions);
 
         config.NewConfig<AutomationTrigger, GetAutomationTriggerResponse>()
-            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
+            .Map(dest => dest.Dependencies, src => Enumerable.Select(src.Dependencies, d => d.Value).ToArray());
 
         config.NewConfig<AutomationAction, GetAutomationActionResponse>()
-            .Map(dest => dest.Dependencies, src => src.Dependencies.Select(d => d.Value).ToArray());
+            .Map(dest => dest.Dependencies, src => Enumerable.Select(src.Dependencies, d => d.Value).ToArray());
     }
 }

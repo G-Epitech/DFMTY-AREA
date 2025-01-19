@@ -58,7 +58,9 @@ public class NotionCreateDatabaseRowActionHandler
         {
             return new ActionError
             {
-                Details = ex, InnerException = ex, Message = "An error occurred while creating the database row"
+                Details = ex,
+                InnerException = ex,
+                Message = "An error occurred while creating the database row"
             };
         }
     }

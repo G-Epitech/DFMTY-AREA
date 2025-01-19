@@ -62,7 +62,7 @@ public interface INotionApiService
     /// <returns></returns>
     public Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
         string titleParamName, string title, string icon, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Delete a page by id
     /// </summary>
@@ -71,7 +71,7 @@ public interface INotionApiService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public Task ArchivePageAsync(AccessToken accessToken, NotionPageId pageId, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Delete a database by id
     /// </summary>

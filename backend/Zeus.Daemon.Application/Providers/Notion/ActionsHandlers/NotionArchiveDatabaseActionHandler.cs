@@ -46,7 +46,9 @@ public class NotionArchiveDatabaseActionHandler
         {
             return new ActionError
             {
-                Details = ex, InnerException = ex, Message = "An error occurred while deleting the database"
+                Details = ex,
+                InnerException = ex,
+                Message = "An error occurred while deleting the database"
             };
         }
     }

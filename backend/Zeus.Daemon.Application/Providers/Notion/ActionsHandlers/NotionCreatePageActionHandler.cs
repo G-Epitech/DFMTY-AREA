@@ -47,7 +47,8 @@ public class NotionCreatePageActionHandler
             {
                 return new ActionError
                 {
-                    Message = "An error occurred while creating the page", Details = page.FirstError.Description
+                    Message = "An error occurred while creating the page",
+                    Details = page.FirstError.Description
                 };
             }
 
@@ -57,7 +58,9 @@ public class NotionCreatePageActionHandler
         {
             return new ActionError
             {
-                Details = ex, InnerException = ex, Message = "An error occurred while creating the page"
+                Details = ex,
+                InnerException = ex,
+                Message = "An error occurred while creating the page"
             };
         }
     }
