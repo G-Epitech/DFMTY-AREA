@@ -15,12 +15,12 @@ import { UsersMediator } from '@mediators/users.mediator';
 
 export interface AuthState {
   user: UserModel | undefined | null;
-  isLoading: boolean;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   user: undefined,
-  isLoading: true,
+  loading: true,
 };
 
 export const AuthStore = signalStore(
@@ -37,23 +37,23 @@ export const AuthStore = signalStore(
         tokenMediator.accessTokenIsValid()
       );
     }),
-    isLoading: computed(() => store.isLoading()),
+    isLoading: computed(() => store.loading()),
   })),
   withMethods((store, usersMediator = inject(UsersMediator)) => ({
     me: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { user: undefined, isLoading: true })),
+        tap(() => patchState(store, { user: undefined, loading: true })),
         concatMap(() => {
           return usersMediator.me().pipe(
             tapResponse({
-              next: user => patchState(store, { user, isLoading: false }),
-              error: () => patchState(store, { user: null, isLoading: false }),
+              next: user => patchState(store, { user, loading: false }),
+              error: () => patchState(store, { user: null, loading: false }),
             })
           );
         })
       )
     ),
     reset: () => patchState(store, initialState),
-    cancel: () => patchState(store, { isLoading: false }),
+    cancel: () => patchState(store, { loading: false }),
   }))
 );

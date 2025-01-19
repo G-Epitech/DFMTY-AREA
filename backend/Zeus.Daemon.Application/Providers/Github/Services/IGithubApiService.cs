@@ -14,7 +14,7 @@ public interface IGithubApiService
     public Task<ErrorOr<List<GithubIssue>>> GetIssuesAsync(AccessToken accessToken, string owner, string repository,
         CancellationToken cancellationToken = default);
 
-    public Task<ErrorOr<bool>> CreatePullRequestAsync(AccessToken accessToken, string owner, string repository,
+    public Task<ErrorOr<GithubPullRequest>> CreatePullRequestAsync(AccessToken accessToken, string owner, string repository,
         string title, string body,
         string head, string @base, bool draft, CancellationToken cancellationToken = default);
 

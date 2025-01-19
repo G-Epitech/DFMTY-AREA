@@ -25,6 +25,7 @@ enum IntegrationType {
   Notion = 2;
   OpenAi = 3;
   LeagueOfLegends = 4;
+  Github = 5;
 }
 
 message Integration {
