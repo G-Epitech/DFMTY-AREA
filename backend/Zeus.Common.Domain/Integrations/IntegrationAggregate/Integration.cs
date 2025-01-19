@@ -93,6 +93,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
             IntegrationType.Notion => typeof(NotionIntegration),
             IntegrationType.OpenAi => typeof(OpenAiIntegration),
             IntegrationType.LeagueOfLegends => typeof(LeagueOfLegendsIntegration),
+            IntegrationType.Github => typeof(GithubIntegration),
             _ => null
         };
     }
@@ -106,6 +107,7 @@ public abstract class Integration : AggregateRoot<IntegrationId>
             not null when type == typeof(NotionIntegration) => IntegrationType.Notion,
             not null when type == typeof(OpenAiIntegration) => IntegrationType.OpenAi,
             not null when type == typeof(LeagueOfLegendsIntegration) => IntegrationType.LeagueOfLegends,
+            not null when type == typeof(GithubIntegration) => IntegrationType.Github,
             _ => null
         };
     }
