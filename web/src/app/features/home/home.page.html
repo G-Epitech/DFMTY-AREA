@@ -5,22 +5,32 @@
       <h1 class="tr-title-1">Welcome, Jinx!</h1>
       <p class="tr-subtitle text-muted">We're glad to have you back</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
-      <div class="bg-white rounded-md border p-6 w-full text-center">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
-          🎉 Check Out Our New Mobile App!
-        </h2>
-        <p class="text-gray-600 mb-4">
-          Now you can access your dashboard on the go. Download our new mobile
-          app today and enjoy seamless access to all your features!
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full mb-4">
+      <div
+        class="flex flex-col bg-white rounded-md border p-6 w-full text-center items-center">
+        <div class="flex flex-row items-center gap-2">
+          <tr-icon-box icon="heroSparklesSolid" color="bg-primary" />
+          <h2 class="tr-title-3 mb-3">Check Out Our Mobile App!</h2>
+        </div>
+        <p class="text-muted mb-3">
+          Download our new mobile app today and enjoy seamless access to all
+          your features!
         </p>
+        <a
+          href="/user-docs"
+          class="text-primary underline hover:text-primary/90 transition-colors mt-auto">
+          Downloads
+        </a>
       </div>
 
-      <div class="bg-white rounded-md border p-6 w-full text-center">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">
-          📄 Documentation
-        </h2>
-        <p class="text-gray-600 mb-4">
+      <div
+        class="flex flex-col bg-white rounded-md border p-6 w-full text-center items-center">
+        <div class="flex flex-row items-center gap-2">
+          <tr-icon-box icon="heroDocumentSolid" color="bg-primary" />
+          <h2 class="tr-title-3 mb-3">Documentation</h2>
+        </div>
+        <p class="text-muted mb-3">
           Need help? Check out our user and developer documentation to get
           started.
         </p>
@@ -37,6 +47,26 @@
           </a>
         </div>
       </div>
+    </div>
+    <span class="tr-title-3 flex items-left text-left mb-6"
+      >User Automation Templates</span
+    >
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 w-full">
+      <tr-automation-template-card
+        icon="heroBoltSolid"
+        color="bg-blue-500"
+        name="Download All Attachments"
+        description="Download all attachments from an email to your Google Drive." />
+      <tr-automation-template-card
+        icon="heroArrowCircleDownSolid"
+        color="bg-blue-500"
+        name="Download All Attachments"
+        description="Download all attachments from an email to your Google Drive." />
+      <tr-automation-template-card
+        icon="heroArrowCircleDownSolid"
+        color="bg-blue-500"
+        name="Download All Attachments"
+        description="Download all attachments from an email to your Google Drive." />
     </div>
   </div>
 </div>

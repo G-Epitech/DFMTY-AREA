@@ -1,0 +1,11 @@
+<div
+  class="flex flex-col bg-white rounded-md border p-6 w-full items-left">
+  <div class="flex flex-row items-center gap-2">
+    <tr-icon-box [icon]="icon()" [color]="color()" />
+    <h3 class="tr-large">{{ name() }}</h3>
+  </div>
+  <p class="text-muted tr-medium mb-3">
+    {{ description() }}
+  </p>
+  <button trBtn>Use Template</button>
+</div>
