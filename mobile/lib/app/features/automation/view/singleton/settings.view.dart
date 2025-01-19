@@ -91,6 +91,65 @@ class AutomationSettingsView extends StatelessWidget {
             },
             hexColor: state.cleanedAutomation.iconColor,
           ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Color',
+            inputType: AutomationInputType.radio,
+            placeholder: 'Select an icon',
+            value: state.cleanedAutomation.iconColor,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationColorChanged(color: value));
+            },
+            hexColor: state.cleanedAutomation.iconColor,
+            getOptions: () async {
+              return [
+                AutomationRadioModel(
+                  title: 'Black',
+                  description: 'Set the color to black',
+                  value: '#000000',
+                ),
+                AutomationRadioModel(
+                  title: 'Red',
+                  description: 'Set the color to red',
+                  value: '#EE3A3D',
+                ),
+                AutomationRadioModel(
+                  title: 'Green',
+                  description: 'Set the color to green',
+                  value: '#1DC249',
+                ),
+                AutomationRadioModel(
+                  title: 'Blue',
+                  description: 'Set the color to blue',
+                  value: '#1D39C2',
+                ),
+                AutomationRadioModel(
+                  title: 'Yellow',
+                  description: 'Set the color to yellow',
+                  value: '#C9C90C',
+                ),
+                AutomationRadioModel(
+                  title: 'Orange',
+                  description: 'Set the color to orange',
+                  value: '#EE883A',
+                ),
+                AutomationRadioModel(
+                  title: 'Purple',
+                  description: 'Set the color to purple',
+                  value: '#913AEE',
+                ),
+                AutomationRadioModel(
+                  title: 'Grey',
+                  description: 'Set the color to grey',
+                  value: '#AEAEB2',
+                ),
+              ];
+            },
+          ),
         ],
       ),
     );
@@ -104,6 +163,7 @@ class AutomationSettingsView extends StatelessWidget {
     required String placeholder,
     required String? value,
     required void Function(String, String) onSave,
+    Future<List<AutomationRadioModel>> Function()? getOptions,
     String? hexColor,
   }) {
     return AutomationInputParameterWithLabel(
@@ -117,6 +177,7 @@ class AutomationSettingsView extends StatelessWidget {
         value: value?.isNotEmpty == true ? value : null,
         routeToGoWhenSave: RoutesNames.popOneTime,
         hexColor: hexColor ?? '#000000',
+        getOptions: getOptions,
       ),
     );
   }
