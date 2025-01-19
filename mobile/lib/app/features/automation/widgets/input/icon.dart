@@ -39,19 +39,30 @@ class IconInputState extends State<IconInput> {
       itemCount: icons.length,
       itemBuilder: (context, index) {
         final icon = icons[index];
-        return Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            color: HexColor(widget.hexColor),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: SvgPicture.asset(
-            'assets/icons/$icon.svg',
-            width: 30,
-            height: 30,
-            colorFilter: ColorFilter.mode(
-              Colors.white,
-              BlendMode.srcIn,
+        return GestureDetector(
+          onTap: () {
+            widget.onValueChanged(icon);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: HexColor(widget.hexColor),
+              border: Border.all(
+                color: widget.defaultValue == icon
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.transparent,
+                width: 2.0,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/$icon.svg',
+              width: 30,
+              height: 30,
+              colorFilter: ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         );
