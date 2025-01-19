@@ -347,6 +347,7 @@ class CustomRectangleList extends StatelessWidget {
               integrationIdentifier: integrationIdentifier,
               triggerOrActionIdentifier: triggerOrActionIdentifier,
               isDeletable: false,
+              missingParameters: false,
             ),
             if (automation.actions.isNotEmpty) SizedBox(height: 10),
             ListView.separated(
@@ -357,23 +358,26 @@ class CustomRectangleList extends StatelessWidget {
                 final action = automation.actions[index];
                 final integrationIdentifier =
                     action.identifier.split('.').first;
-                final triggerOrActionIdentifier =
-                    action.identifier.split('.').last;
+                final actionIdentifier = action.identifier.split('.').last;
 
                 final actionIntegration =
                     schema.schemas[integrationIdentifier]!;
-                final actionOrAction =
-                    actionIntegration.actions[triggerOrActionIdentifier]!;
+                final actionSchema =
+                    actionIntegration.actions[actionIdentifier]!;
+
+                final missingParameters =
+                    !validateAction(automation, automationMediator, index);
 
                 return _TriggerListItem(
-                  icon: "assets/icons/${actionOrAction.icon}.svg",
+                  icon: "assets/icons/${actionSchema.icon}.svg",
                   color: HexColor(actionIntegration.color),
-                  text: actionOrAction.name,
+                  text: actionSchema.name,
                   type: AutomationChoiceEnum.action,
                   indexOfTheTriggerOrAction: index,
                   integrationIdentifier: integrationIdentifier,
-                  triggerOrActionIdentifier: triggerOrActionIdentifier,
+                  triggerOrActionIdentifier: actionIdentifier,
                   isDeletable: true,
+                  missingParameters: missingParameters,
                 );
               },
               separatorBuilder: (context, index) {
@@ -442,6 +446,7 @@ class _TriggerListItem extends StatelessWidget {
   final String integrationIdentifier;
   final String triggerOrActionIdentifier;
   final bool isDeletable;
+  final bool missingParameters;
 
   const _TriggerListItem({
     required this.icon,
@@ -452,6 +457,7 @@ class _TriggerListItem extends StatelessWidget {
     required this.integrationIdentifier,
     required this.triggerOrActionIdentifier,
     required this.isDeletable,
+    required this.missingParameters,
   });
 
   @override
@@ -537,6 +543,15 @@ class _TriggerListItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            if (missingParameters)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  color: Theme.of(context).colorScheme.onError,
+                  size: 30,
+                ),
+              ),
           ],
         ),
       ),

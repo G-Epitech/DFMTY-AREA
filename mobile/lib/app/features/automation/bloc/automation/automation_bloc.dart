@@ -238,7 +238,11 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
       AutomationActionDeleted event, Emitter<AutomationState> emit) {
     final List<AutomationAction> updatedActions =
         List.from(state.cleanedAutomation.actions);
+    final Map<String, String> updatedPreviews = Map.from(state.previews);
+
     updatedActions.removeAt(event.index);
+    updatedPreviews
+        .removeWhere((key, value) => key.startsWith('action.${event.index}.'));
 
     for (int i = event.index; i < updatedActions.length; i++) {
       final updatedAction = updatedActions[i];
@@ -246,12 +250,23 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
           .where((param) => !(param.type.toLowerCase() == "var" &&
               param.value.startsWith('${event.index}.')))
           .toList();
+      for (final param in updatedParameters) {
+        final previewKey =
+            "action.${i + 1}.${updatedAction.identifier}.${param.identifier}";
+        final previewValue = updatedPreviews[previewKey];
+        if (previewValue != null) {
+          final newPreviewKey = previewKey.replaceFirst('${i + 1}.', '$i.');
+          updatedPreviews[newPreviewKey] = previewValue;
+          updatedPreviews.remove(previewKey);
+        }
+      }
       updatedActions[i] = updatedAction.copyWith(parameters: updatedParameters);
     }
 
     final updatedAutomation =
         state.cleanedAutomation.copyWith(actions: updatedActions);
-    emit(state.copyWith(cleanedAutomation: updatedAutomation));
+    emit(state.copyWith(
+        cleanedAutomation: updatedAutomation, previews: updatedPreviews));
   }
 
   void _onReset(AutomationReset event, Emitter<AutomationState> emit) {
