@@ -16,10 +16,10 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     private readonly Timer _timer;
     private readonly ILogger _logger;
 
-    private readonly Dictionary<AccessToken, Dictionary<AutomationId, PullRequestAutomationProps>>
+    private readonly Dictionary<AccessToken, Dictionary<PullRequestAutomationProps, List<AutomationId>>>
         _registeredPollingPrTokens = new();
 
-    private readonly Dictionary<AccessToken, List<GithubPullRequest>> _cachedPullRequests = new();
+    private readonly Dictionary<PullRequestAutomationProps, List<GithubPullRequest>> _cachedPullRequests = new();
 
     private readonly Dictionary<AutomationId, Func<AutomationId, GithubPullRequest, Task>>
         _registeredNewPrHandlers = new();
@@ -27,10 +27,10 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     private readonly Dictionary<AutomationId, Func<AutomationId, GithubPullRequest, Task>>
         _registeredRemovePrHandlers = new();
 
-    private readonly Dictionary<AccessToken, Dictionary<AutomationId, IssueAutomationProps>>
+    private readonly Dictionary<AccessToken, Dictionary<IssueAutomationProps, List<AutomationId>>>
         _registeredPollingIssuesTokens = new();
 
-    private readonly Dictionary<AccessToken, List<GithubIssue>> _cachedIssues = new();
+    private readonly Dictionary<IssueAutomationProps, List<GithubIssue>> _cachedIssues = new();
 
     private readonly Dictionary<AutomationId, Func<AutomationId, GithubIssue, Task>>
         _registeredNewIssuesHandlers = new();
@@ -43,10 +43,102 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
         _apiService = apiService;
         _logger = logger;
 
-        _timer = new Timer(TimeSpan.FromSeconds(5));
-        // _timer.Elapsed += (sender, e) => _ = PollPullRequests();
-        // _timer.Elapsed += (sender, e) => _ = PollIssues();
+        _timer = new Timer(TimeSpan.FromSeconds(3));
+        _timer.Elapsed += (sender, e) => _ = PollPullRequests();
+        _timer.Elapsed += (sender, e) => _ = PollIssues();
         _timer.AutoReset = true;
+    }
+
+    private async Task PollPullRequests()
+    {
+        foreach (var prToken in _registeredPollingPrTokens)
+        {
+            foreach (var endpoint in prToken.Value)
+            {
+                var loadedPullRequests = await _apiService.GetPullRequestsAsync(prToken.Key, endpoint.Key.Owner,
+                    endpoint.Key.Repository);
+
+                if (loadedPullRequests.IsError)
+                {
+                    _logger.LogWarning("Error while polling PRs ({owner}/{repository}): {error}",
+                        endpoint.Key.Owner, endpoint.Key.Repository, loadedPullRequests.Errors);
+                    continue;
+                }
+
+                var newPullRequests = loadedPullRequests.Value.Except(_cachedPullRequests[endpoint.Key]).ToList();
+                var removedPullRequests = _cachedPullRequests[endpoint.Key].Except(loadedPullRequests.Value).ToList();
+
+                foreach (var pr in newPullRequests)
+                {
+                    foreach (AutomationId automationId in endpoint.Value)
+                    {
+                        if (_registeredNewPrHandlers.TryGetValue(automationId, out var handler))
+                        {
+                            _ = handler(automationId, pr);
+                        }
+                    }
+                }
+
+                foreach (var pr in removedPullRequests)
+                {
+                    foreach (AutomationId automationId in endpoint.Value)
+                    {
+                        if (_registeredRemovePrHandlers.TryGetValue(automationId, out var handler))
+                        {
+                            _ = handler(automationId, pr);
+                        }
+                    }
+                }
+
+                _cachedPullRequests[endpoint.Key] = loadedPullRequests.Value;
+            }
+        }
+    }
+
+    private async Task PollIssues()
+    {
+        foreach (var issueToken in _registeredPollingIssuesTokens)
+        {
+            foreach (var endpoint in issueToken.Value)
+            {
+                var loadedIssues = await _apiService.GetIssuesAsync(issueToken.Key, endpoint.Key.Owner,
+                    endpoint.Key.Repository);
+
+                if (loadedIssues.IsError)
+                {
+                    _logger.LogWarning("Error while polling issues ({owner}/{repository}): {error}",
+                        endpoint.Key.Owner, endpoint.Key.Repository, loadedIssues.Errors);
+                    continue;
+                }
+
+                var newIssues = loadedIssues.Value.Except(_cachedIssues[endpoint.Key]).ToList();
+                var removedIssues = _cachedIssues[endpoint.Key].Except(loadedIssues.Value).ToList();
+
+                foreach (var issue in newIssues)
+                {
+                    foreach (AutomationId automationId in endpoint.Value)
+                    {
+                        if (_registeredNewIssuesHandlers.TryGetValue(automationId, out var handler))
+                        {
+                            _ = handler(automationId, issue);
+                        }
+                    }
+                }
+
+                foreach (var issue in removedIssues)
+                {
+                    foreach (AutomationId automationId in endpoint.Value)
+                    {
+                        if (_registeredRemoveIssuesHandlers.TryGetValue(automationId, out var handler))
+                        {
+                            _ = handler(automationId, issue);
+                        }
+                    }
+                }
+
+                _cachedIssues[endpoint.Key] = loadedIssues.Value;
+            }
+        }
     }
 
     public async Task<bool> RegisterNewPullRequestDetectedAsync(AutomationId automationId, AccessToken accessToken,
@@ -55,16 +147,25 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
         CancellationToken cancellationToken = default)
     {
         if (!_registeredPollingPrTokens.TryGetValue(accessToken,
-                out Dictionary<AutomationId, PullRequestAutomationProps>? automations))
+                out Dictionary<PullRequestAutomationProps, List<AutomationId>>? automations))
         {
-            automations = new Dictionary<AutomationId, PullRequestAutomationProps>();
+            automations = new Dictionary<PullRequestAutomationProps, List<AutomationId>>();
             _registeredPollingPrTokens.Add(accessToken, automations);
         }
 
-        automations.Add(automationId, new PullRequestAutomationProps(owner, repository));
+        var props = new PullRequestAutomationProps(owner, repository);
+
         _registeredNewPrHandlers.Add(automationId, handler);
 
-        if (_cachedPullRequests.ContainsKey(accessToken))
+        if (!automations.TryGetValue(props, out var handlers))
+        {
+            handlers = [];
+            automations.Add(props, handlers);
+        }
+
+        handlers.Add(automationId);
+
+        if (_cachedPullRequests.ContainsKey(props))
         {
             return true;
         }
@@ -77,7 +178,7 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             return false;
         }
 
-        _cachedPullRequests.Add(accessToken, pullRequests.Value);
+        _cachedPullRequests.Add(props, pullRequests.Value);
 
         return true;
     }
@@ -88,16 +189,25 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
         CancellationToken cancellationToken = default)
     {
         if (!_registeredPollingPrTokens.TryGetValue(accessToken,
-                out Dictionary<AutomationId, PullRequestAutomationProps>? automations))
+                out Dictionary<PullRequestAutomationProps, List<AutomationId>>? automations))
         {
-            automations = new Dictionary<AutomationId, PullRequestAutomationProps>();
+            automations = new Dictionary<PullRequestAutomationProps, List<AutomationId>>();
             _registeredPollingPrTokens.Add(accessToken, automations);
         }
 
-        automations.Add(automationId, new PullRequestAutomationProps(owner, repository));
+        var props = new PullRequestAutomationProps(owner, repository);
+
         _registeredRemovePrHandlers.Add(automationId, handler);
 
-        if (_cachedPullRequests.ContainsKey(accessToken))
+        if (!automations.TryGetValue(props, out var handlers))
+        {
+            handlers = [];
+            automations.Add(props, handlers);
+        }
+
+        handlers.Add(automationId);
+
+        if (_cachedPullRequests.ContainsKey(props))
         {
             return true;
         }
@@ -110,7 +220,7 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             return false;
         }
 
-        _cachedPullRequests.Add(accessToken, pullRequests.Value);
+        _cachedPullRequests.Add(props, pullRequests.Value);
 
         return true;
     }
@@ -121,16 +231,25 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
         Func<AutomationId, GithubIssue, Task> handler, CancellationToken cancellationToken = default)
     {
         if (!_registeredPollingIssuesTokens.TryGetValue(accessToken,
-                out Dictionary<AutomationId, IssueAutomationProps>? automations))
+                out Dictionary<IssueAutomationProps, List<AutomationId>>? automations))
         {
-            automations = new Dictionary<AutomationId, IssueAutomationProps>();
+            automations = new Dictionary<IssueAutomationProps, List<AutomationId>>();
             _registeredPollingIssuesTokens.Add(accessToken, automations);
         }
 
-        automations.Add(automationId, new IssueAutomationProps(owner, repository));
+        var props = new IssueAutomationProps(owner, repository);
+
         _registeredNewIssuesHandlers.Add(automationId, handler);
 
-        if (_cachedIssues.ContainsKey(accessToken))
+        if (!automations.TryGetValue(props, out var handlers))
+        {
+            handlers = [];
+            automations.Add(props, handlers);
+        }
+
+        handlers.Add(automationId);
+
+        if (_cachedIssues.ContainsKey(props))
         {
             return true;
         }
@@ -143,7 +262,7 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             return false;
         }
 
-        _cachedIssues.Add(accessToken, issues.Value);
+        _cachedIssues.Add(props, issues.Value);
 
         return true;
     }
@@ -153,16 +272,25 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
         string repository, Func<AutomationId, GithubIssue, Task> handler, CancellationToken cancellationToken = default)
     {
         if (!_registeredPollingIssuesTokens.TryGetValue(accessToken,
-                out Dictionary<AutomationId, IssueAutomationProps>? automations))
+                out Dictionary<IssueAutomationProps, List<AutomationId>>? automations))
         {
-            automations = new Dictionary<AutomationId, IssueAutomationProps>();
+            automations = new Dictionary<IssueAutomationProps, List<AutomationId>>();
             _registeredPollingIssuesTokens.Add(accessToken, automations);
         }
 
-        automations.Add(automationId, new IssueAutomationProps(owner, repository));
+        var props = new IssueAutomationProps(owner, repository);
+
         _registeredRemoveIssuesHandlers.Add(automationId, handler);
 
-        if (_cachedIssues.ContainsKey(accessToken))
+        if (!automations.TryGetValue(props, out var handlers))
+        {
+            handlers = [];
+            automations.Add(props, handlers);
+        }
+
+        handlers.Add(automationId);
+
+        if (_cachedIssues.ContainsKey(props))
         {
             return true;
         }
@@ -175,7 +303,7 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             return false;
         }
 
-        _cachedIssues.Add(accessToken, issues.Value);
+        _cachedIssues.Add(props, issues.Value);
 
         return true;
     }
@@ -184,10 +312,21 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     {
         _registeredNewPrHandlers.Remove(automationId);
 
-        foreach ((AccessToken accessToken, Dictionary<AutomationId, PullRequestAutomationProps> automations) in
+        foreach ((AccessToken accessToken, Dictionary<PullRequestAutomationProps, List<AutomationId>> automations) in
                  _registeredPollingPrTokens)
         {
-            automations.Remove(automationId);
+            foreach (var pair in automations)
+            {
+                pair.Value.Remove(automationId);
+
+                if (pair.Value.Count != 0)
+                {
+                    continue;
+                }
+
+                automations.Remove(pair.Key);
+                _cachedPullRequests.Remove(pair.Key);
+            }
 
             if (automations.Count != 0)
             {
@@ -195,7 +334,6 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             }
 
             _registeredPollingPrTokens.Remove(accessToken);
-            _cachedPullRequests.Remove(accessToken);
         }
     }
 
@@ -203,10 +341,21 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     {
         _registeredRemovePrHandlers.Remove(automationId);
 
-        foreach ((AccessToken accessToken, Dictionary<AutomationId, PullRequestAutomationProps> automations) in
+        foreach ((AccessToken accessToken, Dictionary<PullRequestAutomationProps, List<AutomationId>> automations) in
                  _registeredPollingPrTokens)
         {
-            automations.Remove(automationId);
+            foreach (var pair in automations)
+            {
+                pair.Value.Remove(automationId);
+
+                if (pair.Value.Count != 0)
+                {
+                    continue;
+                }
+
+                automations.Remove(pair.Key);
+                _cachedPullRequests.Remove(pair.Key);
+            }
 
             if (automations.Count != 0)
             {
@@ -214,7 +363,6 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             }
 
             _registeredPollingPrTokens.Remove(accessToken);
-            _cachedPullRequests.Remove(accessToken);
         }
     }
 
@@ -222,10 +370,21 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     {
         _registeredNewIssuesHandlers.Remove(automationId);
 
-        foreach ((AccessToken accessToken, Dictionary<AutomationId, IssueAutomationProps> automations) in
+        foreach ((AccessToken accessToken, Dictionary<IssueAutomationProps, List<AutomationId>> automations) in
                  _registeredPollingIssuesTokens)
         {
-            automations.Remove(automationId);
+            foreach (var pair in automations)
+            {
+                pair.Value.Remove(automationId);
+
+                if (pair.Value.Count != 0)
+                {
+                    continue;
+                }
+
+                automations.Remove(pair.Key);
+                _cachedIssues.Remove(pair.Key);
+            }
 
             if (automations.Count != 0)
             {
@@ -233,7 +392,6 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             }
 
             _registeredPollingIssuesTokens.Remove(accessToken);
-            _cachedIssues.Remove(accessToken);
         }
     }
 
@@ -241,10 +399,21 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
     {
         _registeredRemoveIssuesHandlers.Remove(automationId);
 
-        foreach ((AccessToken accessToken, Dictionary<AutomationId, IssueAutomationProps> automations) in
+        foreach ((AccessToken accessToken, Dictionary<IssueAutomationProps, List<AutomationId>> automations) in
                  _registeredPollingIssuesTokens)
         {
-            automations.Remove(automationId);
+            foreach (var pair in automations)
+            {
+                pair.Value.Remove(automationId);
+
+                if (pair.Value.Count != 0)
+                {
+                    continue;
+                }
+
+                automations.Remove(pair.Key);
+                _cachedIssues.Remove(pair.Key);
+            }
 
             if (automations.Count != 0)
             {
@@ -252,7 +421,6 @@ public class GithubPollingService : IGithubPollingService, IDaemonService
             }
 
             _registeredPollingIssuesTokens.Remove(accessToken);
-            _cachedIssues.Remove(accessToken);
         }
     }
 

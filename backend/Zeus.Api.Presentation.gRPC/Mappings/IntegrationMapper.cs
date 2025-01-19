@@ -45,6 +45,7 @@ public class IntegrationMapper : IRegister
             IntegrationType.Notion => Contracts.IntegrationType.Notion,
             IntegrationType.OpenAi => Contracts.IntegrationType.OpenAi,
             IntegrationType.LeagueOfLegends => Contracts.IntegrationType.LeagueOfLegends,
+            IntegrationType.Github => Contracts.IntegrationType.Github,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

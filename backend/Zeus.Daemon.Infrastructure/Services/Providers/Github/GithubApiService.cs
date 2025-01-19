@@ -37,6 +37,8 @@ public class GithubApiService : IGithubApiService
         string repository,
         CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+        
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"repos/{owner}/{repository}/pulls",
             cancellationToken);
@@ -63,6 +65,8 @@ public class GithubApiService : IGithubApiService
         string repository,
         CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+        
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"repos/{owner}/{repository}/issues",
             cancellationToken);
@@ -90,6 +94,8 @@ public class GithubApiService : IGithubApiService
         string title, string body,
         string head, string @base, bool draft, CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+        
         var requestBody = new JsonObject
         {
             ["title"] = title,
@@ -115,6 +121,8 @@ public class GithubApiService : IGithubApiService
         int pullRequestNumber,
         CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+        
         var requestBody = new JsonObject { ["state"] = "closed" };
 
         HttpResponseMessage response = await _httpClient.PatchAsJsonAsync(
@@ -133,6 +141,8 @@ public class GithubApiService : IGithubApiService
         int pullRequestNumber,
         string commitTitle, string commitMessage, string mergeMethod, CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+        
         var requestBody = new JsonObject
         {
             ["commit_title"] = commitTitle, ["commit_message"] = commitMessage, ["merge_method"] = mergeMethod
