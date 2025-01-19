@@ -13,10 +13,12 @@ public class IntegrationsSettingsProvider : IIntegrationsSettingsProvider
         Notion = new NotionSettingsProvider(settings.Value.Notion);
         OpenAi = new OpenAiSettingsProvider(settings.Value.OpenAi);
         Riot = new RiotSettingsProvider(settings.Value.Riot);
+        Github = new GithubSettingsProvider(settings.Value.Github);
     }
 
     public IDiscordSettingsProvider Discord { get; }
     public INotionSettingsProvider Notion { get; }
     public IOpenAiSettingsProvider OpenAi { get; }
     public IRiotSettingsProvider Riot { get; }
+    public IGithubSettingsProvider Github { get; }
 }

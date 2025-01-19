@@ -30,7 +30,8 @@ public class IntegrationsConfiguration : IEntityTypeConfiguration<Integration>
             .HasValue<NotionIntegration>(IntegrationType.Notion)
             .HasValue<OpenAiIntegration>(IntegrationType.OpenAi)
             .HasValue<LeagueOfLegendsIntegration>(IntegrationType.LeagueOfLegends)
-            .HasValue<GmailIntegration>(IntegrationType.Gmail);
+            .HasValue<GmailIntegration>(IntegrationType.Gmail)
+            .HasValue<GithubIntegration>(IntegrationType.Github);
         builder.HasKey(i => i.Id);
         builder.Property(i => i.Id)
             .ValueGeneratedNever()
