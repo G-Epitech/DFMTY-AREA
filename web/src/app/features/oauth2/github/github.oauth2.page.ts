@@ -5,12 +5,10 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { GithubMediator, NotionMediator } from '@mediators/integrations';
+import { GithubMediator } from '@mediators/integrations';
 import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import {
-  Oauth2BaseComponent
-} from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
+import { Oauth2BaseComponent } from '@features/oauth2/components/oauth2-base-page/oauth2-base.component';
 import { TrButtonDirective } from '@triggo-ui/button';
 
 @Component({

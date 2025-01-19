@@ -1,13 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  Component, effect,
+  Component,
+  effect,
   input,
   signal,
 } from '@angular/core';
-import { IntegrationModel, IntegrationNotionProps } from '@models/integration';
-import {
-  IntegrationGithubProps
-} from '@models/integration/properties/integration-github-props';
+import { IntegrationModel } from '@models/integration';
+import { IntegrationGithubProps } from '@models/integration/properties/integration-github-props';
 import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 

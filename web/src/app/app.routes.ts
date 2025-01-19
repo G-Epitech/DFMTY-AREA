@@ -158,7 +158,7 @@ export const routes: Routes = [
             m => m.GithubOauth2PageComponent
           ),
         pathMatch: 'full',
-      }
+      },
     ],
   },
 ];
