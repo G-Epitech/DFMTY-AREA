@@ -95,14 +95,14 @@ class _Header extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: HexColor(automation.iconColor),
+              color: HexColor(automation.color),
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Center(
               child: SvgPicture.asset(
-                automation.iconUri.isEmpty
+                automation.icon.isEmpty
                     ? 'assets/icons/chat.svg'
-                    : 'assets/icons/${automation.iconUri}.svg',
+                    : 'assets/icons/${automation.icon}.svg',
                 width: 25,
                 height: 25,
                 colorFilter: ColorFilter.mode(

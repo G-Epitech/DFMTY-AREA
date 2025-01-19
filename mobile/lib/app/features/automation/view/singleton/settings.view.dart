@@ -83,13 +83,13 @@ class AutomationSettingsView extends StatelessWidget {
             title: 'Icon',
             inputType: AutomationInputType.icon,
             placeholder: 'Select an icon',
-            value: state.cleanedAutomation.iconUri,
+            value: state.cleanedAutomation.icon,
             onSave: (value, humanValue) {
               context
                   .read<AutomationBloc>()
                   .add(AutomationIconChanged(iconUri: value));
             },
-            hexColor: state.cleanedAutomation.iconColor,
+            hexColor: state.cleanedAutomation.color,
           ),
           SizedBox(height: 12.0),
           _buildInputParameter(
@@ -98,13 +98,13 @@ class AutomationSettingsView extends StatelessWidget {
             title: 'Color',
             inputType: AutomationInputType.radio,
             placeholder: 'Select an icon',
-            value: state.cleanedAutomation.iconColor,
+            value: state.cleanedAutomation.color,
             onSave: (value, humanValue) {
               context
                   .read<AutomationBloc>()
                   .add(AutomationColorChanged(color: value));
             },
-            hexColor: state.cleanedAutomation.iconColor,
+            hexColor: state.cleanedAutomation.color,
             getOptions: () async {
               return [
                 AutomationRadioModel(

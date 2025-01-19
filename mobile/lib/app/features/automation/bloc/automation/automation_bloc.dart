@@ -477,7 +477,7 @@ class AutomationBloc extends Bloc<AutomationEvent, AutomationState> {
   void _onIconChanged(
       AutomationIconChanged event, Emitter<AutomationState> emit) {
     final updatedAutomation =
-        state.cleanedAutomation.copyWith(iconUri: event.iconUri);
+        state.cleanedAutomation.copyWith(icon: event.iconUri);
     emit(state.copyWith(cleanedAutomation: updatedAutomation));
   }
 

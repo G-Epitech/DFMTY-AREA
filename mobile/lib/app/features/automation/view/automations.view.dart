@@ -201,12 +201,12 @@ class _AutomationListItem extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: HexColor(automation.iconColor),
+                    color: HexColor(automation.color),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Center(
                     child: SvgPicture.asset(
-                      automation.iconUri,
+                      automation.icon,
                       width: 30,
                       height: 30,
                       colorFilter: ColorFilter.mode(

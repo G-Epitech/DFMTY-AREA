@@ -49,6 +49,7 @@ class AutomationMediator with ChangeNotifier {
     try {
       final json = automation.toJson();
       final dto = AutomationDTO.fromJson(json);
+      print(dto);
       InPostAutomationDTO automationDTO = InPostAutomationDTO(automation: dto);
       final res = await _automationRepository.createAutomation(automationDTO);
       if (res.statusCode == Codes.created) {
@@ -57,6 +58,7 @@ class AutomationMediator with ChangeNotifier {
         throw Exception(res.message);
       }
     } catch (e) {
+      log('Error creating automation: $e');
       return false;
     }
   }
