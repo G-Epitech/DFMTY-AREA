@@ -13,6 +13,9 @@
     },
     "LeagueOfLegends": {
       "$ref": "#/$defs/providerSettings"
+    },
+    "Github": {
+      "$ref": "#/$defs/providerSettings"
     }
   },
   "additionalProperties": false,
@@ -20,7 +23,8 @@
     "Discord",
     "Notion",
     "OpenAi",
-    "LeagueOfLegends"
+    "LeagueOfLegends",
+    "Github"
   ],
   "$defs": {
     "varType": {

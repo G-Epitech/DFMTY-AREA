@@ -18,6 +18,7 @@ public class ProvidersSettings
     public required ProviderSchema Notion { get; set; }
     public required ProviderSchema OpenAi { get; set; }
     public required ProviderSchema LeagueOfLegends { get; set; }
+    public required ProviderSchema Github { get; set; }
 
     private List<string> CacheTriggersIdentifiers()
     {
@@ -26,6 +27,7 @@ public class ProvidersSettings
         _cachedTriggersIdentifiers.AddRange(Notion.Triggers.Keys.Select(k => $"{nameof(Notion)}.{k}"));
         _cachedTriggersIdentifiers.AddRange(OpenAi.Triggers.Keys.Select(k => $"{nameof(OpenAi)}.{k}"));
         _cachedTriggersIdentifiers.AddRange(LeagueOfLegends.Triggers.Keys.Select(k => $"{nameof(LeagueOfLegends)}.{k}"));
+        _cachedTriggersIdentifiers.AddRange(Github.Triggers.Keys.Select(k => $"{nameof(Github)}.{k}"));
         return _cachedTriggersIdentifiers;
     }
 
@@ -36,6 +38,7 @@ public class ProvidersSettings
         _cachedActionsIdentifiers.AddRange(Notion.Actions.Keys.Select(k => $"{nameof(Notion)}.{k}"));
         _cachedActionsIdentifiers.AddRange(OpenAi.Actions.Keys.Select(k => $"{nameof(OpenAi)}.{k}"));
         _cachedActionsIdentifiers.AddRange(LeagueOfLegends.Actions.Keys.Select(k => $"{nameof(LeagueOfLegends)}.{k}"));
+        _cachedActionsIdentifiers.AddRange(Github.Actions.Keys.Select(k => $"{nameof(Github)}.{k}"));
         return _cachedActionsIdentifiers;
     }
 
@@ -47,6 +50,7 @@ public class ProvidersSettings
             nameof(Notion) => Notion,
             nameof(OpenAi) => OpenAi,
             nameof(LeagueOfLegends) => LeagueOfLegends,
+            nameof(Github) => Github,
             _ => throw new InvalidOperationException($"Provider '{providerName}' not found")
         };
     }
@@ -82,7 +86,8 @@ public class ProvidersSettings
             { nameof(Discord), Discord },
             { nameof(Notion), Notion },
             { nameof(OpenAi), OpenAi },
-            { nameof(LeagueOfLegends), LeagueOfLegends }
+            { nameof(LeagueOfLegends), LeagueOfLegends },
+            { nameof(Github), Github }
         };
     }
 }
