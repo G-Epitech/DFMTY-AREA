@@ -38,7 +38,7 @@ public class GithubApiService : IGithubApiService
         CancellationToken cancellationToken = default)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
-        
+
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"repos/{owner}/{repository}/pulls",
             cancellationToken);
@@ -66,7 +66,7 @@ public class GithubApiService : IGithubApiService
         CancellationToken cancellationToken = default)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
-        
+
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"repos/{owner}/{repository}/issues",
             cancellationToken);
@@ -90,12 +90,13 @@ public class GithubApiService : IGithubApiService
             .ToList();
     }
 
-    public async Task<ErrorOr<bool>> CreatePullRequestAsync(AccessToken accessToken, string owner, string repository,
+    public async Task<ErrorOr<GithubPullRequest>> CreatePullRequestAsync(AccessToken accessToken, string owner,
+        string repository,
         string title, string body,
         string head, string @base, bool draft, CancellationToken cancellationToken = default)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
-        
+
         var requestBody = new JsonObject
         {
             ["title"] = title,
@@ -111,10 +112,24 @@ public class GithubApiService : IGithubApiService
             cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
+            Console.WriteLine(await response.Content.ReadAsStringAsync(cancellationToken));
             return Errors.Services.Github.ErrorDuringPullRequestCreation;
         }
 
-        return true;
+        var responseContent = await response.Content.ReadFromJsonAsync<GetGithubPullRequestResult>(
+            _jsonSerializerOptions,
+            cancellationToken);
+        if (responseContent == null)
+        {
+            return Errors.Services.Github.InvalidBody;
+        }
+
+        return new GithubPullRequest(new GithubPullRequestId(responseContent.Id),
+            new Uri(responseContent.HtmlUrl),
+            responseContent.Title,
+            responseContent.Number,
+            responseContent.Body,
+            responseContent.User.Login);
     }
 
     public async Task<ErrorOr<bool>> ClosePullRequestAsync(AccessToken accessToken, string owner, string repository,
@@ -122,7 +137,7 @@ public class GithubApiService : IGithubApiService
         CancellationToken cancellationToken = default)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
-        
+
         var requestBody = new JsonObject { ["state"] = "closed" };
 
         HttpResponseMessage response = await _httpClient.PatchAsJsonAsync(
@@ -142,7 +157,7 @@ public class GithubApiService : IGithubApiService
         string commitTitle, string commitMessage, string mergeMethod, CancellationToken cancellationToken = default)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
-        
+
         var requestBody = new JsonObject
         {
             ["commit_title"] = commitTitle, ["commit_message"] = commitMessage, ["merge_method"] = mergeMethod
