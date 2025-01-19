@@ -543,10 +543,12 @@ class _TriggerListItem extends StatelessWidget {
                   icon,
                   width: 20,
                   height: 20,
-                  colorFilter: ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
-                  ),
+                  colorFilter: color != Colors.white
+                      ? null
+                      : ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
                 ),
               ),
             ),

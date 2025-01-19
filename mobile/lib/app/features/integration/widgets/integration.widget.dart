@@ -129,6 +129,12 @@ class _GetPictureFromIntegration extends StatelessWidget {
           BlendMode.srcIn,
         ),
       );
+    } else if (integration.identifier == IntegrationNames.gmail) {
+      return SvgPicture.network(
+        integration.iconUri,
+        width: 26,
+        height: 26,
+      );
     } else {
       return SvgPicture.network(
         integration.iconUri,
