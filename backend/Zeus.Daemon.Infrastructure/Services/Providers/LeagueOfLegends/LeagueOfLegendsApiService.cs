@@ -6,8 +6,8 @@ using ErrorOr;
 using Zeus.Daemon.Application.Interfaces.Services.Settings.Integrations;
 using Zeus.Daemon.Application.Providers.LeagueOfLegends.Services;
 using Zeus.Daemon.Domain.Errors.Services;
-using Zeus.Daemon.Domain.LeagueOfLegends;
-using Zeus.Daemon.Domain.LeagueOfLegends.ValueObjects;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends;
+using Zeus.Daemon.Domain.Providers.LeagueOfLegends.ValueObjects;
 using Zeus.Daemon.Infrastructure.Services.Providers.LeagueOfLegends.Contracts;
 
 namespace Zeus.Daemon.Infrastructure.Services.Providers.LeagueOfLegends;
