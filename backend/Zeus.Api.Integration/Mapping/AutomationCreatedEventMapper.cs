@@ -37,6 +37,8 @@ public class AutomationCreatedEventMapper : IRegister
                 new AutomationId(raw.Id),
                 raw.Label,
                 raw.Description,
+                raw.Color,
+                raw.Icon,
                 new UserId(raw.OwnerId),
                 new AutomationTrigger(
                     new AutomationTriggerId(raw.Trigger.Id),

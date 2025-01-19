@@ -4,6 +4,8 @@ public record GetAutomationResponse(
     Guid Id,
     string Label,
     string Description,
+    string Color,
+    string Icon,
     Guid OwnerId,
     GetAutomationTriggerResponse Trigger,
     GetAutomationActionResponse[] Actions,

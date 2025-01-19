@@ -91,6 +91,8 @@ public class CreateAutomationCommandHandler : IRequestHandler<CreateAutomationCo
         var automation = Automation.Create(
             command.Label,
             command.Description,
+            command.Color,
+            command.Icon,
             command.OwnerId,
             trigger.Value,
             actions.Value,

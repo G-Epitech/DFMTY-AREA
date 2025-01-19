@@ -7,6 +7,7 @@ using Zeus.Common.Domain.AutomationAggregate.ValueObjects;
 using Zeus.Common.Domain.UserAggregate;
 
 namespace Zeus.Api.Infrastructure.Persistence.Configurations;
+
 public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automation>
 {
     private const int ParameterIdentifierMaxLength = 300;
@@ -22,7 +23,13 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
             .HasMaxLength(Automation.LabelMaxLength)
             .IsRequired();
         builder.Property(x => x.Description)
-            .HasMaxLength(Automation.DescriptionMaxLength); builder.Ignore(x => x.Dependencies);
+            .HasMaxLength(Automation.DescriptionMaxLength);
+        builder.Ignore(x => x.Dependencies);
+        builder.Property(x => x.Color)
+            .HasMaxLength(Automation.ColorLength)
+            .IsRequired();
+        builder.Property(x => x.Icon)
+            .IsRequired();
         builder.Property(x => x.Enabled);
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedNever()
@@ -65,7 +72,8 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         });
     }
 
-    private static void ConfigureAutomationActionParametersTable(OwnedNavigationBuilder<Automation, AutomationAction> actions)
+    private static void ConfigureAutomationActionParametersTable(
+        OwnedNavigationBuilder<Automation, AutomationAction> actions)
     {
         actions.OwnsMany(x => x.Parameters, parameters =>
         {
@@ -80,7 +88,8 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         });
     }
 
-    private static void ConfigureAutomationActionProvidersTable(OwnedNavigationBuilder<Automation, AutomationAction> actions)
+    private static void ConfigureAutomationActionProvidersTable(
+        OwnedNavigationBuilder<Automation, AutomationAction> actions)
     {
         actions.OwnsMany(x => x.Dependencies, provider =>
         {
@@ -114,7 +123,8 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         });
     }
 
-    private static void ConfigureAutomationTriggerProvidersTable(OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
+    private static void ConfigureAutomationTriggerProvidersTable(
+        OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
     {
         trigger.OwnsMany(x => x.Dependencies, provider =>
         {
@@ -131,7 +141,8 @@ public sealed class AutomationsConfiguration : IEntityTypeConfiguration<Automati
         trigger.Navigation(x => x.Dependencies).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
-    private static void ConfigureAutomationTriggerParametersTable(OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
+    private static void ConfigureAutomationTriggerParametersTable(
+        OwnedNavigationBuilder<Automation, AutomationTrigger> trigger)
     {
         trigger.OwnsMany(x => x.Parameters, parameters =>
         {
