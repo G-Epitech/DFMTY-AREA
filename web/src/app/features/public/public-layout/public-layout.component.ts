@@ -17,4 +17,6 @@ import { TrButtonDirective } from '@triggo-ui/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class PublicLayoutComponent {}
+export class PublicLayoutComponent {
+  currentYear = new Date().getFullYear();
+}

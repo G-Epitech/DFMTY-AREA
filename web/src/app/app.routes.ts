@@ -36,6 +36,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@features/public/faq/faq.page').then(m => m.FaqPageComponent),
       },
+      {
+        path: 'about-us',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/about-us/about-us.page').then(
+            m => m.AboutUsPageComponent
+          ),
+      },
     ],
   },
   {
