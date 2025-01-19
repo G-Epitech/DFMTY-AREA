@@ -11,6 +11,8 @@ public class CreateAutomationCommandValidator : AbstractValidator<CreateAutomati
         RuleFor(x => x.OwnerId.Value).NotEmpty();
         RuleFor(x => x.Label).NotEmpty().MaximumLength(Automation.LabelMaxLength);
         RuleFor(x => x.Description).NotEmpty().MaximumLength(Automation.DescriptionMaxLength);
+        RuleFor(x => x.Color).NotEmpty().Length(Automation.ColorLength);
+        RuleFor(x => x.Icon).NotEmpty();
         RuleFor(x => x.Trigger).SetValidator(new TriggerValidator());
         RuleForEach(x => x.Actions).SetValidator(new ActionValidator());
     }

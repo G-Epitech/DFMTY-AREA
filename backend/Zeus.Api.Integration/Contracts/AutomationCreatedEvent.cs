@@ -40,6 +40,8 @@ public record AutomationCreatedEvent
     public required bool Enabled;
     public required Guid Id;
     public required string Label;
+    public required string Icon;
+    public required string Color;
     public required Guid OwnerId;
     public required AutomationCreatedEventTrigger Trigger;
     public required DateTime UpdatedAt;

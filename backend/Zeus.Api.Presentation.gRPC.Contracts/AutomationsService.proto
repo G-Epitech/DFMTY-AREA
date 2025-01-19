@@ -66,10 +66,12 @@ message Automation {
   string id = 1;
   string label = 2;
   string description = 3;
-  string ownerId = 4;
-  bool enabled = 5;
-  AutomationTrigger trigger = 6;
-  repeated AutomationAction actions = 7;
-  int64 updatedAt = 8;
-  int64 createdAt = 9;
+  string icon = 4;
+  string color = 5;
+  string ownerId = 6;
+  bool enabled = 7;
+  AutomationTrigger trigger = 8;
+  repeated AutomationAction actions = 9;
+  int64 updatedAt = 10;
+  int64 createdAt = 11;
 }
