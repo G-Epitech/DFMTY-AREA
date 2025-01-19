@@ -62,4 +62,22 @@ public interface INotionApiService
     /// <returns></returns>
     public Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
         string titleParamName, string title, string icon, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Delete a page by id
+    /// </summary>
+    /// <param name="accessToken">The workspace bot access token</param>
+    /// <param name="pageId">The page id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task ArchivePageAsync(AccessToken accessToken, NotionPageId pageId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Delete a database by id
+    /// </summary>
+    /// <param name="accessToken">The workspace bot access token</param>
+    /// <param name="databaseId">The database id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task ArchiveDatabaseAsync(AccessToken accessToken, NotionDatabaseId databaseId, CancellationToken cancellationToken = default);
 }

@@ -115,22 +115,26 @@ public class NotionApiService : INotionApiService
     public async Task<ErrorOr<NotionDatabase>> CreateDatabaseInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title, string icon, CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
         var requestContent = new JsonObject
         {
-            ["parent"] = new JsonObject {["type"]= "page_id", ["page_id"] = parentId.Value },
+            ["parent"] = new JsonObject { ["type"] = "page_id", ["page_id"] = parentId.Value },
             ["icon"] = GetJsonIconFromString(icon),
             ["title"] = new JsonArray { new JsonObject { ["text"] = new JsonObject { ["content"] = title } } },
             ["properties"] = new JsonObject { ["Name"] = new JsonObject { ["title"] = new JsonObject() } }
         };
 
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("databases", requestContent, cancellationToken);
+        HttpResponseMessage response =
+            await _httpClient.PostAsJsonAsync("databases", requestContent, cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
             return Errors.Services.Notion.ErrorDuringPostRequest;
         }
 
         var responseContent =
-            await response.Content.ReadFromJsonAsync<GetNotionDatabaseResponse>(_jsonSerializerOptions, cancellationToken);
+            await response.Content.ReadFromJsonAsync<GetNotionDatabaseResponse>(_jsonSerializerOptions,
+                cancellationToken);
         if (responseContent is null)
         {
             return Errors.Services.Notion.InvalidBody;
@@ -142,6 +146,8 @@ public class NotionApiService : INotionApiService
     public async Task<ErrorOr<NotionPage>> CreatePageInPageAsync(AccessToken accessToken, NotionPageId parentId,
         string title, string icon, CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
         var requestContent = new JsonObject
         {
             ["parent"] = new JsonObject { ["page_id"] = parentId.Value },
@@ -174,6 +180,8 @@ public class NotionApiService : INotionApiService
     public async Task<ErrorOr<NotionPage>> CreatePageInDatabaseAsync(AccessToken accessToken, NotionDatabaseId parentId,
         string titleParamName, string title, string icon, CancellationToken cancellationToken = default)
     {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
         var requestContent = new JsonObject
         {
             ["parent"] = new JsonObject { ["database_id"] = parentId.Value },
@@ -204,5 +212,23 @@ public class NotionApiService : INotionApiService
         }
 
         return _mapper.Map<NotionPage>(responseContent);
+    }
+
+    public Task ArchivePageAsync(AccessToken accessToken, NotionPageId pageId,
+        CancellationToken cancellationToken = default)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        var requestContent = new JsonObject { ["archived"] = true };
+
+        return _httpClient.PatchAsJsonAsync($"pages/{pageId.Value}", requestContent, cancellationToken);
+    }
+
+    public Task ArchiveDatabaseAsync(AccessToken accessToken, NotionDatabaseId databaseId,
+        CancellationToken cancellationToken = default)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = GetAuthHeaderBearerValue(accessToken);
+
+        return _httpClient.DeleteAsync($"blocks/{databaseId.Value}", cancellationToken);
     }
 }
