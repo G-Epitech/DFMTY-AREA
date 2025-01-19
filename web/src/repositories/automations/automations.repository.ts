@@ -2,6 +2,7 @@ import { Inject, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
+  AutomationCreateDTO,
   AutomationDTO,
   AutomationSchemaDTO,
 } from '@repositories/automations/dto';
@@ -19,9 +20,9 @@ export class AutomationsRepository {
     return this.#httpClient.get<AutomationDTO>(url);
   }
 
-  post(): Observable<string> {
+  create(dto: AutomationCreateDTO): Observable<void> {
     const url = `${this.baseUrl}/automations`;
-    return this.#httpClient.post<string>(url, {});
+    return this.#httpClient.post<void>(url, dto);
   }
 
   getSchema(): Observable<AutomationSchemaDTO> {
