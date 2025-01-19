@@ -114,7 +114,7 @@ class _OKButton extends StatelessWidget {
 
     final isValid = type == AutomationChoiceEnum.trigger
         ? _validateTrigger(automation, automationMediator)
-        : _validateAction(
+        : validateAction(
             automation, automationMediator, indexOfTheTriggerOrAction);
 
     return Row(
@@ -193,54 +193,54 @@ class _OKButton extends StatelessWidget {
 
     return true;
   }
+}
 
-  bool _validateAction(Automation automation,
-      AutomationMediator automationMediator, int indexOfTheTriggerOrAction) {
-    final schema = automationMediator.automationSchemas;
+bool validateAction(Automation automation,
+    AutomationMediator automationMediator, int indexOfTheTriggerOrAction) {
+  final schema = automationMediator.automationSchemas;
 
-    if (indexOfTheTriggerOrAction < 0 ||
-        indexOfTheTriggerOrAction >= automation.actions.length) {
-      log("Index of the trigger or action is out of bounds");
-      return false;
-    }
-
-    log("Index of the trigger or action: $indexOfTheTriggerOrAction");
-    final action = automation.actions[indexOfTheTriggerOrAction];
-
-    if (action.identifier.isEmpty) {
-      log("Action identifier is empty");
-      return false;
-    }
-
-    if (action.dependencies.isEmpty) {
-      log("Action dependencies is empty");
-      return false;
-    }
-
-    for (final parameter in action.parameters) {
-      if (parameter.value.isEmpty) {
-        log("Action parameter value is empty");
-        return false;
-      }
-    }
-
-    final integrationIdentifier = action.identifier.split('.').first;
-    final triggerOrActionIdentifier = action.identifier.split('.').last;
-
-    final integrationSchema = schema!.schemas[integrationIdentifier];
-    final actionSchema = integrationSchema?.actions[triggerOrActionIdentifier];
-    final hasDifferentParameterLength =
-        actionSchema?.parameters.length != action.parameters.length;
-
-    if (integrationSchema != null &&
-        actionSchema != null &&
-        hasDifferentParameterLength) {
-      log("Action parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
-      return false;
-    }
-
-    return true;
+  if (indexOfTheTriggerOrAction < 0 ||
+      indexOfTheTriggerOrAction >= automation.actions.length) {
+    log("Index of the trigger or action is out of bounds");
+    return false;
   }
+
+  log("Index of the trigger or action: $indexOfTheTriggerOrAction");
+  final action = automation.actions[indexOfTheTriggerOrAction];
+
+  if (action.identifier.isEmpty) {
+    log("Action identifier is empty");
+    return false;
+  }
+
+  if (action.dependencies.isEmpty) {
+    log("Action dependencies is empty");
+    return false;
+  }
+
+  for (final parameter in action.parameters) {
+    if (parameter.value.isEmpty) {
+      log("Action parameter value is empty");
+      return false;
+    }
+  }
+
+  final integrationIdentifier = action.identifier.split('.').first;
+  final triggerOrActionIdentifier = action.identifier.split('.').last;
+
+  final integrationSchema = schema!.schemas[integrationIdentifier];
+  final actionSchema = integrationSchema?.actions[triggerOrActionIdentifier];
+  final hasDifferentParameterLength =
+      actionSchema?.parameters.length != action.parameters.length;
+
+  if (integrationSchema != null &&
+      actionSchema != null &&
+      hasDifferentParameterLength) {
+    log("Action parameters length is different: ${action.parameters.length} - ${actionSchema.parameters.length}");
+    return false;
+  }
+
+  return true;
 }
 
 class _List extends StatelessWidget {
@@ -588,7 +588,7 @@ class AutomationParameterFromActions extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: actions.length,
                 itemBuilder: (context, index) {
-                  if (indexOfTheTriggerOrAction >= index) {
+                  if (index >= indexOfTheTriggerOrAction) {
                     return const SizedBox();
                   }
 
@@ -948,7 +948,7 @@ List<AutomationRadioModel> getOptionsFromFacts(
     AutomationSchemaTriggerActionProperty property) {
   List<AutomationRadioModel> options = [];
   for (final fact in facts.entries) {
-    if (fact.value.type != property.type) {
+    if (fact.value.type.toLowerCase() != property.type.toLowerCase()) {
       continue;
     }
     options.add(AutomationRadioModel(

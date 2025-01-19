@@ -118,6 +118,15 @@ class AutomationLabelParameterWidget extends StatelessWidget {
                 ],
               ),
             ),
+            if (previewData == null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  color: Theme.of(context).colorScheme.onError,
+                  size: 30,
+                ),
+              ),
             SvgPicture.asset(
               "assets/icons/chevron-right.svg",
               width: 24.0,
