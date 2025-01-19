@@ -147,10 +147,21 @@ class _Header extends StatelessWidget {
                 Positioned(
                   bottom: 4,
                   right: 8,
-                  child: Icon(
-                    Icons.warning_amber_rounded,
-                    color: Theme.of(context).colorScheme.onError,
-                    size: 20,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.automationSettings,
+                        arguments: {
+                          'isCreated': isCreated,
+                          "id": automation.id
+                        },
+                      );
+                    },
+                    child: Icon(
+                      Icons.warning_amber_rounded,
+                      color: Theme.of(context).colorScheme.onError,
+                      size: 20,
+                    ),
                   ),
                 ),
             ],

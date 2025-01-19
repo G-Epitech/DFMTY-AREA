@@ -14,10 +14,10 @@ class AutomationSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final args = _extractArguments(context);
     final bool isCreated = args['isCreated'] as bool;
     final String? id = args['id'] as String?;
+
     return BlocListener<AutomationBloc, AutomationState>(
       listener: _listener,
       child: BlocBuilder<AutomationBloc, AutomationState>(
@@ -30,61 +30,76 @@ class AutomationSettingsView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        AutomationInputParameterWithLabel(
-                          title: 'Label',
-                          previewData: state.cleanedAutomation.label.isNotEmpty
-                              ? state.cleanedAutomation.label
-                              : null,
-                          input: AutomationInputView(
-                            type: AutomationInputType.text,
-                            label: 'Label',
-                            placeholder: 'Enter a label',
-                            onSave: (value, humanValue) {
-                              context
-                                  .read<AutomationBloc>()
-                                  .add(AutomationLabelChanged(label: value));
-                            },
-                            value: state.cleanedAutomation.label.isNotEmpty
-                                ? state.cleanedAutomation.label
-                                : null,
-                            routeToGoWhenSave: RoutesNames.popOneTime,
-                          ),
-                        ),
-                        SizedBox(height: 12.0),
-                        AutomationInputParameterWithLabel(
-                          title: 'Description',
-                          previewData:
-                              state.cleanedAutomation.description.isNotEmpty
-                                  ? state.cleanedAutomation.description
-                                  : null,
-                          input: AutomationInputView(
-                            type: AutomationInputType.textArea,
-                            label: 'Description',
-                            placeholder: 'Enter a description',
-                            onSave: (value, humanValue) {
-                              context.read<AutomationBloc>().add(
-                                  AutomationDescriptionChanged(
-                                      description: value));
-                            },
-                            value:
-                                state.cleanedAutomation.description.isNotEmpty
-                                    ? state.cleanedAutomation.description
-                                    : null,
-                            routeToGoWhenSave: RoutesNames.popOneTime,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildInputParameters(context, state),
                   _DeleteButton(isCreated: isCreated, id: id),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Map<String, dynamic> _extractArguments(BuildContext context) {
+    return ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  }
+
+  Widget _buildInputParameters(BuildContext context, AutomationState state) {
+    return Expanded(
+      child: ListView(
+        children: [
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Label',
+            inputType: AutomationInputType.text,
+            placeholder: 'Enter a label',
+            value: state.cleanedAutomation.label,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationLabelChanged(label: value));
+            },
+          ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Description',
+            inputType: AutomationInputType.textArea,
+            placeholder: 'Enter a description',
+            value: state.cleanedAutomation.description,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationDescriptionChanged(description: value));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputParameter({
+    required BuildContext context,
+    required AutomationState state,
+    required String title,
+    required AutomationInputType inputType,
+    required String placeholder,
+    required String? value,
+    required void Function(String, String) onSave,
+  }) {
+    return AutomationInputParameterWithLabel(
+      title: title,
+      previewData: value?.isNotEmpty == true ? value : null,
+      input: AutomationInputView(
+        type: inputType,
+        label: title,
+        placeholder: placeholder,
+        onSave: onSave,
+        value: value?.isNotEmpty == true ? value : null,
+        routeToGoWhenSave: RoutesNames.popOneTime,
       ),
     );
   }
