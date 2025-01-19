@@ -94,7 +94,7 @@ class InPostAutomationDTO implements Json {
   Map<String, dynamic> toJson() => automation.toJson();
 }
 
-@JsonSerializable()
+@JsonSerializable(createJsonKeys: false)
 class OutPostAutomationDTO implements Json {
   OutPostAutomationDTO();
 
