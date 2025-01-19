@@ -89,6 +89,7 @@ class AutomationSettingsView extends StatelessWidget {
                   .read<AutomationBloc>()
                   .add(AutomationIconChanged(iconUri: value));
             },
+            hexColor: state.cleanedAutomation.iconColor,
           ),
         ],
       ),
@@ -103,6 +104,7 @@ class AutomationSettingsView extends StatelessWidget {
     required String placeholder,
     required String? value,
     required void Function(String, String) onSave,
+    String? hexColor,
   }) {
     return AutomationInputParameterWithLabel(
       title: title,
@@ -114,6 +116,7 @@ class AutomationSettingsView extends StatelessWidget {
         onSave: onSave,
         value: value?.isNotEmpty == true ? value : null,
         routeToGoWhenSave: RoutesNames.popOneTime,
+        hexColor: hexColor ?? '#000000',
       ),
     );
   }

@@ -102,7 +102,7 @@ class _Header extends StatelessWidget {
               child: SvgPicture.asset(
                 automation.iconUri.isEmpty
                     ? 'assets/icons/chat.svg'
-                    : automation.iconUri,
+                    : 'assets/icons/${automation.iconUri}.svg',
                 width: 25,
                 height: 25,
                 colorFilter: ColorFilter.mode(

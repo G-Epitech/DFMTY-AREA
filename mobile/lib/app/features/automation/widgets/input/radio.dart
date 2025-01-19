@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
 
 class RadioInput extends StatefulWidget {
-  final String label;
   final List<AutomationRadioModel>? options;
   final void Function(String, String) onChanged;
   final String defaultValue;
@@ -10,7 +9,6 @@ class RadioInput extends StatefulWidget {
 
   const RadioInput({
     super.key,
-    required this.label,
     this.options,
     required this.onChanged,
     required this.defaultValue,
