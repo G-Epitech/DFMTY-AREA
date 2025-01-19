@@ -123,6 +123,20 @@ services:
     volumes:
       - shared_volume:/common
 
+  web:
+    container_name: web
+    restart: always
+    build:
+      context: web/
+      dockerfile: Dockerfile.production
+    ports:
+      - "8081:80"
+    image: web-image
+    profiles:
+      - production
+    volumes:
+      - shared_volume:/common
+
 volumes:
   zeus-db-data:
     name: zeus-db-data
