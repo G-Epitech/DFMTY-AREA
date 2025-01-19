@@ -8,6 +8,7 @@ import { DiscordGuildIdParameterComponent } from '@features/automations/workspac
 import { DiscordChannelIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/discord-channel-id-parameter/discord-channel-id-parameter.component';
 import { NotionDatabaseIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/notion-database-id-parameter/notion-database-id-parameter.component';
 import { NotionParentIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/notion-parent-id-parameter/notion-parent-id-parameter.component';
+import { AutomationParameterEditFloatComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-float/automation-parameter-edit-float.component';
 
 export interface ParameterEditDynamicComponent {
   parameter: { identifier: string; value: string | null };
@@ -31,6 +32,7 @@ export const PARAMETER_EDIT_COMPONENT_MAP: Record<
     AutomationParameterEditBooleanComponent,
   [AutomationParameterValueType.DATETIME]:
     AutomationParameterEditDatetimeComponent,
+  [AutomationParameterValueType.FLOAT]: AutomationParameterEditFloatComponent,
 };
 
 export const PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP: Record<

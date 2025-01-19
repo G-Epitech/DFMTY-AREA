@@ -3,4 +3,5 @@ export enum AutomationParameterValueType {
   DATETIME = 'Datetime',
   BOOLEAN = 'Boolean',
   INTEGER = 'Integer',
+  FLOAT = 'Float',
 }
