@@ -3,7 +3,8 @@ import {
   Component,
   inject,
   OnDestroy,
-  OnInit, Signal,
+  OnInit,
+  Signal,
 } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { NgStyle } from '@angular/common';
@@ -13,10 +14,9 @@ import { TrButtonDirective } from '@triggo-ui/button';
 import { AutomationsWorkspaceStore } from '@features/automations/workspace/automations-workspace.store';
 import { SelectTriggerSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-trigger-sheet/select-trigger-sheet.component';
 import { SelectActionSheetComponent } from '@features/automations/workspace/components/edit-sheets/select-action-sheet/select-action-sheet.component';
-import {
-  GeneralEditDialogComponent
-} from '@features/automations/workspace/components/general-edit-dialog/general-edit-dialog.component';
+import { GeneralEditDialogComponent } from '@features/automations/workspace/components/general-edit-dialog/general-edit-dialog.component';
 import { AutomationModel } from '@models/automation';
+import { TrSpinnerComponent } from '@triggo-ui/spinner';
 
 @Component({
   selector: 'tr-automations-workspace',
@@ -27,6 +27,7 @@ import { AutomationModel } from '@models/automation';
     SelectTriggerSheetComponent,
     SelectActionSheetComponent,
     GeneralEditDialogComponent,
+    TrSpinnerComponent,
   ],
   templateUrl: './automations-workspace.page.html',
   styles: [],
@@ -43,6 +44,7 @@ export class AutomationsWorkspacePageComponent implements OnInit, OnDestroy {
   automation: Signal<AutomationModel> = this.#workspaceStore.getAutomation;
 
   canSave: Signal<boolean> = this.#workspaceStore.canSave;
+  loading: Signal<boolean> = this.#workspaceStore.isLoading;
 
   ngOnInit() {
     this.#route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {

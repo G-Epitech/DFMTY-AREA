@@ -20,4 +20,8 @@ export class AppRouter extends Router {
   redirectToAutomationWorkspace() {
     void this.navigate(['/automations/workspace/']);
   }
+
+  redirectToAutomationListing() {
+    void this.navigate(['/automations/']);
+  }
 }
