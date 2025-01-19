@@ -3,7 +3,7 @@ import 'package:triggo/repositories/integration/models/integration.repository.mo
 import 'package:triggo/repositories/integration/models/integrations/github.integrations.dart';
 
 class GithubIntegration extends Integration {
-  final String username;
+  final String? username;
   final String? email;
   final String avatarUri;
   final int followers;

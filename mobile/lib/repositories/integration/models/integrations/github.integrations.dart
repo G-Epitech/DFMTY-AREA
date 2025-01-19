@@ -2,7 +2,7 @@ import 'package:triggo/repositories/integration/models/integration.repository.mo
 
 class GithubPropertiesDTO implements IntegrationPropertiesDTO {
   final int id;
-  final String name;
+  final String? name;
   final String? email;
   final String? bio;
   final String avatarUri;
@@ -47,7 +47,7 @@ class GithubPropertiesDTO implements IntegrationPropertiesDTO {
   factory GithubPropertiesDTO.fromJson(Map<String, dynamic> json) {
     return GithubPropertiesDTO(
       id: json['id'] as int,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       email: json['email'] as String?,
       bio: json['bio'] as String?,
       avatarUri: json['avatarUri'] as String,

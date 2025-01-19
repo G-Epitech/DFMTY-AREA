@@ -47,7 +47,7 @@ class GithubCustomWidget extends StatelessWidget {
                   radius: 10,
                   backgroundColor: Color(0xFF4E4E4E),
                   child: SvgPicture.asset(
-                    "assets/icons/notion.svg",
+                    "assets/icons/github.svg",
                     width: 15,
                     height: 15,
                     colorFilter: ColorFilter.mode(
@@ -65,7 +65,7 @@ class GithubCustomWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                integration.username,
+                integration.username ?? 'No username',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       height: 1.1,
                       fontSize: 24,
@@ -74,7 +74,7 @@ class GithubCustomWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                '${integration.email ?? ''} - Followers: ${integration.followers} - Following: ${integration.following}',
+                '${integration.email != null && integration.email!.isNotEmpty ? '${integration.email} - ' : ''}Followers: ${integration.followers} - Following: ${integration.following}',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
