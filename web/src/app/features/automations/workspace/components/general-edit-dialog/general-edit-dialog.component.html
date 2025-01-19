@@ -1,17 +1,97 @@
 <tr-dialog>
-  <button brnDialogTrigger trBtn class="ml-auto p-2" variant="outline">
+  <button
+    brnDialogTrigger
+    trBtn
+    class="ml-auto p-2 rounded-md transition-colors"
+    variant="outline">
     <ng-icon name="heroCog6Tooth" size="1.4rem" />
   </button>
+
   <tr-dialog-content
-    class="min-w-[450px] min-h-[400px]"
+    class="sm:min-w-[500px] max-w-[90vw] min-h-[400px] flex flex-col"
     *brnDialogContent="let ctx">
     <tr-dialog-header>
-      <h3 trDialogTitle>Edit Automation</h3>
+      <h3 trDialogTitle class="text-xl font-semibold text-gray-900">
+        Edit Automation
+      </h3>
     </tr-dialog-header>
-    <span>{{ label() }}</span>
-    <span>{{ description() }}</span>
-    <tr-dialog-footer class="mt-auto">
-      <button trBtn type="submit">Save changes</button>
-    </tr-dialog-footer>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="flex-1 flex flex-col gap-6">
+      <div class="space-y-4">
+        <div class="space-y-2">
+          <span class="text-sm font-medium text-gray-700">Label</span>
+          <div class="relative">
+            @if (isEditingLabel) {
+              <input
+                trInput
+                [formControl]="form.controls.label"
+                (blur)="stopEditingLabel()"
+                class="w-full bg-white"
+                placeholder="Enter label"
+                #labelInput />
+            } @else {
+              <button
+                (click)="startEditingLabel()"
+                type="button"
+                trBtn
+                variant="outline"
+                class="w-full px-4 py-2.5 text-left border-none flex items-center justify-between group">
+                <span>{{
+                  this.form.controls.label.value || 'Enter label'
+                }}</span>
+                <ng-icon name="heroPencil" size="1rem" />
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-sm font-medium text-gray-700">Description</span>
+          <div class="relative">
+            @if (isEditingDescription) {
+              <textarea
+                trInput
+                [formControl]="form.controls.description"
+                (blur)="stopEditingDescription()"
+                class="w-full min-h-[120px] bg-white resize-y"
+                placeholder="Enter description"
+                #descriptionInput></textarea>
+            } @else {
+              <button
+                (click)="startEditingDescription()"
+                type="button"
+                trBtn
+                variant="outline"
+                class="w-full px-4 py-2.5 text-left rounded-md border-none flex items-start justify-between group">
+                <span class="whitespace-pre-wrap">
+                  {{
+                    this.form.controls.description.value || 'Enter description'
+                  }}
+                </span>
+                <ng-icon name="heroPencil" size="1rem" />
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <tr-dialog-footer class="mt-auto">
+        <div class="flex gap-3 justify-end w-full">
+          <button trBtn type="button" variant="outline" brnDialogClose>
+            Cancel
+          </button>
+          <button
+            trBtn
+            type="submit"
+            [disabled]="!form.dirty || form.invalid"
+            class="min-w-[100px]">
+            Save changes
+          </button>
+        </div>
+      </tr-dialog-footer>
+    </form>
   </tr-dialog-content>
 </tr-dialog>
