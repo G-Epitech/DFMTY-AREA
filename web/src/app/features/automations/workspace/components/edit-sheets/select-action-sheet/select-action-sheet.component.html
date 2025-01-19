@@ -111,6 +111,7 @@
       ) {
         <button
           trBtn
+          brnSheetClose
           type="submit"
           class="w-[50%] flex flex-row gap-2 items-center"
           [disabled]="service.saveDisabled()"
@@ -125,7 +126,7 @@
         </button>
       } @else {
         <button trBtn class="w-[50%]" variant="outline" (click)="onBack()">
-          Back
+          Ok
         </button>
       }
     </div>

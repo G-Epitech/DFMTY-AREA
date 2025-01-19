@@ -88,6 +88,89 @@
             "Require": "single"
           }
         }
+      },
+      "SendEmbedToChannel": {
+        "Name": "Send embed to channel",
+        "Description": "Sends a embed to a specific guild channel as triggo bot.",
+        "Icon": "bookmark-square",
+        "Parameters": {
+          "GuildId": {
+            "Name": "Guild id",
+            "Description": "The ID of the guild to send the message to.",
+            "Type": "string"
+          },
+          "ChannelId": {
+            "Name": "Channel id",
+            "Description": "The ID of the channel to send the message to.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Embed title",
+            "Description": "The title of the embed.",
+            "Type": "string"
+          },
+          "Description": {
+            "Name": "Embed description",
+            "Description": "The description of the embed.",
+            "Type": "string"
+          },
+          "Color": {
+            "Name": "Embed color",
+            "Description": "The color of the embed.",
+            "Type": "integer"
+          },
+          "ImageUrl": {
+            "Name": "Image url",
+            "Description": "The URL of the image to display in the embed.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "MessageId": {
+            "Name": "Message id",
+            "Description": "The ID of the sent message.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "single"
+          }
+        }
+      },
+      "SendEmbedFromJsonToChannel": {
+        "Name": "Send embed from json to channel",
+        "Description": "Sends a embed from json to a specific guild channel as triggo bot.",
+        "Icon": "bars-arrow-down",
+        "Parameters": {
+          "GuildId": {
+            "Name": "Guild id",
+            "Description": "The ID of the guild to send the message to.",
+            "Type": "string"
+          },
+          "ChannelId": {
+            "Name": "Channel id",
+            "Description": "The ID of the channel to send the message to.",
+            "Type": "string"
+          },
+          "Json": {
+            "Name": "Json content",
+            "Description": "The json that represents the embed.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "MessageId": {
+            "Name": "Message id",
+            "Description": "The ID of the sent message.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Discord": {
+            "Require": "single"
+          }
+        }
       }
     }
   },
@@ -612,6 +695,356 @@
       }
     },
     "Actions": {}
+  },
+  "Github": {
+    "Name": "Github",
+    "IconUri": "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+    "Color": "#24292E",
+    "Triggers": {
+      "PullRequestCreated": {
+        "Name": "Pull request created",
+        "Description": "Trigger when a pull request is created.",
+        "Icon": "folder-arrow-down",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Url": {
+            "Name": "Pull request url",
+            "Description": "The URL of the created pull request.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Pull request title",
+            "Description": "The title of the created pull request.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Pull request number",
+            "Description": "The number of the created pull request.",
+            "Type": "integer"
+          },
+          "Body": {
+            "Name": "Pull request body",
+            "Description": "The body of the created pull request.",
+            "Type": "string"
+          },
+          "AuthorName": {
+            "Name": "Author name",
+            "Description": "The name of the author of the pull request.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      },
+      "PullRequestClosed": {
+        "Name": "Pull request closed",
+        "Description": "Trigger when a pull request is closed.",
+        "Icon": "folder-minus",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Url": {
+            "Name": "Pull request url",
+            "Description": "The URL of the created pull request.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Pull request title",
+            "Description": "The title of the created pull request.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Pull request number",
+            "Description": "The number of the created pull request.",
+            "Type": "integer"
+          },
+          "Body": {
+            "Name": "Pull request body",
+            "Description": "The body of the created pull request.",
+            "Type": "string"
+          },
+          "AuthorName": {
+            "Name": "Author name",
+            "Description": "The name of the author of the pull request.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      },
+      "IssueCreated": {
+        "Name": "Issue created",
+        "Description": "Trigger when an issue is created.",
+        "Icon": "arrow-down-circle",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Url": {
+            "Name": "Issue url",
+            "Description": "The URL of the created issue.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Issue title",
+            "Description": "The title of the created issue.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Issue number",
+            "Description": "The number of the created issue.",
+            "Type": "integer"
+          },
+          "Body": {
+            "Name": "Issue body",
+            "Description": "The body of the created issue.",
+            "Type": "string"
+          },
+          "AuthorName": {
+            "Name": "Author name",
+            "Description": "The name of the author of the issue.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      },
+      "IssueDeleted": {
+        "Name": "Issue deleted",
+        "Description": "Trigger when an issue is deleted.",
+        "Icon": "minus-circle",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to monitor.",
+            "Type": "string"
+          }
+        },
+        "Facts": {
+          "Url": {
+            "Name": "Issue url",
+            "Description": "The URL of the created issue.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Issue title",
+            "Description": "The title of the created issue.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Issue number",
+            "Description": "The number of the created issue.",
+            "Type": "integer"
+          },
+          "Body": {
+            "Name": "Issue body",
+            "Description": "The body of the created issue.",
+            "Type": "string"
+          },
+          "AuthorName": {
+            "Name": "Author name",
+            "Description": "The name of the author of the issue.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      }
+    },
+    "Actions": {
+      "CreatePullRequest": {
+        "Name": "Create pull request",
+        "Description": "Creates a new pull request.",
+        "Icon": "folder-plus",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to create the pull request in.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Pull request title",
+            "Description": "The title of the pull request.",
+            "Type": "string"
+          },
+          "Body": {
+            "Name": "Pull request body",
+            "Description": "The body of the pull request.",
+            "Type": "string"
+          },
+          "Head": {
+            "Name": "Head",
+            "Description": "The branch where the changes are implemented.",
+            "Type": "string"
+          },
+          "Base": {
+            "Name": "Base",
+            "Description": "The branch where the changes should be merged.",
+            "Type": "string"
+          },
+          "Draft": {
+            "Name": "Draft",
+            "Description": "Boolean value indicating if the pull request is a draft.",
+            "Type": "boolean"
+          }
+        },
+        "Facts": {
+          "Url": {
+            "Name": "Pull request url",
+            "Description": "The URL of the created pull request.",
+            "Type": "string"
+          },
+          "Title": {
+            "Name": "Pull request title",
+            "Description": "The title of the created pull request.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Pull request number",
+            "Description": "The number of the created pull request.",
+            "Type": "integer"
+          },
+          "Body": {
+            "Name": "Pull request body",
+            "Description": "The body of the created pull request.",
+            "Type": "string"
+          },
+          "AuthorName": {
+            "Name": "Author name",
+            "Description": "The name of the author of the pull request.",
+            "Type": "string"
+          }
+        },
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      },
+      "ClosePullRequest": {
+        "Name": "Close pull request",
+        "Description": "Closes a pull request.",
+        "Icon": "archive-box-x-mark",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to close the pull request in.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Pull request number",
+            "Description": "The number of the pull request to close.",
+            "Type": "integer"
+          }
+        },
+        "Facts": {},
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      },
+      "MergePullRequest": {
+        "Name": "Merge pull request",
+        "Description": "Merges a pull request.",
+        "Icon": "arrow-down-tray",
+        "Parameters": {
+          "Owner": {
+            "Name": "Owner",
+            "Description": "The owner of the repo. Can be user or organization.",
+            "Type": "string"
+          },
+          "Repository": {
+            "Name": "Repository",
+            "Description": "The repository to merge the pull request in.",
+            "Type": "string"
+          },
+          "Number": {
+            "Name": "Pull request number",
+            "Description": "The number of the pull request to merge.",
+            "Type": "integer"
+          },
+          "CommitTitle": {
+            "Name": "Commit title",
+            "Description": "The title of the commit message.",
+            "Type": "string"
+          },
+          "CommitMessage": {
+            "Name": "Commit message",
+            "Description": "The message of the commit.",
+            "Type": "string"
+          },
+          "MergeMethod": {
+            "Name": "Merge method",
+            "Description": "The method to use for merging the pull request (merge, squash or rebase).",
+            "Type": "string"
+          }
+        },
+        "Facts": {},
+        "Dependencies": {
+          "Github": {
+            "Require": "single"
+          }
+        }
+      }
+    }
   },
   "Gmail": {
     "Name": "Gmail",

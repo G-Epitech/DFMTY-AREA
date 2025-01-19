@@ -18,6 +18,8 @@ export function integrationTypeFromIdentifier(
       return IntegrationTypeEnum.OPENAI;
     case 'LeagueOfLegends':
       return IntegrationTypeEnum.LEAGUE_OF_LEGENDS;
+    case 'Github':
+      return IntegrationTypeEnum.GITHUB;
     default:
       throw new Error(`Unsupported integration type: ${identifier}`);
   }

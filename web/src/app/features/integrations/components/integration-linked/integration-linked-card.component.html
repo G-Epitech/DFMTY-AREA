@@ -24,5 +24,11 @@
         [iconUri]="iconUri()"
         [color]="color()" />
     }
+    @case (IntegrationTypeEnum.GITHUB) {
+      <tr-integration-linked-github
+        [integration]="integration()"
+        [iconUri]="iconUri()"
+        [color]="color()" />
+    }
   }
 </div>

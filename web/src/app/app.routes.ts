@@ -31,10 +31,26 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'client.apk',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/downloads/download.client.page').then(
+            m => m.DownloadClientComponent
+          ),
+      },
+      {
         path: 'faq',
         pathMatch: 'full',
         loadComponent: () =>
           import('@features/public/faq/faq.page').then(m => m.FaqPageComponent),
+      },
+      {
+        path: 'about-us',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/about-us/about-us.page').then(
+            m => m.AboutUsPageComponent
+          ),
       },
     ],
   },
@@ -142,6 +158,14 @@ export const routes: Routes = [
         pathMatch: 'full',
         canActivate: [stateGuard],
         data: { stateKey: GOOGLE_STATE_CODE_KEY, redirectUrl: '/login' },
+      },
+      {
+        path: 'github',
+        loadComponent: () =>
+          import('@features/oauth2/github/github.oauth2.page').then(
+            m => m.GithubOauth2PageComponent
+          ),
+        pathMatch: 'full',
       },
     ],
   },

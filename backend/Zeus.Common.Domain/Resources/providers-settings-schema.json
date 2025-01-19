@@ -14,6 +14,9 @@
     "LeagueOfLegends": {
       "$ref": "#/$defs/providerSettings"
     },
+    "Github": {
+      "$ref": "#/$defs/providerSettings"
+    },
     "Gmail": {
       "$ref": "#/$defs/providerSettings"
     }
@@ -24,7 +27,8 @@
     "Notion",
     "OpenAi",
     "LeagueOfLegends",
-    "Gmail"
+    "Gmail",
+    "Github"
   ],
   "$defs": {
     "varType": {
@@ -54,6 +58,9 @@
           "$ref": "#/$defs/dependencyRule"
         },
         "Gmail": {
+          "$ref": "#/$defs/dependencyRule"
+        },
+        "GitHub": {
           "$ref": "#/$defs/dependencyRule"
         }
       }

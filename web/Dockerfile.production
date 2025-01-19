@@ -1,0 +1,23 @@
+FROM node:alpine AS builder
+
+WORKDIR /usr/src/app
+
+RUN npm install -g @angular/cli
+
+RUN npm install -g pnpm
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install
+
+COPY . .
+
+RUN npm run build --production
+
+FROM nginx:alpine
+
+COPY --from=builder /usr/src/app/dist/triggo-web/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

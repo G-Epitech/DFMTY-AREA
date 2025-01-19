@@ -63,6 +63,8 @@ class IntegrationMediator with ChangeNotifier {
         return IntegrationNames.openAI;
       case IntegrationNames.leagueOfLegends:
         return IntegrationNames.leagueOfLegends;
+      case IntegrationNames.gmail:
+        return IntegrationNames.gmail;
       default:
         return '';
     }
