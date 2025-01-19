@@ -8,4 +8,5 @@ public class IntegrationsSettings
     public NotionSettings Notion { get; init; } = null!;
     public OpenAiSettings OpenAi { get; init; } = null!;
     public RiotSettings Riot { get; init; } = null!;
+    public GithubSettings Github { get; init; } = null!;
 }
