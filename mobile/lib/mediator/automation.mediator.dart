@@ -121,4 +121,17 @@ class AutomationMediator with ChangeNotifier {
           .schemas[integration]!.actions[identifier]!.dependencies;
     }
   }
+
+  Future<void> deleteAutomation(String id) async {
+    try {
+      final res = await _automationRepository.deleteAutomation(id);
+      if (res.statusCode == Codes.noContent) {
+        return;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      throw Exception('Error deleting automation');
+    }
+  }
 }
