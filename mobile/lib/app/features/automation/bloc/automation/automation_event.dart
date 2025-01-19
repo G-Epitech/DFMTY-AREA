@@ -33,6 +33,28 @@ final class AutomationDescriptionChanged extends AutomationEvent {
   List<Object> get props => [description];
 }
 
+final class AutomationIconChanged extends AutomationEvent {
+  final String iconUri;
+
+  const AutomationIconChanged({
+    required this.iconUri,
+  });
+
+  @override
+  List<Object> get props => [iconUri];
+}
+
+final class AutomationColorChanged extends AutomationEvent {
+  final String color;
+
+  const AutomationColorChanged({
+    required this.color,
+  });
+
+  @override
+  List<Object> get props => [color];
+}
+
 final class AutomationResetPending extends AutomationEvent {
   final AutomationTriggerOrActionType type;
   final int index;

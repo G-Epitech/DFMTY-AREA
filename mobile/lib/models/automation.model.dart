@@ -10,7 +10,7 @@ class Automation {
   final bool enabled;
   final DateTime updatedAt;
   final String iconUri;
-  final int iconColor;
+  final String iconColor;
 
   const Automation({
     required this.id,
@@ -35,8 +35,8 @@ class Automation {
       actions: json.actions.map((e) => AutomationAction.fromDTO(e)).toList(),
       enabled: json.enabled,
       updatedAt: json.updatedAt,
-      iconUri: "assets/icons/chat.svg",
-      iconColor: 0xFFEE883A,
+      iconUri: json.iconUri,
+      iconColor: json.iconColor,
     );
   }
 
@@ -63,7 +63,7 @@ class Automation {
     bool? enabled,
     DateTime? updatedAt,
     String? iconUri,
-    int? iconColor,
+    String? iconColor,
   }) {
     return Automation(
       id: id ?? this.id,

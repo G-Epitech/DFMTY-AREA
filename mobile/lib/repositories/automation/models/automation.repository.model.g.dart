@@ -188,6 +188,8 @@ AutomationDTO _$AutomationDTOFromJson(Map<String, dynamic> json) =>
           .toList(),
       enabled: json['enabled'] as bool,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      iconUri: json['iconUri'] as String,
+      iconColor: json['iconColor'] as String,
     );
 
 Map<String, dynamic> _$AutomationDTOToJson(AutomationDTO instance) =>
@@ -200,4 +202,6 @@ Map<String, dynamic> _$AutomationDTOToJson(AutomationDTO instance) =>
       'actions': instance.actions,
       'enabled': instance.enabled,
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'iconUri': instance.iconUri,
+      'iconColor': instance.iconColor,
     };

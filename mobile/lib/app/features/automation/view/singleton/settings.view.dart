@@ -76,6 +76,20 @@ class AutomationSettingsView extends StatelessWidget {
                   .add(AutomationDescriptionChanged(description: value));
             },
           ),
+          SizedBox(height: 12.0),
+          _buildInputParameter(
+            context: context,
+            state: state,
+            title: 'Icon',
+            inputType: AutomationInputType.icon,
+            placeholder: 'Select an icon',
+            value: state.cleanedAutomation.iconUri,
+            onSave: (value, humanValue) {
+              context
+                  .read<AutomationBloc>()
+                  .add(AutomationIconChanged(iconUri: value));
+            },
+          ),
         ],
       ),
     );

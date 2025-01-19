@@ -95,8 +95,7 @@ class _Header extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: Color(
-                  automation.iconColor > 0 ? automation.iconColor : 0xFFEE883A),
+              color: HexColor(automation.iconColor),
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Center(

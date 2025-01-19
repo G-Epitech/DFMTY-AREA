@@ -167,6 +167,8 @@ class AutomationDTO {
   final List<AutomationActionDTO> actions;
   final bool enabled;
   final DateTime updatedAt;
+  final String iconUri;
+  final String iconColor;
 
   AutomationDTO({
     required this.id,
@@ -177,6 +179,8 @@ class AutomationDTO {
     required this.actions,
     required this.enabled,
     required this.updatedAt,
+    required this.iconUri,
+    required this.iconColor,
   });
 
   factory AutomationDTO.fromJson(Map<String, dynamic> json) =>

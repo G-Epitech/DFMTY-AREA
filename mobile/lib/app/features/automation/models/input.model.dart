@@ -8,6 +8,7 @@ enum AutomationInputType {
   date,
   boolean,
   emoji,
+  icon,
 }
 
 enum AutomationParameterType {
