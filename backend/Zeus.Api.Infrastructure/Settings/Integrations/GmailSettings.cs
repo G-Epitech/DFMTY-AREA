@@ -5,8 +5,9 @@ public class GmailSettings
     public const string SectionName = nameof(GmailSettings);
 
     public string ApiEndpoint { get; init; } = null!;
+    public string TokenEndpoint { get; init; } = null!;
+    public string UserInfoEndpoint { get; init; } = null!;
     public string OAuth2Endpoint { get; init; } = null!;
-    public string OAuth2AccessType { get; init; } = null!;
     public string ClientId { get; init; } = null!;
     public string ClientSecret { get; init; } = null!;
     public string RedirectUrl { get; init; } = null!;
