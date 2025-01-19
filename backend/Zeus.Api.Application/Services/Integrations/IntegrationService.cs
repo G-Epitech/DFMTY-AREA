@@ -1,5 +1,7 @@
 using ErrorOr;
 
+using Mapster;
+
 using MapsterMapper;
 
 using Zeus.Api.Application.Interfaces.Services.Integrations;
@@ -23,15 +25,17 @@ public class IntegrationService : IIntegrationService
     private readonly INotionService _notionService;
     private readonly IOpenAiService _openAiService;
     private readonly IGithubService _githubService;
+    private readonly IGmailService _gmailService;
 
     public IntegrationService(IDiscordService discordService, INotionService notionService, IMapper mapper,
-        IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService, IGithubService githubService)
+        IOpenAiService openAiService, ILeagueOfLegendsService leagueOfLegendsService, IGithubService githubService, IGmailService gmailService)
     {
         _discordService = discordService;
         _notionService = notionService;
         _mapper = mapper;
         _openAiService = openAiService;
         _leagueOfLegendsService = leagueOfLegendsService;
+        _gmailService = gmailService;
         _githubService = githubService;
     }
 
@@ -44,6 +48,7 @@ public class IntegrationService : IIntegrationService
             IntegrationType.OpenAi => await GetIntegrationOpenAiProperties(integration),
             IntegrationType.LeagueOfLegends => await GetIntegrationLeagueOfLegendsProperties(integration),
             IntegrationType.Github => await GetIntegrationGithubProperties(integration),
+            IntegrationType.Gmail => await GetIntegrationGmailProperties(integration),
             _ => Errors.Integrations.PropertiesHandlerNotFound
         };
     }
@@ -156,5 +161,29 @@ public class IntegrationService : IIntegrationService
             githubUser.Value.Location,
             githubUser.Value.Followers,
             githubUser.Value.Following);
+    }
+
+    private async Task<ErrorOr<IntegrationProperties>> GetIntegrationGmailProperties(
+        Integration integration)
+    {
+        var gmailIntegration = (GmailIntegration)integration;
+
+        var accessToken = gmailIntegration.Tokens.First(x => x.Usage == IntegrationTokenUsage.Access);
+        var res = await _gmailService.GetUserAsync(new AccessToken(accessToken.Value));
+
+        if (res.IsError)
+        {
+            return res.Errors;
+        }
+        var gmailUser = res.Value;
+
+        return new IntegrationGmailProperties(
+            gmailUser.Id.Value,
+            gmailUser.Email,
+            gmailUser.GivenName,
+            gmailUser.FamilyName,
+            gmailUser.DisplayName,
+            gmailUser.AvatarUri
+        );
     }
 }
