@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:triggo/app/features/automation/models/input.model.dart';
+import 'package:triggo/app/features/automation/widgets/input/emoji.dart';
+import 'package:triggo/app/features/automation/widgets/input/number.dart';
+import 'package:triggo/app/features/automation/widgets/input/radio.dart';
+import 'package:triggo/app/features/automation/widgets/input/text.dart';
+import 'package:triggo/app/features/automation/widgets/input/text_area.dart';
 import 'package:triggo/app/routes/routes_names.dart';
 import 'package:triggo/app/widgets/button.triggo.dart';
-import 'package:triggo/app/widgets/input.triggo.dart';
 import 'package:triggo/app/widgets/scaffold.triggo.dart';
 
 class AutomationInputView extends StatefulWidget {
@@ -86,7 +90,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
   Widget _buildInput() {
     switch (widget.type) {
       case AutomationInputType.text:
-        return _TextInput(
+        return TextInput(
           label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
@@ -98,7 +102,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           },
         );
       case AutomationInputType.textArea:
-        return _TextAreaInput(
+        return TextAreaInput(
           label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
@@ -110,7 +114,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           },
         );
       case AutomationInputType.radio:
-        return _RadioInput(
+        return RadioInput(
           label: widget.label,
           options: widget.options,
           defaultValue: localValue,
@@ -123,7 +127,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           getOptions: widget.getOptions,
         );
       case AutomationInputType.emoji:
-        return _EmojiInput(
+        return EmojiInput(
           label: widget.label,
           placeholder: widget.placeholder ?? 'Enter an emoji',
           defaultValue: localValue,
@@ -135,7 +139,7 @@ class _AutomationInputViewState extends State<AutomationInputView> {
           },
         );
       case AutomationInputType.number:
-        return _NumberInput(
+        return NumberInput(
           label: widget.label,
           placeholder: widget.placeholder,
           defaultValue: localValue,
@@ -149,102 +153,6 @@ class _AutomationInputViewState extends State<AutomationInputView> {
       default:
         return Container();
     }
-  }
-}
-
-class _TextInput extends StatefulWidget {
-  final String label;
-  final String? placeholder;
-  final void Function(String) onValueChanged;
-  final String defaultValue;
-
-  const _TextInput({
-    required this.label,
-    this.placeholder,
-    required this.onValueChanged,
-    required this.defaultValue,
-  });
-
-  @override
-  State<_TextInput> createState() => _TextInputState();
-}
-
-class _TextInputState extends State<_TextInput> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.defaultValue);
-    _controller.addListener(() {
-      widget.onValueChanged(_controller.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoInput(
-      controller: _controller,
-      placeholder: widget.placeholder,
-      keyboardType: TextInputType.text,
-      backgroundColor: Colors.white,
-    );
-  }
-}
-
-class _TextAreaInput extends StatefulWidget {
-  final String label;
-  final String? placeholder;
-  final String? defaultValue;
-  final void Function(String)? onChanged;
-
-  const _TextAreaInput({
-    required this.label,
-    this.placeholder,
-    this.defaultValue,
-    this.onChanged,
-  });
-
-  @override
-  State<_TextAreaInput> createState() => _TextAreaInputState();
-}
-
-class _TextAreaInputState extends State<_TextAreaInput> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.defaultValue);
-    _controller.addListener(() {
-      if (widget.onChanged != null) {
-        widget.onChanged!(_controller.text);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoInput(
-      controller: _controller,
-      placeholder: widget.placeholder,
-      keyboardType: TextInputType.multiline,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      backgroundColor: Colors.white,
-      maxLines: 5,
-    );
   }
 }
 
@@ -307,279 +215,6 @@ class _OKButton extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _RadioInput extends StatefulWidget {
-  final String label;
-  final List<AutomationRadioModel>? options;
-  final void Function(String, String) onChanged;
-  final String defaultValue;
-  final Future<List<AutomationRadioModel>> Function()? getOptions;
-
-  const _RadioInput({
-    required this.label,
-    this.options,
-    required this.onChanged,
-    required this.defaultValue,
-    this.getOptions,
-  });
-
-  @override
-  State<_RadioInput> createState() => _RadioInputState();
-}
-
-class _RadioInputState extends State<_RadioInput> {
-  late String localValue;
-  late String humanReadableValue;
-  late Future<List<AutomationRadioModel>> optionsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    localValue = widget.defaultValue;
-
-    optionsFuture = widget.getOptions != null
-        ? widget.getOptions!()
-        : Future.value(widget.options ?? []);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<AutomationRadioModel>>(
-      future: optionsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              'Error loading options',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-            child: Text(
-              'No options available',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          );
-        }
-
-        final options = snapshot.data!;
-        return SingleChildScrollView(
-          child: Column(
-            children: options.map((option) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() {
-                    localValue = option.value;
-                    humanReadableValue = option.title;
-                    widget.onChanged(option.value, option.title);
-                  });
-                },
-                child: Container(
-                  margin: option == options.last
-                      ? const EdgeInsets.all(0)
-                      : const EdgeInsets.only(bottom: 8.0),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 12.0, horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: localValue == option.value
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.transparent,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 22,
-                        width: 22,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: localValue == option.value
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.grey.shade400,
-                            width: 2,
-                          ),
-                        ),
-                        child: localValue == option.value
-                            ? Center(
-                                child: Container(
-                                  height: 12,
-                                  width: 12,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                              )
-                            : null,
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(option.title,
-                                style: Theme.of(context).textTheme.labelLarge),
-                            if (option.description.isNotEmpty)
-                              Text(option.description,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(
-                                        fontSize: 12,
-                                      )),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _NumberInput extends StatefulWidget {
-  final String label;
-  final String? placeholder;
-  final void Function(String) onValueChanged;
-  final String defaultValue;
-
-  const _NumberInput({
-    required this.label,
-    this.placeholder,
-    required this.onValueChanged,
-    required this.defaultValue,
-  });
-
-  @override
-  State<_NumberInput> createState() => _NumberInputState();
-}
-
-class _NumberInputState extends State<_NumberInput> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.defaultValue);
-    _controller.addListener(() {
-      widget.onValueChanged(_controller.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoInput(
-      controller: _controller,
-      placeholder: widget.placeholder,
-      keyboardType: TextInputType.number,
-      backgroundColor: Colors.white,
-    );
-  }
-}
-
-class _EmojiInput extends StatefulWidget {
-  final String label;
-  final String placeholder;
-  final void Function(String) onValueChanged;
-  final String defaultValue;
-
-  const _EmojiInput({
-    required this.label,
-    required this.placeholder,
-    required this.onValueChanged,
-    required this.defaultValue,
-  });
-
-  @override
-  State<_EmojiInput> createState() => _EmojiInputState();
-}
-
-class _EmojiInputState extends State<_EmojiInput> {
-  late TextEditingController _controller;
-
-  bool isSingleEmoji(String input) {
-    final RegExp regexEmoji = RegExp(
-        r'^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$');
-    return regexEmoji.hasMatch(input);
-  }
-
-  void _validateInput(String input) {
-    final graphemes = input.characters.toList();
-
-    if (input.isEmpty) {
-      widget.onValueChanged(input);
-      return;
-    }
-
-    if (graphemes.length == 1 && isSingleEmoji(graphemes.first)) {
-      widget.onValueChanged(input);
-    } else {
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: const Text('Please enter a single emoji'),
-        ));
-      _controller.text = widget.defaultValue;
-      _controller.selection =
-          TextSelection.collapsed(offset: _controller.text.characters.length);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.defaultValue);
-
-    _controller.addListener(() {
-      final input = _controller.text;
-      final graphemes = input.characters.toList();
-
-      if (graphemes.length > 1) {
-        _controller.text = graphemes.first;
-        _controller.selection =
-            TextSelection.collapsed(offset: _controller.text.characters.length);
-      } else {
-        _validateInput(input);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TriggoInput(
-      controller: _controller,
-      placeholder: widget.placeholder,
-      keyboardType: TextInputType.text,
-      backgroundColor: Colors.white,
     );
   }
 }
