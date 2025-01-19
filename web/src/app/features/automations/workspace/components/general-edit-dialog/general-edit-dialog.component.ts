@@ -77,7 +77,14 @@ export class GeneralEditDialogComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('Form submitted');
+      if (this.form.controls.label.value) {
+        this.#workspaceStore.updateLabel(this.form.controls.label.value);
+      }
+      if (this.form.controls.description.value) {
+        this.#workspaceStore.updateDescription(
+          this.form.controls.description.value
+        );
+      }
     }
   }
 }

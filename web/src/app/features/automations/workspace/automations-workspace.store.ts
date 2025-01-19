@@ -56,6 +56,46 @@ export const AutomationsWorkspaceStore = signalStore(
     }),
   })),
   withMethods((store, automationsMediator = inject(AutomationsMediator)) => ({
+    updateLabel: rxMethod<string>(
+      pipe(
+        tap(label => {
+          const currentAutomation = store.automation();
+          const updatedAutomation = new AutomationModel(
+            currentAutomation.id,
+            currentAutomation.ownerId,
+            label,
+            currentAutomation.description,
+            currentAutomation.enabled,
+            currentAutomation.updatedAt,
+            currentAutomation.color,
+            currentAutomation.icon,
+            currentAutomation.trigger,
+            currentAutomation.actions
+          );
+          patchState(store, { automation: updatedAutomation });
+        })
+      )
+    ),
+    updateDescription: rxMethod<string>(
+      pipe(
+        tap(description => {
+          const currentAutomation = store.automation();
+          const updatedAutomation = new AutomationModel(
+            currentAutomation.id,
+            currentAutomation.ownerId,
+            currentAutomation.label,
+            description,
+            currentAutomation.enabled,
+            currentAutomation.updatedAt,
+            currentAutomation.color,
+            currentAutomation.icon,
+            currentAutomation.trigger,
+            currentAutomation.actions
+          );
+          patchState(store, { automation: updatedAutomation });
+        })
+      )
+    ),
     addTrigger: rxMethod<TriggerModel>(
       pipe(
         tap(trigger => {
