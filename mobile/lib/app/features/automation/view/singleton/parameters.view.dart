@@ -188,25 +188,24 @@ class _List extends StatelessWidget {
         return BlocBuilder<AutomationBloc, AutomationState>(
           builder: (context, state) {
             final title = property.name;
-            final previewData = getHumanReadableValue(
+            final parameterData = getHumanReadableValue(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,
                 indexOfTheTriggerOrAction,
                 triggerOrActionIdentifier,
                 parameterIdentifier,
-                state.previews,
-                true);
-            final selectedValue = getHumanReadableValue(
-                state.dirtyAutomation,
-                type,
-                integrationIdentifier,
-                indexOfTheTriggerOrAction,
-                triggerOrActionIdentifier,
-                parameterIdentifier,
-                state.previews,
-                false);
-            final AutomationParameterNeedOptions options = parameterHaveOptions(
+                state.previews);
+            final selectedValue = parameterData?.value;
+            final previewData = replaceByHumanReadable(
+                    type,
+                    integrationIdentifier,
+                    indexOfTheTriggerOrAction,
+                    triggerOrActionIdentifier,
+                    parameterIdentifier,
+                    state.previews) ??
+                selectedValue;
+            final options = parameterHaveOptions(
                 state.dirtyAutomation,
                 type,
                 integrationIdentifier,

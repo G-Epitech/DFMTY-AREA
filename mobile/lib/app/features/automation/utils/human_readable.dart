@@ -1,27 +1,24 @@
 import 'package:triggo/app/features/automation/models/choice.model.dart';
+import 'package:triggo/app/features/automation/models/input.model.dart';
 import 'package:triggo/models/automation.model.dart';
 
-String? getHumanReadableValue(
+AutomationParameterModel? getHumanReadableValue(
     Automation automation,
     AutomationTriggerOrActionType type,
     String integrationIdentifier,
     int indexOfTheTriggerOrAction,
     String triggerOrActionIdentifier,
     String parameterIdentifier,
-    Map<String, String> previews,
-    bool humanReadable) {
-  String? value;
-  bool isNotHumanReadable = true;
+    Map<String, String> previews) {
   switch (type) {
     case AutomationTriggerOrActionType.trigger:
       if (automation.trigger.identifier !=
           "$integrationIdentifier.$triggerOrActionIdentifier") {
         break;
       }
-      for (final parameter in automation.trigger.parameters) {
-        if (parameter.identifier == parameterIdentifier) {
-          value = parameter.value;
-          break;
+      for (final param in automation.trigger.parameters) {
+        if (param.identifier == parameterIdentifier) {
+          return AutomationParameterModel(value: param.value, type: 'raw');
         }
       }
       break;
@@ -31,29 +28,19 @@ String? getHumanReadableValue(
             "$integrationIdentifier.$triggerOrActionIdentifier") {
           break;
         }
-        for (final parameter in action.parameters) {
-          if (parameter.identifier == parameterIdentifier) {
-            value = parameter.value;
-            isNotHumanReadable = parameter.type != 'raw';
-            break;
+        for (final param in action.parameters) {
+          if (param.identifier == parameterIdentifier) {
+            return AutomationParameterModel(
+                value: param.value, type: param.type);
           }
         }
       }
       break;
   }
-  if (humanReadable || !isNotHumanReadable) {
-    return _replaceByHumanReadable(
-        type,
-        integrationIdentifier,
-        indexOfTheTriggerOrAction,
-        triggerOrActionIdentifier,
-        parameterIdentifier,
-        previews);
-  }
-  return value;
+  return null;
 }
 
-String? _replaceByHumanReadable(
+String? replaceByHumanReadable(
     AutomationTriggerOrActionType type,
     String integrationIdentifier,
     int indexOfTheTriggerOrAction,

@@ -42,3 +42,13 @@ class AutomationCheckboxModel {
     this.widget,
   });
 }
+
+class AutomationParameterModel {
+  late final String value;
+  late final String type;
+
+  AutomationParameterModel({
+    required this.value,
+    required this.type,
+  });
+}
