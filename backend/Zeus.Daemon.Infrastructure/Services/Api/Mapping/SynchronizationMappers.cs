@@ -95,6 +95,7 @@ public static class SynchronizationMappers
             IntegrationType.Notion => new NotionIntegration(id, ownerId, clientId, tokens, updatedAt, createdAt),
             IntegrationType.OpenAi => new OpenAiIntegration(id, ownerId, clientId, tokens, updatedAt, createdAt),
             IntegrationType.LeagueOfLegends => new LeagueOfLegendsIntegration(id, ownerId, clientId, tokens, updatedAt, createdAt),
+            IntegrationType.Github => new GithubIntegration(id, ownerId, clientId, tokens, updatedAt, createdAt),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
