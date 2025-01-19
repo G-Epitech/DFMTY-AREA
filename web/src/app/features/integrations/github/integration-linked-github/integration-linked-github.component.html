@@ -1,0 +1,48 @@
+<div class="flex flex-row items-center">
+  <div class="relative">
+    @if (props()?.avatarUri) {
+      <img
+        [ngSrc]="props()!.avatarUri"
+        alt="Notion User Avatar"
+        [width]="47"
+        [height]="47"
+        class="rounded-full" />
+    }
+    <div
+      class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center"
+      [ngStyle]="{ 'background-color': color() }">
+      <img
+        [ngSrc]="iconUri() || ''"
+        alt="Notion Logo"
+        class="rounded-full"
+        [width]="10"
+        [height]="10"
+        [style.filter]="'brightness(0) invert(1)'" />
+    </div>
+  </div>
+  <div class="flex flex-col ml-4 mr-auto">
+    <div class="tr-large flex flex-row items-center gap-4">
+      <h1>{{ props()?.name }}</h1>
+      @if (props()?.company) {
+        <div class="flex flex-row gap-1 items-center">
+          <ng-icon name="heroBuildingOffice" size="1rem" class="text-primary" />
+
+          <span class="text-muted text-sm"> {{ props()?.company }}</span>
+        </div>
+      }
+      @if (props()?.followers) {
+        <div class="flex flex-row gap-1 items-center">
+          <ng-icon name="heroUserGroup" size="1rem" class="text-primary" />
+          <span class="text-muted text-sm"
+            >{{ props()?.followers }} followers</span
+          >
+        </div>
+      }
+    </div>
+    @if (props()?.email) {
+      <span class="text-gray-500 text-sm">{{ props()?.email }}</span>
+    } @else {
+      <span class="text-gray-500 text-sm">{{ props()?.bio }}</span>
+    }
+  </div>
+</div>

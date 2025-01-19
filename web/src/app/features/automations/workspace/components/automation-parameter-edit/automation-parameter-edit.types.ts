@@ -9,6 +9,7 @@ import { DiscordChannelIdParameterComponent } from '@features/automations/worksp
 import { NotionDatabaseIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/notion-database-id-parameter/notion-database-id-parameter.component';
 import { NotionParentIdParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/notion-parent-id-parameter/notion-parent-id-parameter.component';
 import { AutomationParameterEditFloatComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-classic/automation-parameter-edit-float/automation-parameter-edit-float.component';
+import { OpenaiModelParameterComponent } from '@features/automations/workspace/components/automation-parameter-edit/automation-parameter-edit-plugins/openai-model-parameter/openai-model-parameter.component';
 
 export interface ParameterEditDynamicComponent {
   parameter: { identifier: string; value: string | null };
@@ -43,4 +44,5 @@ export const PARAMETER_EDIT_INTEGRATION_SPECIFIC_COMPONENT_MAP: Record<
   ChannelId: DiscordChannelIdParameterComponent,
   DatabaseId: NotionDatabaseIdParameterComponent,
   ParentId: NotionParentIdParameterComponent,
+  Model: OpenaiModelParameterComponent,
 };
