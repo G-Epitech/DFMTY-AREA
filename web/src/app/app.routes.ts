@@ -118,6 +118,14 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'gmail',
+        loadComponent: () =>
+          import('@features/oauth2/gmail/gmail.oauth2.page').then(
+            m => m.GmailOAuth2PageComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
         path: 'notion',
         loadComponent: () =>
           import('@features/oauth2/notion/notion.oauth2.page').then(
