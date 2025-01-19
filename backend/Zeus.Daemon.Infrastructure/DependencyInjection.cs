@@ -68,7 +68,7 @@ public static class DependencyInjection
         
         #region Github
         
-        services.AddSingleton<IGithubSettingsProvider, GithubSettingsProvider>();
+        services.AddSingleton<IGithubApiService, GithubApiService>();
         services.AddService<GithubPollingService, IGithubPollingService, IDaemonService>(
             ServiceLifetime.Singleton);
         
