@@ -1,23 +1,38 @@
 @if (action()) {
   <div
-    class="p-3 rounded-md bg-white hover:bg-gray-100 transition-colors hover:cursor-pointer flex flex-row gap-2 items-center"
+    class="p-3 rounded-md bg-white hover:bg-gray-100 transition-colors hover:cursor-pointer flex flex-row justify-between items-center"
     [ngStyle]="{
       border: color() ? '3px solid ' + color() : 'none',
     }">
-    @if (icon()) {
-      <div
-        [style.background-color]="color()"
-        class="p-2 flex items-center justify-center rounded-md">
-        <ng-icon [name]="icon()!" size="1.5rem" class="text-white" />
-      </div>
-    }
-    <span class="tr-container-title">{{ name() }}</span>
-    @if (paramsInvalid()) {
-      <ng-icon
-        name="heroExclamationTriangle"
-        size="1.5rem"
-        strokeWidth="0.15rem"
-        class="text-red-500 ml-auto" />
-    }
+    <div class="flex flex-row gap-2 items-center">
+      @if (icon()) {
+        <div
+          [style.background-color]="color()"
+          class="p-2 flex items-center justify-center rounded-md">
+          <ng-icon [name]="icon()!" size="1.5rem" class="text-white" />
+        </div>
+      }
+      <span class="tr-container-title">{{ name() }}</span>
+    </div>
+    <div class="flex flex-row items-center gap-2">
+      @if (paramsInvalid()) {
+        <ng-icon
+          name="heroExclamationTriangle"
+          size="1.5rem"
+          strokeWidth="0.15rem"
+          class="text-red-500 ml-auto" />
+      }
+      @if (iconIntegration()) {
+        <div [style.background]="color()" class="w-10 h-10 flex items-center justify-center rounded-md">
+          <img
+            [ngSrc]="iconIntegration()!"
+            alt="Integration Logo"
+            [width]="20"
+            [height]="20"
+            [style.filter]="'brightness(0) invert(1)'"
+          />
+        </div>
+      }
+    </div>
   </div>
 }

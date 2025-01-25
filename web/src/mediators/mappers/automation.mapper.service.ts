@@ -122,14 +122,16 @@ export class AutomationMapperService {
   }
 
   mapActionsModel(actions: ActionDTO[]): ActionModel[] {
-    return actions.map(
-      action =>
-        new ActionModel(
-          action.identifier,
-          this._mapActionParameters(action.parameters),
-          action.dependencies
-        )
-    );
+    return actions
+      .map(
+        action =>
+          new ActionModel(
+            action.identifier,
+            this._mapActionParameters(action.parameters),
+            action.dependencies
+          )
+      )
+      .reverse();
   }
 
   mapTriggerModel(trigger: TriggerDTO): TriggerModel {

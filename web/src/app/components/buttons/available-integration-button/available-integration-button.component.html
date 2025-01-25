@@ -5,12 +5,20 @@
   <div
     class="w-10 h-10 rounded-md flex flex-col items-center justify-center"
     [ngStyle]="{ 'background-color': integration().color }">
-    <img
-      [ngSrc]="integration().iconUri"
-      alt="Integration Logo"
-      [width]="24"
-      [height]="24"
-      [style.filter]="'brightness(0) invert(1)'" />
+    @if (integration().iconUri.includes('Gmail')) {
+      <img
+        [ngSrc]="integration().iconUri"
+        alt="Integration Logo"
+        [width]="24"
+        [height]="24" />
+    } @else {
+      <img
+        [ngSrc]="integration().iconUri"
+        alt="Integration Logo"
+        [width]="24"
+        [height]="24"
+        [style.filter]="'brightness(0) invert(1)'" />
+    }
   </div>
   <span class="tr-large">{{ integration().name }}</span>
 </button>

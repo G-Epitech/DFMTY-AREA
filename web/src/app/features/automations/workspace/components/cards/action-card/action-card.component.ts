@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { ActionModel, AutomationSchemaModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconNameFromIdentifier } from '@utils/icon';
@@ -14,7 +14,7 @@ import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'tr-action-card',
-  imports: [NgIcon, NgStyle],
+  imports: [NgIcon, NgStyle, NgOptimizedImage],
   templateUrl: './action-card.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +44,14 @@ export class ActionCardComponent {
       if (iconIdentifier) {
         return iconNameFromIdentifier(iconIdentifier);
       }
+    }
+    return null;
+  });
+
+  iconIntegration = computed(() => {
+    const action = this.action();
+    if (action && this.schema) {
+      return this.schema.getIntegrationIconUri(action.integration);
     }
     return null;
   });

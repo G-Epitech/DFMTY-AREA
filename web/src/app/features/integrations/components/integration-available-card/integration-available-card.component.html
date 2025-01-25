@@ -4,12 +4,20 @@
     <div
       class="w-14 h-14 rounded-md flex flex-col items-center justify-center"
       [ngStyle]="{ 'background-color': color() }">
-      <img
-        [ngSrc]="iconUri()"
-        alt="Integration Logo"
-        [width]="35"
-        [height]="35"
-        [style.filter]="'brightness(0) invert(1)'" />
+      @if (iconUri()!.includes('Gmail')) {
+        <img
+          [ngSrc]="iconUri()"
+          alt="Integration Logo"
+          [width]="35"
+          [height]="35" />
+      } @else {
+        <img
+          [ngSrc]="iconUri()"
+          alt="Integration Logo"
+          [width]="35"
+          [height]="35"
+          [style.filter]="'brightness(0) invert(1)'" />
+      }
     </div>
     <h1 class="tr-container-title">{{ name() }}</h1>
   </div>

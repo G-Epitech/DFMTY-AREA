@@ -33,7 +33,7 @@ class _AutomationsPageState extends State<AutomationsView> with RouteAware {
     super.initState();
 
     final automationMediator =
-        RepositoryProvider.of<AutomationMediator>(context);
+    RepositoryProvider.of<AutomationMediator>(context);
     _automationsBloc = AutomationsBloc(automationMediator: automationMediator)
       ..add(LoadAutomations());
   }
@@ -104,7 +104,7 @@ class _AutomationContainer extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 child: _AutomationButton(),
               ),
             ),
@@ -157,7 +157,10 @@ class _NoDataView extends StatelessWidget {
     return Center(
       child: Text('No automation',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium),
+          style: Theme
+              .of(context)
+              .textTheme
+              .titleMedium),
     );
   }
 }
@@ -206,7 +209,7 @@ class _AutomationListItem extends StatelessWidget {
                   ),
                   child: Center(
                     child: SvgPicture.asset(
-                      automation.icon,
+                      "assets/icons/${automation.icon}.svg",
                       width: 30,
                       height: 30,
                       colorFilter: ColorFilter.mode(
@@ -233,7 +236,10 @@ class _AutomationListItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           automation.label,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .labelLarge,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -246,7 +252,10 @@ class _AutomationListItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           automation.description,
-                          style: Theme.of(context).textTheme.labelMedium,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .labelMedium,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

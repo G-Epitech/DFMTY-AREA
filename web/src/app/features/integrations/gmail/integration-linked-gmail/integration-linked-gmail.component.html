@@ -3,20 +3,18 @@
     @if (props()?.avatarUri) {
       <img
         [ngSrc]="props()!.avatarUri"
-        alt="Notion User Avatar"
+        alt="Gmail User Avatar"
         [width]="47"
         [height]="47"
         class="rounded-full" />
     }
     <div
-      class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center">
+      class="h-5 w-5 rounded-full absolute -bottom-1 left-7 flex flex-col items-center justify-center bg-white p-[0.5px]">
       <img
         [ngSrc]="iconUri() || ''"
-        alt="Notion Logo"
-        class="rounded-full"
+        alt="Gmail Logo"
         [width]="10"
-        [height]="10"
-        [style.filter]="'brightness(0) invert(1)'" />
+        [height]="10" />
     </div>
   </div>
   <div class="flex flex-col ml-4 mr-auto">

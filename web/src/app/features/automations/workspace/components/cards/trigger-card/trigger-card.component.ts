@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { AutomationSchemaModel, TriggerModel } from '@models/automation';
 import { SchemaStore } from '@app/store/schema-store';
 import { iconNameFromIdentifier } from '@utils/icon';
@@ -18,7 +18,7 @@ import { NgIcon } from '@ng-icons/core';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgStyle, NgIcon],
+  imports: [NgStyle, NgIcon, NgOptimizedImage],
 })
 export class TriggerCardComponent {
   readonly #schemaStore = inject(SchemaStore);
@@ -45,6 +45,14 @@ export class TriggerCardComponent {
       if (iconIdentifier) {
         return iconNameFromIdentifier(iconIdentifier);
       }
+    }
+    return null;
+  });
+
+  iconIntegration = computed(() => {
+    const trigger = this.trigger();
+    if (trigger && this.schema) {
+      return this.schema.getIntegrationIconUri(trigger.integration);
     }
     return null;
   });
